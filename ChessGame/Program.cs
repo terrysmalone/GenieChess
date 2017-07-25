@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Debugging;
-using ChessGame.Enums;
 using ChessGame.ResourceLoading;
 using log4net;
 

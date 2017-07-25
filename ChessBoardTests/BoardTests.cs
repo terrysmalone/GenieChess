@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;

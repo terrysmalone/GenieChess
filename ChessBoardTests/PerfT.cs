@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.BoardSearching;
 using ChessGame.Debugging;

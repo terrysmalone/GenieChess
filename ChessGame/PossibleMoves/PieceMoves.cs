@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 
 namespace ChessGame.PossibleMoves
 {

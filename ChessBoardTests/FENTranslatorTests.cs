@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessGame;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
 using ChessGame.PossibleMoves;
-using ChessGame.Enums;
 
 namespace ChessBoardTests
 {

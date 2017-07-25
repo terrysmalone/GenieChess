@@ -1,5 +1,4 @@
 ﻿using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
 using System;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
 
 namespace ChessGame.MoveSearching

@@ -1,7 +1,7 @@
 ﻿using System;
 using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;

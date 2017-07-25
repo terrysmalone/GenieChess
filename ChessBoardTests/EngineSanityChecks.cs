@@ -1,7 +1,6 @@
 ﻿using ChessBoardTests.Properties;
 using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
 using ChessGame.ScoreCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.ResourceLoading;
 using ChessGame.MoveSearching;
 using ChessGame.PossibleMoves;

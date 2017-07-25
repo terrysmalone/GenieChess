@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
-using ChessGame.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
 

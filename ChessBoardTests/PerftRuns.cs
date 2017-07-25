@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.ResourceLoading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessBoardTests
 {
+    [Ignore]
     [TestClass]
     public class PerftRuns
     {

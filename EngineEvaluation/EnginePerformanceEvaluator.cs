@@ -12,7 +12,6 @@ using System.Diagnostics;
 using ChessGame.MoveSearching;
 using ChessGame.PossibleMoves;
 using ChessGame.NotationHelpers;
-using ChessGame.Enums;
 
 namespace EngineEvaluation
 {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 
 namespace BitboardVisualiser
 {
@@ -54,7 +54,7 @@ namespace BitboardVisualiser
             }
         }
 
-        internal void AddPiece(ChessGame.Enums.PieceType pieceType, ChessGame.Enums.PieceColour pieceColour, byte location)
+        internal void AddPiece(PieceType pieceType, PieceColour pieceColour, byte location)
         {
             //0 is bottom left travelling right and up 
                         

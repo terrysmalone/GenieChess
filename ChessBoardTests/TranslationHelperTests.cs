@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChessGame.Enums;
 using ChessGame.BoardSearching;
 
 

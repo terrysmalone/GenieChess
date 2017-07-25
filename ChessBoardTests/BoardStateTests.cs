@@ -277,18 +277,18 @@ namespace ChessBoardTests
             Assert.IsTrue(board1.Equals(board2));
         }
 
-         [TestMethod]
-         public void TestPgnMove()
-         {
-             BoardState board1 = new BoardState();
-             BoardState board2 = new BoardState();
+         //[TestMethod]
+         //public void TestPgnMove()
+         //{
+         //    BoardState board1 = new BoardState();
+         //    BoardState board2 = new BoardState();
 
-             board1.PgnMove = "e4";
-             Assert.IsFalse(board1.Equals(board2));
+         //    board1.PgnMove = "e4";
+         //    Assert.IsFalse(board1.Equals(board2));
 
-             board2.PgnMove = "e4";
-             Assert.IsTrue(board1.Equals(board2));
-         }
+         //    board2.PgnMove = "e4";
+         //    Assert.IsTrue(board1.Equals(board2));
+         //}
 
          [TestMethod]
          public void TestZobristKey()

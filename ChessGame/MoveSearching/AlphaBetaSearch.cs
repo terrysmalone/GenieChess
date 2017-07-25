@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
 using ChessGame.BoardSearching;
@@ -13,6 +12,7 @@ using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using log4net;
 using System.Threading;
+using ChessGame.BoardRepresentation.Enums;
 
 namespace ChessGame.MoveSearching
 {

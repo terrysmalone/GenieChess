@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.MoveSearching;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ChessGame.Enums;
 using ChessGame.PossibleMoves;
 
 namespace ChessBoardTests

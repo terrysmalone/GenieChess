@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessGame.BoardRepresentation
 {
@@ -33,22 +29,22 @@ namespace ChessGame.BoardRepresentation
         public bool BlackCanCastleQueenside;
         public bool BlackCanCastleKingside;
 
-        public bool WhiteInCheck;
-        public bool BlackInCheck;  
+        //public bool WhiteInCheck;
+        //public bool BlackInCheck;  
 
         public int HalfMoveClock;
         public int FullMoveClock;
 
         public ulong ZobristKey;
 
-        public string PgnMove;
+        //public string PgnMove;
 
         public override bool Equals(object obj)
         {
             if (!(obj is BoardState))
                 return false;
 
-            BoardState mys = (BoardState)obj;
+            var mys = (BoardState)obj;
 
             if (mys.WhiteToMove != WhiteToMove)
                 return false;
@@ -100,19 +96,25 @@ namespace ChessGame.BoardRepresentation
              if (mys.ZobristKey != ZobristKey)
                  return false;
 
-            if(PgnMove != null && mys.PgnMove == null)
-                return false;
-            else if(PgnMove == null && mys.PgnMove != null)
-                return false;
-            else if(PgnMove != null && mys.PgnMove != null)
-            {
-                if(!mys.PgnMove.Equals(PgnMove))
-                    return false;
-            }
-            
+            //if (PgnMove != null && mys.PgnMove == null)
+            //{
+            //    return false;
+            //}
+
+            //if (PgnMove == null && mys.PgnMove != null)
+            //{
+            //    return false;
+            //}
+
+            //if(PgnMove != null && mys.PgnMove != null)
+            //{
+            //    if (!mys.PgnMove.Equals(PgnMove))
+            //    {
+            //        return false;
+            //    }
+            //}
+
             return true;
-
-
         }
     }
 }

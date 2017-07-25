@@ -10,8 +10,8 @@ using System.Windows.Forms;
 using BitboardVisualiser;
 using ChessGame;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
-using ChessGame.Enums;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(

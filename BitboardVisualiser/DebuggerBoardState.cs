@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using ChessGame.BoardRepresentation;
-using ChessGame.Enums;
+using ChessGame.BoardRepresentation.Enums;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(
 typeof(BitboardVisualiser.DebuggerBoardState),
