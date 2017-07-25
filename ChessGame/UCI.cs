@@ -183,7 +183,7 @@ namespace ChessGame
 
         private void PrintFEN()
         {
-            string fen = game.CurrentBoard.GetFENNotation();
+            string fen = game.CurrentBoard.GetFenNotation();
             //Console.WriteLine(string.Format("DEBUGGING FEN:{0}", fen));            
         }
     }

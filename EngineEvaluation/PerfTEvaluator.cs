@@ -119,7 +119,7 @@ namespace EngineEvaluation
         private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
         {
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             Stopwatch timer = new Stopwatch();
             timer.Start();

@@ -72,7 +72,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
+            board.SetFenPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
             ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
 
@@ -86,7 +86,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
+            board.SetFenPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
 
             ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
 
@@ -100,7 +100,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
+            board.SetFenPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
             ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
 
@@ -108,7 +108,7 @@ namespace ChessBoardTests
 
             Board board2 = new Board();
 
-            board2.SetFENPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
+            board2.SetFenPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
 
             
             decimal score2 = scoreCalculator.CalculateScore(board2);
@@ -123,7 +123,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("4k2B/8/6N1/8/2N5/4P3/8/4K3 w - - 0 1");
+            board.SetFenPosition("4k2B/8/6N1/8/2N5/4P3/8/4K3 w - - 0 1");
 
             ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
 

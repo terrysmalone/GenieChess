@@ -94,7 +94,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/8/8/4p3/3P4/8/8/8 w - - 0 1");
+            board.SetFenPosition("8/8/8/4p3/3P4/8/8/8 w - - 0 1");
 
             ulong moveFrom = LookupTables.D4;
             ulong moveTo = LookupTables.E5;
@@ -110,7 +110,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/8/8/4p3/3P4/8/8/8 b - - 0 1");
+            board.SetFenPosition("8/8/8/4p3/3P4/8/8/8 b - - 0 1");
 
             ulong moveFrom = LookupTables.E5;
             ulong moveTo = LookupTables.D4;
@@ -126,7 +126,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/4r3/3B4/4p3/3P4/8/8/8 w - - 0 1");
+            board.SetFenPosition("8/4r3/3B4/4p3/3P4/8/8/8 w - - 0 1");
 
             ulong moveFrom = LookupTables.D6;
             ulong moveTo = LookupTables.E7;
@@ -142,7 +142,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/8/2N2r2/8/8/8/8/8 b - - 0 1");
+            board.SetFenPosition("8/8/2N2r2/8/8/8/8/8 b - - 0 1");
 
             ulong moveFrom = LookupTables.F6;
             ulong moveTo = LookupTables.C6;
@@ -158,7 +158,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+            board.SetFenPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
 
             ulong moveFrom = LookupTables.E1;
             ulong moveTo = LookupTables.G1;
@@ -174,7 +174,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+            board.SetFenPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
 
             ulong moveFrom = LookupTables.E1;
             ulong moveTo = LookupTables.C1;
@@ -190,7 +190,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
+            board.SetFenPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
             
             ulong moveFrom = LookupTables.E8;
             ulong moveTo = LookupTables.G8;
@@ -206,7 +206,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
+            board.SetFenPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
             
             ulong moveFrom = LookupTables.E8;
             ulong moveTo = LookupTables.C8;
@@ -222,7 +222,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/1P6/2K5/8/8/8/5k2/8 w - - 0 1");
+            board.SetFenPosition("8/1P6/2K5/8/8/8/5k2/8 w - - 0 1");
             
             ulong moveFrom = LookupTables.B7;
             ulong moveTo = LookupTables.B8;
@@ -238,7 +238,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("8/1P6/2K5/8/8/8/5kp1/8 b - - 0 1");
+            board.SetFenPosition("8/1P6/2K5/8/8/8/5kp1/8 b - - 0 1");
              
             ulong moveFrom = LookupTables.G2;
             ulong moveTo = LookupTables.G1;
@@ -261,7 +261,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("4k3/8/8/8/8/8/8/4KB2 w - - 0 1");
+            board.SetFenPosition("4k3/8/8/8/8/8/8/4KB2 w - - 0 1");
             
             ulong moveFrom = LookupTables.F1;
             ulong moveTo = LookupTables.B5;
@@ -277,7 +277,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("r3k3/8/8/8/8/8/8/4KB2 b - - 0 1");
+            board.SetFenPosition("r3k3/8/8/8/8/8/8/4KB2 b - - 0 1");
 
             ulong moveFrom = LookupTables.A8;
             ulong moveTo = LookupTables.A1;
@@ -293,7 +293,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("5k2/4r3/3P4/3K4/8/8/8/8 w - - 0 1");
+            board.SetFenPosition("5k2/4r3/3P4/3K4/8/8/8/8 w - - 0 1");
 
             ulong moveFrom = LookupTables.D6;
             ulong moveTo = LookupTables.E7;
@@ -310,7 +310,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("5k2/4r3/3P4/3KQ3/8/8/8/8 b - - 0 1");
+            board.SetFenPosition("5k2/4r3/3P4/3KQ3/8/8/8/8 b - - 0 1");
 
             ulong moveFrom = LookupTables.E7;
             ulong moveTo = LookupTables.E5;
@@ -326,7 +326,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("5k2/3Pr3/8/3KQ3/8/8/8/8 w - - 0 1");
+            board.SetFenPosition("5k2/3Pr3/8/3KQ3/8/8/8/8 w - - 0 1");
 
             ulong moveFrom = LookupTables.D7;
             ulong moveTo = LookupTables.D8;
@@ -342,7 +342,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
             board.ClearBoard();
-            board.SetFENPosition("5k2/3Pr3/8/3KQ3/8/8/7p/8 b - - 0 1");
+            board.SetFenPosition("5k2/3Pr3/8/3KQ3/8/8/7p/8 b - - 0 1");
 
             ulong moveFrom = LookupTables.H2;
             ulong moveTo = LookupTables.H1;

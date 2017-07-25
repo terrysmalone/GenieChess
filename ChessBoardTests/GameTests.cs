@@ -133,7 +133,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -159,7 +159,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -184,7 +184,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -207,7 +207,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -231,7 +231,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -253,7 +253,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -283,7 +283,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -309,7 +309,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -334,7 +334,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -357,7 +357,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -380,7 +380,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -402,7 +402,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -436,7 +436,7 @@ namespace ChessBoardTests
             Board currentState = game.CurrentBoard;
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -464,7 +464,7 @@ namespace ChessBoardTests
             Board currentState = game.CurrentBoard;
             
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -492,7 +492,7 @@ namespace ChessBoardTests
             Board currentState = game.CurrentBoard;
             
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -520,7 +520,7 @@ namespace ChessBoardTests
             Board currentState = game.CurrentBoard;
             
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -543,7 +543,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -566,7 +566,7 @@ namespace ChessBoardTests
             game.FindBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = game.CurrentBoard.GetFENNotation();
+            string fenNotation = game.CurrentBoard.GetFenNotation();
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);

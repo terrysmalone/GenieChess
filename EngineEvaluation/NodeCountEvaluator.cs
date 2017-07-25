@@ -94,7 +94,7 @@ namespace EngineEvaluation
             LogLine("");
 
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             Stopwatch timer = new Stopwatch();
             timer.Start();
@@ -126,7 +126,7 @@ namespace EngineEvaluation
             LogLine("");
 
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
 
@@ -156,7 +156,7 @@ namespace EngineEvaluation
             LogLine("");
 
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
 
@@ -185,7 +185,7 @@ namespace EngineEvaluation
             //LogLine("");
 
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml"); 
 
@@ -217,7 +217,7 @@ namespace EngineEvaluation
             //LogLine("");
 
             Board board = new Board();
-            board.SetFENPosition(startingPosition);
+            board.SetFenPosition(startingPosition);
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
 

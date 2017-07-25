@@ -306,11 +306,10 @@ namespace ChessGame.BoardRepresentation
         /// </summary>
         internal void RemovePiece(ulong squareToClear)
         {
-            ulong notSquareToClear = ~squareToClear;
+            var notSquareToClear = ~squareToClear;
 
-            ulong pieceBefore = 0;
+            var pieceBefore = WhitePawns;
 
-            pieceBefore = WhitePawns;
             WhitePawns = WhitePawns & notSquareToClear;
 
             if (pieceBefore != WhitePawns)
@@ -412,35 +411,7 @@ namespace ChessGame.BoardRepresentation
             
             BlackKing = BlackKing & notSquareToClear;
 
-            //ClearFromPieceBitboard(notSquareToClear, ref whitePawns);
-            //ClearFromPieceBitboard(notSquareToClear, ref WhiteKnights);
-            //ClearFromPieceBitboard(notSquareToClear, ref WhiteBishops);
-            //ClearFromPieceBitboard(notSquareToClear, ref whiteRooks);
-            //ClearFromPieceBitboard(notSquareToClear, ref whiteQueen);
-            //ClearFromPieceBitboard(notSquareToClear, ref whiteKing);
-
-            //ClearFromPieceBitboard(notSquareToClear, ref blackPawns);
-            //ClearFromPieceBitboard(notSquareToClear, ref blackKnights);
-            //ClearFromPieceBitboard(notSquareToClear, ref blackBishops);
-            //ClearFromPieceBitboard(notSquareToClear, ref blackRooks);
-            //ClearFromPieceBitboard(notSquareToClear, ref blackQueen);
-            //ClearFromPieceBitboard(notSquareToClear, ref blackKing);
-
             CalculateUsefulBitboards();
-        }
-
-        /// <summary>
-        /// Removes the given bitboard square for the given bitboard if it is set
-        /// </summary>
-        /// <param name="whitePawns"></param>
-        private void ClearFromPieceBitboard(ulong squareToClear, ref ulong piecesToClearFrom)
-        {
-            piecesToClearFrom = piecesToClearFrom & squareToClear; 
-
-            //ulong piecesBefore = piecesToClearFrom;
-            //ulong notPiecesToClearFrom = ~piecesToClearFrom;
-            //notPiecesToClearFrom ^= squareToClear;
-            //piecesToClearFrom = ~notPiecesToClearFrom & piecesBefore;
         }
 
         public void AllowAllCastling(bool value)
@@ -477,6 +448,7 @@ namespace ChessGame.BoardRepresentation
         /// <param name="moveFromBoard"></param>
         /// <param name="moveToBoard"></param>
         /// <param name="pieceToMove"></param>
+        /// <param name="specialMove"></param>
         /// <param name="confirmedMove">If the move is confirmed extra processes are carried out (i.e. PGN calculations. During move generation these are not necessary and slow things down</param>
         public void MakeMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove, bool confirmedMove)
         {
@@ -500,6 +472,7 @@ namespace ChessGame.BoardRepresentation
 
             if (IsMovePromotion(specialMove))
             {
+                // ReSharper disable once SwitchStatementMissingSomeCases
                 switch (specialMove)
                 {
                     case SpecialMoveType.KnightPromotion:
@@ -936,18 +909,18 @@ namespace ChessGame.BoardRepresentation
         /// Sets a board with a fen position
         /// </summary>
         /// <param name="fenNotation"></param>
-        public void SetFENPosition(string fenNotation)
+        public void SetFenPosition(string fenNotation)
         {
-            BoardState state = FenTranslator.ToBoardState(fenNotation);
+            var state = FenTranslator.ToBoardState(fenNotation);
 
             SetPosition(state);
 
             CalculateUsefulBitboards();
 
-            Log.Info(string.Format("Set board position to: {0}", fenNotation));
+            Log.Info($"Set board position to: {fenNotation}");
         }
 
-        public void SetPGNPosition(string pgnNotation)
+        public void SetPgnPosition(string pgnNotation)
         {
             PgnTranslator.ToBoard(this, pgnNotation);
         }
@@ -958,7 +931,7 @@ namespace ChessGame.BoardRepresentation
 
         public void WriteBoardToConsole()
         {
-            string piece = " ";
+            const string piece = " ";
 
             char[] squares = new char[64];
 
@@ -983,29 +956,34 @@ namespace ChessGame.BoardRepresentation
             for (int rank = 7; rank >= 0; rank--)
             {
                 Console.WriteLine("");
-                Console.WriteLine("-------------------------");
-                Console.Write("|");
+                Console.WriteLine(@"-------------------------");
+                Console.Write(@"|");
 
-                for (int file = 0; file < 8; file++)
+                for (var file = 0; file < 8; file++)
                 {
-                    int index = rank * 8 + file;
+                    var index = rank * 8 + file;
 
                     if (char.IsLetter(squares[index]))
+                    {
                         Console.Write(squares[index]);
+                    }
                     else
-                        Console.Write(" ");
-                    Console.Write(piece + "|");
+                    {
+                        Console.Write(@" ");
+                    }
+
+                    Console.Write(piece + @"|");
                 }
             }
 
             Console.WriteLine("");
-            Console.WriteLine("-------------------------");
+            Console.WriteLine(@"-------------------------");
         }
 
         public string BoardToString()
         {
-            string boardPos = string.Empty;
-            string piece = " ";
+            var boardPos = string.Empty;
+            const string piece = " ";
 
             char[] squares = new char[64];
 
@@ -1029,8 +1007,8 @@ namespace ChessGame.BoardRepresentation
 
             for (int rank = 7; rank >= 0; rank--)
             {
-                boardPos += System.Environment.NewLine;
-                boardPos += "-------------------------" + System.Environment.NewLine;
+                boardPos += Environment.NewLine;
+                boardPos += "-------------------------" + Environment.NewLine;
                 boardPos += "|";
 
                 for (int file = 0; file < 8; file++)
@@ -1045,19 +1023,19 @@ namespace ChessGame.BoardRepresentation
                 }
             }
 
-            boardPos += System.Environment.NewLine;
-            boardPos += "-------------------------" + System.Environment.NewLine;
+            boardPos += Environment.NewLine;
+            boardPos += "-------------------------" + Environment.NewLine;
 
             return boardPos;
         }
 
-        private void AddPieceLetterToSquares(char[] squares, ulong piecePosition, char letterToAdd)
+        private static void AddPieceLetterToSquares(IList<char> squares, ulong piecePosition, char letterToAdd)
         {
-            List<byte> pieceSquares = BitboardOperations.GetSquareIndexesFromBoardValue(piecePosition);
+            var pieceSquares = BitboardOperations.GetSquareIndexesFromBoardValue(piecePosition);
 
-            for (int i = 0; i < pieceSquares.Count; i++)
+            foreach (var pieceSquare in pieceSquares)
             {
-                squares[pieceSquares[i]] = letterToAdd;
+                squares[pieceSquare] = letterToAdd;
             }
         }
 
@@ -1110,47 +1088,43 @@ namespace ChessGame.BoardRepresentation
 
         #endregion slower debug methods
 
-        public string GetFENNotation()
+        public string GetFenNotation()
         {
             return FenTranslator.ToFENString(GetCurrentBoardState());
         }
 
-        public string GetPGNNotation()
+        public string GetPgnNotation()
         {
             return PgnTranslator.ToPgnMovesList(this);
         }
 
         public BoardState GetCurrentBoardState()
         {
-            BoardState state = new BoardState();
+            var state = new BoardState
+            {
+                WhiteToMove = WhiteToMove,
+                WhitePawns = WhitePawns,
+                WhiteKnights = WhiteKnights,
+                WhiteBishops = WhiteBishops,
+                WhiteRooks = WhiteRooks,
+                WhiteQueen = WhiteQueen,
+                WhiteKing = WhiteKing,
 
-            state.WhiteToMove = WhiteToMove;
-
-            state.WhitePawns = WhitePawns;
-            state.WhiteKnights = WhiteKnights;
-            state.WhiteBishops = WhiteBishops;
-            state.WhiteRooks = WhiteRooks;
-            state.WhiteQueen = WhiteQueen;
-            state.WhiteKing = WhiteKing;
-
-            state.BlackPawns = BlackPawns;
-            state.BlackKnights = BlackKnights;
-            state.BlackBishops = BlackBishops;
-            state.BlackRooks = BlackRooks;
-            state.BlackQueen = BlackQueen;
-            state.BlackKing = BlackKing;
-
-            state.EnPassantPosition = EnPassantPosition;
-
-            state.WhiteCanCastleQueenside = WhiteCanCastleQueenside;
-            state.WhiteCanCastleKingside = WhiteCanCastleKingside;
-            state.BlackCanCastleQueenside = BlackCanCastleQueenside;
-            state.BlackCanCastleKingside = BlackCanCastleKingside;
-
-            state.HalfMoveClock = HalfMoveClock;
-            state.FullMoveClock = FullMoveClock;
-
-            state.ZobristKey = Zobrist; 
+                BlackPawns = BlackPawns,
+                BlackKnights = BlackKnights,
+                BlackBishops = BlackBishops,
+                BlackRooks = BlackRooks,
+                BlackQueen = BlackQueen,
+                BlackKing = BlackKing,
+                EnPassantPosition = EnPassantPosition,
+                WhiteCanCastleQueenside = WhiteCanCastleQueenside,
+                WhiteCanCastleKingside = WhiteCanCastleKingside,
+                BlackCanCastleQueenside = BlackCanCastleQueenside,
+                BlackCanCastleKingside = BlackCanCastleKingside,
+                HalfMoveClock = HalfMoveClock,
+                FullMoveClock = FullMoveClock,
+                ZobristKey = Zobrist
+            };
 
             return state;
         }
@@ -1170,32 +1144,32 @@ namespace ChessGame.BoardRepresentation
         private void UpdateZobristForMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove)
         {
             //Remove old piece
-            Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)];
+            Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)];
             
             if (IsMovePromotionCapture(specialMove))
             {
                 //remove captured piece
                 PieceType capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add promoted piece
                 PieceType promotedPiece = PromotedPiece(specialMove);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if(IsMovePromotionNonCapture(specialMove))
             {
                 //Add promoted piece
                 PieceType promotedPiece = PromotedPiece(specialMove);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if (specialMove == SpecialMoveType.Capture)
             {
                 //remove captured piece
                 PieceType capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add moved piece
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                       
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                       
             }
             else if (IsMoveCastling(specialMove))
             {
@@ -1207,28 +1181,28 @@ namespace ChessGame.BoardRepresentation
                     movedPieceNumber = ZobristHash.BLACK_KING;
 
                 //Add moved piece
-                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
+                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             
                 //Add rook
                 if ((moveToBoard & LookupTables.C1) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A1)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D1)];
                 }
                 else if ((moveToBoard & LookupTables.G1) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H1)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F1)];
                 }
                 else if ((moveToBoard & LookupTables.C8) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A8)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D8)];
                 }
                 else if ((moveToBoard & LookupTables.G8) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H8)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, (int)BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F8)];
                 }
             }
             else if(specialMove == SpecialMoveType.ENPassantCapture)
@@ -1248,26 +1222,27 @@ namespace ChessGame.BoardRepresentation
                 }
 
                 //Remove captured pawn
-                Zobrist ^= ZobristKey.PiecePositions[capturedPieceNumber, (int)BitboardOperations.GetSquareIndexFromBoardValue(EnPassantPosition)];
+                Zobrist ^= ZobristKey.PiecePositions[capturedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(EnPassantPosition)];
                 
                 //Add moved pawn
-                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                
+                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                
             }
             else
             {
-                int movedPieceNumber = ZobristHash.GetPieceValue(pieceToMove, MoveColour);
+                var movedPieceNumber = ZobristHash.GetPieceValue(pieceToMove, MoveColour);
 
-                //Just a normal move
-                //zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, (int)BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)];
-                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, (int)BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];              
+                Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];              
             }
         }
 
         private void UpdateEnPassantZobrist(SpecialMoveType specialMove, ulong moveToBoard)
         {
             // Previous position
-            if (History[History.Count - 1].EnPassantPosition > (ulong)0)
+            if (History[History.Count - 1].EnPassantPosition > 0)
+            {
                 Zobrist ^= ZobristHash.HashEnPassantSquare(History[History.Count - 1].EnPassantPosition);
+            }
+
             //Current Postion
             if (specialMove == SpecialMoveType.DoublePawnPush)
             {

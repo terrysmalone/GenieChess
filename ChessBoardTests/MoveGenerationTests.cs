@@ -134,7 +134,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1");
+            board.SetFenPosition("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1");
 
             List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
             
@@ -166,7 +166,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("b4k2/8/8/8/8/8/6P1/7K w - - 0 1");
+            board.SetFenPosition("b4k2/8/8/8/8/8/6P1/7K w - - 0 1");
 
             List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -188,7 +188,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1");
+            board.SetFenPosition("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1");
 
             List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -210,7 +210,7 @@ namespace ChessBoardTests
         {
             Board board = new Board();
 
-            board.SetFENPosition("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1");
+            board.SetFenPosition("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1");
 
             List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -250,7 +250,7 @@ namespace ChessBoardTests
         private TimeSpan GetRunningTime(string boardPosition, int depth)
         {
             Board board = new Board();
-            board.SetFENPosition(boardPosition);
+            board.SetFenPosition(boardPosition);
 
             DateTime startTime = DateTime.Now;
             PerfT perft = new PerfT();

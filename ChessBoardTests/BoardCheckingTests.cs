@@ -131,7 +131,7 @@ namespace ChessBoardTests
          public void TestIsFriendlyPieceOnSquare()
          {
              Board board = new Board();
-             board.SetFENPosition("1rb3kr/pp3p1p/2p3pn/n3N3/3pPB1q/2NP4/P1PQBPPP/b4RK1 w - - 0 1");
+             board.SetFenPosition("1rb3kr/pp3p1p/2p3pn/n3N3/3pPB1q/2NP4/P1PQBPPP/b4RK1 w - - 0 1");
 
              //White pieces
              Assert.IsTrue(BoardChecking.IsFriendlyPieceOnSquare(board, (ulong)256));
@@ -332,7 +332,7 @@ namespace ChessBoardTests
          public void TestCalculateAllowedQueenMoves_White_EmptyBoard()
          {
              Board board = new Board();
-             board.SetFENPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
+             board.SetFenPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
              board.CalculateUsefulBitboards();
 
              List<byte> queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
@@ -348,7 +348,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_White_EmptyBoard_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
+            board.SetFenPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
@@ -364,7 +364,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_Black_EmptyBoard()
         {
             Board board = new Board();
-            board.SetFENPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
+            board.SetFenPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
@@ -380,7 +380,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_Black_EmptyBoard_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
+            board.SetFenPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
@@ -396,7 +396,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_White_WithPieces()
         {
             Board board = new Board();
-            board.SetFENPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
@@ -412,7 +412,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_White_WithPieces_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
@@ -428,7 +428,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_Black_WithPieces()
         {
             Board board = new Board();
-            board.SetFENPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
+            board.SetFenPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
@@ -444,7 +444,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedQueenMoves_Black_WithPieces_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
+            board.SetFenPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
@@ -460,7 +460,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedRookMoves_White()
         {
             Board board = new Board();
-            board.SetFENPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteRooks);
@@ -478,7 +478,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedRookMoves_White_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] rookPositions = BitboardOperations.SplitBoardToArray(board.WhiteRooks);
@@ -496,7 +496,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedRookMoves_Black()
         {
             Board board = new Board();
-            board.SetFENPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackRooks);
@@ -514,7 +514,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedRookMoves_Black_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
+            board.SetFenPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] rookPositions = BitboardOperations.SplitBoardToArray(board.BlackRooks);
@@ -532,7 +532,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedBishopMoves_White()
         {
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteBishops);
@@ -550,7 +550,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedBishopMoves_White_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] bishopPositions = BitboardOperations.SplitBoardToArray(board.WhiteBishops);
@@ -568,7 +568,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedBishopMoves_Black()
         {
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             board.CalculateUsefulBitboards();
 
             List<byte> bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackBishops);
@@ -586,7 +586,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedBishopMoves_Black_Ray()
         {
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong[] bishopPositions = BitboardOperations.SplitBoardToArray(board.BlackBishops);
@@ -604,7 +604,7 @@ namespace ChessBoardTests
         public void TestCalculateAllowedUpRightMoves()
         {
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, PieceColour.White);
@@ -623,7 +623,7 @@ namespace ChessBoardTests
         {
             LookupTables.InitialiseAllTables();
             Board board = new Board();
-            board.SetFENPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
+            board.SetFenPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             board.CalculateUsefulBitboards();
 
             ulong whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], PieceColour.White);

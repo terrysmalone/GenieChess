@@ -305,7 +305,7 @@ namespace ChessGame
         /// <param name="fenNotation"></param>
         public void SetFENPosition(string fenNotation)
         {
-            CurrentBoard.SetFENPosition(fenNotation);
+            CurrentBoard.SetFenPosition(fenNotation);
         }
 
         #endregion  Board setup methods

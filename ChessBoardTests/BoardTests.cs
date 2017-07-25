@@ -249,7 +249,7 @@ namespace ChessBoardTests
         public void TestSetFenSetFENPosition_Initial()
         {
             Board board = new Board();
-            board.SetFENPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+            board.SetFenPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
             //Check piece positions
             Assert.AreEqual((ulong)65280, board.WhitePawns);
@@ -294,7 +294,7 @@ namespace ChessBoardTests
             //board.WhiteCanCastleQueenside = false;
 
             Board board = new Board();
-            board.SetFENPosition("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -");
+            board.SetFenPosition("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -");
 
             Assert.AreEqual((ulong)8594161664, board.WhitePawns);
             Assert.AreEqual((ulong)0, board.WhiteKnights);

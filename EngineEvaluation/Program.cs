@@ -40,7 +40,7 @@ namespace EngineEvaluation
             foreach (PerfTPosition pos in perftPositions)
             {
                 Board board = new Board();
-                board.SetFENPosition(pos.FenPosition);
+                board.SetFenPosition(pos.FenPosition);
 
                 List<PieceMoves> moves = MoveGeneration.CalculateAllPseudoLegalMoves(board);  
                 
