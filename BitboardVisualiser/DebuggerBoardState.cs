@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using ChessGame;
-using BitboardVisualiser;
-using ChessGame.BoardSearching;
-using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.Enums;
 
@@ -143,8 +136,6 @@ namespace BitboardVisualiser
         {
             string board = "";
 
-            string piece = "_";
-
             char[] squares = new char[64];
 
             AddPieceLetterToSquares(squares, chessBoard.WhitePawns, 'p');
@@ -182,8 +173,7 @@ namespace BitboardVisualiser
                     }
                     else
                         board += " _ ";
-
-                    //board += piece;
+                    
                     board += "|";
                 }
             }
