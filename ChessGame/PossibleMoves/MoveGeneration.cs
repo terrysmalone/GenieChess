@@ -1312,7 +1312,7 @@ namespace ChessGame.PossibleMoves
             }
             else
             {
-                if (BoardChecking.isSquareRayAttackedFromBelow(currentBoard, squarePosition) || BoardChecking.IsSquareRayAttackedFromTheSide(currentBoard, squarePosition))      //Black castling king will not be attacked from above so no need to check all squares
+                if (BoardChecking.IsSquareRayAttackedFromBelow(currentBoard, squarePosition) || BoardChecking.IsSquareRayAttackedFromTheSide(currentBoard, squarePosition))      //Black castling king will not be attacked from above so no need to check all squares
                     return true;
             }
 

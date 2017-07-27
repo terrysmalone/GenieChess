@@ -822,10 +822,30 @@ namespace ChessGame.BoardSearching
                      CalculateAllowedUpLeftMoves(board, pieceIndex, colour));
         }
 
+        #region Calculate up moves
+
         internal static ulong CalculateAllowedUpMoves(Board board, byte pieceIndex, PieceColour colour)
         {
             var upBoard = LookupTables.UpBoard[pieceIndex];
 
+            return CalculateAllowedUpMovesFromBoard(board,
+                                                      upBoard,
+                                                      colour);
+        }
+
+        internal static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, PieceColour colour)
+        {
+            var upBoard = GetUpBoard(pieceIndex);
+
+            return CalculateAllowedUpMovesFromBoard(board,
+                                                      upBoard,
+                                                      colour);
+        }
+
+        private static ulong CalculateAllowedUpMovesFromBoard(Board board, 
+                                                                ulong upBoard, 
+                                                                PieceColour colour)
+        {
             var upMoves = upBoard & board.AllOccupiedSquares;   //Find first hit square
 
             upMoves = (upMoves << 8) 
@@ -850,49 +870,43 @@ namespace ChessGame.BoardSearching
             return upMoves;
         }
 
-        internal static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, PieceColour colour)
-        {
-            ulong upBoard = GetUpBoard(pieceIndex);
+        #endregion Calculate up moves
 
-            ulong upMoves = upBoard & board.AllOccupiedSquares;   //Find first hit square
-            upMoves = (upMoves << 8) | (upMoves << 16) | (upMoves << 24) | (upMoves << 32) | (upMoves << 40) | (upMoves << 48);  //Fill all squares above by performing left shifts
-            //upMoves = upMoves & upBoard;       //Remove overflow
-            upMoves = upMoves ^ upBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                upMoves = upMoves & board.BlackOrEmpty;
-            else
-                upMoves = upMoves & board.WhiteOrEmpty;
-
-            return upMoves;
-        }
+        #region calculate right moves
 
         internal static ulong CalculateAllowedRightMoves(Board board, byte pieceIndex, PieceColour colour)
         {
-            ulong rightBoard = LookupTables.RightBoard[pieceIndex];
+            var rightBoard = LookupTables.RightBoard[pieceIndex];
 
-            ulong rightMoves = rightBoard & board.AllOccupiedSquares;   //Find first hit square
-            rightMoves = (rightMoves << 1) | (rightMoves << 2) | (rightMoves << 3) | (rightMoves << 4) | (rightMoves << 5) | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
-            rightMoves = rightMoves & rightBoard;       //Remove overflow
-            rightMoves = rightMoves ^ rightBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                rightMoves = rightMoves & board.BlackOrEmpty;
-            else
-                rightMoves = rightMoves & board.WhiteOrEmpty;
-
-            return rightMoves;
+            return CalculateAllowedRightMovesFromBoard(board,
+                                                            rightBoard, 
+                                                            colour);
         }
 
         internal static ulong CalculateAllowedRightMoves(Board board, ulong pieceIndex, PieceColour colour)
         {
-            ulong rightBoard = GetRightBoard(pieceIndex);
+            var rightBoard = GetRightBoard(pieceIndex);
 
-            ulong rightMoves = rightBoard & board.AllOccupiedSquares;   //Find first hit square
-            rightMoves = (rightMoves << 1) | (rightMoves << 2) | (rightMoves << 3) | (rightMoves << 4) | (rightMoves << 5) | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
+            return CalculateAllowedRightMovesFromBoard(board,
+                                                            rightBoard, 
+                                                            colour);
+        }
+
+        private static ulong CalculateAllowedRightMovesFromBoard(Board board, 
+                                                                      ulong rightBoard, 
+                                                                      PieceColour colour)
+        {
+            var rightMoves = rightBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            rightMoves = (rightMoves << 1) 
+                         | (rightMoves << 2) 
+                         | (rightMoves << 3) 
+                         | (rightMoves << 4) 
+                         | (rightMoves << 5) 
+                         | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
+
             rightMoves = rightMoves & rightBoard;       //Remove overflow
+
             rightMoves = rightMoves ^ rightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
@@ -904,151 +918,213 @@ namespace ChessGame.BoardSearching
             return rightMoves;
         }
 
+        #endregion calculate right moves
+
+        #region Calculate down moves
+
         internal static ulong CalculateAllowedDownMoves(Board board, byte pieceIndex, PieceColour colour)
         {
-            ulong downBoard = LookupTables.DownBoard[pieceIndex];
+            var downBoard = LookupTables.DownBoard[pieceIndex];
 
-            ulong downMoves = downBoard & board.AllOccupiedSquares;   //Find first hit square
-            downMoves = (downMoves >> 8) | (downMoves >> 16) | (downMoves >> 24) | (downMoves >> 32) | (downMoves >> 40) | (downMoves >> 48);  //Fill all squares below by performing right shifts
-            //downMoves = downMoves & downBoard;       //Remove overflow
-            downMoves = downMoves ^ downBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                downMoves = downMoves & board.BlackOrEmpty;
-            else
-                downMoves = downMoves & board.WhiteOrEmpty;
-
-            return downMoves;
+            return CalculateAllowedDownMovesFromBoard(board,
+                                                          downBoard,
+                                                          colour);
         }
 
         internal static ulong CalculateAllowedDownMoves(Board board, ulong pieceIndex, PieceColour colour)
         {
-            ulong downBoard = GetDownBoard(pieceIndex);
+            var downBoard = GetDownBoard(pieceIndex);
 
-            ulong downMoves = downBoard & board.AllOccupiedSquares;   //Find first hit square
-            downMoves = (downMoves >> 8) | (downMoves >> 16) | (downMoves >> 24) | (downMoves >> 32) | (downMoves >> 40) | (downMoves >> 48);  //Fill all squares below by performing right shifts
-            //downMoves = downMoves & downBoard;       //Remove overflow
-            downMoves = downMoves ^ downBoard;       //Get just the allowed squares using XOR
+            return CalculateAllowedDownMovesFromBoard(board,
+                                                          downBoard,
+                                                          colour);
+        }
+
+        private static ulong CalculateAllowedDownMovesFromBoard(Board board,
+                                                                    ulong downBoard,
+                                                                    PieceColour colour)
+        {
+            var downMoves = downBoard & board.AllOccupiedSquares; //Find first hit square
+
+            downMoves = (downMoves >> 8) 
+                        | (downMoves >> 16) 
+                        | (downMoves >> 24) 
+                        | (downMoves >> 32) 
+                        | (downMoves >> 40) 
+                        | (downMoves >> 48); //Fill all squares below by performing right shifts
+
+            downMoves = downMoves ^ downBoard; //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (colour == PieceColour.White)
+            {
                 downMoves = downMoves & board.BlackOrEmpty;
+            }
             else
+            {
                 downMoves = downMoves & board.WhiteOrEmpty;
+            }
 
             return downMoves;
         }
 
+        #endregion Calculate down moves
+
+        #region Calculate left moves
+
         internal static ulong CalculateAllowedLeftMoves(Board board, byte pieceIndex, PieceColour colour)
         {
-            ulong leftBoard = LookupTables.LeftBoard[pieceIndex];
+            var leftBoard = LookupTables.LeftBoard[pieceIndex];
 
-            ulong leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
-            leftMoves = (leftMoves >> 1) | (leftMoves >> 2) | (leftMoves >> 3) | (leftMoves >> 4) | (leftMoves >> 5) | (leftMoves >> 6);  //Fill all squares to the left by performing right shifts
-            leftMoves = leftMoves & leftBoard;       //Remove overflow
-            leftMoves = leftMoves ^ leftBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                leftMoves = leftMoves & board.BlackOrEmpty;
-            else
-                leftMoves = leftMoves & board.WhiteOrEmpty;
-
-            return leftMoves;
+            return CalculateAllowedLeftMovesFromBoard(board,
+                                                          leftBoard,
+                                                          colour);
         }
 
         private static ulong CalculateAllowedLeftMoves(Board board, ulong pieceIndex, PieceColour colour)
         {
-            ulong leftBoard = GetLeftBoard(pieceIndex);
+            var leftBoard = GetLeftBoard(pieceIndex);
 
-            ulong leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
-            leftMoves = (leftMoves >> 1) | (leftMoves >> 2) | (leftMoves >> 3) | (leftMoves >> 4) | (leftMoves >> 5) | (leftMoves >> 6);  //Fill all squares to the left by performing right shifts
+            return CalculateAllowedLeftMovesFromBoard(board,
+                                                          leftBoard,
+                                                          colour);
+        }
+
+        private static ulong CalculateAllowedLeftMovesFromBoard(Board board,
+                                                                    ulong leftBoard,
+                                                                    PieceColour colour)
+        {
+            var leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            leftMoves = (leftMoves >> 1) 
+                        | (leftMoves >> 2) 
+                        | (leftMoves >> 3) 
+                        | (leftMoves >> 4) 
+                        | (leftMoves >> 5) 
+                        | (leftMoves >> 6);  //Fill all squares to the left by performing right shifts
+
             leftMoves = leftMoves & leftBoard;       //Remove overflow
+
             leftMoves = leftMoves ^ leftBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (colour == PieceColour.White)
+            {
                 leftMoves = leftMoves & board.BlackOrEmpty;
+            }
             else
+            {
                 leftMoves = leftMoves & board.WhiteOrEmpty;
+            }
 
             return leftMoves;
         }
 
+        #endregion Calculate left moves
+
+        #region Calculate up right moves
+
         internal static ulong CalculateAllowedUpRightMoves(Board board, byte pieceIndex, PieceColour colour)
         {
-            ulong upRightBoard = LookupTables.UpRightBoard[pieceIndex];
+            var upRightBoard = LookupTables.UpRightBoard[pieceIndex];
 
-            ulong upRightMoves = upRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            upRightMoves = (upRightMoves << 9) | (upRightMoves << 18) | (upRightMoves << 27) | (upRightMoves << 36) | (upRightMoves << 45) | (upRightMoves << 54);  //Fill all squares above and right by performing left shifts
-            upRightMoves = upRightMoves & upRightBoard;       //Remove overflow
-            upRightMoves = upRightMoves ^ upRightBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                upRightMoves = upRightMoves & board.BlackOrEmpty;
-            else
-                upRightMoves = upRightMoves & board.WhiteOrEmpty;
-
-            return upRightMoves;
+            return CalculateAllowedUpRightMovesFromBoard(board,
+                                                          upRightBoard,
+                                                          colour);
         }
 
         internal static ulong CalculateAllowedUpRightMoves(Board board, ulong piecePosition, PieceColour colour)
         {
-            //ulong upRightBoard = LookupTables.UpRightBoard[BitboardOperations.GetSquareIndexFromBoardValue(piecePosition)];
-            ulong upRightBoard = GetUpRightBoard(piecePosition);
+            var upRightBoard = GetUpRightBoard(piecePosition);
 
-            ulong upRightMoves = upRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            upRightMoves = (upRightMoves << 9) | (upRightMoves << 18) | (upRightMoves << 27) | (upRightMoves << 36) | (upRightMoves << 45) | (upRightMoves << 54);  //Fill all squares above and right by performing left shifts
+            return CalculateAllowedUpRightMovesFromBoard(board,
+                                                         upRightBoard,
+                                                         colour);
+        }
+
+        private static ulong CalculateAllowedUpRightMovesFromBoard(Board board,
+                                                                    ulong upRightBoard,
+                                                                    PieceColour colour)
+        {
+            var upRightMoves = upRightBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            upRightMoves = (upRightMoves << 9) 
+                           | (upRightMoves << 18) 
+                           | (upRightMoves << 27) 
+                           | (upRightMoves << 36) 
+                           | (upRightMoves << 45) 
+                           | (upRightMoves << 54);  //Fill all squares up and right by performing left shifts
+
             upRightMoves = upRightMoves & upRightBoard;       //Remove overflow
+
             upRightMoves = upRightMoves ^ upRightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (colour == PieceColour.White)
+            {
                 upRightMoves = upRightMoves & board.BlackOrEmpty;
+            }
             else
+            {
                 upRightMoves = upRightMoves & board.WhiteOrEmpty;
+            }
 
             return upRightMoves;
         }
 
+        #endregion Calculate up right moves
+        
+        #region Calculate down right moves
+
         internal static ulong CalculateAllowedDownRightMoves(Board board, byte pieceIndex, PieceColour colour)
         {
-            ulong downRightBoard = LookupTables.DownRightBoard[pieceIndex];
+            var downRightBoard = LookupTables.DownRightBoard[pieceIndex];
 
-            ulong downRightMoves = downRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            downRightMoves = (downRightMoves >> 7) | (downRightMoves >> 14) | (downRightMoves >> 21) | (downRightMoves >> 28) | (downRightMoves >> 35) | (downRightMoves >> 42);  //Fill all squares below and right by performing left shifts
-            downRightMoves = downRightMoves & downRightBoard;       //Remove overflow
-            downRightMoves = downRightMoves ^ downRightBoard;       //Get just the allowed squares using XOR
-
-            //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
-            if (colour == PieceColour.White)
-                downRightMoves = downRightMoves & board.BlackOrEmpty;
-            else
-                downRightMoves = downRightMoves & board.WhiteOrEmpty;
-
-            return downRightMoves;
+            return CalculateAllowedDownRightMovesFromBoard(board,
+                                                           downRightBoard,
+                                                           colour);
         }
 
         internal static ulong CalculateAllowedDownRightMoves(Board board, ulong piecePosition, PieceColour colour)
         {
-            //ulong downRightBoard = LookupTables.DownRightBoard[BitboardOperations.GetSquareIndexFromBoardValue(piecePosition)];
-            ulong downRightBoard = GetDownRightBoard(piecePosition);
+            var downRightBoard = GetDownRightBoard(piecePosition);
 
-            ulong downRightMoves = downRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            downRightMoves = (downRightMoves >> 7) | (downRightMoves >> 14) | (downRightMoves >> 21) | (downRightMoves >> 28) | (downRightMoves >> 35) | (downRightMoves >> 42);  //Fill all squares below and right by performing left shifts
+            return CalculateAllowedDownRightMovesFromBoard(board,
+                                                           downRightBoard,
+                                                         colour);
+        }
+
+        private static ulong CalculateAllowedDownRightMovesFromBoard(Board board,
+                                                                   ulong downRightBoard,
+                                                                   PieceColour colour)
+        {
+            var downRightMoves = downRightBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            downRightMoves = (downRightMoves >> 7) 
+                             | (downRightMoves >> 14) 
+                             | (downRightMoves >> 21) 
+                             | (downRightMoves >> 28) 
+                             | (downRightMoves >> 35) 
+                             | (downRightMoves >> 42);  //Fill all squares down and right by performing left shifts
+
             downRightMoves = downRightMoves & downRightBoard;       //Remove overflow
+
             downRightMoves = downRightMoves ^ downRightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (colour == PieceColour.White)
+            {
                 downRightMoves = downRightMoves & board.BlackOrEmpty;
+            }
             else
+            {
                 downRightMoves = downRightMoves & board.WhiteOrEmpty;
+            }
 
             return downRightMoves;
         }
+
+        #endregion Calculate down right moves
 
         internal static ulong CalculateAllowedDownLeftMoves(Board board, byte pieceIndex, PieceColour colour)
         {
