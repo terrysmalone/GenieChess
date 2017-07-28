@@ -7,16 +7,14 @@ using System.Threading.Tasks;
 namespace ChessGame.BoardSearching
 {
     /// <summary>
-    /// Initialises and generates lookup tables for speeding up with bitboard translations
+    /// Initialises and generates lookup tables for speeding up bitboard translations
     /// </summary>
     [Serializable]
     public static class LookupTables
     {
-        //private BitboardOperations BitboardOperations = new BitboardOperations();
-
         #region properties
 
-        private static bool initialised = false;
+        private static bool _initialised;
 
         #region square value properties
 
@@ -145,19 +143,6 @@ namespace ChessGame.BoardSearching
 
         #endregion file masks
 
-        #region diagonal masks
-
-        #region Up-right masks
-        
-        #endregion Up-right masks
-
-        #region Down-right masks
-
-        #endregion Down-right masks
-
-
-        #endregion diagonal masks
-
         #region file mask lookup methods
 
         public static ulong[] FileMaskByColumn = new ulong[8];
@@ -181,7 +166,7 @@ namespace ChessGame.BoardSearching
                 
         public static void InitialiseAllTables()
         {
-            if (initialised)
+            if (_initialised)
                 return;
 
             GenerateSquareValueTable();
@@ -194,7 +179,7 @@ namespace ChessGame.BoardSearching
 
             InitialiseCastlingPathBoards();
 
-            initialised = true;
+            _initialised = true;
         }
 
         private static void InitialiseSquareValues()
@@ -289,8 +274,8 @@ namespace ChessGame.BoardSearching
 
             for (int i = 1; i < SquareValuesFromIndex.Length; i++)
             {
-                SquareValuesFromIndex[i] = SquareValuesFromIndex[i - 1] << 1;       //Left shift gives the same result as multiplying by two but is faster
-
+                //Left shift gives the same result as multiplying by two but is faster
+                SquareValuesFromIndex[i] = SquareValuesFromIndex[i - 1] << 1;
             }
         }
 
