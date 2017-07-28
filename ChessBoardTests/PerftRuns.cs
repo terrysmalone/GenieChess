@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessBoardTests
 {
-    [Ignore]
+    //[Ignore]
     [TestClass]
     public class PerftRuns
     {
