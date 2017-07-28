@@ -16,7 +16,7 @@ namespace ChessGame.PossibleMoves
     {
         #region private properties
 
-        static Board currentBoard;
+        private static Board currentBoard;
 
         static List<PieceMoves> allMovesList = new List<PieceMoves>();
 
@@ -81,10 +81,7 @@ namespace ChessGame.PossibleMoves
         /// </summary>
         private static void SetFriendlyPlayerColour()
         {
-            if (currentBoard.WhiteToMove)
-                friendlyColour = PieceColour.White;
-            else
-                friendlyColour = PieceColour.Black;
+            friendlyColour = currentBoard.WhiteToMove ? PieceColour.White : PieceColour.Black;
         }
         
 

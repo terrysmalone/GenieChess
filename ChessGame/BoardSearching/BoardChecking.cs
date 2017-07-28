@@ -282,13 +282,13 @@ namespace ChessGame.BoardSearching
                 return true;
 
             //Down-right
-            ulong nearestDownRightPiece = FindDownRightBlockingPosition(board, square);
+            var nearestDownRightPiece = FindDownRightBlockingPosition(board, square);
 
             if ((nearestDownRightPiece & board.WhiteBishops) > 0 || (nearestDownRightPiece & board.WhiteQueen) > 0)
                 return true;
 
             //Up Left
-            ulong nearestDownLeftPiece = FindDownLeftBlockingPosition(board, square);
+            var nearestDownLeftPiece = FindDownLeftBlockingPosition(board, square);
 
             if ((nearestDownLeftPiece & board.WhiteBishops) > 0 || (nearestDownLeftPiece & board.WhiteQueen) > 0)
                 return true;
@@ -300,24 +300,24 @@ namespace ChessGame.BoardSearching
         {
             if (board.WhiteToMove)
             {
-                ulong nearestLeftPiece = FindLeftBlockingPosition(board, square);
+                var nearestLeftPiece = FindLeftBlockingPosition(board, square);
 
                 if ((nearestLeftPiece & board.BlackRooks) > 0 || (nearestLeftPiece & board.BlackQueen) > 0)
                     return true;
 
-                ulong nearestRightPiece = FindRightBlockingPosition(board, square);
+                var nearestRightPiece = FindRightBlockingPosition(board, square);
 
                 if ((nearestRightPiece & board.BlackRooks) > 0 || (nearestRightPiece & board.BlackQueen) > 0)
                     return true;
             }
             else
             {
-                ulong nearestLeftPiece = FindLeftBlockingPosition(board, square);
+                var nearestLeftPiece = FindLeftBlockingPosition(board, square);
 
                 if ((nearestLeftPiece & board.WhiteRooks) > 0 || (nearestLeftPiece & board.WhiteQueen) > 0)
                     return true;
 
-                ulong nearestRightPiece = FindRightBlockingPosition(board, square);
+                var nearestRightPiece = FindRightBlockingPosition(board, square);
 
                 if ((nearestRightPiece & board.WhiteRooks) > 0 || (nearestRightPiece & board.WhiteQueen) > 0)
                     return true;
@@ -357,20 +357,20 @@ namespace ChessGame.BoardSearching
         /// <returns></returns>
         internal static bool CanKingMove(Board boardPosition, PieceColour pieceColour)
         {
-            byte whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.WhiteKing);
-            byte blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.BlackKing);
+            var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.WhiteKing);
+            var blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.BlackKing);
 
             if(pieceColour == PieceColour.White)
             {
-                ulong possibleMoves = ValidMoveArrays.KingMoves[whiteKingPosition] & ~ValidMoveArrays.KingMoves[blackKingPosition];
+                var possibleMoves = ValidMoveArrays.KingMoves[whiteKingPosition] & ~ValidMoveArrays.KingMoves[blackKingPosition];
 
-                ulong freeSquares = possibleMoves & ~boardPosition.AllWhiteOccupiedSquares; //Even if a black piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
+                var freeSquares = possibleMoves & ~boardPosition.AllWhiteOccupiedSquares; //Even if a black piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
 
                 if (freeSquares > 0)
                 {
-                    ulong[] possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
+                    var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
-                    for (int i = 0; i < possMoves.Length; i++)
+                    for (var i = 0; i < possMoves.Length; i++)
 			        {
 			            if(!IsSquareAttackedSuperFast(boardPosition, possMoves[i], pieceColour))
                             return true;
@@ -381,15 +381,15 @@ namespace ChessGame.BoardSearching
             }
             else
             {
-                ulong possibleMoves = ValidMoveArrays.KingMoves[blackKingPosition] & ~ValidMoveArrays.KingMoves[whiteKingPosition];
+                var possibleMoves = ValidMoveArrays.KingMoves[blackKingPosition] & ~ValidMoveArrays.KingMoves[whiteKingPosition];
 
-                ulong freeSquares = possibleMoves & ~boardPosition.AllBlackOccupiedSquares; //Even if a white piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
+                var freeSquares = possibleMoves & ~boardPosition.AllBlackOccupiedSquares; //Even if a white piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
 
                 if (freeSquares > 0)
                 {
-                    ulong[] possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
+                    var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
-                    for (int i = 0; i < possMoves.Length; i++)
+                    for (var i = 0; i < possMoves.Length; i++)
                     {
                         if (!IsSquareAttackedSuperFast(boardPosition, possMoves[i], pieceColour))
                             return true;
@@ -474,8 +474,8 @@ namespace ChessGame.BoardSearching
         /// </summary>
         internal static bool IsPawnAttackingSquareFast(Board board, ulong squarePosition, PieceColour friendlyColour)
         {
-            byte squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
-            ulong proximityBoard = ValidMoveArrays.KingMoves[squareIndex];      //Allows the quick masking of wrapping checks
+            var squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+            var proximityBoard = ValidMoveArrays.KingMoves[squareIndex];      //Allows the quick masking of wrapping checks
 
             if (friendlyColour == PieceColour.White)
             {
@@ -483,13 +483,13 @@ namespace ChessGame.BoardSearching
                     return false;
                 
                 //Check up-right    
-                ulong upRight = squarePosition << 9;
+                var upRight = squarePosition << 9;
 
                 if ((upRight & board.BlackPawns & proximityBoard) != 0)
                     return true;
 
                 //Check up-left
-                ulong upLeft = squarePosition << 7;
+                var upLeft = squarePosition << 7;
 
                 if ((upLeft & board.BlackPawns & proximityBoard) != 0)                
                     return true;
@@ -500,13 +500,13 @@ namespace ChessGame.BoardSearching
                     return false;
 
                 //Check down-right
-                ulong downRight = squarePosition >> 7;
+                var downRight = squarePosition >> 7;
 
                 if ((downRight & board.WhitePawns & proximityBoard) != 0)
                     return true;
 
                 //Check down-left
-                ulong upLeft = squarePosition >> 9;
+                var upLeft = squarePosition >> 9;
 
                 if ((upLeft & board.WhitePawns & proximityBoard) != 0)
                     return true;
@@ -531,11 +531,11 @@ namespace ChessGame.BoardSearching
             if (knights == 0)   //If there are no kinghts we do not have to check
                 return false;
 
-            byte currentPosition = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+            var currentPosition = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
 
-            ulong possibleKnightMoves = ValidMoveArrays.KnightMoves[currentPosition];
+            var possibleKnightMoves = ValidMoveArrays.KnightMoves[currentPosition];
 
-            ulong knightAttacks = possibleKnightMoves & knights;
+            var knightAttacks = possibleKnightMoves & knights;
             if (knightAttacks != 0)
                 return true;
             else
@@ -552,8 +552,8 @@ namespace ChessGame.BoardSearching
             else
                 enemyKing = board.WhiteKing;
 
-            byte checkSquare = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
-            ulong surroundBoard = ValidMoveArrays.KingMoves[checkSquare];
+            var checkSquare = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+            var surroundBoard = ValidMoveArrays.KingMoves[checkSquare];
 
             if ((enemyKing & surroundBoard) != 0)
                 return true;
@@ -590,25 +590,25 @@ namespace ChessGame.BoardSearching
             if (enemyQueenSquares != 0 || enemyRookSquares != 0)
             {
                 //Up
-                ulong nearestUpPiece = FindUpBlockingPosition(board, squarePositionBoard);
+                var nearestUpPiece = FindUpBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestUpPiece & enemyRookSquares) > 0 || (nearestUpPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Left 
-                ulong nearestLeftPiece = FindLeftBlockingPosition(board, squarePositionBoard);
+                var nearestLeftPiece = FindLeftBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestLeftPiece & enemyRookSquares) > 0 || (nearestLeftPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Right
-                ulong nearestRightPiece = FindRightBlockingPosition(board, squarePositionBoard);
+                var nearestRightPiece = FindRightBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestRightPiece & enemyRookSquares) > 0 || (nearestRightPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Down
-                ulong nearestDownPiece = FindDownBlockingPosition(board, squarePositionBoard);
+                var nearestDownPiece = FindDownBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestDownPiece & enemyRookSquares) > 0 || (nearestDownPiece & enemyQueenSquares) > 0)
                     return true;
@@ -617,25 +617,25 @@ namespace ChessGame.BoardSearching
             if (enemyQueenSquares != 0 || enemyBishopSquares != 0)
             {
                 //Up-right
-                ulong nearestUpRightPiece = FindUpRightBlockingPosition(board, squarePositionBoard);
+                var nearestUpRightPiece = FindUpRightBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestUpRightPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Up Left
-                ulong nearestUpLeftPiece = FindUpLeftBlockingPosition(board, squarePositionBoard);
+                var nearestUpLeftPiece = FindUpLeftBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestUpLeftPiece & enemyBishopSquares) > 0 || (nearestUpLeftPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Down-right
-                ulong nearestDownRightPiece = FindDownRightBlockingPosition(board, squarePositionBoard);
+                var nearestDownRightPiece = FindDownRightBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestDownRightPiece & enemyBishopSquares) > 0 || (nearestDownRightPiece & enemyQueenSquares) > 0)
                     return true;
 
                 //Up Left
-                ulong nearestDownLeftPiece = FindDownLeftBlockingPosition(board, squarePositionBoard);
+                var nearestDownLeftPiece = FindDownLeftBlockingPosition(board, squarePositionBoard);
 
                 if ((nearestDownLeftPiece & enemyBishopSquares) > 0 || (nearestDownLeftPiece & enemyQueenSquares) > 0)
                     return true;
@@ -665,45 +665,45 @@ namespace ChessGame.BoardSearching
                        
             if (enemyQueenSquares != 0 || enemyRookSquares != 0)
             {
-                ulong leftBoard = squarePositionBoard >> 1;
-                bool checkLeft = (leftBoard & emptyOrEnemySpaces) > 0;
+                var leftBoard = squarePositionBoard >> 1;
+                var checkLeft = (leftBoard & emptyOrEnemySpaces) > 0;
 
                 if(checkLeft)
                 {
-                    ulong nearestLeftPiece = FindLeftBlockingPosition(board, squarePositionBoard);
+                    var nearestLeftPiece = FindLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestLeftPiece & enemyRookSquares) > 0 || (nearestLeftPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong rightBoard = squarePositionBoard << 1;
-                bool checkRight = (rightBoard & emptyOrEnemySpaces) > 0;
+                var rightBoard = squarePositionBoard << 1;
+                var checkRight = (rightBoard & emptyOrEnemySpaces) > 0;
                 
                 if(checkRight)
                 {
-                    ulong nearestRightPiece = FindRightBlockingPosition(board, squarePositionBoard);
+                    var nearestRightPiece = FindRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestRightPiece & enemyRookSquares) > 0 || (nearestRightPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong upBoard = squarePositionBoard << 8;
-                bool checkUp = (upBoard & emptyOrEnemySpaces) > 0;
+                var upBoard = squarePositionBoard << 8;
+                var checkUp = (upBoard & emptyOrEnemySpaces) > 0;
 
                 if(checkUp)
                 {
-                    ulong nearestUpPiece = FindUpBlockingPosition(board, squarePositionBoard);
+                    var nearestUpPiece = FindUpBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpPiece & enemyRookSquares) > 0 || (nearestUpPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong downBoard = squarePositionBoard >> 8;
-                bool checkDown = (downBoard & emptyOrEnemySpaces) > 0;
+                var downBoard = squarePositionBoard >> 8;
+                var checkDown = (downBoard & emptyOrEnemySpaces) > 0;
                 
                 if (checkDown)
                 {
-                    ulong nearestDownPiece = FindDownBlockingPosition(board, squarePositionBoard);
+                    var nearestDownPiece = FindDownBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownPiece & enemyRookSquares) > 0 || (nearestDownPiece & enemyQueenSquares) > 0)
                         return true;
@@ -712,45 +712,45 @@ namespace ChessGame.BoardSearching
 
             if (enemyQueenSquares != 0 || enemyBishopSquares != 0)
             {
-                ulong upRightBoard = squarePositionBoard << 9;
-                bool checkUpRight = (upRightBoard & emptyOrEnemySpaces) > 0;
+                var upRightBoard = squarePositionBoard << 9;
+                var checkUpRight = (upRightBoard & emptyOrEnemySpaces) > 0;
 
                 if (checkUpRight)
                 {
-                    ulong nearestUpRightPiece = FindUpRightBlockingPosition(board, squarePositionBoard);
+                    var nearestUpRightPiece = FindUpRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpRightPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong upLeftBoard = squarePositionBoard << 7;
-                bool checkUpLeft = (upLeftBoard & emptyOrEnemySpaces) > 0;
+                var upLeftBoard = squarePositionBoard << 7;
+                var checkUpLeft = (upLeftBoard & emptyOrEnemySpaces) > 0;
                 
                 if (checkUpLeft)
                 {
-                    ulong nearestUpLeftPiece = FindUpLeftBlockingPosition(board, squarePositionBoard);
+                    var nearestUpLeftPiece = FindUpLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpLeftPiece & enemyBishopSquares) > 0 || (nearestUpLeftPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong downRightBoard = squarePositionBoard >> 7;
-                bool checkDownRight = (downRightBoard & emptyOrEnemySpaces) > 0;
+                var downRightBoard = squarePositionBoard >> 7;
+                var checkDownRight = (downRightBoard & emptyOrEnemySpaces) > 0;
                 
                 if (checkDownRight)
                 {
-                    ulong nearestDownRightPiece = FindDownRightBlockingPosition(board, squarePositionBoard);
+                    var nearestDownRightPiece = FindDownRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownRightPiece & enemyBishopSquares) > 0 || (nearestDownRightPiece & enemyQueenSquares) > 0)
                         return true;
                 }
 
-                ulong downLeftBoard = squarePositionBoard >> 9;
-                bool checkDownLeft = (downLeftBoard & emptyOrEnemySpaces) > 0;
+                var downLeftBoard = squarePositionBoard >> 9;
+                var checkDownLeft = (downLeftBoard & emptyOrEnemySpaces) > 0;
                 
                 if (checkDownLeft)
                 {
-                    ulong nearestDownLeftPiece = FindDownLeftBlockingPosition(board, squarePositionBoard);
+                    var nearestDownLeftPiece = FindDownLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownLeftPiece & enemyBishopSquares) > 0 || (nearestDownLeftPiece & enemyQueenSquares) > 0)
                         return true;
@@ -1191,7 +1191,6 @@ namespace ChessGame.BoardSearching
 
         internal static ulong CalculateAllowedUpLeftMoves(Board board, ulong piecePosition, PieceColour colour)
         {
-            //ulong upLeftBoard = LookupTables.UpLeftBoard[BitboardOperations.GetSquareIndexFromBoardValue(piecePosition)];
             var upLeftBoard = GetUpLeftBoard(piecePosition);
 
             return CalculateAllowedUpLeftMovesFromBoard(board,
@@ -1258,49 +1257,60 @@ namespace ChessGame.BoardSearching
 
         internal static ulong FindUpRightBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong upRightBoard = LookupTables.UpRightBoard[squareIndex];
+            var upRightBoard = GetUpRightBoard(square);
 
-            ulong upRightBoard = GetUpRightBoard(square);
+            var upRightMoves = upRightBoard & board.AllOccupiedSquares;   //Find first hit square
 
-            ulong upRightMoves = upRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            upRightMoves = (upRightMoves << 9) | (upRightMoves << 18) | (upRightMoves << 27) | (upRightMoves << 36) | (upRightMoves << 45) | (upRightMoves << 54);  //Fill all squares above and right by performing left shifts
+            upRightMoves = (upRightMoves << 9) 
+                           | (upRightMoves << 18) 
+                           | (upRightMoves << 27) 
+                           | (upRightMoves << 36) 
+                           | (upRightMoves << 45)       //Fill all squares above and
+                           | (upRightMoves << 54);      // right by performing left shifts
 
             upRightMoves = upRightMoves & upRightBoard;       //Remove overflow
-            ulong notAboveRight = upRightMoves ^ upRightBoard;
+
+            var notAboveRight = upRightMoves ^ upRightBoard;
 
             return notAboveRight & board.AllOccupiedSquares;
         }
 
         internal static ulong FindRightBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong rightBoard = LookupTables.RightBoard[squareIndex];
-            ulong rightBoard = GetRightBoard(square);
+            var rightBoard = GetRightBoard(square);
             
-            ulong rightMoves = rightBoard & board.AllOccupiedSquares;   //Find first hit square
-            rightMoves = (rightMoves << 1) | (rightMoves << 2) | (rightMoves << 3) | (rightMoves << 4) | (rightMoves << 5) | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
+            var rightMoves = rightBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            rightMoves = (rightMoves << 1) 
+                         | (rightMoves << 2) 
+                         | (rightMoves << 3) 
+                         | (rightMoves << 4) 
+                         | (rightMoves << 5) 
+                         | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
 
             rightMoves = rightMoves & rightBoard;       //Remove overflow
 
-            ulong notRight = rightMoves ^ rightBoard;
+            var notRight = rightMoves ^ rightBoard;
 
             return notRight & board.AllOccupiedSquares;
         }
 
         internal static ulong FindDownRightBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong downRightBoard = LookupTables.DownRightBoard[squareIndex];
-
-            ulong downRightBoard = GetDownRightBoard(square);
+            var downRightBoard = GetDownRightBoard(square);
             
-            ulong downRightMoves = downRightBoard & board.AllOccupiedSquares;   //Find first hit square
-            downRightMoves = (downRightMoves >> 7) | (downRightMoves >> 14) | (downRightMoves >> 21) | (downRightMoves >> 28) | (downRightMoves >> 35) | (downRightMoves >> 42);  //Fill all squares below-right by performing right shifts
+            var downRightMoves = downRightBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            downRightMoves = (downRightMoves >> 7) 
+                             | (downRightMoves >> 14) 
+                             | (downRightMoves >> 21) 
+                             | (downRightMoves >> 28) 
+                             | (downRightMoves >> 35)   //Fill all squares below-right
+                             | (downRightMoves >> 42);  // by performing right shifts
 
             downRightMoves = downRightMoves & downRightBoard;       //Remove overflow
 
-            ulong notBelowRight = downRightMoves ^ downRightBoard;
+            var notBelowRight = downRightMoves ^ downRightBoard;
 
             return notBelowRight & board.AllOccupiedSquares;
         }
@@ -1310,17 +1320,14 @@ namespace ChessGame.BoardSearching
         /// </summary>
         internal static ulong FindDownBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong downBoard = LookupTables.DownBoard[squareIndex];
+            var downBoard = GetDownBoard(square);
 
-            ulong downBoard = GetDownBoard(square);
-
-            ulong downMoves = downBoard & board.AllOccupiedSquares;   //Find first hit square
+            var downMoves = downBoard & board.AllOccupiedSquares;   //Find first hit square
             downMoves = (downMoves >> 8) | (downMoves >> 16) | (downMoves >> 24) | (downMoves >> 32) | (downMoves >> 40) | (downMoves >> 48);  //Fill all squares below by performing right shifts
 
             //downMoves = downMoves & downBoard;       //Remove overflow
 
-            ulong notBelow = downMoves ^ downBoard;
+            var notBelow = downMoves ^ downBoard;
             return notBelow & board.AllOccupiedSquares;
         }
 
@@ -1329,14 +1336,14 @@ namespace ChessGame.BoardSearching
             //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
             //ulong downLeftBoard = LookupTables.DownLeftBoard[squareIndex];
 
-            ulong downLeftBoard = GetDownLeftBoard(square);
+            var downLeftBoard = GetDownLeftBoard(square);
 
-            ulong downLeftMoves = downLeftBoard & board.AllOccupiedSquares;   //Find first hit square
+            var downLeftMoves = downLeftBoard & board.AllOccupiedSquares;   //Find first hit square
             downLeftMoves = (downLeftMoves >> 9) | (downLeftMoves >> 18) | (downLeftMoves >> 27) | (downLeftMoves >> 36) | (downLeftMoves >> 45) | (downLeftMoves >> 54);  //Fill all squares below-left by performing right shifts
 
             downLeftMoves = downLeftMoves & downLeftBoard;       //Remove overflow
 
-            ulong notBelowRight = downLeftMoves ^ downLeftBoard;
+            var notBelowRight = downLeftMoves ^ downLeftBoard;
             return notBelowRight & board.AllOccupiedSquares;
         }
 
@@ -1345,30 +1352,34 @@ namespace ChessGame.BoardSearching
             //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
             //ulong leftBoard = LookupTables.LeftBoard[squareIndex];
 
-            ulong leftBoard = GetLeftBoard(square);
+            var leftBoard = GetLeftBoard(square);
 
-            ulong leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
+            var leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
             leftMoves = (leftMoves >> 1) | (leftMoves >> 2) | (leftMoves >> 3) | (leftMoves >> 4) | (leftMoves >> 5) | (leftMoves >> 6);  //Fill all squares to the right by performing left shifts
 
             leftMoves = leftMoves & leftBoard;       //Remove overflow
 
-            ulong notLeft = leftMoves ^ leftBoard;
+            var notLeft = leftMoves ^ leftBoard;
 
             return notLeft & board.AllOccupiedSquares;
         }
 
         internal static ulong FindUpLeftBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong upLeftBoard = LookupTables.UpLeftBoard[squareIndex];
-            ulong upLeftBoard = GetUpLeftBoard(square);
+            var upLeftBoard = GetUpLeftBoard(square);
 
-            ulong upLeftMoves = upLeftBoard & board.AllOccupiedSquares;   //Find first hit square
-            upLeftMoves = (upLeftMoves << 7) | (upLeftMoves << 14) | (upLeftMoves << 21) | (upLeftMoves << 28) | (upLeftMoves << 35) | (upLeftMoves << 42);  //Fill all squares above and right by performing left shifts
+            var upLeftMoves = upLeftBoard & board.AllOccupiedSquares;   //Find first hit square
+
+            upLeftMoves = (upLeftMoves << 7) 
+                          | (upLeftMoves << 14) 
+                          | (upLeftMoves << 21) 
+                          | (upLeftMoves << 28) 
+                          | (upLeftMoves << 35) 
+                          | (upLeftMoves << 42);  //Fill all squares up-left by performing left shifts
 
             upLeftMoves = upLeftMoves & upLeftBoard;       //Remove overflow
 
-            ulong notAboveLeft = upLeftMoves ^ upLeftBoard;
+            var notAboveLeft = upLeftMoves ^ upLeftBoard;
 
             return notAboveLeft & board.AllOccupiedSquares;
         }
@@ -1410,7 +1421,13 @@ namespace ChessGame.BoardSearching
 
         private static ulong GetUpBoard(ulong square)
         {
-            return (square << 8) | (square << 16) | (square << 24) | (square << 32) | (square << 40) | (square << 48) | (square << 56);
+            return (square << 8) 
+                    | (square << 16) 
+                    | (square << 24) 
+                    | (square << 32) 
+                    | (square << 40) 
+                    | (square << 48) 
+                    | (square << 56);
         }
 
         private static ulong GetRightBoard(ulong square)
@@ -1445,7 +1462,13 @@ namespace ChessGame.BoardSearching
 
         private static ulong GetDownBoard(ulong square)
         {
-            return (square >> 8) | (square >> 16) | (square >> 24) | (square >> 32) | (square >> 40) | (square >> 48) | (square >> 56);
+            return (square >> 8) 
+                    | (square >> 16) 
+                    | (square >> 24) 
+                    | (square >> 32) 
+                    | (square >> 40) 
+                    | (square >> 48) 
+                    | (square >> 56);
         }
 
          private static ulong GetDownLeftBoard(ulong square)
