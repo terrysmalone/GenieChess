@@ -113,6 +113,7 @@ namespace ChessGame.BoardRepresentation
                 boards[count] = initial & ~reducing;
 
                 initial &= initial - 1;
+
                 reducing &= reducing - 1;
 
                 count++;
@@ -132,11 +133,15 @@ namespace ChessGame.BoardRepresentation
             var afterBoard = beforeBoard;
 
             const ulong k1 = (0x00FF00FF00FF00FF);
-            const ulong k2 = (0x0000FFFF0000FFFF);
-            afterBoard = ((afterBoard >> 8) & k1) | ((afterBoard & k1) << 8);
-            afterBoard = ((afterBoard >> 16) & k2) | ((afterBoard & k2) << 16);
-            afterBoard = (afterBoard >> 32) | (afterBoard << 32);
 
+            const ulong k2 = (0x0000FFFF0000FFFF);
+
+            afterBoard = ((afterBoard >> 8) & k1) | ((afterBoard & k1) << 8);
+
+            afterBoard = ((afterBoard >> 16) & k2) | ((afterBoard & k2) << 16);
+
+            afterBoard = (afterBoard >> 32) | (afterBoard << 32);
+            
             return afterBoard;
         }
     }
