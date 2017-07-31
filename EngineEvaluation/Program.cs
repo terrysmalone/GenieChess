@@ -9,6 +9,7 @@ using log4net;
 using ChessGame.ResourceLoading;
 using ChessGame.PossibleMoves;
 using ChessGame.BoardRepresentation;
+using ChessGame.NotationHelpers;
 
 namespace EngineEvaluation
 {
@@ -40,7 +41,7 @@ namespace EngineEvaluation
             foreach (PerfTPosition pos in perftPositions)
             {
                 Board board = new Board();
-                board.SetFenPosition(pos.FenPosition);
+                board.SetPosition(FenTranslator.ToBoardState(pos.FenPosition));
 
                 List<PieceMoves> moves = MoveGeneration.CalculateAllPseudoLegalMoves(board);  
                 

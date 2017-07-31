@@ -171,7 +171,7 @@ namespace ChessGame.BoardRepresentation
             CalculateZobristKey();
         }
 
-        private void SetPosition(BoardState state)
+        public void SetPosition(BoardState state)
         {
             WhiteToMove = state.WhiteToMove;
 
@@ -202,6 +202,8 @@ namespace ChessGame.BoardRepresentation
             m_MoveCount = 0;
 
             CalculateZobristKey();
+
+            CalculateUsefulBitboards();
         }
 
         internal void PlacePiece(PieceType typeToPlace, PieceColour colour, int positionToPlace)
@@ -904,27 +906,7 @@ namespace ChessGame.BoardRepresentation
             WhiteOrEmpty = AllWhiteOccupiedSquares | EmptySquares;
             BlackOrEmpty = AllBlackOccupiedSquares | EmptySquares;
         }
-        
-        /// <summary>
-        /// Sets a board with a fen position
-        /// </summary>
-        /// <param name="fenNotation"></param>
-        public void SetFenPosition(string fenNotation)
-        {
-            var state = FenTranslator.ToBoardState(fenNotation);
 
-            SetPosition(state);
-
-            CalculateUsefulBitboards();
-
-            Log.Info($"Set board position to: {fenNotation}");
-        }
-
-        public void SetPgnPosition(string pgnNotation)
-        {
-            PgnTranslator.ToBoard(this, pgnNotation);
-        }
-        
         #region slower debug get methods
 
         #region WriteWriteBoardToConsole methods

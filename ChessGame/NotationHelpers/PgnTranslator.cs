@@ -20,10 +20,10 @@ namespace ChessGame.NotationHelpers
         /// </summary>
         /// <param name="board"></param>
         /// <param name="pgnString"></param>
-        public static void ToBoard(Board board, string pgnString)
-        {
-            throw new NotImplementedException();
-        }
+        //public static void ToBoard(Board board, string pgnString)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         /// <summary>
         /// Creates an entire PGN string from a board 

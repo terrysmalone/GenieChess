@@ -8,6 +8,7 @@ using ChessBoardTests;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation;
 using ChessGame.ResourceLoading;
+using ChessGame.NotationHelpers;
 
 namespace EngineEvaluation
 {
@@ -119,7 +120,7 @@ namespace EngineEvaluation
         private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
         {
             Board board = new Board();
-            board.SetFenPosition(startingPosition);
+            board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
             Stopwatch timer = new Stopwatch();
             timer.Start();

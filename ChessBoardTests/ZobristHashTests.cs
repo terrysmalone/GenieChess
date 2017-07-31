@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.MoveSearching;
+using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.PossibleMoves;
 
@@ -136,13 +137,15 @@ namespace ChessBoardTests
             ZobristHash.Initialise();
 
             Board board1 = new Board();
-            board1.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R w KQq - 0 1");
+            board1.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R w KQq - 0 1"));
 
             ulong initialZobristValue1 = board1.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue1);
 
             Board board2 = new Board();
-            board2.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1");
+            board2.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1"));
 
             ulong initialZobristValue2 = board2.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue2);
@@ -163,13 +166,15 @@ namespace ChessBoardTests
             ZobristHash.Initialise();
 
             Board board1 = new Board();
-            board1.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1");
+            board1.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1"));
 
             ulong initialZobristValue1 = board1.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue1);
 
             Board board2 = new Board();
-            board2.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq e4 0 1");
+            board2.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq e4 0 1"));
 
             ulong initialZobristValue2 = board2.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue2);
@@ -236,13 +241,15 @@ namespace ChessBoardTests
             ZobristHash.Initialise();
 
             Board board1 = new Board();
-            board1.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1");
+            board1.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1"));
 
             ulong initialZobristValue1 = board1.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue1);
 
             Board board2 = new Board();
-            board2.SetFenPosition("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1");
+            board2.SetPosition(
+                FenTranslator.ToBoardState("rnbqkr2/pp3ppp/2p4n/3p4/1b1pP3/1PN2N2/PBPQ1PPP/R3KB1R b KQq - 0 1"));
 
             ulong initialZobristValue2 = board2.Zobrist;
             Assert.AreNotEqual((ulong)0, initialZobristValue2);

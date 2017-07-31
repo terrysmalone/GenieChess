@@ -109,7 +109,7 @@ namespace EngineEvaluation
             CountDebugger.ClearAll();
 
             Board board = new Board();
-            board.SetFenPosition(testPos.FenPosition);
+            board.SetPosition(FenTranslator.ToBoardState(testPos.FenPosition));
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
 

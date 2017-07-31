@@ -58,7 +58,7 @@ namespace EngineEvaluation
         private void EvaluateMoveSpeed(PerfTPosition pos, int depth, int movesToMake)
         {
             Board board = new Board();
-            board.SetFenPosition(pos.FenPosition);
+            board.SetPosition(FenTranslator.ToBoardState(pos.FenPosition));
 
             ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
 

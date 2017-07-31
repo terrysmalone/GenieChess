@@ -6,6 +6,7 @@ using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
+using ChessGame.NotationHelpers;
 
 namespace ChessBoardTests
 {
@@ -249,8 +250,8 @@ namespace ChessBoardTests
         public void TestSetFenSetFENPosition_Initial()
         {
             Board board = new Board();
-            board.SetFenPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-
+            board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+             
             //Check piece positions
             Assert.AreEqual((ulong)65280, board.WhitePawns);
             Assert.AreEqual((ulong)66, board.WhiteKnights);
@@ -294,7 +295,7 @@ namespace ChessBoardTests
             //board.WhiteCanCastleQueenside = false;
 
             Board board = new Board();
-            board.SetFenPosition("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -");
+            board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
 
             Assert.AreEqual((ulong)8594161664, board.WhitePawns);
             Assert.AreEqual((ulong)0, board.WhiteKnights);
