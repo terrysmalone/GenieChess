@@ -50,23 +50,6 @@ namespace ChessGame.NotationHelpers
             if (boardStates[0].HalfMoveClock % 2 != 0)
                 whiteStarted = false;
 
-
-                        
-            //for (int i = 1; i < boardStates.Count; i++)
-            //{
-            //    string line = boardStates[i].FullMoveClock + ".";
-
-            //    if (whiteStarted == false)
-            //    {
-            //        //draw 3 ellipses as move
-            //        line += "..";
-            //        whiteStarted = true;    //We only need the ellipses once
-            //    }
-
-
-            //    throw new NotImplementedException();
-            //}
-
             return pgnString;
         }
 

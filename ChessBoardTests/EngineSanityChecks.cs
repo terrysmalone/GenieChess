@@ -38,7 +38,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", currentState.GetFenNotation());
+            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -57,7 +58,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", currentState.GetFenNotation());
+            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -75,7 +77,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", currentState.GetFenNotation());
+            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -93,7 +96,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", currentState.GetFenNotation());
+            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -111,7 +115,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", currentState.GetFenNotation());
+            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -129,7 +134,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", currentState.GetFenNotation());
+            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2",
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -147,7 +153,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", currentState.GetFenNotation());
+            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -165,7 +172,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", currentState.GetFenNotation());
+            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -183,7 +191,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", currentState.GetFenNotation());
+            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
 
         [TestMethod]
@@ -201,7 +210,8 @@ namespace ChessBoardTests
 
             Board currentState = game.CurrentBoard;
 
-            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", currentState.GetFenNotation());
+            Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
+                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
         }
         
         #endregion Mate in one

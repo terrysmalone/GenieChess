@@ -1087,17 +1087,7 @@ namespace ChessGame.BoardRepresentation
         }
 
         #endregion slower debug methods
-
-        public string GetFenNotation()
-        {
-            return FenTranslator.ToFENString(GetCurrentBoardState());
-        }
-
-        public string GetPgnNotation()
-        {
-            return PgnTranslator.ToPgnMovesList(this);
-        }
-
+        
         public BoardState GetCurrentBoardState()
         {
             var state = new BoardState

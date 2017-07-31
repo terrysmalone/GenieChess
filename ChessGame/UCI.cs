@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ChessGame.Properties;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
+using ChessGame.NotationHelpers;
 
 namespace ChessGame
 {
@@ -183,8 +184,7 @@ namespace ChessGame
 
         private void PrintFEN()
         {
-            string fen = game.CurrentBoard.GetFenNotation();
-            //Console.WriteLine(string.Format("DEBUGGING FEN:{0}", fen));            
+            string fen = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());           
         }
     }
 }
