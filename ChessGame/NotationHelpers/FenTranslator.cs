@@ -472,7 +472,7 @@ namespace ChessGame.NotationHelpers
         #endregion ToFENString methods
 
         /// <summary>
-        /// Gets the player to moe from the FEN string
+        /// Gets the player to move from the FEN string
         /// </summary>
         /// <param name="startingPosition"></param>
         /// <returns></returns>

@@ -160,6 +160,7 @@
     <Compile Include="MoveSearching\ZobristKey.cs" />
     <Compile Include="MoveSearching\ZobristHash.cs" />
     <Compile Include="NotationHelpers\FenTranslator.cs" />
+    <Compile Include="NotationHelpers\INotationTranslator.cs" />
     <Compile Include="NotationHelpers\PgnTranslator.cs">
       <SubType>Code</SubType>
     </Compile>
