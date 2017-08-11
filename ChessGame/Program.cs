@@ -46,30 +46,32 @@ namespace ChessGame
                 Console.WriteLine("?:");
                 string move = Console.ReadLine();
 
-                if(move == "help")
+                if (!string.IsNullOrEmpty(move))
                 {
-                    Console.WriteLine("------------");
-                    Console.WriteLine("print - displays the board");
-                    Console.WriteLine("genie - makes computer take next move");
-                    Console.WriteLine("[UCI move] - plays a move");
+                    if (move == "help")
+                    {
+                        Console.WriteLine("------------");
+                        Console.WriteLine("print - displays the board");
+                        Console.WriteLine("genie - makes computer take next move");
+                        Console.WriteLine("[UCI move] - plays a move");
 
+                    }
+                    else if (move == "print")
+                    {
+                        game.CurrentBoard.WriteBoardToConsole();
+                    }
+                    else if (move == "genie" || move == "g")
+                    {
+                        string bestMove = game.FindBestMove_UCI();
+                        Console.WriteLine(string.Format("Computer move: {0}", bestMove));
+                        game.ReceiveUCIMove(bestMove);
+                    }
+                    else
+                    {
+                        game.ReceiveUCIMove(move);
+                        Console.WriteLine("Made move");
+                    }
                 }
-                if (move == "print")
-                {
-                    game.CurrentBoard.WriteBoardToConsole();
-                }
-                else if (move == "genie" || move == "g")
-                {
-                    string bestMove = game.FindBestMove_UCI();
-                    Console.WriteLine(string.Format("Computer move: {0}", bestMove));
-                    game.ReceiveUCIMove(bestMove);
-                }
-                else
-                {
-                    game.ReceiveUCIMove(move);
-                    Console.WriteLine("Made move");                    
-                }
-
             }
         }
     }

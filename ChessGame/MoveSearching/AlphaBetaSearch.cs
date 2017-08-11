@@ -76,7 +76,7 @@ namespace ChessGame.MoveSearching
             if (boardPosition.WhiteToMove)
                 toMove = "white";
 
-            log.Info(string.Format("Calculating move for {0}", toMove));
+            log.Info($"Calculating move for {toMove}");
             
             //Reset iterative deepening variables
             useIterativeDeepening = true;
@@ -94,20 +94,23 @@ namespace ChessGame.MoveSearching
             for (int i = 1; i <= maxDepth; i++)
             {
 
-                #if UCI
-                    Console.WriteLine(String.Format("info depth {0}", i));               
-                #endif
+#if UCI
+                    Console.WriteLine($"info depth {i}");               
+#endif
+
 #if Debug
                 CountDebugger.Evaluations = 0;
 #endif
 
-                Stopwatch timer = new Stopwatch();
+                var timer = new Stopwatch();
+
                 timer.Start();
 
                 bestIDMove = MoveCalculate(i, out bestIDScore);
 
                 timer.Stop();
-                TimeSpan speed = new TimeSpan(timer.Elapsed.Ticks);
+
+                var speed = new TimeSpan(timer.Elapsed.Ticks);
 
                 PVInfo pvInfo = new PVInfo();
                 pvInfo.Move = bestIDMove;
@@ -124,21 +127,22 @@ namespace ChessGame.MoveSearching
 #endif
                 idMoves.Add(pvInfo);
 
-                log.Info(string.Format("{0}: {1} - score:{2} - nodes:{3} - time at depth:{4}s - time for move:{5}s", i, UCIMoveTranslator.ToUCIMove(pvInfo.Move), pvInfo.Score, pvInfo.NodesVisited, pvInfo.DepthTime.ToString("ss'.'fff"), pvInfo.AccumulatedTime.ToString("ss'.'fff")));
+                log.Info(
+                    $"{i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - score:{pvInfo.Score} - nodes:{pvInfo.NodesVisited} - time at depth:{pvInfo.DepthTime.ToString("ss'.'fff")}s - time for move:{pvInfo.AccumulatedTime.ToString("ss'.'fff")}s");
                  //LogPrincipalVariation(i);               
 
 #if UCI
-                string bestMove = UCIMoveTranslator.ToUCIMove(bestIDMove);
+                var bestMove = UCIMoveTranslator.ToUCIMove(bestIDMove);
                 //Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, bestMove));
                 //Console.WriteLine(String.Format("info currmove {0} depth {1} nodes {2} ", bestMove, i, pvInfo.NodesVisited));
                 //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
-                Console.WriteLine(String.Format("info score cp 0 depth {0} nodes {1} pv {2} ", i, pvInfo.NodesVisited, bestMove));
+                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
                 
                 //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
 #endif
             }
 
-            log.Info(string.Format("Found move {0}", UCIMoveTranslator.ToUCIMove(bestIDMove)));
+            log.Info($"Found move {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
 
             LogKillerMoves();
             return bestIDMove;
@@ -155,7 +159,7 @@ namespace ChessGame.MoveSearching
             if (boardPosition.WhiteToMove)
                 toMove = "white";
 
-            log.Info(string.Format("Calculating move for {0}", toMove));
+            log.Info($"Calculating move for {toMove}");
 
             
             //Reset iterative deepening variables
@@ -215,16 +219,17 @@ namespace ChessGame.MoveSearching
 #endif
                 idMoves.Add(pvInfo);
 
-                log.Info(string.Format("{0}: {1} - score:{2} - nodes:{3} - time at depth:{4}s - time for move:{5}s", i, UCIMoveTranslator.ToUCIMove(pvInfo.Move), pvInfo.Score, pvInfo.NodesVisited, pvInfo.DepthTime.ToString("ss'.'fff"), pvInfo.AccumulatedTime.ToString("ss'.'fff")));
+                log.Info(
+                    $"{i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - score:{pvInfo.Score} - nodes:{pvInfo.NodesVisited} - time at depth:{pvInfo.DepthTime.ToString("ss'.'fff")}s - time for move:{pvInfo.AccumulatedTime.ToString("ss'.'fff")}s");
                 //LogPrincipalVariation(i);               
 
 #if UCI
-                Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
+                Console.WriteLine($"Best move at depth {i}: {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
                 //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove))); 
 #endif
             }
 
-            log.Info(string.Format("Found move {0}", UCIMoveTranslator.ToUCIMove(bestIDMove)));
+            log.Info($"Found move {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
         }
 
         public PieceMoves MoveCalculate(int depth)
@@ -274,7 +279,7 @@ namespace ChessGame.MoveSearching
             for (int i = 0; i < moveList.Count; i++)
             {
 #if UCI
-                Console.WriteLine(String.Format("info currmove {0} currmovenumber {1}",UCIMoveTranslator.ToUCIMove(moveList[i]),  i+1));
+                Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
                 boardPosition.MakeMove(moveList[i], false);
@@ -964,7 +969,7 @@ namespace ChessGame.MoveSearching
                 }
 
 
-                log.Info(string.Format("{0}: {1}{2} || {3}{4}", i, p1, score1, p2, score2));
+                log.Info($"{i}: {p1}{score1} || {p2}{score2}");
                 
                 //else
                 //    break;

@@ -228,6 +228,9 @@ namespace ChessGame
                     return openingMove;
                 }
 
+                useOpeningBook = false;
+
+                Console.WriteLine("Opening book was unable to make a move. Reverting to search");
                 log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
@@ -331,7 +334,13 @@ namespace ChessGame
 
         public void LoadDefaultOpeningBook()
         {
-            LoadOpeningBook("book.txt");
+            var bookName = "book.txt";
+
+#if UCI
+            Console.WriteLine($"Loading opening book: {bookName}");               
+#endif
+
+            LoadOpeningBook(bookName);
         }
 
         public void LoadOpeningBook(string bookName)
@@ -339,14 +348,22 @@ namespace ChessGame
             try
             {
                 openingBook = new OpeningBook(bookName);
-                //Load the book
 
-                log.Info(String.Format("Opening book {0} loaded", bookName));
+                log.Info($"Opening book {bookName} loaded");
+#if UCI
+                Console.WriteLine($"Opening book {bookName} loaded");               
+#endif
+
                 useOpeningBook = true;
             }
             catch (Exception exc)
             {
                 log.Error(String.Format("Error loading opening book {0}", bookName), exc);
+
+#if UCI
+                Console.WriteLine($"Error loading opening book {bookName}. Exception:{exc}");               
+#endif
+
                 useOpeningBook = false;
             }
             
