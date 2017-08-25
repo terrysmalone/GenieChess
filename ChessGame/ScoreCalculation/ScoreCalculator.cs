@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
@@ -17,23 +13,13 @@ namespace ChessGame.ScoreCalculation
     /// </summary>
     public class ScoreCalculator
     {
-        private Board currentBoard;
+        private Board m_CurrentBoard;
 
-        private byte endGameCount = 3;
-        private bool isEndGame = false;
+        private readonly byte endGameCount = 3;
 
-        private decimal[] pawnSquareTableValues = new decimal[64];
-        private decimal[] knightSquareTableValues = new decimal[64];
-        private decimal[] bishopSquareTableValues = new decimal[64];
-        private decimal[] kingSquareTableValues = new decimal[64];
-        private decimal[] kingEndGameSquareTableValues = new decimal[64];
-        
         #region Properties
 
-        public bool IsEndGame
-        {
-            get { return isEndGame; }
-        }
+        public bool IsEndGame { get; private set; }
 
         #region Piece values
 
@@ -81,30 +67,15 @@ namespace ChessGame.ScoreCalculation
 
         #region square table values
 
-        public decimal[] PawnSquareTable
-        {
-            get { return pawnSquareTableValues; }
-        }
+        public decimal[] PawnSquareTable { get; } = new decimal[64];
 
-        public decimal[] KnightSquareTable
-        {
-            get { return knightSquareTableValues; }
-        }
+        public decimal[] KnightSquareTable { get; } = new decimal[64];
 
-        public decimal[] BishopSquareTable
-        {
-            get { return bishopSquareTableValues; }
-        }
+        public decimal[] BishopSquareTable { get; } = new decimal[64];
 
-        public decimal[] KingSquareTable
-        {
-            get { return kingSquareTableValues; }
-        }
+        public decimal[] KingSquareTable { get; } = new decimal[64];
 
-        public decimal[] KingEndGameSquareTable
-        {
-            get { return kingEndGameSquareTableValues; }
-        }
+        public decimal[] KingEndGameSquareTable { get; } = new decimal[64];
 
         #endregion square table values
 
@@ -144,7 +115,7 @@ namespace ChessGame.ScoreCalculation
         {
             CountDebugger.Evaluations++;
 
-            this.currentBoard = currentBoard;
+            this.m_CurrentBoard = currentBoard;
 
             //StaticBoardChecks.Calculate(currentBoard);
 
@@ -168,18 +139,18 @@ namespace ChessGame.ScoreCalculation
 
         private void DetectEndGame()
         {
-            if((BitboardOperations.GetPopCount(currentBoard.WhiteKnights) 
-                + BitboardOperations.GetPopCount(currentBoard.WhiteBishops)
-                + BitboardOperations.GetPopCount(currentBoard.WhiteRooks)
-                + BitboardOperations.GetPopCount(currentBoard.WhiteQueen)) <= endGameCount
+            if((BitboardOperations.GetPopCount(m_CurrentBoard.WhiteKnights) 
+                + BitboardOperations.GetPopCount(m_CurrentBoard.WhiteBishops)
+                + BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks)
+                + BitboardOperations.GetPopCount(m_CurrentBoard.WhiteQueen)) <= endGameCount
                 &&
-            (BitboardOperations.GetPopCount(currentBoard.BlackKnights)
-                + BitboardOperations.GetPopCount(currentBoard.BlackBishops)
-                + BitboardOperations.GetPopCount(currentBoard.BlackRooks)
-                + BitboardOperations.GetPopCount(currentBoard.BlackQueen)) <= endGameCount)
-                isEndGame = true;
+            (BitboardOperations.GetPopCount(m_CurrentBoard.BlackKnights)
+                + BitboardOperations.GetPopCount(m_CurrentBoard.BlackBishops)
+                + BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks)
+                + BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen)) <= endGameCount)
+                IsEndGame = true;
             else
-                isEndGame = false;
+                IsEndGame = false;
 
         }
 
@@ -194,28 +165,28 @@ namespace ChessGame.ScoreCalculation
             decimal pieceScore = 0;
 
             //Calculate white piece values
-            pieceScore += BitboardOperations.GetPopCount(currentBoard.WhitePawns) * PawnPieceValue;
-            pieceScore += BitboardOperations.GetPopCount(currentBoard.WhiteKnights) * KnightPieceValue;
+            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhitePawns) * PawnPieceValue;
+            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteKnights) * KnightPieceValue;
 
-            byte whiteBishopCount = BitboardOperations.GetPopCount(currentBoard.WhiteBishops);
+            byte whiteBishopCount = BitboardOperations.GetPopCount(m_CurrentBoard.WhiteBishops);
 
             pieceScore += whiteBishopCount * BishopPieceValue;
-            pieceScore += BitboardOperations.GetPopCount(currentBoard.WhiteRooks) * RookPieceValue;
-            pieceScore += BitboardOperations.GetPopCount(currentBoard.WhiteQueen) * QueenPieceValue;
+            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks) * RookPieceValue;
+            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteQueen) * QueenPieceValue;
 
-            pieceScore += BitboardOperations.GetPopCount(currentBoard.WhiteKing) * kingScore;
+            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteKing) * kingScore;
 
             //Calculate black piece values
-            pieceScore -= BitboardOperations.GetPopCount(currentBoard.BlackPawns) * PawnPieceValue;
-            pieceScore -= BitboardOperations.GetPopCount(currentBoard.BlackKnights) * KnightPieceValue;
+            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackPawns) * PawnPieceValue;
+            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKnights) * KnightPieceValue;
 
-            byte blackBishopCount = BitboardOperations.GetPopCount(currentBoard.BlackBishops);
+            byte blackBishopCount = BitboardOperations.GetPopCount(m_CurrentBoard.BlackBishops);
 
             pieceScore -= blackBishopCount * BishopPieceValue;
-            pieceScore -= BitboardOperations.GetPopCount(currentBoard.BlackRooks) * RookPieceValue;
-            pieceScore -= BitboardOperations.GetPopCount(currentBoard.BlackQueen) * QueenPieceValue;
+            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks) * RookPieceValue;
+            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen) * QueenPieceValue;
 
-            pieceScore -= BitboardOperations.GetPopCount(currentBoard.BlackKing) * kingScore;
+            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKing) * kingScore;
 
             //Calculate double bishop bonus
             pieceScore += whiteBishopCount * DoubleBishopScore;
@@ -258,10 +229,10 @@ namespace ChessGame.ScoreCalculation
             for (int i = 0; i < 8; i++)
 			{
                 ulong mask = LookupTables.FileMaskByColumn[i];
-                if (BitboardOperations.GetPopCount(mask & currentBoard.WhitePawns) > 1)
+                if (BitboardOperations.GetPopCount(mask & m_CurrentBoard.WhitePawns) > 1)
                     whiteDoubleCount++;
 
-                if (BitboardOperations.GetPopCount(mask & currentBoard.BlackPawns) > 1)
+                if (BitboardOperations.GetPopCount(mask & m_CurrentBoard.BlackPawns) > 1)
                     blackDoubleCount++;
 			}
 
@@ -273,15 +244,15 @@ namespace ChessGame.ScoreCalculation
             ulong notH = 9187201950435737471;
 
             //White pawns 
-            ulong wPawnAttackSquares = ((currentBoard.WhitePawns << 9) & notA) | (currentBoard.WhitePawns << 7) & notH;
-            ulong wProtectedPawns = wPawnAttackSquares & currentBoard.WhitePawns;
+            ulong wPawnAttackSquares = ((m_CurrentBoard.WhitePawns << 9) & notA) | (m_CurrentBoard.WhitePawns << 7) & notH;
+            ulong wProtectedPawns = wPawnAttackSquares & m_CurrentBoard.WhitePawns;
 
             pawnStructureScore += BitboardOperations.GetPopCount(wProtectedPawns) * PawnChainScore;
 
             //Black pawns 
-            ulong hg = (currentBoard.BlackPawns >> 9) & notH;
-            ulong bPawnAttackSquares = ((currentBoard.BlackPawns >> 9) & notH) | (currentBoard.BlackPawns >> 7) & notA;
-            ulong bProtectedPawns = bPawnAttackSquares & currentBoard.BlackPawns;
+            ulong hg = (m_CurrentBoard.BlackPawns >> 9) & notH;
+            ulong bPawnAttackSquares = ((m_CurrentBoard.BlackPawns >> 9) & notH) | (m_CurrentBoard.BlackPawns >> 7) & notA;
+            ulong bProtectedPawns = bPawnAttackSquares & m_CurrentBoard.BlackPawns;
 
             pawnStructureScore -= BitboardOperations.GetPopCount(bProtectedPawns) * PawnChainScore;
 
@@ -301,56 +272,56 @@ namespace ChessGame.ScoreCalculation
             decimal piecePositionScore = 0;
 
             //Pawns
-            ulong whitePawnBoard = currentBoard.WhitePawns;
+            ulong whitePawnBoard = m_CurrentBoard.WhitePawns;
 
             piecePositionScore += CalculatePositionScores(whitePawnBoard, innerCentralSquares) * InnerCentralPawnScore;
             piecePositionScore += CalculatePositionScores(whitePawnBoard, outerCentralSquares) * OuterCentralPawnScore;
 
-            ulong blackPawnBoard = currentBoard.BlackPawns;
+            ulong blackPawnBoard = m_CurrentBoard.BlackPawns;
 
             piecePositionScore -= CalculatePositionScores(blackPawnBoard, innerCentralSquares) * InnerCentralPawnScore;
             piecePositionScore -= CalculatePositionScores(blackPawnBoard, outerCentralSquares) * OuterCentralPawnScore;
 
             //Knights
-            ulong whiteKnightBoard = currentBoard.WhiteKnights;
+            ulong whiteKnightBoard = m_CurrentBoard.WhiteKnights;
 
             piecePositionScore += CalculatePositionScores(whiteKnightBoard, innerCentralSquares) * InnerCentralKnightScore;
             piecePositionScore += CalculatePositionScores(whiteKnightBoard, outerCentralSquares) * OuterCentralKnightScore;
 
-            ulong blackKnightBoard = currentBoard.BlackKnights;
+            ulong blackKnightBoard = m_CurrentBoard.BlackKnights;
 
             piecePositionScore -= CalculatePositionScores(blackKnightBoard, innerCentralSquares) * InnerCentralKnightScore;
             piecePositionScore -= CalculatePositionScores(blackKnightBoard, outerCentralSquares) * OuterCentralKnightScore;
 
             //Bishops
-            ulong whiteBishopBoard = currentBoard.WhiteBishops;
+            ulong whiteBishopBoard = m_CurrentBoard.WhiteBishops;
 
             piecePositionScore += CalculatePositionScores(whiteBishopBoard, innerCentralSquares) * InnerCentralBishopScore;
             piecePositionScore += CalculatePositionScores(whiteBishopBoard, outerCentralSquares) * OuterCentralBishopScore;
 
-            ulong blackBishopBoard = currentBoard.BlackBishops;
+            ulong blackBishopBoard = m_CurrentBoard.BlackBishops;
 
             piecePositionScore -= CalculatePositionScores(blackBishopBoard, innerCentralSquares) * InnerCentralBishopScore;
             piecePositionScore -= CalculatePositionScores(blackBishopBoard, outerCentralSquares) * OuterCentralBishopScore;
 
             //Rooks
-            ulong whiteRookBoard = currentBoard.WhiteRooks;
+            ulong whiteRookBoard = m_CurrentBoard.WhiteRooks;
 
             piecePositionScore += CalculatePositionScores(whiteRookBoard, innerCentralSquares) * InnerCentralRookScore;
             piecePositionScore += CalculatePositionScores(whiteRookBoard, outerCentralSquares) * OuterCentralRookScore;
 
-            ulong blackRookBoard = currentBoard.BlackRooks;
+            ulong blackRookBoard = m_CurrentBoard.BlackRooks;
 
             piecePositionScore -= CalculatePositionScores(blackRookBoard, innerCentralSquares) * InnerCentralRookScore;
             piecePositionScore -= CalculatePositionScores(blackRookBoard, outerCentralSquares) * OuterCentralRookScore;
 
             //Queens
-            ulong whiteQueenBoard = currentBoard.WhiteQueen;
+            ulong whiteQueenBoard = m_CurrentBoard.WhiteQueen;
 
             piecePositionScore += CalculatePositionScores(whiteQueenBoard, innerCentralSquares) * InnerCentralQueenScore;
             piecePositionScore += CalculatePositionScores(whiteQueenBoard, outerCentralSquares) * OuterCentralQueenScore;
 
-            ulong blackQueenBoard = currentBoard.BlackQueen;
+            ulong blackQueenBoard = m_CurrentBoard.BlackQueen;
 
             piecePositionScore -= CalculatePositionScores(blackQueenBoard, innerCentralSquares) * InnerCentralQueenScore;
             piecePositionScore -= CalculatePositionScores(blackQueenBoard, outerCentralSquares) * OuterCentralQueenScore;
@@ -389,16 +360,16 @@ namespace ChessGame.ScoreCalculation
         {            
             decimal castlingScore = 0;
 
-            if (!isEndGame)
+            if (!IsEndGame)
             {
-                if (currentBoard.WhiteKing == LookupTables.G1 && (currentBoard.WhiteRooks & LookupTables.F1) != (ulong)0)
+                if (m_CurrentBoard.WhiteKing == LookupTables.G1 && (m_CurrentBoard.WhiteRooks & LookupTables.F1) != (ulong)0)
                     castlingScore += CastlingKingSideScore;
-                else if (currentBoard.WhiteKing == LookupTables.C1 && (currentBoard.WhiteRooks & LookupTables.D1) != (ulong)0)
+                else if (m_CurrentBoard.WhiteKing == LookupTables.C1 && (m_CurrentBoard.WhiteRooks & LookupTables.D1) != (ulong)0)
                     castlingScore += CastlingQueenSideScore;
 
-                if (currentBoard.BlackKing == LookupTables.G8 && (currentBoard.BlackRooks & LookupTables.F8) != (ulong)0)
+                if (m_CurrentBoard.BlackKing == LookupTables.G8 && (m_CurrentBoard.BlackRooks & LookupTables.F8) != (ulong)0)
                     castlingScore -= CastlingKingSideScore;
-                else if (currentBoard.BlackKing == LookupTables.C8 && (currentBoard.BlackRooks & LookupTables.D8) != (ulong)0)
+                else if (m_CurrentBoard.BlackKing == LookupTables.C8 && (m_CurrentBoard.BlackRooks & LookupTables.D8) != (ulong)0)
                     castlingScore -= CastlingQueenSideScore;
 
             }
@@ -409,7 +380,7 @@ namespace ChessGame.ScoreCalculation
         {
             decimal canCastleScore = 0;
 
-            BoardState state = currentBoard.GetCurrentBoardState();
+            BoardState state = m_CurrentBoard.GetCurrentBoardState();
 
             canCastleScore += Convert.ToDecimal(state.WhiteCanCastleKingside) * CanCastleKingsideScore;
             canCastleScore += Convert.ToDecimal(state.WhiteCanCastleQueenside) * CanCastleQueensideScore;
@@ -432,7 +403,7 @@ namespace ChessGame.ScoreCalculation
             squareTableScores += CalculateKnightSquareTableScores();
             squareTableScores += CalculateBishopSquareTableScores();
             
-            if(!isEndGame)
+            if(!IsEndGame)
                 squareTableScores += CalculateKingSquareTableScores();
             else
                 squareTableScores += CalculateKingEndGameSquareTableScores();
@@ -444,9 +415,9 @@ namespace ChessGame.ScoreCalculation
         {
             decimal pawnSquareTableScore = 0;
 
-            pawnSquareTableScore += CalculateTableScores(currentBoard.WhitePawns, PawnSquareTable, PieceColour.White);
+            pawnSquareTableScore += CalculateTableScores(m_CurrentBoard.WhitePawns, PawnSquareTable, PieceColour.White);
 
-            pawnSquareTableScore -= CalculateTableScores(currentBoard.BlackPawns, PawnSquareTable, PieceColour.Black);
+            pawnSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackPawns, PawnSquareTable, PieceColour.Black);
             
             return pawnSquareTableScore;
         }
@@ -455,9 +426,9 @@ namespace ChessGame.ScoreCalculation
         {
             decimal knightSquareTableScore = 0;
 
-            knightSquareTableScore += CalculateTableScores(currentBoard.WhiteKnights, KnightSquareTable, PieceColour.White);
+            knightSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKnights, KnightSquareTable, PieceColour.White);
 
-            knightSquareTableScore -= CalculateTableScores(currentBoard.BlackKnights, KnightSquareTable, PieceColour.Black);
+            knightSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKnights, KnightSquareTable, PieceColour.Black);
 
             return knightSquareTableScore;
         }
@@ -466,9 +437,9 @@ namespace ChessGame.ScoreCalculation
         {
             decimal bishopSquareTableScore = 0;
 
-            bishopSquareTableScore += CalculateTableScores(currentBoard.WhiteBishops, BishopSquareTable, PieceColour.White);
+            bishopSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteBishops, BishopSquareTable, PieceColour.White);
 
-            bishopSquareTableScore -= CalculateTableScores(currentBoard.BlackBishops, BishopSquareTable, PieceColour.Black);
+            bishopSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackBishops, BishopSquareTable, PieceColour.Black);
 
             return bishopSquareTableScore;
         }
@@ -477,9 +448,9 @@ namespace ChessGame.ScoreCalculation
         {
             decimal kingSquareTableScore = 0;
 
-            kingSquareTableScore += CalculateTableScores(currentBoard.WhiteKing, KingSquareTable, PieceColour.White);
+            kingSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingSquareTable, PieceColour.White);
 
-            kingSquareTableScore -= CalculateTableScores(currentBoard.BlackKing, KingSquareTable, PieceColour.Black);
+            kingSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingSquareTable, PieceColour.Black);
 
             return kingSquareTableScore;
         }
@@ -488,9 +459,9 @@ namespace ChessGame.ScoreCalculation
         {
             decimal kingEndGameSquareTableScore = 0;
 
-            kingEndGameSquareTableScore += CalculateTableScores(currentBoard.WhiteKing, KingEndGameSquareTable, PieceColour.White);
+            kingEndGameSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingEndGameSquareTable, PieceColour.White);
 
-            kingEndGameSquareTableScore -= CalculateTableScores(currentBoard.BlackKing, KingEndGameSquareTable, PieceColour.Black);
+            kingEndGameSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingEndGameSquareTable, PieceColour.Black);
 
             return kingEndGameSquareTableScore;
         }
@@ -543,10 +514,10 @@ namespace ChessGame.ScoreCalculation
             ulong whiteBack = 255;
             ulong blackBack = 18374686479671623680;
 
-            ulong whiteDevelopedPieces = (currentBoard.WhiteBishops ^ currentBoard.WhiteKnights ^ currentBoard.WhiteQueen) & ~whiteBack;
+            ulong whiteDevelopedPieces = (m_CurrentBoard.WhiteBishops ^ m_CurrentBoard.WhiteKnights ^ m_CurrentBoard.WhiteQueen) & ~whiteBack;
             developedPiecesScore += BitboardOperations.GetPopCount(whiteDevelopedPieces) * DevelopedPieceScore;
 
-            ulong blackDevelopedPieces = (currentBoard.BlackBishops ^ currentBoard.BlackKnights ^ currentBoard.BlackQueen) & ~blackBack;
+            ulong blackDevelopedPieces = (m_CurrentBoard.BlackBishops ^ m_CurrentBoard.BlackKnights ^ m_CurrentBoard.BlackQueen) & ~blackBack;
             developedPiecesScore -= BitboardOperations.GetPopCount(blackDevelopedPieces) * DevelopedPieceScore;
 
             return developedPiecesScore;
@@ -556,37 +527,37 @@ namespace ChessGame.ScoreCalculation
         {
             decimal connectedRookScore = 0;
 
-            if (BitboardOperations.GetPopCount(currentBoard.WhiteRooks) > 1)
+            if (BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks) > 1)
             {
-                ulong[] rooks = BitboardOperations.SplitBoardToArray(currentBoard.WhiteRooks);
+                ulong[] rooks = BitboardOperations.SplitBoardToArray(m_CurrentBoard.WhiteRooks);
 
                 ulong firstRook = rooks[0];
                 ulong secondRook = rooks[1];
                 
-                if((BoardChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                if((BoardChecking.FindRightBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore += ConnectedRookBonus;
-                else if((BoardChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                else if((BoardChecking.FindLeftBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore += ConnectedRookBonus;
-                 else if((BoardChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                 else if((BoardChecking.FindUpBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore += ConnectedRookBonus;
-                 else if((BoardChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                 else if((BoardChecking.FindDownBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore += ConnectedRookBonus;
             }
 
-            if (BitboardOperations.GetPopCount(currentBoard.BlackRooks) > 1)
+            if (BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks) > 1)
             {
-                ulong[] rooks = BitboardOperations.SplitBoardToArray(currentBoard.BlackRooks);
+                ulong[] rooks = BitboardOperations.SplitBoardToArray(m_CurrentBoard.BlackRooks);
 
                 ulong firstRook = rooks[0];
                 ulong secondRook = rooks[1];
 
-                if ((BoardChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                if ((BoardChecking.FindRightBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore -= ConnectedRookBonus;
-                else if ((BoardChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                else if ((BoardChecking.FindLeftBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore -= ConnectedRookBonus;
-                else if ((BoardChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                else if ((BoardChecking.FindUpBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore -= ConnectedRookBonus;
-                else if ((BoardChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+                else if ((BoardChecking.FindDownBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
                     connectedRookScore -= ConnectedRookBonus;
             }
 
@@ -613,48 +584,48 @@ namespace ChessGame.ScoreCalculation
 
             
             //White
-            ulong whiteBishopCoverage = BoardChecking.CalculateAllowedBishopMoves(currentBoard, currentBoard.WhiteBishops, PieceColour.White);
+            ulong whiteBishopCoverage = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.WhiteBishops, PieceColour.White);
 
             if (whiteBishopCoverage > 0)
             {
                 attackScore += BitboardOperations.GetPopCount(whiteBishopCoverage) * BishopCoverageBonus;
 
-                ulong attackBoard = whiteBishopCoverage & currentBoard.AllBlackOccupiedSquares;
+                ulong attackBoard = whiteBishopCoverage & m_CurrentBoard.AllBlackOccupiedSquares;
                 attackScore += BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
             }
 
-            ulong whiteRookCoverage = BoardChecking.CalculateAllowedRookMoves(currentBoard, currentBoard.WhiteRooks, PieceColour.White);
+            ulong whiteRookCoverage = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, m_CurrentBoard.WhiteRooks, PieceColour.White);
 
             if (whiteRookCoverage > 0)
             {
                 attackScore += BitboardOperations.GetPopCount(whiteRookCoverage) * RookCoverageBonus;
 
-                ulong attackBoard = whiteRookCoverage & currentBoard.AllBlackOccupiedSquares;
+                ulong attackBoard = whiteRookCoverage & m_CurrentBoard.AllBlackOccupiedSquares;
                 attackScore += BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
             }
 
-            ulong whiteQueenCoverage = BoardChecking.CalculateAllowedQueenMoves(currentBoard, currentBoard.WhiteQueen, PieceColour.White);
+            ulong whiteQueenCoverage = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, m_CurrentBoard.WhiteQueen, PieceColour.White);
             if (whiteQueenCoverage > 0)
             {
                 attackScore += BitboardOperations.GetPopCount(whiteQueenCoverage) * QueenCoverageBonus;
 
-                ulong attackBoard = whiteQueenCoverage & currentBoard.AllBlackOccupiedSquares;
+                ulong attackBoard = whiteQueenCoverage & m_CurrentBoard.AllBlackOccupiedSquares;
                 attackScore += BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
             }
 
             //Knights
             ulong whiteKnightCoverage = 0;
-             List<byte> whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(currentBoard.WhiteKnights);
+             List<byte> whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteKnights);
 
              foreach (byte knightPos in whiteKnightPositions)
 	         {
                  ulong possibleMoves = ValidMoveArrays.KnightMoves[knightPos];
 
-                 possibleMoves = possibleMoves & ~currentBoard.AllWhiteOccupiedSquares;
+                 possibleMoves = possibleMoves & ~m_CurrentBoard.AllWhiteOccupiedSquares;
                  whiteKnightCoverage |= possibleMoves;
 	         }
 
-             ulong wKnightAttackBoard = whiteKnightCoverage & currentBoard.AllBlackOccupiedSquares;
+             ulong wKnightAttackBoard = whiteKnightCoverage & m_CurrentBoard.AllBlackOccupiedSquares;
              attackScore += BitboardOperations.GetPopCount(wKnightAttackBoard) * AttackBonus;
 
              ulong boardCoverage = whiteBishopCoverage | whiteRookCoverage | whiteQueenCoverage | whiteKnightCoverage;
@@ -662,46 +633,46 @@ namespace ChessGame.ScoreCalculation
              attackScore += BitboardOperations.GetPopCount(boardCoverage) * BoardCoverageBonus;
 
              //Black
-             ulong blackBishopCoverage = BoardChecking.CalculateAllowedBishopMoves(currentBoard, currentBoard.BlackBishops, PieceColour.Black);
+             ulong blackBishopCoverage = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.BlackBishops, PieceColour.Black);
              if (blackBishopCoverage > 0)
              {
                  attackScore -= BitboardOperations.GetPopCount(blackBishopCoverage) * BishopCoverageBonus;
 
-                 ulong attackBoard = blackBishopCoverage & currentBoard.AllWhiteOccupiedSquares;
+                 ulong attackBoard = blackBishopCoverage & m_CurrentBoard.AllWhiteOccupiedSquares;
                  attackScore -= BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
              }
 
-             ulong blackRookCoverage = BoardChecking.CalculateAllowedRookMoves(currentBoard, currentBoard.BlackRooks, PieceColour.Black);
+             ulong blackRookCoverage = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, m_CurrentBoard.BlackRooks, PieceColour.Black);
              if (blackRookCoverage > 0)
              { 
                  attackScore -= BitboardOperations.GetPopCount(blackRookCoverage) * RookCoverageBonus;
 
-                 ulong attackBoard = blackRookCoverage & currentBoard.AllWhiteOccupiedSquares;
+                 ulong attackBoard = blackRookCoverage & m_CurrentBoard.AllWhiteOccupiedSquares;
                  attackScore -= BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
              }
 
-             ulong blackQueenCoverage = BoardChecking.CalculateAllowedQueenMoves(currentBoard, currentBoard.BlackQueen, PieceColour.Black);
+             ulong blackQueenCoverage = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, m_CurrentBoard.BlackQueen, PieceColour.Black);
              if (blackQueenCoverage > 0)
              { 
                  attackScore -= BitboardOperations.GetPopCount(blackQueenCoverage) * QueenCoverageBonus;
 
-                 ulong attackBoard = blackQueenCoverage & currentBoard.AllWhiteOccupiedSquares;
+                 ulong attackBoard = blackQueenCoverage & m_CurrentBoard.AllWhiteOccupiedSquares;
                  attackScore -= BitboardOperations.GetPopCount(attackBoard) * AttackBonus;
              }
 
              //Knights
              ulong blackKnightCoverage = 0;
-             List<byte> blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(currentBoard.BlackKnights);
+             List<byte> blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackKnights);
 
              foreach (byte knightPos in blackKnightPositions)
              {
                  ulong possibleMoves = ValidMoveArrays.KnightMoves[knightPos];
 
-                 possibleMoves = possibleMoves & ~currentBoard.AllBlackOccupiedSquares;
+                 possibleMoves = possibleMoves & ~m_CurrentBoard.AllBlackOccupiedSquares;
                  blackKnightCoverage |= possibleMoves;
              }
 
-             ulong bKnightAttackBoard = blackKnightCoverage & currentBoard.AllWhiteOccupiedSquares;
+             ulong bKnightAttackBoard = blackKnightCoverage & m_CurrentBoard.AllWhiteOccupiedSquares;
              attackScore -= BitboardOperations.GetPopCount(bKnightAttackBoard) * AttackBonus;
 
              ulong blackBoardCoverage = blackBishopCoverage | blackRookCoverage | blackQueenCoverage | blackKnightCoverage;
