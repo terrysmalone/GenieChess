@@ -16,6 +16,20 @@ First, compile and build using the UCIDebug or UCIRelease configuration.
 
 * Opening book
 
+The opening book is loaded by giving the address of the txt file containing the opening book at......
+
+The format of the opening book is..........
+
+If no location is given the default will be......
+
+* Scoring
+
+The scoring criteria is taken from an external xml file, giving the scores ..............
+
+The location should be given at........
+
+If no location is given the default will be......
+
 * TODO list implemented and to implement features
 
 
