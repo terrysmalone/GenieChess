@@ -14,15 +14,14 @@ First, compile and build using the UCIDebug or UCIRelease configuration.
 
 ### Features ###
 
-* Opening book
+#### Opening book ####
 
 The opening book is loaded by giving the address of the txt file containing the opening book at......
 
 The format of the opening book is..........
 
 If no location is given the default will be......
-
-* Scoring
+#### Scoring ####
 
 The scoring criteria is taken from an external xml file, giving the scores ..............
 
