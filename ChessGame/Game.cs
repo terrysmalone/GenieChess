@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
@@ -18,18 +14,13 @@ namespace ChessGame
 {
     public class Game
     {
-        private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         #region private properties
 
         #region Game settings
 
-        private bool useOpeningBook = false;
-        private string openingBookFile = string.Empty;
-
         private OpeningBook openingBook;
-
-        private bool useIterativeDeepening = true;
 
         private int thinkingDepth = 8;
 
@@ -37,67 +28,37 @@ namespace ChessGame
         
         private bool gameIsActive = true;
 
-        private Board board;
-        private ScoreCalculator scoreCalc;        
+        private ScoreCalculator scoreCalc;
 
-        private SearchStrategy whiteSearchType = SearchStrategy.AlphaBeta;
-        private SearchStrategy blackSearchType = SearchStrategy.AlphaBeta;
-        
         #endregion private properties
 
         #region public properties
 
         #region Game settings
 
-        public bool UseOpeningBook
-        {
-            get { return useOpeningBook; }
-            set { useOpeningBook = value; }
-        }
+        public bool UseOpeningBook { get; set; }
 
-        public string OpeningBookFile
-        {
-            get { return openingBookFile; }
-            set { openingBookFile = value; }
-        }
+        public string OpeningBookFile { get; set; } = string.Empty;
 
-        public bool UseIterativeDeepening
-        {
-            get { return useIterativeDeepening; }
-            set { useIterativeDeepening = value; }
-        }
+        public bool UseIterativeDeepening { get; set; } = true;
 
         public int ThinkingDepth
         {
             get { return thinkingDepth; }
             set 
             {
-                log.Info(string.Format("Setting default thinking depth to {0}", value));
+                Log.Info($"Setting default thinking depth to {value}");
                 thinkingDepth = value; 
             }
         }
 
-        public SearchStrategy WhiteSearchType
-        {
-            get { return whiteSearchType; }
-            set { whiteSearchType = value; }
-        }
+        public SearchStrategy WhiteSearchType { get; set; } = SearchStrategy.AlphaBeta;
 
-        public SearchStrategy BlackSearchType
-        {
-            get { return blackSearchType; }
-            set { blackSearchType = value; }
-        }
+        public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
 
         #endregion Game settings
         
-        public Board CurrentBoard
-        {
-            get
-            {
-                return board;
-            }
-        }
+        public Board CurrentBoard { get; }
 
         #endregion public properties
 
@@ -108,7 +69,7 @@ namespace ChessGame
         /// </summary>
         public Game()
         {
-            log.Info(string.Format("Loading default score set: {0}", "ScoreValues.xml"));
+            Log.Info($"Loading default score set: {"ScoreValues.xml"}");
 
             this.scoreCalc = ResourceLoading.ResourceLoader.LoadScoreValues("ScoreValues.xml");
 
@@ -116,10 +77,10 @@ namespace ChessGame
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
 
-            board = new Board();
-            board.InitaliseStartingPosition();
+            CurrentBoard = new Board();
+            CurrentBoard.InitaliseStartingPosition();
 
-            log.Info("Initialised Game to starting position");
+            Log.Info("Initialised Game to starting position");
 
             LogGameSettings();
         }
@@ -130,7 +91,7 @@ namespace ChessGame
         /// <param name="p"></param>
         public Game(string scoreFilePath)
         {
-            log.Info(string.Format("Loading score set: {0}", scoreFilePath));
+            Log.Info(string.Format("Loading score set: {0}", scoreFilePath));
 
             this.scoreCalc = new ScoreCalculator(File.ReadAllText(scoreFilePath));
 
@@ -138,10 +99,10 @@ namespace ChessGame
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
 
-            board = new Board();
-            board.InitaliseStartingPosition();
+            CurrentBoard = new Board();
+            CurrentBoard.InitaliseStartingPosition();
 
-            log.Info("Initialised Game to starting position");
+            Log.Info("Initialised Game to starting position");
             LogGameSettings();
         }
 
@@ -153,10 +114,10 @@ namespace ChessGame
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
 
-            board = new Board();
-            board.InitaliseStartingPosition();
+            CurrentBoard = new Board();
+            CurrentBoard.InitaliseStartingPosition();
 
-            log.Info("Initialised Game to starting position");
+            Log.Info("Initialised Game to starting position");
             LogGameSettings();
         }
 
@@ -168,42 +129,45 @@ namespace ChessGame
         /// Initialise the game board and make moves
         /// </summary>
         /// <param name="moveString">The moves to make</param>
-        public void ReceiveUCIMoves(string moveString)
+        public void ReceiveUciMoves(string moveString)
         {
             string[] moves = moveString.Split();
 
             foreach (string move in moves)
             {
-                ReceiveUCIMove(move);
+                ReceiveUciMove(move);
             }
         }
 
-        public void ReceiveUCIMove(string move)
+        public void ReceiveUciMove(string move)
         {
-            if(useOpeningBook)
+            if (UseOpeningBook)
+            {
                 openingBook.RegisterMadeMove(move);
+            }
 
-            PieceMoves pieceMove = UCIMoveTranslator.ToGameMove(move, board);
-            board.MakeMove(pieceMove, true);
+            var pieceMove = UCIMoveTranslator.ToGameMove(move, CurrentBoard);
+
+            CurrentBoard.MakeMove(pieceMove, true);
         }
 
         public string FindBestMove_UCI()
         {
-            PieceMoves bestMove = GetBestMove();
+            var bestMove = GetBestMove();
 
-            string bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
+            var bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
 
             return bestMoveString;
         }
 
         #endregion UCI commands
 
-        public PieceMoves FindBestMove()
+        public PieceMoves FindAndMakeBestMove()
         {
-            PieceMoves currentMove = GetBestMove();
+            var currentMove = GetBestMove();
 
             if (currentMove.Type != PieceType.None)
-                board.MakeMove(currentMove, true);
+                CurrentBoard.MakeMove(currentMove, true);
             else
                 gameIsActive = false;
 
@@ -212,56 +176,51 @@ namespace ChessGame
 
         public PieceMoves GetBestMove()
         {
-            if(useOpeningBook)
+            if(UseOpeningBook)
             {
-                string openingMoveUCI = openingBook.GetMove();
+                var openingMoveUci = openingBook.GetMove();
 
-                if (!string.IsNullOrEmpty(openingMoveUCI))
+                if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    PieceMoves openingMove = UCIMoveTranslator.ToGameMove(openingMoveUCI, board);
+                    PieceMoves openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, CurrentBoard);
 
                     string uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
-                    log.Info(string.Format("Move {0} retrieved from opening book", uciMove));
+                    Log.Info($"Move {uciMove} retrieved from opening book");
 
-                    Console.WriteLine(String.Format("info string {0} retrieved from opening book", uciMove));
+                    Console.WriteLine($"info string {uciMove} retrieved from opening book");
 
                     return openingMove;
                 }
 
-                useOpeningBook = false;
+                UseOpeningBook = false;
 
                 Console.WriteLine("Opening book was unable to make a move. Reverting to search");
-                log.Info("Opening book was unable to make a move. Reverting to search");
+                Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
             PieceMoves currentMove = new PieceMoves();
 
-            if (whiteSearchType == SearchStrategy.MiniMax)
+            if (WhiteSearchType == SearchStrategy.MiniMax)
             {
-                MiniMax miniMax = new MiniMax(board, scoreCalc);
+                MiniMax miniMax = new MiniMax(CurrentBoard, scoreCalc);
                 currentMove = miniMax.MoveCalculate(thinkingDepth);
 
             }
-            else if (whiteSearchType == SearchStrategy.NegaMax)
+            else if (WhiteSearchType == SearchStrategy.NegaMax)
             {
-                NegaMax negaMax = new NegaMax(board, scoreCalc);
+                NegaMax negaMax = new NegaMax(CurrentBoard, scoreCalc);
                 currentMove = negaMax.MoveCalculate(thinkingDepth);
             }
-            else if (whiteSearchType == SearchStrategy.AlphaBeta)
+            else if (WhiteSearchType == SearchStrategy.AlphaBeta)
             {
-                AlphaBetaSearch search = new AlphaBetaSearch(board, scoreCalc);
+                AlphaBetaSearch search = new AlphaBetaSearch(CurrentBoard, scoreCalc);
 
-                if (useIterativeDeepening)
+                if (UseIterativeDeepening)
                     currentMove = search.StartSearch(thinkingDepth);
                 else
                     currentMove = search.MoveCalculate(thinkingDepth);
 
             }
-            //else if (whiteSearchType == SearchStrategy.AlphaBetaWithZobrisk)
-            //{
-            //    AlphaBetaSearchWithZobrist search = new AlphaBetaSearchWithZobrist(board, scoreCalc);
-            //    currentMove = search.MoveCalculate(thinkingDepth, PieceColour.White);
-            //}
 
             return currentMove;
         }
@@ -275,7 +234,7 @@ namespace ChessGame
         /// </summary>
         public void InitaliseStartingPosition()
         {
-            board.InitaliseStartingPosition();
+            CurrentBoard.InitaliseStartingPosition();
         }
 
         /// <summary>
@@ -283,7 +242,7 @@ namespace ChessGame
         /// </summary>
         public void ClearBoard()
         {
-            board.ClearBoard();
+            CurrentBoard.ClearBoard();
         }
 
         /// <summary>
@@ -297,12 +256,12 @@ namespace ChessGame
 
         public void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
         {
-            board.PlacePiece(typeToPlace, colour, file, rank);
+            CurrentBoard.PlacePiece(typeToPlace, colour, file, rank);
         }
 
         public void AllowAllCastling(bool allow)
         {
-            board.AllowAllCastling(allow);
+            CurrentBoard.AllowAllCastling(allow);
         }
 
         /// <param name="fenNotation"></param>
@@ -315,8 +274,8 @@ namespace ChessGame
         
         public void SetSearchType(SearchStrategy searchType)
         {
-            whiteSearchType = searchType;
-            blackSearchType = searchType;
+            WhiteSearchType = searchType;
+            BlackSearchType = searchType;
         }
 
         /// <summary>
@@ -327,7 +286,7 @@ namespace ChessGame
         /// </summary>
         internal void ResetFlags()
         {
-            board.ResetFlags();
+            CurrentBoard.ResetFlags();
         }
 
         #region opening book
@@ -349,22 +308,22 @@ namespace ChessGame
             {
                 openingBook = new OpeningBook(bookName);
 
-                log.Info($"Opening book {bookName} loaded");
+                Log.Info($"Opening book {bookName} loaded");
 #if UCI
                 Console.WriteLine($"Opening book {bookName} loaded");               
 #endif
 
-                useOpeningBook = true;
+                UseOpeningBook = true;
             }
             catch (Exception exc)
             {
-                log.Error(String.Format("Error loading opening book {0}", bookName), exc);
+                Log.Error(String.Format("Error loading opening book {0}", bookName), exc);
 
 #if UCI
                 Console.WriteLine($"Error loading opening book {bookName}. Exception:{exc}");               
 #endif
 
-                useOpeningBook = false;
+                UseOpeningBook = false;
             }
             
             
@@ -377,11 +336,11 @@ namespace ChessGame
 
         private void LogGameSettings()
         {
-            log.Info(string.Format("Max thinking depth:{0}", thinkingDepth));
-            log.Info(string.Format("Use iterative deepening:{0}", useIterativeDeepening));
+            Log.Info(string.Format("Max thinking depth:{0}", thinkingDepth));
+            Log.Info(string.Format("Use iterative deepening:{0}", UseIterativeDeepening));
 
-            log.Info(string.Format("White search strategy:{0}", whiteSearchType));
-            log.Info(string.Format("Black search strategy:{0}", blackSearchType));  
+            Log.Info(string.Format("White search strategy:{0}", WhiteSearchType));
+            Log.Info(string.Format("Black search strategy:{0}", BlackSearchType));  
         }
 
         #endregion logging

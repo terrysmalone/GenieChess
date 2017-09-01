@@ -38,10 +38,10 @@ namespace ChessBoardTests
             {
                 Console.WriteLine("Make move:");
                 string move = Console.ReadLine();
-                game.ReceiveUCIMove(move);
+                game.ReceiveUciMove(move);
 
                 string bestMove = game.FindBestMove_UCI();
-                game.ReceiveUCIMove(bestMove);
+                game.ReceiveUciMove(bestMove);
             }
             
             //string bestMove = game.FindBestMove_UCI();
@@ -131,7 +131,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
             
             game.SetSearchType(SearchStrategy.MiniMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -157,7 +157,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
             
             game.SetSearchType(SearchStrategy.MiniMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -182,7 +182,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.MiniMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -205,7 +205,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -229,7 +229,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -251,7 +251,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -281,7 +281,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.NegaMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -307,7 +307,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.NegaMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -332,7 +332,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.NegaMax);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -355,7 +355,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -378,7 +378,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -400,7 +400,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -432,7 +432,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -460,7 +460,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
             
@@ -488,7 +488,7 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
             
@@ -516,7 +516,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
             
@@ -541,7 +541,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
@@ -564,7 +564,7 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());

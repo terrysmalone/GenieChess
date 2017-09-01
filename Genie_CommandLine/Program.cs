@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Debugging;
-using ChessGame.ResourceLoading;
 using log4net;
 
-namespace ChessGame
+namespace Genie_CommandLine
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
+            var genie = new Genie();
         }
     }
 }
+
+            

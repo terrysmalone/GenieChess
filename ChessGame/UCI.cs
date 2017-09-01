@@ -135,7 +135,7 @@ namespace ChessGame
 
                     //Console.WriteLine(string.Format("DEBUGGING-MAKING MOVE: INPUT={0}", moves));
 
-                    game.ReceiveUCIMoves(moves);
+                    game.ReceiveUciMoves(moves);
                 }
             }
             else if (input.Contains("fen"))
@@ -158,7 +158,7 @@ namespace ChessGame
                     //Console.WriteLine(string.Format("DEBUGGING-moves: INPUT={0}", moves));
             
                     game.SetFENPosition(fenPos);
-                    game.ReceiveUCIMoves(moves);
+                    game.ReceiveUciMoves(moves);
                 }
                 else
                 {

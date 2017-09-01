@@ -153,7 +153,7 @@ namespace ChessGame.ResourceLoading
         private static string GetEngineResourcePath()
         {
             string current = Environment.CurrentDirectory;
-            string parent = Path.GetFullPath(Path.Combine(current, @"..\..\..\..\"));
+            string parent = Path.GetFullPath(Path.Combine(current, @"..\..\..\"));
             string evaluationResources = parent + @"ChessGame\Resources\";
 
             return evaluationResources;
