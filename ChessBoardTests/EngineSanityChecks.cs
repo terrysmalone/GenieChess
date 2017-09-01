@@ -34,7 +34,7 @@ namespace ChessBoardTests
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -54,7 +54,7 @@ namespace ChessBoardTests
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 3;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -73,7 +73,7 @@ namespace ChessBoardTests
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 4;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -92,7 +92,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -111,7 +111,7 @@ namespace ChessBoardTests
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -130,7 +130,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -149,7 +149,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 3;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -168,7 +168,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 4;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -187,7 +187,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -206,7 +206,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
 
             Board currentState = game.CurrentBoard;
 
@@ -268,7 +268,7 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
-            game.FindBestMove();
+            game.FindAndMakeBestMove();
         }
 
         #endregion Check horizon

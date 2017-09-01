@@ -17,62 +17,10 @@ namespace ChessGame
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
-
-            log.Info("==============================================================");
             
-#if UCI
             UCI uci = new UCI();
             uci.UCICommunication();
-#else
-            PlayOnCommandLine();
-#endif
-        }
 
-        private static void PlayOnCommandLine()
-        {
-            Game game = new Game();
-            
-            game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.ThinkingDepth = 7;
-
-            game.InitaliseStartingPosition();
-
-            game.LoadDefaultOpeningBook();
-            //game.SetFENPosition("4k3/2p5/4P3/8/8/1B4B1/8/4K3 w - - 0 1");
-            CountDebugger.ClearAll();
-
-            while (true)
-            {
-                Console.WriteLine("?:");
-                string move = Console.ReadLine();
-
-                if (!string.IsNullOrEmpty(move))
-                {
-                    if (move == "help")
-                    {
-                        Console.WriteLine("------------");
-                        Console.WriteLine("print - displays the board");
-                        Console.WriteLine("genie - makes computer take next move");
-                        Console.WriteLine("[UCI move] - plays a move");
-
-                    }
-                    else if (move == "print")
-                    {
-                        game.CurrentBoard.WriteBoardToConsole();
-                    }
-                    else if (move == "genie" || move == "g")
-                    {
-                        string bestMove = game.FindBestMove_UCI();
-                        Console.WriteLine(string.Format("Computer move: {0}", bestMove));
-                        game.ReceiveUCIMove(bestMove);
-                    }
-                    else
-                    {
-                        game.ReceiveUCIMove(move);
-                        Console.WriteLine("Made move");
-                    }
-                }
-            }
         }
     }
 }

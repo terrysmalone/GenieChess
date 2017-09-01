@@ -168,39 +168,42 @@ namespace ChessGame
         /// Initialise the game board and make moves
         /// </summary>
         /// <param name="moveString">The moves to make</param>
-        public void ReceiveUCIMoves(string moveString)
+        public void ReceiveUciMoves(string moveString)
         {
             string[] moves = moveString.Split();
 
             foreach (string move in moves)
             {
-                ReceiveUCIMove(move);
+                ReceiveUciMove(move);
             }
         }
 
-        public void ReceiveUCIMove(string move)
+        public void ReceiveUciMove(string move)
         {
-            if(useOpeningBook)
+            if (useOpeningBook)
+            {
                 openingBook.RegisterMadeMove(move);
+            }
 
-            PieceMoves pieceMove = UCIMoveTranslator.ToGameMove(move, board);
+            var pieceMove = UCIMoveTranslator.ToGameMove(move, board);
+
             board.MakeMove(pieceMove, true);
         }
 
         public string FindBestMove_UCI()
         {
-            PieceMoves bestMove = GetBestMove();
+            var bestMove = GetBestMove();
 
-            string bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
+            var bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
 
             return bestMoveString;
         }
 
         #endregion UCI commands
 
-        public PieceMoves FindBestMove()
+        public PieceMoves FindAndMakeBestMove()
         {
-            PieceMoves currentMove = GetBestMove();
+            var currentMove = GetBestMove();
 
             if (currentMove.Type != PieceType.None)
                 board.MakeMove(currentMove, true);
@@ -214,16 +217,16 @@ namespace ChessGame
         {
             if(useOpeningBook)
             {
-                string openingMoveUCI = openingBook.GetMove();
+                var openingMoveUci = openingBook.GetMove();
 
-                if (!string.IsNullOrEmpty(openingMoveUCI))
+                if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    PieceMoves openingMove = UCIMoveTranslator.ToGameMove(openingMoveUCI, board);
+                    PieceMoves openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, board);
 
                     string uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
-                    log.Info(string.Format("Move {0} retrieved from opening book", uciMove));
+                    log.Info($"Move {uciMove} retrieved from opening book");
 
-                    Console.WriteLine(String.Format("info string {0} retrieved from opening book", uciMove));
+                    Console.WriteLine($"info string {uciMove} retrieved from opening book");
 
                     return openingMove;
                 }
@@ -257,11 +260,6 @@ namespace ChessGame
                     currentMove = search.MoveCalculate(thinkingDepth);
 
             }
-            //else if (whiteSearchType == SearchStrategy.AlphaBetaWithZobrisk)
-            //{
-            //    AlphaBetaSearchWithZobrist search = new AlphaBetaSearchWithZobrist(board, scoreCalc);
-            //    currentMove = search.MoveCalculate(thinkingDepth, PieceColour.White);
-            //}
 
             return currentMove;
         }
