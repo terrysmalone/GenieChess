@@ -11,13 +11,13 @@ namespace ChessGame.Books
 {
     public class OpeningBook
     {
-        List<Opening> openings = new List<Opening>();
-        int plyCount = 0;
-        Random rand = new Random();
+        private readonly List<Opening> m_Openings;
+        private int m_PlyCount;
+        private readonly Random m_Rand = new Random();
 
         public OpeningBook(string bookName)
         {
-            openings = ResourceLoader.LoadOpeningBook(bookName);
+            m_Openings = ResourceLoader.LoadOpeningBook(bookName);
         }
 
         /// <summary>
@@ -29,24 +29,21 @@ namespace ChessGame.Books
         public string GetMove()
         {
             //Filter out openings that don't have this move
-            for (int i = openings.Count - 1; i >= 0; i--)
+            for (var i = m_Openings.Count - 1; i >= 0; i--)
             {
-                Opening currentOpening = openings[i];
+                var currentOpening = m_Openings[i];
 
-                if (plyCount >= currentOpening.moves.Length)
-                    openings.RemoveAt(i);
+                if (m_PlyCount >= currentOpening.moves.Length)
+                    m_Openings.RemoveAt(i);
             }
 
-            if (openings.Count > 0)
-            {
-                int pos = rand.Next(openings.Count);
+            if (m_Openings.Count <= 0) return string.Empty;
 
-                string move = openings[pos].moves[plyCount];
+            var pos = m_Rand.Next(m_Openings.Count);
 
-                return move;
-            }
+            var move = m_Openings[pos].moves[m_PlyCount];
 
-            return string.Empty;
+            return move;
         }
 
         /// <summary>
@@ -54,20 +51,24 @@ namespace ChessGame.Books
         /// </summary>
         public void RegisterMadeMove(string uciMove)
         {
-            for (int i = openings.Count-1; i >= 0; i--)
+            for (var i = m_Openings.Count-1; i >= 0; i--)
             {
-                Opening currentOpening = openings[i];
+                var currentOpening = m_Openings[i];
 
-                if (plyCount >= currentOpening.moves.Length)
-                    openings.RemoveAt(i);
+                if (m_PlyCount >= currentOpening.moves.Length)
+                {
+                    m_Openings.RemoveAt(i);
+                }
                 else
                 {
-                    if(currentOpening.moves[plyCount] != uciMove)
-                        openings.RemoveAt(i);
+                    if (currentOpening.moves[m_PlyCount] != uciMove)
+                    {
+                        m_Openings.RemoveAt(i);
+                    }
                 }
             }
 
-            plyCount++;
+            m_PlyCount++;
         }
     }
 }
