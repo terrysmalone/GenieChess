@@ -12,14 +12,8 @@ namespace ChessGame
 {
     class Program
     {
-        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         static void Main(string[] args)
         {
-            log4net.Config.XmlConfigurator.Configure();
-            
-            UCI uci = new UCI();
-            uci.UCICommunication();
 
         }
     }
