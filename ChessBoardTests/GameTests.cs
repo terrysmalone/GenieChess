@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using ChessBoardTests.Properties;
 using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Debugging;
-using ChessGame.MoveSearching;
 using ChessGame.NotationHelpers;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
@@ -24,7 +20,7 @@ namespace ChessBoardTests
         [TestMethod]
         private void TestZobrist()
         {
-            Stopwatch watch = new Stopwatch();
+            var watch = new Stopwatch();
             Game game = new Game(ResourceLoader.LoadScoreValues("Score|Values.xml"));
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
