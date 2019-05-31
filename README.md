@@ -4,13 +4,17 @@
 
 There are two ways to run the engine:
 
-1. The main way, is using the UCI communication protocol (http://wbec-ridderkerk.nl/html/UCIProtocol.html). This allows various methods of input and output, all of which are implemented in various external UI programs. 
+### UCI Communication Protocol ###
+
+The main way, is using the UCI communication protocol (http://wbec-ridderkerk.nl/html/UCIProtocol.html). This allows various methods of input and output, all of which are implemented in various external UI programs. 
 
 First, compile and build using the UCIDebug or UCIRelease configuration.
 
 Currently, CuteChess is the best one I've found.
 
-2. It can also be run from the command line (usually for debugging)
+### Command Line ###
+
+It can also be run from the command line (usually for debugging)
 
 ## Engine ##
 
