@@ -14,7 +14,22 @@ Currently, CuteChess is the best one I've found.
 
 ### Command Line ###
 
-It can also be run from the command line (usually for debugging)
+It can also be run from the command line (usually for debugging).
+
+#### Commands ####
+
+* `-help` for info on basic commands
+* `print` displays the current board
+*
+
+
+
+#### Defaults ####
+
+* **Opening book** - as default an opening book is used
+* **Thinking depth** - the default thinking depth is 7 
+* **Search strategy** - the default strategy is alphabeta
+
 
 ## Engine ##
 
