@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BitboardVisualiser;
-using ChessGame;
+﻿using BitboardVisualiser;
 using ChessGame.BoardRepresentation;
 
 namespace BitboardVisualiserTest
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            //UInt64 square = 768;
-            //DebuggerBitboard.TestShowVisualizer(square);
-
-            Board board = new Board();
+            var board = new Board();
 
             board.InitaliseStartingPosition();
 
