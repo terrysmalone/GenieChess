@@ -42,6 +42,7 @@ The opening book is loaded by giving the address of the txt file containing the 
 The format of the opening book is..........
 
 If no location is given the default will be......
+
 #### Scoring ####
 
 The scoring criteria is taken from an external xml file, giving the scores ..............
@@ -52,7 +53,20 @@ If no location is given the default will be......
 
 * TODO list implemented and to implement features
 
+#### Move searching ####
 
+##### AlphaBeta #####
+
+The search strategy used is alpha beta [Add description]
+
+
+* Iterative deepening
+* Transposition table
+* Check extensions
+* Null move pruning
+* Move ordering - OrderSimple - OrderByMVVLVA - OrderByScore
+* Killer moves
+* Zobrist hashing
 
 
 
