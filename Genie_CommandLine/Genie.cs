@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ChessGame;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Debugging;
+using ChessGame.NotationHelpers;
 using log4net;
 
 namespace Genie_CommandLine
@@ -27,7 +28,9 @@ namespace Genie_CommandLine
             Log.Info("Running Genie - Command-line version");
             Log.Info("");
 
-            m_Game = new Game();
+            var chessGameFactory = new ChessGameFactory();
+
+            m_Game = chessGameFactory.CreateChessGame();
 
             m_Game.SetSearchType(SearchStrategy.AlphaBeta);
             m_Game.ThinkingDepth = 7;
@@ -53,11 +56,11 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "print")
                     {
-                        m_Game.CurrentBoard.WriteBoardToConsole();
+                        m_Game.WriteBoardToConsole();
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {
-                        var bestMove = m_Game.FindBestMove_UCI();
+                        var bestMove = UCIMoveTranslator.ToUCIMove(m_Game.GetBestMove());
 
                         Console.WriteLine($"Computer move: {bestMove}");
 

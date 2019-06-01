@@ -1,11 +1,7 @@
 ﻿using ChessGame.BoardRepresentation;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
@@ -14,15 +10,15 @@ namespace ChessGame.MoveSearching
 {
     public class MiniMax
     {
-        private Board boardPosition;
-        private ScoreCalculator scoreCalc;
+        private IBoard m_BoardPosition;
+        private readonly IScoreCalculator m_ScoreCalc;
 
         private decimal score;
 
-        public MiniMax(Board boardPosition, ScoreCalculator scoreCalc)
+        public MiniMax(IBoard boardPosition, IScoreCalculator scoreCalc)
         {
-            this.boardPosition = boardPosition;
-            this.scoreCalc = scoreCalc;
+            m_BoardPosition = boardPosition;
+            m_ScoreCalc = scoreCalc;
         }
 
         public PieceMoves MoveCalculate(int depth)
@@ -34,11 +30,11 @@ namespace ChessGame.MoveSearching
             decimal max = decimal.MinValue;
 
 
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             PieceColour colour;
 
-            if (boardPosition.WhiteToMove)
+            if (m_BoardPosition.WhiteToMove)
                 colour = PieceColour.White;
             else
                 colour = PieceColour.Black;
@@ -51,10 +47,10 @@ namespace ChessGame.MoveSearching
                 {
                     PieceColour friendlyColour = PieceColour.White;
 
-                    if(boardPosition.WhiteToMove == false)
+                    if(m_BoardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
 
-                    if (BoardChecking.IsKingInCheckFast(boardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheckFast(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }
@@ -62,9 +58,9 @@ namespace ChessGame.MoveSearching
 
                 if (!skipMove)
                 {
-                    boardPosition.MakeMove(moveList[i], false);
+                    m_BoardPosition.MakeMove(moveList[i], false);
 
-                    if (MoveGeneration.ValidateMove(boardPosition))
+                    if (MoveGeneration.ValidateMove(m_BoardPosition))
                     {
                         if (colour == PieceColour.White)
                             score = Min(depth - 1);
@@ -78,7 +74,7 @@ namespace ChessGame.MoveSearching
                         }
                     }
 
-                    boardPosition.UnMakeLastMove();
+                    m_BoardPosition.UnMakeLastMove();
                 }
             }
 
@@ -93,17 +89,17 @@ namespace ChessGame.MoveSearching
         private decimal Max(int depth)
         {
             if (depth == 0)
-                return Evaluate(boardPosition);
+                return Evaluate(m_BoardPosition);
 
             decimal max = decimal.MinValue;
 
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             for (int i = 0; i < moveList.Count; i++)
             {
-                boardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(moveList[i], false);
 
-                if (MoveGeneration.ValidateMove(boardPosition))
+                if (MoveGeneration.ValidateMove(m_BoardPosition))
                 {
                     score = Min(depth - 1);
 
@@ -111,7 +107,7 @@ namespace ChessGame.MoveSearching
                         max = score;
                 }
 
-                boardPosition.UnMakeLastMove();
+                m_BoardPosition.UnMakeLastMove();
             }
 
             return max;
@@ -125,17 +121,17 @@ namespace ChessGame.MoveSearching
         private decimal Min(int depth)
         {
             if (depth == 0)
-                return Evaluate(boardPosition);
+                return Evaluate(m_BoardPosition);
 
             decimal min = decimal.MaxValue;
                         
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             for (int i = 0; i < moveList.Count; i++)
             {
-                boardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(moveList[i], false);
 
-                if (MoveGeneration.ValidateMove(boardPosition))
+                if (MoveGeneration.ValidateMove(m_BoardPosition))
                 {
                     score = Max(depth - 1);
 
@@ -143,15 +139,15 @@ namespace ChessGame.MoveSearching
                         min = score;
                 }
 
-                boardPosition.UnMakeLastMove();
+                m_BoardPosition.UnMakeLastMove();
             }
 
             return min;
         }
 
-        private decimal Evaluate(Board boardPosition)
+        private decimal Evaluate(IBoard boardPosition)
         {
-            return scoreCalc.CalculateScore(boardPosition);
+            return m_ScoreCalc.CalculateScore(boardPosition);
         }
 
     }

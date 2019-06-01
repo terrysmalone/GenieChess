@@ -64,7 +64,7 @@ namespace ChessGame.NotationHelpers
         /// </summary>
         /// <param name="move"></param>
         /// <returns></returns>
-        public static PieceMoves ToGameMove(string move, Board board)
+        public static PieceMoves ToGameMove(string move, IBoard board)
         {            
             PieceMoves pieceMove = new PieceMoves();
 

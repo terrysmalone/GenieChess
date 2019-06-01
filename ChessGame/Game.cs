@@ -4,7 +4,6 @@ using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
 using ChessGame.MoveSearching;
 using ChessGame.BoardSearching;
-using System.IO;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using log4net;
@@ -16,27 +15,18 @@ namespace ChessGame
     public class Game
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region private properties
-
-        #region Game settings
-
+        
         private OpeningBook m_OpeningBook;
 
         private int m_ThinkingDepth = 8;
-
-        #endregion Game settings
         
         private bool m_GameIsActive = true;
 
-        private readonly ScoreCalculator m_ScoreCalculator;
 
-        #endregion private properties
+        private IBoard m_CurrentBoard;
 
-        #region public properties
-
-        #region Game settings
-
+        private readonly IScoreCalculator m_ScoreCalculator;
+        
         public bool UseOpeningBook { get; set; }
 
         public string OpeningBookFile { get; set; } = string.Empty;
@@ -57,53 +47,23 @@ namespace ChessGame
         public SearchStrategy WhiteSearchType { get; set; } = SearchStrategy.AlphaBeta;
 
         public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
-
-        #endregion Game settings
         
-        public Board CurrentBoard { get; }
-
-        #endregion public properties
-
-        #region constructors
-
-        /// <summary>
-        /// Loads a game using the default score values "ScoreValues.xml"
-        /// </summary>
-        public Game()
-        {
-            Log.Info($"Loading default score set: {"ScoreValues.xml"}");
-
-            m_ScoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
-
-            LookupTables.InitialiseAllTables();
-            ZobristHash.Initialise();
-            TranspositionTable.InitialiseTable();
-
-            CurrentBoard = new Board();
-            CurrentBoard.InitaliseStartingPosition();
-
-            Log.Info("Initialised Game to starting position");
-
-            LogGameSettings();
-        }
-
-        public Game(ScoreCalculator scoreCalculator)
+        public Game(IScoreCalculator scoreCalculator, IBoard board)
         {
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
-            
+
+            m_CurrentBoard = board ?? throw new ArgumentNullException(nameof(board));
+
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
-
-            CurrentBoard = new Board();
-            CurrentBoard.InitaliseStartingPosition();
+            
+            m_CurrentBoard.InitaliseStartingPosition();
 
             Log.Info("Initialised Game to starting position");
 
             LogGameSettings();
         }
-
-        #endregion constructor
 
         #region UCI commands
 
@@ -128,18 +88,9 @@ namespace ChessGame
                 m_OpeningBook.RegisterMadeMove(move);
             }
 
-            var pieceMove = UCIMoveTranslator.ToGameMove(move, CurrentBoard);
+            var pieceMove = UCIMoveTranslator.ToGameMove(move, m_CurrentBoard);
 
-            CurrentBoard.MakeMove(pieceMove, true);
-        }
-
-        public string FindBestMove_UCI()
-        {
-            var bestMove = GetBestMove();
-
-            var bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
-
-            return bestMoveString;
+            m_CurrentBoard.MakeMove(pieceMove, true);
         }
 
         #endregion UCI commands
@@ -149,7 +100,7 @@ namespace ChessGame
             var currentMove = GetBestMove();
 
             if (currentMove.Type != PieceType.None)
-                CurrentBoard.MakeMove(currentMove, true);
+                m_CurrentBoard.MakeMove(currentMove, true);
             else
                 m_GameIsActive = false;
 
@@ -164,7 +115,7 @@ namespace ChessGame
 
                 if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    var openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, CurrentBoard);
+                    var openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, m_CurrentBoard);
 
                     var uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
 
@@ -182,24 +133,24 @@ namespace ChessGame
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
-            PieceMoves currentMove = new PieceMoves();
+            var currentMove = new PieceMoves();
 
             if (WhiteSearchType == SearchStrategy.MiniMax)
             {
-                var miniMax = new MiniMax(CurrentBoard, m_ScoreCalculator);
+                var miniMax = new MiniMax(m_CurrentBoard, m_ScoreCalculator);
 
                 currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
 
             }
             else if (WhiteSearchType == SearchStrategy.NegaMax)
             {
-                var negaMax = new NegaMax(CurrentBoard, m_ScoreCalculator);
+                var negaMax = new NegaMax(m_CurrentBoard, m_ScoreCalculator);
 
                 currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
             }
             else if (WhiteSearchType == SearchStrategy.AlphaBeta)
             {
-                var search = new AlphaBetaSearch(CurrentBoard, m_ScoreCalculator);
+                var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
                 currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
                                                     : search.MoveCalculate(m_ThinkingDepth);
@@ -207,17 +158,28 @@ namespace ChessGame
 
             return currentMove;
         }
-        
+
+        public BoardState GetCurrentBoardState()
+        {
+            return m_CurrentBoard.GetCurrentBoardState();
+        }
+
+        // TODO: I will split this logic out so that the request doesn't have to be passed down
+        public void WriteBoardToConsole()
+        {
+            m_CurrentBoard.WriteBoardToConsole();
+        }
+
         #region Board setup methods
 
-        /// <summary>
-        /// Initialises the pieces to a games starting position
-        /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
-        /// therefore the far left digit is a1 and the leftmost digit is h8
-        /// </summary>
-        public void InitaliseStartingPosition()
+            /// <summary>
+            /// Initialises the pieces to a games starting position
+            /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
+            /// therefore the far left digit is a1 and the leftmost digit is h8
+            /// </summary>
+            public void InitaliseStartingPosition()
         {
-            CurrentBoard.InitaliseStartingPosition();
+            m_CurrentBoard.InitaliseStartingPosition();
         }
 
         /// <summary>
@@ -225,7 +187,7 @@ namespace ChessGame
         /// </summary>
         public void ClearBoard()
         {
-            CurrentBoard.ClearBoard();
+            m_CurrentBoard.ClearBoard();
         }
 
         /// <summary>
@@ -239,18 +201,18 @@ namespace ChessGame
 
         public void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
         {
-            CurrentBoard.PlacePiece(typeToPlace, colour, file, rank);
+            m_CurrentBoard.PlacePiece(typeToPlace, colour, file, rank);
         }
 
         public void AllowAllCastling(bool allow)
         {
-            CurrentBoard.AllowAllCastling(allow);
+            m_CurrentBoard.AllowAllCastling(allow);
         }
 
         /// <param name="fenNotation"></param>
         public void SetFENPosition(string fenNotation)
         {
-            CurrentBoard.SetPosition(FenTranslator.ToBoardState(fenNotation));
+            m_CurrentBoard.SetPosition(FenTranslator.ToBoardState(fenNotation));
         }
 
         #endregion  Board setup methods
@@ -269,7 +231,7 @@ namespace ChessGame
         /// </summary>
         internal void ResetFlags()
         {
-            CurrentBoard.ResetFlags();
+            m_CurrentBoard.ResetFlags();
         }
 
         #region opening book
@@ -308,10 +270,7 @@ namespace ChessGame
 
                 UseOpeningBook = false;
             }
-            
-            
         }
-
 
         #endregion opening book
 

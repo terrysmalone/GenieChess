@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame.BoardRepresentation;
 using ChessGame.Properties;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
@@ -97,7 +98,7 @@ namespace ChessGame
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            game = new Game(scoreCalculator);
+            game = new Game(scoreCalculator, new Board());
             game.LoadDefaultOpeningBook();
             game.UseOpeningBook = true;
         }
@@ -173,17 +174,17 @@ namespace ChessGame
         private void InputGo(string input)
         {
             //make search on new thread so we can accept stop command
-            string bestMove = game.FindBestMove_UCI();
 
-            //PrintFEN();
+            var bestMove = game.GetBestMove();
 
-            Console.WriteLine(string.Format("bestmove {0}", bestMove));
-
+            var bestMoveUci =  UCIMoveTranslator.ToUCIMove(bestMove);
+            
+            Console.WriteLine($"bestmove {bestMoveUci}");
         }
 
         private void PrintFEN()
         {
-            string fen = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());           
+            var fen = FenTranslator.ToFENString(game.GetCurrentBoardState());           
         }
     }
 }

@@ -15,21 +15,16 @@ namespace ChessGame.BoardRepresentation
     /// including all 12 bitboards who is to move and flags for moves like en-passant and castling
     /// </summary>
     [Serializable]
-    public class Board
+    public class Board : IBoard
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection
                                                                       .MethodBase
                                                                       .GetCurrentMethod()
                                                                       .DeclaringType);
 
-        #region private properties
+        #region piece bitboard properties
 
         private int m_MoveCount;
-
-        //private bool whiteInCheck, blackInCheck;    // To keep track of whether players are in check
-                                                      // easier than checking lots in the evaluation
-        
-        //private string m_PgnMove = string.Empty;
         
         private const ulong FullBoard = ulong.MaxValue;
         
@@ -213,7 +208,7 @@ namespace ChessGame.BoardRepresentation
             PlacePiece(typeToPlace, colour, squareToPlace);
         }
 
-        internal void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
+        public void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
         {
             var squareToPlace = LookupTables.SquareValuesFromPosition[file, rank];
 
@@ -228,7 +223,7 @@ namespace ChessGame.BoardRepresentation
         /// <param name="typeToPlace"></param>
         /// <param name="colour"></param>
         /// <param name="squareToPlace"></param>
-        internal void PlacePiece(PieceType typeToPlace, PieceColour colour, ulong squareToPlace)
+        public void PlacePiece(PieceType typeToPlace, PieceColour colour, ulong squareToPlace)
         {
             switch (typeToPlace)
             {
@@ -280,11 +275,11 @@ namespace ChessGame.BoardRepresentation
 
             CalculateUsefulBitboards();
         }
-        
+
         /// <summary>
         ///Removes the piece at the given index - 0-63 
         /// </summary>
-        internal void RemovePiece(int positionToClear)
+        public void RemovePiece(int positionToClear)
         {
             ulong squareToClear = LookupTables.SquareValuesFromIndex[positionToClear];
 
@@ -295,7 +290,7 @@ namespace ChessGame.BoardRepresentation
         /// <summary>
         ///Removes the piece at the given file and rank
         /// </summary>
-        internal void RemovePiece(int file, int rank)
+        public void RemovePiece(int file, int rank)
         {
             ulong squareToClear = LookupTables.SquareValuesFromPosition[file, rank];
 
@@ -306,7 +301,7 @@ namespace ChessGame.BoardRepresentation
         ///Removes the piece at the given square value
         ///Note: No checks are done on squareToRemove. An actual value must be given or multiple pieces will be removed
         /// </summary>
-        internal void RemovePiece(ulong squareToClear)
+        public void RemovePiece(ulong squareToClear)
         {
             var notSquareToClear = ~squareToClear;
 
