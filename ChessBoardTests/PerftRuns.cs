@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame;
 using ChessGame.BoardRepresentation;
-using ChessGame.PossibleMoves;
-using ChessGame.ResourceLoading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.NotationHelpers;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     //[Ignore]
     [TestClass]
@@ -21,7 +15,7 @@ namespace ChessBoardTests
 
         public void LogPerftRun()
         {
-            using (StreamWriter writer = new StreamWriter("PerftLog.txt"))
+            using (var writer = new StreamWriter("PerftLog.txt"))
             {
                 LogPerft("PerftInitial", writer, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", new List<ulong>() { 20, 400, 8902, 197281, 4865609, 119060324 });
                 LogPerft("Perft2", writer, "8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -", new List<ulong>() { 5, 39, 237, 2002, 14062, 120995, 966152, 8103790 });
@@ -48,7 +42,7 @@ namespace ChessBoardTests
 
         public void LogEndPerftRunQuick()
         {
-            using (StreamWriter writer = new StreamWriter("PerftLogQuick.txt"))
+            using (var writer = new StreamWriter("PerftLogQuick.txt"))
             {
                 LogPerft("PerftInitial", writer, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4, 197281);
                 LogPerft("Perft2", writer, "8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -", 7, 966152);
@@ -73,27 +67,27 @@ namespace ChessBoardTests
             }
         }
         
-        private void LogPerft(string title, StreamWriter writer, string fenNotation, List<ulong> runs)
+        private void LogPerft(string title, StreamWriter writer, string fenNotation, IReadOnlyList<ulong> runs)
         {
-            bool passed = true;
+            var passed = true;
             ulong results;
 
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(fenNotation));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             writer.WriteLine();
             writer.WriteLine(title + " - " + fenNotation);
             
-            for (int i=0; i<runs.Count; i++)
+            for (var i=0; i<runs.Count; i++)
             {
-                Console.WriteLine(string.Format("Checking {0} at depth {1}", title, i + 1));
+                Console.WriteLine($"Checking {title} at depth {i + 1}");
 
                 if ((results = perft.Perft(board, i+1)) != runs[i])
                 {                    
                     writer.Write("FAIL! - ");
-                    writer.WriteLine(string.Format("Depth {0} should have {1} nodes but has {2}", i+1, runs[i], results));
+                    writer.WriteLine($"Depth {i + 1} should have {runs[i]} nodes but has {results}");
                     passed = false;
                 }
                 
@@ -102,44 +96,44 @@ namespace ChessBoardTests
             }            
 
             if (passed)
-                writer.WriteLine(string.Format("Passed to depth {0}", runs.Count));
+                writer.WriteLine($"Passed to depth {runs.Count}");
         }
 
         private void LogPerft(string title, StreamWriter writer, string fenNotation, int depth, ulong expectedResult)
         {
-            DateTime startTime = DateTime.Now;
+            var startTime = DateTime.Now;
 
-            bool passed = true;
+            var passed = true;
             ulong results;
 
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(fenNotation));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             writer.WriteLine();
             writer.WriteLine(title + " - " + fenNotation);
 
-            Console.WriteLine(string.Format("Checking {0} at depth {1}", title, depth));
+            Console.WriteLine($"Checking {title} at depth {depth}");
 
             if ((results = perft.Perft(board, depth)) != expectedResult)
             {
                 writer.Write("FAIL! - ");
-                writer.WriteLine(string.Format("Depth {0} should have {1} nodes but has {2}", depth, expectedResult, results));
+                writer.WriteLine($"Depth {depth} should have {expectedResult} nodes but has {results}");
                 passed = false;
                 Console.WriteLine("FAILED!");
             }
 
             if (passed)
             {
-                writer.Write(string.Format("Passed to depth {0}", depth));
+                writer.Write($"Passed to depth {depth}");
                 Console.WriteLine("passed");
             }
 
-            DateTime endTime = DateTime.Now;
+            var endTime = DateTime.Now;
 
-            TimeSpan runningTime = endTime - startTime;
-            writer.WriteLine(string.Format(" - Running time:{0}", runningTime.TotalSeconds));
+            var runningTime = endTime - startTime;
+            writer.WriteLine($" - Running time:{runningTime.TotalSeconds}");
 
         }
 
@@ -183,10 +177,10 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftInitial()
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             //List<Tuple<string, ulong>> divides = perft.Divides(board);
 
@@ -204,10 +198,10 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftInitial_WithHashing()
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
             perft.UseHashing = true;
 
             //List<Tuple<string, ulong>> divides = perft.Divides(board);
@@ -226,8 +220,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft2()
         {
-            Board board = new Board();
-            PerfT perft = new PerfT();
+            var board = new Board();
+            var perft = new PerfT();
 
             board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
 
@@ -247,13 +241,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft3()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
-            List<Tuple<string, ulong>> divides = perft.Divides(board);
+            //var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)17, perft.Perft(board, 1), "Failed at 1");
             Assert.AreEqual((ulong)341, perft.Perft(board, 2), "Failed at 2");
@@ -266,13 +260,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft4()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
-            List<Tuple<string, ulong>> divides = perft.Divides(board);
+            //var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)9, perft.Perft(board, 1), "Failed at 1");
             Assert.AreEqual((ulong)85, perft.Perft(board, 2), "Failed at 2");
@@ -289,11 +283,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft5()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)30, perft.Perft(board, 1));
             Assert.AreEqual((ulong)986, perft.Perft(board, 2));
@@ -310,11 +304,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft6()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)48, perft.Perft(board, 1));
             Assert.AreEqual((ulong)2039, perft.Perft(board, 2));
@@ -330,11 +324,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft7()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)24, perft.Perft(board, 1), "Failed at 1");
             Assert.AreEqual((ulong)496, perft.Perft(board, 2), "Failed at 2");
@@ -347,12 +341,12 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft8()
         {
-            Board board = new Board();
+            var board = new Board();
 
             
             board.SetPosition(FenTranslator.ToBoardState("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"));
                         
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
             
             Assert.AreEqual((ulong)14, perft.Perft(board, 1));
             Assert.AreEqual((ulong)191, perft.Perft(board, 2));
@@ -368,11 +362,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerft9()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)37, perft.Perft(board, 1));
             Assert.AreEqual((ulong)1109, perft.Perft(board, 2));
@@ -388,11 +382,11 @@ namespace ChessBoardTests
          [TestMethod]
         public void TestPerft10()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)18, perft.Perft(board, 1));
             Assert.AreEqual((ulong)92, perft.Perft(board, 2));
@@ -409,11 +403,11 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft11()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
              Assert.AreEqual((ulong)13, perft.Perft(board, 1));
              Assert.AreEqual((ulong)102, perft.Perft(board, 2));
@@ -430,11 +424,11 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft12()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
              Assert.AreEqual((ulong)15, perft.Perft(board, 1));
              Assert.AreEqual((ulong)126, perft.Perft(board, 2));
@@ -451,13 +445,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft13()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("5k2/8/8/8/8/8/8/4K2R w K - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)15, perft.Perft(board, 1));
              Assert.AreEqual((ulong)66, perft.Perft(board, 2));
@@ -474,13 +468,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft14()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/8/8/R3K3 w Q - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)16, perft.Perft(board, 1));
              Assert.AreEqual((ulong)71, perft.Perft(board, 2));
@@ -497,12 +491,12 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft15()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1"));
 
              //board.SetPosition(FenTranslator.ToBoardState("r3k2r/1b4bq/8/8/8/8/7B/2KR3R b kq - 0 1");
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
              //List<Tuple<string, ulong>> divides = perft.Divides(board);
 
@@ -521,13 +515,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft16()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)44, perft.Perft(board, 1));
              Assert.AreEqual((ulong)1494, perft.Perft(board, 2));
@@ -544,13 +538,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft17()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)11, perft.Perft(board, 1));
              Assert.AreEqual((ulong)133, perft.Perft(board, 2));
@@ -567,13 +561,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft18()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)29, perft.Perft(board, 1));
              Assert.AreEqual((ulong)165, perft.Perft(board, 2));
@@ -590,13 +584,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft19()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("4k3/1P6/8/8/8/8/K7/8 w - - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)9, perft.Perft(board, 1));
              Assert.AreEqual((ulong)40, perft.Perft(board, 2));
@@ -613,13 +607,13 @@ namespace ChessBoardTests
          [TestMethod]
          public void TestPerft20()
          {
-             Board board = new Board();
+             var board = new Board();
 
              board.SetPosition(FenTranslator.ToBoardState("8/P1k5/K7/8/8/8/8/8 w - - 0 1"));
 
-             PerfT perft = new PerfT();
+             var perft = new PerfT();
 
-             List<Tuple<string, ulong>> divides = perft.Divides(board);
+             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)6, perft.Perft(board, 1), "Failed at 1");
              Assert.AreEqual((ulong)27, perft.Perft(board, 2), "Failed at 2");
@@ -636,11 +630,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftCheckMate()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5b2/4n1p1/7K w - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)0, perft.Perft(board, 1));
             Assert.AreEqual((ulong)0, perft.Perft(board, 2));
@@ -649,11 +643,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftStalemate()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5n1b/7p/7K w - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)0, perft.Perft(board, 1));
             Assert.AreEqual((ulong)0, perft.Perft(board, 2));
@@ -666,11 +660,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftJustKings()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/8/2K1k3 w - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)3, perft.Perft(board, 1));
             Assert.AreEqual((ulong)13, perft.Perft(board, 2));
@@ -684,11 +678,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftKingsAndBishops()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("2b1B3/8/8/8/8/8/8/2K1k3 b - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)10, perft.Perft(board, 1));
             Assert.AreEqual((ulong)99, perft.Perft(board, 2));
@@ -701,11 +695,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftKingsAndPawns()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("2k5/2p5/8/8/8/8/3P4/3K4 w - - 0 1"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)6, perft.Perft(board, 1), "Failed at 1");
             Assert.AreEqual((ulong)36, perft.Perft(board, 2), "Failed at 2");
@@ -718,11 +712,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftKingsAndKnights()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("2K2k2/8/8/8/8/8/8/2n2N2 w - -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)9, perft.Perft(board, 1));
             Assert.AreEqual((ulong)77, perft.Perft(board, 2));
@@ -735,11 +729,11 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftKingsAndRooks()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/2R2r2/1K3k2 w - -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
             Assert.AreEqual((ulong)16, perft.Perft(board, 1));
             Assert.AreEqual((ulong)219, perft.Perft(board, 2));
@@ -751,13 +745,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftKingsAndQueens()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/2Q2q2/8/8/8/8/1K3k2 w - -"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
-            List<Tuple<string, ulong>> divides = perft.Divides(board);
+            var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)26, perft.Perft(board, 1));
             Assert.AreEqual((ulong)512, perft.Perft(board, 2));
@@ -777,13 +771,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftArena_1a()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR4K1 w - - 1 22"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
-            List<Tuple<string, ulong>> divides = perft.Divides(board);
+            var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)39, perft.Perft(board, 1));
             Assert.AreEqual((ulong)1020, perft.Perft(board, 2));
@@ -794,13 +788,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPerftArena_1b()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR1Q2K1 b - - 1 23"));
 
-            PerfT perft = new PerfT();
+            var perft = new PerfT();
 
-            List<Tuple<string, ulong>> divides = perft.Divides(board);
+            var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)28, perft.Perft(board, 1));
             Assert.AreEqual((ulong)1356, perft.Perft(board, 2));

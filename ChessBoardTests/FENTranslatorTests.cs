@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
 using ChessGame.PossibleMoves;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class FENTranslatorTests

@@ -3,7 +3,7 @@ using ChessGame;
 using ChessGame.BoardRepresentation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class BoardStateTests
