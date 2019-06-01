@@ -176,11 +176,13 @@
     <Compile Include="BoardRepresentation\Enums\SearchStrategy.cs" />
     <Compile Include="Books\Opening.cs" />
     <Compile Include="Books\OpeningBook.cs" />
+    <Compile Include="ChessGameFactory.cs" />
     <Compile Include="Exceptions\BitboardException.cs" />
     <Compile Include="Exceptions\ChessBoardException.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="BoardSearching\LookupTables.cs" />
+    <Compile Include="IChessGameFactory.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearch.cs" />
     <Compile Include="MoveSearching\Hash.cs" />
     <Compile Include="MoveSearching\MiniMax.cs" />
@@ -212,6 +214,7 @@
     <Compile Include="ResourceLoading\PerfTPosition.cs" />
     <Compile Include="ResourceLoading\ResourceLoader.cs" />
     <Compile Include="ResourceLoading\TestPosition.cs" />
+    <Compile Include="ScoreCalculation\IScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreValueXmlReader.cs" />
     <Compile Include="UCI.cs" />

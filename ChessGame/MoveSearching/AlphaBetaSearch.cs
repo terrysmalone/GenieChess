@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
@@ -26,8 +24,8 @@ namespace ChessGame.MoveSearching
     {
         private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Board boardPosition;
-        private ScoreCalculator scoreCalc;
+        private Board m_BoardPosition;
+        private readonly IScoreCalculator m_ScoreCalc;
 
         private int startDepth; 
 
@@ -59,10 +57,10 @@ namespace ChessGame.MoveSearching
 
         #endregion properties
 
-        public AlphaBetaSearch(Board boardPosition, ScoreCalculator scoreCalc)
+        public AlphaBetaSearch(Board boardPosition, IScoreCalculator scoreCalc)
         {
-            this.boardPosition = boardPosition;
-            this.scoreCalc = scoreCalc;
+            m_BoardPosition = boardPosition;
+            m_ScoreCalc = scoreCalc;
         }
 
         /// <summary>
@@ -72,8 +70,8 @@ namespace ChessGame.MoveSearching
         /// <returns></returns>
         public PieceMoves StartSearch(int maxDepth)
         {
-            string toMove = "black";
-            if (boardPosition.WhiteToMove)
+            var toMove = "black";
+            if (m_BoardPosition.WhiteToMove)
                 toMove = "white";
 
             log.Info($"Calculating move for {toMove}");
@@ -91,7 +89,7 @@ namespace ChessGame.MoveSearching
             
             idShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
-            for (int i = 1; i <= maxDepth; i++)
+            for (var i = 1; i <= maxDepth; i++)
             {
 
 #if UCI
@@ -112,7 +110,7 @@ namespace ChessGame.MoveSearching
 
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                PVInfo pvInfo = new PVInfo();
+                var pvInfo = new PVInfo();
                 pvInfo.Move = bestIDMove;
                 pvInfo.Score = bestIDScore;
                 pvInfo.DepthTime = speed;
@@ -155,8 +153,8 @@ namespace ChessGame.MoveSearching
         /// <returns></returns>
         public PieceMoves StartTimedSearch(int timeInMilliseconds)
         {            
-            string toMove = "black";
-            if (boardPosition.WhiteToMove)
+            var toMove = "black";
+            if (m_BoardPosition.WhiteToMove)
                 toMove = "white";
 
             log.Info($"Calculating move for {toMove}");
@@ -171,10 +169,10 @@ namespace ChessGame.MoveSearching
 
             idShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
-            Stopwatch moveTimer = new Stopwatch();
+            var moveTimer = new Stopwatch();
             moveTimer.Start();
 
-            Thread timedMove = new Thread(new ThreadStart(MakeTimedMove));
+            var timedMove = new Thread(new ThreadStart(MakeTimedMove));
             timedMove.Start();
             
             while(moveTimer.Elapsed.Ticks <= timeInMilliseconds)
@@ -189,22 +187,22 @@ namespace ChessGame.MoveSearching
 
         private void MakeTimedMove()
         {
-            int maxDepth = 30;
+            var maxDepth = 30;
 
-            for (int i = 1; i <= maxDepth; i++)
+            for (var i = 1; i <= maxDepth; i++)
             {
 #if Debug
                 CountDebugger.Evaluations = 0;
 #endif
-                Stopwatch timer = new Stopwatch();
+                var timer = new Stopwatch();
                 timer.Start();
 
                 bestIDMove = MoveCalculate(i, out bestIDScore);
 
                 timer.Stop();
-                TimeSpan speed = new TimeSpan(timer.Elapsed.Ticks);
+                var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                PVInfo pvInfo = new PVInfo();
+                var pvInfo = new PVInfo();
                 pvInfo.Move = bestIDMove;
                 pvInfo.Score = bestIDScore;
                 pvInfo.DepthTime = speed;
@@ -244,14 +242,14 @@ namespace ChessGame.MoveSearching
         {
             startDepth = depth;
 
-            decimal alpha = Decimal.MinValue/2-1;
-            decimal beta = Decimal.MaxValue/2+1;
+            var alpha = Decimal.MinValue/2-1;
+            var beta = Decimal.MaxValue/2+1;
 
             Debug.Assert(depth >= 1);
 
             decimal score = 0;
 
-            PieceMoves bestMove = new PieceMoves();
+            var bestMove = new PieceMoves();
             
             List<PieceMoves> moveList;
 
@@ -259,7 +257,7 @@ namespace ChessGame.MoveSearching
                 moveList = OrderFromIDMoves();
             else
             {
-                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(boardPosition));
+                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
                 OrderMoveInPlace(moveList);
             }
 
@@ -276,13 +274,13 @@ namespace ChessGame.MoveSearching
             //    wBeta = previousScore + window;
             //}
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
 #if UCI
                 Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
-                boardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(moveList[i], false);
 
                 //if (depth > 2)
                 //{
@@ -320,7 +318,7 @@ namespace ChessGame.MoveSearching
 
                 //RecordHash(depth, score, HashNodeType.Exact);
 
-                boardPosition.UnMakeLastMove();
+                m_BoardPosition.UnMakeLastMove();
             }
 
             bestScore = alpha;
@@ -335,23 +333,23 @@ namespace ChessGame.MoveSearching
 
         private decimal AlphaBeta(decimal alpha, decimal beta, int depth, bool allowNullMove, bool isNullMoveSearch, int extensionDepth)
         {
-            int searchDepth = startDepth - depth - 1;
+            var searchDepth = startDepth - depth - 1;
 
-            decimal alphaOrig = alpha;
+            var alphaOrig = alpha;
 
-            decimal score = Decimal.MinValue / 2 - 1;
+            var score = Decimal.MinValue / 2 - 1;
 
             #region transposition table lookup
 
-            PieceMoves bestMoveSoFar = new PieceMoves();
-            Hash hash = TranspositionTable.ProbeTable(boardPosition.Zobrist, depth, alpha, beta);
+            var bestMoveSoFar = new PieceMoves();
+            var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depth, alpha, beta);
             if (hash.Key != 0)
             {
                 if (hash.Depth >= depth)
                 {
-                    decimal povScore = hash.Score;
+                    var povScore = hash.Score;
 
-                    if (!boardPosition.WhiteToMove)
+                    if (!m_BoardPosition.WhiteToMove)
                         povScore = -hash.Score;
 
                     if (hash.NodeType == HashNodeType.Exact)
@@ -372,13 +370,13 @@ namespace ChessGame.MoveSearching
 
             #endregion transposition table lookup
                                     
-            bool isPositionInCheck = false;
-            bool canKingMove = false;
+            var isPositionInCheck = false;
+            var canKingMove = false;
             GetKingState(out isPositionInCheck, out canKingMove);
             
             #region Check extensions
 
-            int extensions = 0;
+            var extensions = 0;
 
             if (depth == 0)
             {
@@ -390,9 +388,9 @@ namespace ChessGame.MoveSearching
                 }
                 else
                 {
-                    score = Evaluate(boardPosition);
+                    score = Evaluate(m_BoardPosition);
 
-                    if (boardPosition.WhiteToMove)
+                    if (m_BoardPosition.WhiteToMove)
                         RecordHash(depth, score, HashNodeType.Exact);
                     else
                         RecordHash(depth, -score, HashNodeType.Exact);
@@ -404,7 +402,7 @@ namespace ChessGame.MoveSearching
 
             #endregion Check extensions
                         
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             if (moveList.Count == 0)
                 return EvaluateEndGame(depth, isPositionInCheck);
@@ -415,15 +413,15 @@ namespace ChessGame.MoveSearching
 #warning - This should go before calculating moves but until I move the check for endgame before this it can't
             if (!isPositionInCheck && allowNullMove && depth > nullMoveR)
             {
-                boardPosition.SwitchSides();
-                decimal eval = -AlphaBeta(-beta, -beta + 1, depth - 1 - nullMoveR, false, true, extensionDepth);
+                m_BoardPosition.SwitchSides();
+                var eval = -AlphaBeta(-beta, -beta + 1, depth - 1 - nullMoveR, false, true, extensionDepth);
 
                 //if (eval >= beta)
                 //{
                 //    RecordHash(depth - 1 - nullMoveR, score, HashNodeType.LowerBound);
                 //}
 
-                boardPosition.SwitchSides();
+                m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
                 {
@@ -452,7 +450,7 @@ namespace ChessGame.MoveSearching
 
                 if (primaryKillerMoves[searchDepth] != null)
                 {
-                    PieceMoves killerMove = primaryKillerMoves[searchDepth].Item1;
+                    var killerMove = primaryKillerMoves[searchDepth].Item1;
 
                     if (moveList.Contains(killerMove))
                     {
@@ -471,19 +469,19 @@ namespace ChessGame.MoveSearching
             
             #endregion move ordering
             
-            int calculationDepth = depth + extensions;
-            bool areAnyMovesLegal = false;
+            var calculationDepth = depth + extensions;
+            var areAnyMovesLegal = false;
 
-            PieceMoves bestMove = new PieceMoves();
+            var bestMove = new PieceMoves();
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
-                PieceMoves currentMove = moveList[i];
+                var currentMove = moveList[i];
 
-                bool skipCastlingMove = false;
+                var skipCastlingMove = false;
                 if (IsCastlingMove(currentMove))
                 {
-                    if (isPositionInCheck || !MoveGeneration.ValidateCastlingMove(boardPosition, currentMove))                   
+                    if (isPositionInCheck || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, currentMove))                   
                     {
                         moveList.RemoveAt(i);
                         i--;
@@ -493,13 +491,13 @@ namespace ChessGame.MoveSearching
 
                 if (!skipCastlingMove)
                 {
-                    boardPosition.MakeMove(currentMove, false);
+                    m_BoardPosition.MakeMove(currentMove, false);
 
-                    if (MoveGeneration.ValidateMove(boardPosition))
+                    if (MoveGeneration.ValidateMove(m_BoardPosition))
                     {
                         areAnyMovesLegal = true;
 
-                        decimal val = -AlphaBeta(-beta, -alpha, calculationDepth - 1, true, isNullMoveSearch, extensionDepth);    //Flip and negate bounds
+                        var val = -AlphaBeta(-beta, -alpha, calculationDepth - 1, true, isNullMoveSearch, extensionDepth);    //Flip and negate bounds
 
                         if (val > score)
                         {
@@ -517,7 +515,7 @@ namespace ChessGame.MoveSearching
                             {
                                 if (primaryKillerMoves[searchDepth] != null)
                                 {
-                                    Tuple<PieceMoves, decimal> primary = primaryKillerMoves[searchDepth];
+                                    var primary = primaryKillerMoves[searchDepth];
 
                                     if (alpha > primary.Item2)
                                     {
@@ -539,7 +537,7 @@ namespace ChessGame.MoveSearching
                                 }
                             }
 
-                            boardPosition.UnMakeLastMove();
+                            m_BoardPosition.UnMakeLastMove();
                             break;
                         }
                     }
@@ -549,7 +547,7 @@ namespace ChessGame.MoveSearching
                         //i--;
                     //}
 
-                    boardPosition.UnMakeLastMove();
+                    m_BoardPosition.UnMakeLastMove();
                 }
             }
 
@@ -568,7 +566,7 @@ namespace ChessGame.MoveSearching
             else
                 hashNodeType = HashNodeType.Exact;
 
-            if (boardPosition.WhiteToMove)
+            if (m_BoardPosition.WhiteToMove)
                 RecordHash(calculationDepth, score, hashNodeType, bestMove);
             else
                 RecordHash(calculationDepth, -score, hashNodeType, bestMove);
@@ -592,22 +590,22 @@ namespace ChessGame.MoveSearching
         private void OrderSimple(List<PieceMoves> moveList)
         {
             //Move all captures
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 if (moveList[i].SpecialMove == SpecialMoveType.Capture || moveList[i].SpecialMove == SpecialMoveType.ENPassantCapture || IsPromotionCapture(moveList[i].SpecialMove))
                 {
-                    PieceMoves moveToMove = moveList[i];
+                    var moveToMove = moveList[i];
                     moveList.RemoveAt(i);
                     moveList.Insert(0, moveToMove);
                 }
             }
 
             //Move all promotions 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 if (IsPromotion(moveList[i].SpecialMove))
                 {
-                    PieceMoves moveToMove = moveList[i];
+                    var moveToMove = moveList[i];
                     moveList.RemoveAt(i);
                     moveList.Insert(0, moveToMove);
                 }
@@ -617,14 +615,14 @@ namespace ChessGame.MoveSearching
         private void OrderByMVVLVA(List<PieceMoves> moveList)
         {
             //position, victim attacker
-            List<Tuple<int, int, int>> ordering = new List<Tuple<int, int, int>>();
+            var ordering = new List<Tuple<int, int, int>>();
 
             //Move capture
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 if (moveList[i].SpecialMove == SpecialMoveType.Capture || moveList[i].SpecialMove == SpecialMoveType.ENPassantCapture || IsPromotionCapture(moveList[i].SpecialMove))
                 {
-                    PieceType victimType = BoardChecking.GetPieceTypeOnSquare(boardPosition, moveList[i].Moves);
+                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[i].Moves);
                     ordering.Add(new Tuple<int, int, int>(i, GetPieceScore(victimType), GetPieceScore(moveList[i].Type)));
                 }
             }
@@ -632,7 +630,7 @@ namespace ChessGame.MoveSearching
             //Order by victim and then attacker
             ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
 
-            for (int i = 0; i < ordering.Count; i++)
+            for (var i = 0; i < ordering.Count; i++)
             {
                 MoveTo(moveList, ordering[i].Item1, i);
             }
@@ -648,14 +646,14 @@ namespace ChessGame.MoveSearching
             //List<Tuple<int, int, int>> ordering = new List<Tuple<int, int, int>>();
 
             //position, victim-attacker
-            List<Tuple<int, int>> ordering = new List<Tuple<int, int>>();
+            var ordering = new List<Tuple<int, int>>();
 
             //Move capture
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 if (moveList[i].SpecialMove == SpecialMoveType.Capture || moveList[i].SpecialMove == SpecialMoveType.ENPassantCapture || IsPromotionCapture(moveList[i].SpecialMove))
                 {
-                   PieceType victimType = BoardChecking.GetPieceTypeOnSquare(boardPosition, moveList[i].Moves);
+                   var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[i].Moves);
                    ordering.Add(new Tuple<int, int>(i, GetPieceScore(victimType)-GetPieceScore(moveList[i].Type)));
                 }
             }
@@ -663,9 +661,9 @@ namespace ChessGame.MoveSearching
             //Order by victim and then attacker
             ordering = ordering.OrderByDescending(o => o.Item2).ToList();
 
-            int cutoff = 0;
+            var cutoff = 0;
 
-            for (int i = 0; i < ordering.Count; i++)
+            for (var i = 0; i < ordering.Count; i++)
             {
                 if (ordering[i].Item2 >= 0)
                     MoveTo(moveList, ordering[i].Item1, i);
@@ -676,9 +674,9 @@ namespace ChessGame.MoveSearching
                 }
             }
 
-            int end = moveList.Count - 1;
+            var end = moveList.Count - 1;
 
-            for (int i = cutoff; i < ordering.Count; i++)
+            for (var i = cutoff; i < ordering.Count; i++)
             {
                 MoveTo(moveList, ordering[i].Item1, end);
             }
@@ -718,10 +716,10 @@ namespace ChessGame.MoveSearching
 
         private List<PieceMoves> OrderFromIDMoves()
         {
-            List<PieceMoves> moveList = new List<PieceMoves>();
+            var moveList = new List<PieceMoves>();
             idShuffleOrder = idShuffleOrder.OrderByDescending(i => i.Item1).ToList();
             
-            foreach (Tuple<decimal, PieceMoves> move in idShuffleOrder)
+            foreach (var move in idShuffleOrder)
             {
                 moveList.Add(move.Item2);
             }
@@ -733,14 +731,14 @@ namespace ChessGame.MoveSearching
 
         private void MoveTo(List<PieceMoves> moveList, int positionFrom, int positionTo)
         {
-            PieceMoves toMove = moveList[positionFrom];
+            var toMove = moveList[positionFrom];
             moveList.RemoveAt(positionFrom);
             moveList.Insert(positionTo, toMove);
         }
 
         private void MoveToFront(List<PieceMoves> moveList, int position)
         {
-            PieceMoves toMove = moveList[position];
+            var toMove = moveList[position];
             moveList.RemoveAt(position);
             moveList.Insert(0, toMove);
         }
@@ -812,14 +810,14 @@ namespace ChessGame.MoveSearching
         {
             canMove = false;
 
-            if(boardPosition.WhiteToMove)
+            if(m_BoardPosition.WhiteToMove)
             {
-                isInCheck = BoardChecking.IsKingInCheckFast(boardPosition, PieceColour.White);
+                isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, PieceColour.White);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.White); 
             }
             else
             {
-                isInCheck = BoardChecking.IsKingInCheckFast(boardPosition, PieceColour.Black);
+                isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, PieceColour.Black);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.Black); 
             }                        
         }
@@ -833,7 +831,7 @@ namespace ChessGame.MoveSearching
         /// <returns></returns>
         private int DetermineExtensions(int depth)
         {
-            int extension = 0;
+            var extension = 0;
 
             //if (boardPosition.WhiteToMove)
             //{
@@ -860,9 +858,9 @@ namespace ChessGame.MoveSearching
         private decimal Evaluate(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
-                return scoreCalc.CalculateScore(boardPosition);
+                return m_ScoreCalc.CalculateScore(boardPosition);
             else
-                return -scoreCalc.CalculateScore(boardPosition);
+                return -m_ScoreCalc.CalculateScore(boardPosition);
         }
 
         /// <summary>
@@ -873,7 +871,7 @@ namespace ChessGame.MoveSearching
         /// <returns></returns>
         private decimal EvaluateEndGame(int depth, bool isInCheck)
         {
-            int movesToend = (startDepth - depth) + 1;  //Since we want lower depth mates to score lower
+            var movesToend = (startDepth - depth) + 1;  //Since we want lower depth mates to score lower
             //Check for draw 
 
             //else
@@ -903,9 +901,9 @@ namespace ChessGame.MoveSearching
         /// <param name="hashNodeType"></param>
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType, PieceMoves bestMove)
         {
-            Hash hash = new Hash();
+            var hash = new Hash();
 
-            hash.Key = boardPosition.Zobrist;
+            hash.Key = m_BoardPosition.Zobrist;
             hash.Depth = depth;
             hash.NodeType = hashNodeType;
             hash.Score = score;
@@ -916,9 +914,9 @@ namespace ChessGame.MoveSearching
 
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
         {
-            Hash hash = new Hash();
+            var hash = new Hash();
 
-            hash.Key = boardPosition.Zobrist;
+            hash.Key = m_BoardPosition.Zobrist;
             hash.Depth = depth;
             hash.NodeType = hashNodeType;
             hash.Score = score;
@@ -945,16 +943,16 @@ namespace ChessGame.MoveSearching
         {
             log.Info("Killer moves");
 
-            for (int i = 0; i < primaryKillerMoves.Length; i++)
+            for (var i = 0; i < primaryKillerMoves.Length; i++)
 			{
-			    Tuple<PieceMoves, decimal> killerMove = primaryKillerMoves[i];
-                Tuple<PieceMoves, decimal> killerMove2 = secondaryKillerMoves[i];
+			    var killerMove = primaryKillerMoves[i];
+                var killerMove2 = secondaryKillerMoves[i];
 
-                string p1 = "null";
-                string p2 = "null";
+                var p1 = "null";
+                var p2 = "null";
 
-                string score1 = string.Empty;
-                string score2 = string.Empty;
+                var score1 = string.Empty;
+                var score2 = string.Empty;
 
                 if (killerMove != null)
                 {

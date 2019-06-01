@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
@@ -18,47 +14,47 @@ namespace ChessGame.MoveSearching
     /// </summary>
     public class NegaMax
     {
-        private Board boardPosition;
-        private ScoreCalculator scoreCalc;
+        private readonly Board m_BoardPosition;
+        private readonly IScoreCalculator m_ScoreCalc;
 
-        private decimal score;
+        private decimal m_Score;
 
-        public NegaMax(Board boardPosition, ScoreCalculator scoreCalc)
+        public NegaMax(Board boardPosition, IScoreCalculator scoreCalc)
         {
-            this.boardPosition = boardPosition;
-            this.scoreCalc = scoreCalc;
+            m_BoardPosition = boardPosition;
+            m_ScoreCalc = scoreCalc;
         }
 
         public PieceMoves MoveCalculate(int depth)
         {
             Debug.Assert(depth >= 1);
 
-            PieceMoves bestMove = new PieceMoves();
+            var bestMove = new PieceMoves();
 
-            decimal max = decimal.MinValue;
+            var max = decimal.MinValue;
 
             
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             PieceColour colour;
 
-            if (boardPosition.WhiteToMove)
+            if (m_BoardPosition.WhiteToMove)
                 colour = PieceColour.White;
             else
                 colour = PieceColour.Black;
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
-                bool skipMove = false;
+                var skipMove = false;
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    PieceColour friendlyColour = PieceColour.White;
+                    var friendlyColour = PieceColour.White;
 
-                    if(boardPosition.WhiteToMove == false)
+                    if(m_BoardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
 
-                    if (BoardChecking.IsKingInCheckFast(boardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheckFast(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }
@@ -66,23 +62,23 @@ namespace ChessGame.MoveSearching
 
                 if (!skipMove)
                 {
-                    boardPosition.MakeMove(moveList[i], false);
+                    m_BoardPosition.MakeMove(moveList[i], false);
 
-                    if (MoveGeneration.ValidateMove(boardPosition))
+                    if (MoveGeneration.ValidateMove(m_BoardPosition))
                     {
                         if (colour == PieceColour.White)
-                            score = -Calculate(depth - 1, false);
+                            m_Score = -Calculate(depth - 1, false);
                         else
-                            score = -Calculate(depth - 1, true);
+                            m_Score = -Calculate(depth - 1, true);
 
-                        if (score > max)
+                        if (m_Score > max)
                         {
-                            max = score;
+                            max = m_Score;
                             bestMove = moveList[i];
                         }
                     }
 
-                    boardPosition.UnMakeLastMove();
+                    m_BoardPosition.UnMakeLastMove();
                 }
             }
 
@@ -92,26 +88,25 @@ namespace ChessGame.MoveSearching
         private decimal Calculate(int depth, bool maximisingPlayer)
         {
             if (depth == 0)
-                return Evaluate(boardPosition, maximisingPlayer);
+                return Evaluate(m_BoardPosition, maximisingPlayer);
 
-            decimal max = decimal.MinValue;
+            var max = decimal.MinValue;
 
-            ;
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
-                boardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(moveList[i], false);
 
-                if (MoveGeneration.ValidateMove(boardPosition))
+                if (MoveGeneration.ValidateMove(m_BoardPosition))
                 {
-                    score = -Calculate(depth - 1, !maximisingPlayer);
+                    m_Score = -Calculate(depth - 1, !maximisingPlayer);
 
-                    if (score > max)
-                        max = score;
+                    if (m_Score > max)
+                        max = m_Score;
                 }
 
-                boardPosition.UnMakeLastMove();
+                m_BoardPosition.UnMakeLastMove();
             }
 
             return max;
@@ -120,9 +115,9 @@ namespace ChessGame.MoveSearching
         private decimal Evaluate(Board boardPosition, bool maximisingPlayer)
         {
             if (maximisingPlayer)
-                return scoreCalc.CalculateScore(boardPosition);
+                return m_ScoreCalc.CalculateScore(boardPosition);
             else
-                return -scoreCalc.CalculateScore(boardPosition);
+                return -m_ScoreCalc.CalculateScore(boardPosition);
         }
     }
 }

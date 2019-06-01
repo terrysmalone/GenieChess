@@ -4,7 +4,6 @@ using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
 using ChessGame.MoveSearching;
 using ChessGame.BoardSearching;
-using System.IO;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using log4net;
@@ -16,27 +15,15 @@ namespace ChessGame
     public class Game
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        #region private properties
-
-        #region Game settings
-
+        
         private OpeningBook m_OpeningBook;
 
         private int m_ThinkingDepth = 8;
-
-        #endregion Game settings
         
         private bool m_GameIsActive = true;
 
-        private readonly ScoreCalculator m_ScoreCalculator;
-
-        #endregion private properties
-
-        #region public properties
-
-        #region Game settings
-
+        private readonly IScoreCalculator m_ScoreCalculator;
+        
         public bool UseOpeningBook { get; set; }
 
         public string OpeningBookFile { get; set; } = string.Empty;
@@ -57,37 +44,10 @@ namespace ChessGame
         public SearchStrategy WhiteSearchType { get; set; } = SearchStrategy.AlphaBeta;
 
         public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
-
-        #endregion Game settings
         
         public Board CurrentBoard { get; }
-
-        #endregion public properties
-
-        #region constructors
-
-        /// <summary>
-        /// Loads a game using the default score values "ScoreValues.xml"
-        /// </summary>
-        public Game()
-        {
-            Log.Info($"Loading default score set: {"ScoreValues.xml"}");
-
-            m_ScoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
-
-            LookupTables.InitialiseAllTables();
-            ZobristHash.Initialise();
-            TranspositionTable.InitialiseTable();
-
-            CurrentBoard = new Board();
-            CurrentBoard.InitaliseStartingPosition();
-
-            Log.Info("Initialised Game to starting position");
-
-            LogGameSettings();
-        }
-
-        public Game(ScoreCalculator scoreCalculator)
+        
+        public Game(IScoreCalculator scoreCalculator)
         {
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
             
@@ -102,8 +62,6 @@ namespace ChessGame
 
             LogGameSettings();
         }
-
-        #endregion constructor
 
         #region UCI commands
 
@@ -131,15 +89,6 @@ namespace ChessGame
             var pieceMove = UCIMoveTranslator.ToGameMove(move, CurrentBoard);
 
             CurrentBoard.MakeMove(pieceMove, true);
-        }
-
-        public string FindBestMove_UCI()
-        {
-            var bestMove = GetBestMove();
-
-            var bestMoveString = UCIMoveTranslator.ToUCIMove(bestMove);
-
-            return bestMoveString;
         }
 
         #endregion UCI commands
@@ -182,7 +131,7 @@ namespace ChessGame
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
-            PieceMoves currentMove = new PieceMoves();
+            var currentMove = new PieceMoves();
 
             if (WhiteSearchType == SearchStrategy.MiniMax)
             {
@@ -308,10 +257,7 @@ namespace ChessGame
 
                 UseOpeningBook = false;
             }
-            
-            
         }
-
 
         #endregion opening book
 

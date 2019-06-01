@@ -11,7 +11,7 @@ namespace ChessGame.ScoreCalculation
     /// <summary>
     /// Calculates the score of a particular board position
     /// </summary>
-    public class ScoreCalculator
+    public class ScoreCalculator : IScoreCalculator
     {
         private Board m_CurrentBoard;
 
@@ -203,7 +203,7 @@ namespace ChessGame.ScoreCalculation
         /// Note: Counts only position. No other factor
         /// </summary>
         /// <returns></returns>
-        internal decimal CalculatePositionValues()
+        private decimal CalculatePositionValues()
         {
             decimal positionScores = 0;
 
@@ -329,7 +329,7 @@ namespace ChessGame.ScoreCalculation
             return piecePositionScore;
         }
         
-        internal decimal CalculatePositionScores(ulong pieces, ulong positions)
+        private decimal CalculatePositionScores(ulong pieces, ulong positions)
         {
             ulong inPosition = pieces & positions;
 

@@ -291,13 +291,13 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestKingCastlingWhileInCheckBug()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-             Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator);
             game.ClearBoard();
             game.SetFENPosition("r3k2r/p2b1ppp/2p2n2/b2p4/5B2/3B4/PPP1NPPP/R3K2R w KQkq - 0 1");
 
-            string move = game.FindBestMove_UCI();
+            var move = UCIMoveTranslator.ToUCIMove(game.GetBestMove());
 
             Assert.AreNotEqual("e1g1", move);
         }

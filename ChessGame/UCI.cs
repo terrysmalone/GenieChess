@@ -173,17 +173,17 @@ namespace ChessGame
         private void InputGo(string input)
         {
             //make search on new thread so we can accept stop command
-            string bestMove = game.FindBestMove_UCI();
 
-            //PrintFEN();
+            var bestMove = game.GetBestMove();
 
-            Console.WriteLine(string.Format("bestmove {0}", bestMove));
-
+            var bestMoveUci =  UCIMoveTranslator.ToUCIMove(bestMove);
+            
+            Console.WriteLine($"bestmove {bestMoveUci}");
         }
 
         private void PrintFEN()
         {
-            string fen = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());           
+            var fen = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());           
         }
     }
 }
