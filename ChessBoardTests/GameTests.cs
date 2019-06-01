@@ -17,94 +17,94 @@ namespace ChessBoardTests
     [TestClass]
     public class GameTests
     {
-        [TestMethod]
-        private void TestZobrist()
-        {
-            var watch = new Stopwatch();
-            Game game = new Game(ResourceLoader.LoadScoreValues("Score|Values.xml"));
+        //[TestMethod]
+        //private void TestZobrist()
+        //{
+        //    var watch = new Stopwatch();
+        //    Game game = new Game(ResourceLoader.LoadScoreValues("ScoreValues.xml"));
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.ThinkingDepth =6;
+        //    game.SetSearchType(SearchStrategy.AlphaBeta);
+        //    game.ThinkingDepth =6;
 
-            game.InitaliseStartingPosition();
-            //game.SetFENPosition("r1bqkb1r/pppp1ppp/2n2n2/4P3/4P3/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 1");
-            CountDebugger.ClearAll();
+        //    game.InitaliseStartingPosition();
+        //    //game.SetFENPosition("r1bqkb1r/pppp1ppp/2n2n2/4P3/4P3/2N5/PPP2PPP/R1BQKBNR b KQkq - 0 1");
+        //    CountDebugger.ClearAll();
 
-            while (true)
-            {
-                Console.WriteLine("Make move:");
-                string move = Console.ReadLine();
-                game.ReceiveUciMove(move);
+        //    while (true)
+        //    {
+        //        Console.WriteLine("Make move:");
+        //        string move = Console.ReadLine();
+        //        game.ReceiveUciMove(move);
 
-                string bestMove = game.FindBestMove_UCI();
-                game.ReceiveUciMove(bestMove);
-            }
+        //        string bestMove = game.FindBestMove_UCI();
+        //        game.ReceiveUciMove(bestMove);
+        //    }
             
-            //string bestMove = game.FindBestMove_UCI();
-            //game.ReceiveUCIMove(bestMove);
+        //    //string bestMove = game.FindBestMove_UCI();
+        //    //game.ReceiveUCIMove(bestMove);
 
-            //while (true)
-            //{
-            //    string bestMove = game.FindBestMove_UCI();
-            //    game.ReceiveUCIMove(bestMove);
-            //}
-            //int[] transpositionSearches = new int[50];
-            //int[] evaluations = new int[50];
+        //    //while (true)
+        //    //{
+        //    //    string bestMove = game.FindBestMove_UCI();
+        //    //    game.ReceiveUCIMove(bestMove);
+        //    //}
+        //    //int[] transpositionSearches = new int[50];
+        //    //int[] evaluations = new int[50];
 
-            //int toalTranspositionSearches = 0;
-            //int totalEvaluations = 0;
-            //for (int i = 0; i < 20; i++)
-            //{
-                //string bestMove = game.FindBestMove_UCI();
-                //game.ReceiveUCIMove(bestMove);
-            //    transpositionSearches[i] = CountDebugger.Transposition_Searches; 
-            //    toalTranspositionSearches += CountDebugger.Transposition_Searches; 
+        //    //int toalTranspositionSearches = 0;
+        //    //int totalEvaluations = 0;
+        //    //for (int i = 0; i < 20; i++)
+        //    //{
+        //        //string bestMove = game.FindBestMove_UCI();
+        //        //game.ReceiveUCIMove(bestMove);
+        //    //    transpositionSearches[i] = CountDebugger.Transposition_Searches; 
+        //    //    toalTranspositionSearches += CountDebugger.Transposition_Searches; 
                 
-            //    evaluations[i] = CountDebugger.Evaluations;
-            //    totalEvaluations += CountDebugger.Evaluations;
-            //}
+        //    //    evaluations[i] = CountDebugger.Evaluations;
+        //    //    totalEvaluations += CountDebugger.Evaluations;
+        //    //}
 
-            //int averageEvaluations = totalEvaluations / 50;
-            //int averageTranspositionSearches = toalTranspositionSearches / 50;
+        //    //int averageEvaluations = totalEvaluations / 50;
+        //    //int averageTranspositionSearches = toalTranspositionSearches / 50;
             
-            //bestMove = game.FindBestMove_UCI();
-            //game.ReceiveUCIMove(bestMove);
-            //int move2Seach = TranspositionDebugger.Transposition_TotalSearches;
+        //    //bestMove = game.FindBestMove_UCI();
+        //    //game.ReceiveUCIMove(bestMove);
+        //    //int move2Seach = TranspositionDebugger.Transposition_TotalSearches;
             
-            //bestMove = game.FindBestMove_UCI();
-            //game.ReceiveUCIMove(bestMove);
-            //int move3Seach = TranspositionDebugger.Transposition_TotalSearches;
+        //    //bestMove = game.FindBestMove_UCI();
+        //    //game.ReceiveUCIMove(bestMove);
+        //    //int move3Seach = TranspositionDebugger.Transposition_TotalSearches;
             
-            //game.ReceiveUCIMove("e2e4");
+        //    //game.ReceiveUCIMove("e2e4");
 
-            //game.SetFENPosition("4k3/8/8/8/5b2/4P3/5r1p/7K w - - 0 1");            
+        //    //game.SetFENPosition("4k3/8/8/8/5b2/4P3/5r1p/7K w - - 0 1");            
 
             
 
-            //string bestMove = game.FindBestMove_UCI();
-            //game.ReceiveUCIMove(bestMove);
+        //    //string bestMove = game.FindBestMove_UCI();
+        //    //game.ReceiveUCIMove(bestMove);
 
-            //game.ReceiveUCIMove("e4e5");
-            //string bestMove2 = game.FindBestMove_UCI();
+        //    //game.ReceiveUCIMove("e4e5");
+        //    //string bestMove2 = game.FindBestMove_UCI();
 
-        }
+        //}
 
-        [TestMethod]
-        private void TestComputerPlayingFullGame()
-        {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+        //[TestMethod]
+        //private void TestComputerPlayingFullGame()
+        //{
+        //    ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+        //    Game game = new Game(scoreCalculator);
 
-            scoreCalculator.CalculateScore(game.CurrentBoard);
+        //    scoreCalculator.CalculateScore(game.CurrentBoard);
 
-            game.WhiteSearchType = SearchStrategy.AlphaBeta;
-            game.BlackSearchType = SearchStrategy.AlphaBeta;
+        //    game.WhiteSearchType = SearchStrategy.AlphaBeta;
+        //    game.BlackSearchType = SearchStrategy.AlphaBeta;
 
-            game.ThinkingDepth = 5;
+        //    game.ThinkingDepth = 5;
                         
-            //game.Play();
-        }
+        //    //game.Play();
+        //}
 
         #region simple capture
 
@@ -113,7 +113,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -139,7 +139,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -164,7 +164,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -190,7 +190,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -213,7 +213,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -236,7 +236,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -263,7 +263,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -289,7 +289,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -314,7 +314,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -340,7 +340,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -363,7 +363,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -385,7 +385,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -414,7 +414,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -442,7 +442,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -470,7 +470,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -500,7 +500,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -526,7 +526,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -548,7 +548,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
             Game game = new Game(scoreCalculator);
 
             game.ClearBoard();
@@ -576,7 +576,7 @@ namespace ChessBoardTests
         [TestMethod]
         private void TestPlayingGameSimpleMaterialGain()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
 

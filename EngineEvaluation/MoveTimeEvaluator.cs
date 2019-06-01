@@ -2,15 +2,12 @@
 using ChessGame.Debugging;
 using ChessGame.MoveSearching;
 using ChessGame.NotationHelpers;
-using ChessGame.PossibleMoves;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace EngineEvaluation
 {
@@ -36,20 +33,20 @@ namespace EngineEvaluation
 
             LogLine("Move time evaluator");
             LogLine("");
-            LogLine(string.Format("Logging started at {0}", DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")));
+            LogLine($"Logging started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
         }        
 
         #endregion constructor
 
         internal void EvaluateMoveTime(int depth, int numOfMoves)
         {
-            PerfTPosition position = ResourceLoader.LoadPerfTPosition("PerfTInitial");
+            var position = ResourceLoader.LoadPerfTPosition("PerfTInitial");
 
             LogLine("--------------------------------------------");
             LogLine(position.Name);
             LogLine(position.FenPosition);
             LogLine("");
-            LogLine(string.Format("Depth:{0}", depth));
+            LogLine($"Depth:{depth}");
             LogLine("");
 
             EvaluateMoveSpeed(position, depth, numOfMoves);
@@ -57,40 +54,40 @@ namespace EngineEvaluation
 
         private void EvaluateMoveSpeed(PerfTPosition pos, int depth, int movesToMake)
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(pos.FenPosition));
-
-            ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
+            
+            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             TranspositionTable.Restart();
             CountDebugger.ClearAll();
 
-            TimeSpan totalTime = new TimeSpan();
-            TimeSpan totalWhite = new TimeSpan();
-            TimeSpan totalBlack = new TimeSpan();
+            var totalTime = new TimeSpan();
+            var totalWhite = new TimeSpan();
+            var totalBlack = new TimeSpan();
 
             ulong totalNodes = 0;
             ulong totalWhiteNodes = 0;
             ulong totalBlackNodes = 0;
 
-            int whiteMoves = 0;
-            int blackMoves = 0;
+            var whiteMoves = 0;
+            var blackMoves = 0;
 
-            for (int i = 0; i < movesToMake; i++)
+            for (var i = 0; i < movesToMake; i++)
             {
-                Stopwatch timer = new Stopwatch();
+                var timer = new Stopwatch();
                 timer.Start();
 
-                AlphaBetaSearch alphaBeta = new AlphaBetaSearch(board, scoreCalc);
-                PieceMoves currentMove = alphaBeta.StartSearch(depth);
+                var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+                var currentMove = alphaBeta.StartSearch(depth);
 
                 timer.Stop();
 
-                TimeSpan speed = new TimeSpan(timer.Elapsed.Ticks);
+                var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                List<PVInfo> idInfo = alphaBeta.IdMoves;
+                var idInfo = alphaBeta.IdMoves;
 
-                ulong moveNodes = CountNodes(idInfo);
+                var moveNodes = CountNodes(idInfo);
                 totalNodes += moveNodes;
 
                 totalTime = totalTime.Add(speed);
@@ -108,22 +105,38 @@ namespace EngineEvaluation
                     blackMoves++;
                 }
 
-                LogLine(string.Format("{0}-Move nodes:{1}, Move time:{2}, Move made:{3}, Move score:{4}", i, moveNodes.ToString("N0"), speed.ToString("ss'.'fff"), UCIMoveTranslator.ToUCIMove(currentMove), idInfo[idInfo.Count - 1].Score));
+                LogLine($"{i}-Move nodes:{moveNodes:N0}, " +
+                        $"Move time:{speed:ss'.'fff}, " +
+                        $"Move made:{UCIMoveTranslator.ToUCIMove(currentMove)}, " +
+                        $"Move score:{idInfo[idInfo.Count - 1].Score}");
 
                 board.MakeMove(currentMove, true);
             }
 
-            int movesMade = movesToMake;
+            var movesMade = movesToMake;
 
-            TimeSpan averageTime = new TimeSpan(totalTime.Ticks / movesMade);
-            TimeSpan averageWhiteTime = new TimeSpan(totalWhite.Ticks / whiteMoves);
-            TimeSpan averageBlackTime = new TimeSpan(totalBlack.Ticks / blackMoves);
+            var averageTime = new TimeSpan(totalTime.Ticks / movesMade);
+            var averageWhiteTime = new TimeSpan(totalWhite.Ticks / whiteMoves);
+            var averageBlackTime = new TimeSpan(totalBlack.Ticks / blackMoves);
             
             LogLine("");
-            LogLine(string.Format("Moves made:{0}, Total nodes:{1}, Average nodes:{2}, Total time:{3}, Average time:{4}", movesMade, totalNodes.ToString("N0"), (totalNodes / (ulong)movesMade).ToString("N0"), totalTime.ToString("mm'.'ss'.'fff"), averageTime.ToString("ss'.'fff")));
+            LogLine($"Moves made:{movesMade}, " +
+                    $"Total nodes:{totalNodes:N0}, " +
+                    $"Average nodes:{(totalNodes / (ulong) movesMade):N0}, " +
+                    $"Total time:{totalTime:mm'.'ss'.'fff}, " +
+                    $"Average time:{averageTime:ss'.'fff}");
             LogLine("");
-            LogLine(string.Format("White - Moves made:{0}, Total nodes:{1}, Average nodes:{2}, Total time:{3}, Average time:{4}", whiteMoves, totalWhiteNodes.ToString("N0"), (totalWhiteNodes / (ulong)whiteMoves).ToString("N0"), totalWhite.ToString("mm'.'ss'.'fff"), averageWhiteTime.ToString("ss'.'fff")));
-            LogLine(string.Format("Black - Moves made:{0}, Total nodes:{1}, Average nodes:{2}, Total time:{3}, Average time:{4}", blackMoves, totalBlackNodes.ToString("N0"), (totalBlackNodes / (ulong)blackMoves).ToString("N0"), totalBlack.ToString("mm'.'ss'.'fff"), averageBlackTime.ToString("ss'.'fff")));
+            LogLine($"White - Moves made:{whiteMoves}, " +
+                    $"Total nodes:{totalWhiteNodes:N0}, " +
+                    $"Average nodes:{(totalWhiteNodes / (ulong) whiteMoves):N0}, " +
+                    $"Total time:{totalWhite:mm'.'ss'.'fff}, " +
+                    $"Average time:{averageWhiteTime:ss'.'fff}");
+
+            LogLine($"Black - Moves made:{blackMoves}, " +
+                    $"Total nodes:{totalBlackNodes:N0}, " +
+                    $"Average nodes:{(totalBlackNodes / (ulong) blackMoves):N0}, " +
+                    $"Total time:{totalBlack:mm'.'ss'.'fff}, " +
+                    $"Average time:{averageBlackTime:ss'.'fff}");
 
             LogLine(board.BoardToString());
 
@@ -131,11 +144,11 @@ namespace EngineEvaluation
 
         }
 
-        private ulong CountNodes(List<PVInfo> idInfo)
+        private static ulong CountNodes(IEnumerable<PVInfo> idInfo)
         {
             ulong nodes = 0;
 
-            foreach (PVInfo info in idInfo)
+            foreach (var info in idInfo)
             {
                 nodes += info.NodesVisited;
             }
@@ -147,7 +160,7 @@ namespace EngineEvaluation
 
         private void CreateLogFile()
         {
-            string timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             logLocation += @"\" + timeStamp;
 
             Directory.CreateDirectory(logLocation);
@@ -158,7 +171,7 @@ namespace EngineEvaluation
 
         private void LogLine(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.WriteLine(text);
             }
@@ -166,7 +179,7 @@ namespace EngineEvaluation
 
         private void Log(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.Write(text);
             }

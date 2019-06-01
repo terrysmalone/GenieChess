@@ -95,10 +95,9 @@ namespace ChessGame
         /// </summary>
         private void InputUCINewGame()
         {
-            //Initialise engine
-            string filePath = Environment.CurrentDirectory;
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            game = new Game(ResourceLoader.LoadScoreValues("ScoreValues.xml"));
+            game = new Game(scoreCalculator);
             game.LoadDefaultOpeningBook();
             game.UseOpeningBook = true;
         }

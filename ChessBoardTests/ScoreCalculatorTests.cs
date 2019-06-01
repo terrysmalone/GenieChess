@@ -24,7 +24,7 @@ namespace ChessBoardTests
 
             board.InitaliseStartingPosition();
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -41,7 +41,7 @@ namespace ChessBoardTests
             board.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
             board.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -57,7 +57,7 @@ namespace ChessBoardTests
             board.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal, true);
             board.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal, true);
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -75,7 +75,7 @@ namespace ChessBoardTests
 
             board.SetPosition(FenTranslator.ToBoardState("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1"));
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -89,7 +89,7 @@ namespace ChessBoardTests
 
             board.SetPosition(FenTranslator.ToBoardState("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1"));
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -103,7 +103,7 @@ namespace ChessBoardTests
 
             board.SetPosition(FenTranslator.ToBoardState("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1"));
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
 
@@ -126,7 +126,7 @@ namespace ChessBoardTests
 
             board.SetPosition(FenTranslator.ToBoardState("4k2B/8/6N1/8/2N5/4P3/8/4K3 w - - 0 1"));
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
             decimal score = scoreCalculator.CalculateScore(board);
         }            

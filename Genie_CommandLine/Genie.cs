@@ -15,7 +15,7 @@ namespace Genie_CommandLine
         private static readonly ILog Log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Game game;
+        private readonly Game m_Game;
 
         public Genie()
         {
@@ -27,15 +27,17 @@ namespace Genie_CommandLine
             Log.Info("Running Genie - Command-line version");
             Log.Info("");
 
-            game = new Game();
+            m_Game = new Game();
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
-            game.ThinkingDepth = 7;
+            m_Game.SetSearchType(SearchStrategy.AlphaBeta);
+            m_Game.ThinkingDepth = 7;
 
-            game.InitaliseStartingPosition();
+            m_Game.InitaliseStartingPosition();
 
-            game.LoadDefaultOpeningBook();
+            m_Game.LoadDefaultOpeningBook();
+
             //game.SetFENPosition("4k3/2p5/4P3/8/8/1B4B1/8/4K3 w - - 0 1");
+
             CountDebugger.ClearAll();
 
             while (true)
@@ -51,21 +53,24 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "print")
                     {
-                        game.CurrentBoard.WriteBoardToConsole();
+                        m_Game.CurrentBoard.WriteBoardToConsole();
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {
-                        var bestMove = game.FindBestMove_UCI();
+                        var bestMove = m_Game.FindBestMove_UCI();
+
                         Console.WriteLine($"Computer move: {bestMove}");
-                        game.ReceiveUciMove(bestMove);
+
+                        m_Game.ReceiveUciMove(bestMove);
                     }
-                    else if (moveText == "info")
+                    else if (moveText.StartsWith("info"))
                     {
-                        DisplayGameInfo();
+                        DisplayGameInfo(moveText.Substring(5, moveText.Length-5));
                     }
                     else
                     {
-                        game.ReceiveUciMove(moveText);
+                        m_Game.ReceiveUciMove(moveText);
+
                         Console.WriteLine("Made move");
                     }
                 }
@@ -76,14 +81,20 @@ namespace Genie_CommandLine
         {
             Console.WriteLine("------------");
             Console.WriteLine("print - displays the board");
-            Console.WriteLine("info - displays game setup info");
+            Console.WriteLine("info [subject] - displays game setup info. Current subjects: book");
             Console.WriteLine("genie - makes computer take next move");
             Console.WriteLine("[Smith notation move] - plays a move (i.e 'e2e4')");
+            Console.WriteLine("------------");
         }
 
-        private static void DisplayGameInfo()
+        private void DisplayGameInfo(string toDisplay)
         {
-            throw new NotImplementedException();
+            switch (toDisplay)
+            {
+                case "book":
+                    Console.WriteLine($"Opening book file:{m_Game.OpeningBookFile}");
+                    break;
+            }
         }
     }
 }
