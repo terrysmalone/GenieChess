@@ -26,48 +26,44 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_White_Depth2()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_White_Depth3()
         {
             ;
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 3;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_White_Depth4()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
@@ -75,75 +71,67 @@ namespace ChessBoardTests
             game.ThinkingDepth = 4;
             game.FindAndMakeBestMove();
 
-            Board currentState = game.CurrentBoard;
-
             Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_White_Depth5()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_White_Depth6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_Black_Depth2()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2",
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_Black_Depth3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -151,67 +139,59 @@ namespace ChessBoardTests
             game.ThinkingDepth = 3;
             game.FindAndMakeBestMove();
 
-            Board currentState = game.CurrentBoard;
-
             Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_Black_Depth4()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 4;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_Black_Depth5()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
         [TestMethod]
         public void TestMateInOne_Black_Depth6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
+            
             Assert.AreEqual("1k4q1/7r/8/8/8/8/8/7K w - - 1 2", 
-                            FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState()));
+                            FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
         
         #endregion Mate in one
@@ -232,9 +212,9 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("8/1p1P4/k1p5/8/8/3PPPPP/r7/7K b - - 0 1");
         }
@@ -244,9 +224,9 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");
 
@@ -260,9 +240,9 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("q2k2q1/2nqn2b/1n1P1n1b/2rnr2Q/1NQ1QN1Q/3Q3B/2RQR2B/Q2K2Q1 w - -");
 
@@ -293,7 +273,7 @@ namespace ChessBoardTests
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
             game.ClearBoard();
             game.SetFENPosition("r3k2r/p2b1ppp/2p2n2/b2p4/5B2/3B4/PPP1NPPP/R3K2R w KQkq - 0 1");
 

@@ -4,6 +4,6 @@ namespace ChessGame.ScoreCalculation
 {
     public interface IScoreCalculator
     {
-        decimal CalculateScore(Board currentBoard);
+        decimal CalculateScore(IBoard currentBoard);
     }
 }

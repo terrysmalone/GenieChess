@@ -1,4 +1,5 @@
-﻿using ChessGame.ResourceLoading;
+﻿using ChessGame.BoardRepresentation;
+using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 
 namespace ChessGame
@@ -10,7 +11,7 @@ namespace ChessGame
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            return new Game(scoreCalculator);
+            return new Game(scoreCalculator, new Board());
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "print")
                     {
-                        m_Game.CurrentBoard.WriteBoardToConsole();
+                        m_Game.WriteBoardToConsole();
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {

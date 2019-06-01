@@ -1,9 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using ChessGame;
+﻿using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
-using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
@@ -113,8 +110,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -129,8 +126,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -139,8 +136,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -155,8 +152,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -164,8 +161,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -180,8 +177,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -190,8 +187,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -203,8 +200,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -213,8 +210,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -227,8 +224,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -236,8 +233,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -249,8 +246,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -263,8 +260,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -279,8 +276,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -289,8 +286,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -305,8 +302,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -314,8 +311,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -330,8 +327,8 @@ namespace ChessBoardTests
             game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -340,8 +337,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -353,8 +350,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -363,8 +360,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -376,8 +373,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -385,8 +382,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -398,8 +395,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -414,8 +411,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -429,11 +426,9 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
-
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -442,8 +437,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -457,11 +452,9 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
             
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -470,8 +463,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -485,11 +478,9 @@ namespace ChessBoardTests
 
             game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
             
-            string expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -500,8 +491,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_1()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -513,11 +504,9 @@ namespace ChessBoardTests
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
-
-            Board currentState = game.CurrentBoard;
             
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -526,8 +515,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -539,8 +528,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -548,8 +537,8 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
-            Game game = new Game(scoreCalculator);
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 
@@ -562,8 +551,8 @@ namespace ChessBoardTests
 
             game.FindAndMakeBestMove();
 
-            string expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            string fenNotation = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
 
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
@@ -576,9 +565,9 @@ namespace ChessBoardTests
         [TestMethod]
         private void TestPlayingGameSimpleMaterialGain()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
 
-            Game game = new Game(scoreCalculator);
+            var game = new Game(scoreCalculator, new Board());
 
             game.ClearBoard();
 

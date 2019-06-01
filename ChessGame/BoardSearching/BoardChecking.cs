@@ -18,7 +18,7 @@ namespace ChessGame.BoardSearching
         /// <param name="board">The board to check</param>
         /// <param name="square">The bitboard to check</param>
         /// <returns></returns>
-        internal static bool IsPieceOnSquare(Board board, ulong square)
+        internal static bool IsPieceOnSquare(IBoard board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
@@ -38,7 +38,7 @@ namespace ChessGame.BoardSearching
         /// <param name="board">The board to check</param>
         /// <param name="square">The bitboard to check</param>
         /// <returns></returns>
-        internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
+        internal static bool IsEnemyPieceOnSquare(IBoard board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
@@ -60,7 +60,7 @@ namespace ChessGame.BoardSearching
         /// <param name="board">The board to check</param>
         /// <param name="square">The bitboard to check</param>
         /// <returns></returns>
-        internal static bool IsFriendlyPieceOnSquare(Board board, ulong square)
+        internal static bool IsFriendlyPieceOnSquare(IBoard board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
@@ -79,7 +79,7 @@ namespace ChessGame.BoardSearching
             return false;
         }
 
-        internal static PieceType GetPieceTypeOnSquare(Board board, ulong square)
+        internal static PieceType GetPieceTypeOnSquare(IBoard board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) != 1)
             {
@@ -113,7 +113,7 @@ namespace ChessGame.BoardSearching
         /// <param name="pieceType"></param>
         /// <param name="uciMove"></param>
         /// <returns></returns>
-        internal static SpecialMoveType GetSpecialMoveType(Board board, ulong moveFrom, ulong moveTo, PieceType pieceType, string uciMove)
+        internal static SpecialMoveType GetSpecialMoveType(IBoard board, ulong moveFrom, ulong moveTo, PieceType pieceType, string uciMove)
         {
             var captureFlag = false;
             var promotionFlag = false;
@@ -245,7 +245,7 @@ namespace ChessGame.BoardSearching
         /// </summary>
         /// <param name="square"></param>
         /// <returns></returns>
-        internal static bool IsSquareRayAttackedFromAbove(Board board, ulong square)
+        internal static bool IsSquareRayAttackedFromAbove(IBoard board, ulong square)
         {
             //Up
             var nearestUpPiece = FindUpBlockingPosition(board, square);
@@ -273,7 +273,7 @@ namespace ChessGame.BoardSearching
         /// <param name="board"></param>
         /// <param name="square"></param>
         /// <returns></returns>
-        internal static bool IsSquareRayAttackedFromBelow(Board board, ulong square)
+        internal static bool IsSquareRayAttackedFromBelow(IBoard board, ulong square)
         {
             //Down
             var nearestDownPiece = FindDownBlockingPosition(board, square);
@@ -296,7 +296,7 @@ namespace ChessGame.BoardSearching
             return false;
         }
 
-        internal static bool IsSquareRayAttackedFromTheSide(Board board, ulong square)
+        internal static bool IsSquareRayAttackedFromTheSide(IBoard board, ulong square)
         {
             if (board.WhiteToMove)
             {
@@ -333,7 +333,7 @@ namespace ChessGame.BoardSearching
         /// checking king use this over IsKingInCheck since it returns true as soon as it knows
         /// </summary>
         /// <returns></returns>
-        internal static bool IsKingInCheckFast(Board board, PieceColour friendlyColour)
+        internal static bool IsKingInCheckFast(IBoard board, PieceColour friendlyColour)
         {
             ulong friendlyKing;
 
@@ -355,7 +355,7 @@ namespace ChessGame.BoardSearching
         /// <param name="boardPosition"></param>
         /// <param name="pieceColour"></param>
         /// <returns></returns>
-        internal static bool CanKingMove(Board boardPosition, PieceColour pieceColour)
+        internal static bool CanKingMove(IBoard boardPosition, PieceColour pieceColour)
         {
             var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.WhiteKing);
             var blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.BlackKing);
@@ -412,7 +412,7 @@ namespace ChessGame.BoardSearching
         /// <param name="friendlyColour"></param>
         /// /// <param name="checkKing">If we are checking if the king is being attacked we do not need to worry about the enemy king</param>
         /// <returns></returns>
-        private static bool IsSquareAttackedSuperFast(Board board, ulong pieceBoard, PieceColour friendlyColour)
+        private static bool IsSquareAttackedSuperFast(IBoard board, ulong pieceBoard, PieceColour friendlyColour)
         {
              if (IsKnightAttackingSquareFast(board, pieceBoard, friendlyColour))
                 return true;
@@ -451,7 +451,7 @@ namespace ChessGame.BoardSearching
 
         // This method is used to check if a square is under attack or to check if the king is undert attack.
         // Use this method if knowing the attacking piece/position or attack count is not necessary as it returns as soon as it knows       
-        //internal static bool IsSquareAttackedFast(Board board, ulong squarePositionBoard, PieceColour friendlyColour)
+        //internal static bool IsSquareAttackedFast(IBoard board, ulong squarePositionBoard, PieceColour friendlyColour)
         //{
         //    if (IsPawnAttackingSquareFast(board, squarePositionBoard, friendlyColour))
         //        return true;
@@ -472,7 +472,7 @@ namespace ChessGame.BoardSearching
         /// Checks if pawn is attacking square. There is no need to check all pawns for double-check 
         /// since only one pawn can be attacking the king at once
         /// </summary>
-        internal static bool IsPawnAttackingSquareFast(Board board, ulong squarePosition, PieceColour friendlyColour)
+        internal static bool IsPawnAttackingSquareFast(IBoard board, ulong squarePosition, PieceColour friendlyColour)
         {
             var squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
             var proximityBoard = ValidMoveArrays.KingMoves[squareIndex];      //Allows the quick masking of wrapping checks
@@ -519,7 +519,7 @@ namespace ChessGame.BoardSearching
         /// Checks if a knight is attacking square. There is no need to check all knights for double-check 
         /// since only one knight can be attacking the king at once
         /// </summary>
-        internal static bool IsKnightAttackingSquareFast(Board board, ulong squarePosition, PieceColour friendlyColour)
+        internal static bool IsKnightAttackingSquareFast(IBoard board, ulong squarePosition, PieceColour friendlyColour)
         {
             ulong knights;
 
@@ -543,7 +543,7 @@ namespace ChessGame.BoardSearching
 
         }
 
-        internal static bool IsSquareAttackedByKing(Board board, ulong squarePosition, PieceColour friendlyColour)
+        internal static bool IsSquareAttackedByKing(IBoard board, ulong squarePosition, PieceColour friendlyColour)
         {
             ulong enemyKing;
 
@@ -568,7 +568,7 @@ namespace ChessGame.BoardSearching
         /// <param name="squarePositionBoard"></param>
         /// <param name="friendlyColour"></param>
         /// <returns></returns>
-        internal static bool IsSquareUnderRayAttackFast(Board board, ulong squarePositionBoard, PieceColour friendlyColour)
+        internal static bool IsSquareUnderRayAttackFast(IBoard board, ulong squarePositionBoard, PieceColour friendlyColour)
         {
             ulong enemyQueenSquares;
             ulong enemyBishopSquares;
@@ -644,7 +644,7 @@ namespace ChessGame.BoardSearching
             return false;
         }
 
-        internal static bool IsSquareUnderRayAttackSuperFast(Board board, ulong squarePositionBoard, ulong emptyOrEnemySpaces, PieceColour friendlyColour)
+        internal static bool IsSquareUnderRayAttackSuperFast(IBoard board, ulong squarePositionBoard, ulong emptyOrEnemySpaces, PieceColour friendlyColour)
         {
             ulong enemyQueenSquares;
             ulong enemyBishopSquares;
@@ -766,7 +766,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate allowed moves methods
 
-        internal static ulong CalculateAllowedBishopMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedBishopMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             return (CalculateAllowedUpRightMoves(board, pieceIndex, colour) |
                     CalculateAllowedDownRightMoves(board, pieceIndex, colour) |
@@ -774,7 +774,7 @@ namespace ChessGame.BoardSearching
                     CalculateAllowedUpLeftMoves(board, pieceIndex, colour));
         }
 
-        internal static ulong CalculateAllowedBishopMoves(Board board, ulong square, PieceColour colour)
+        internal static ulong CalculateAllowedBishopMoves(IBoard board, ulong square, PieceColour colour)
         {
             return (CalculateAllowedUpRightMoves(board, square, colour) |
                     CalculateAllowedDownRightMoves(board, square, colour) |
@@ -782,7 +782,7 @@ namespace ChessGame.BoardSearching
                     CalculateAllowedUpLeftMoves(board, square, colour));
         }
 
-        internal static ulong CalculateAllowedRookMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedRookMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             return (CalculateAllowedUpMoves(board, pieceIndex, colour) |
                     CalculateAllowedRightMoves(board, pieceIndex, colour) |
@@ -790,7 +790,7 @@ namespace ChessGame.BoardSearching
                     CalculateAllowedLeftMoves(board, pieceIndex, colour));
         }
 
-        internal static ulong CalculateAllowedRookMoves(Board board, ulong pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedRookMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             return (CalculateAllowedUpMoves(board, pieceIndex, colour) |
                     CalculateAllowedRightMoves(board, pieceIndex, colour) |
@@ -798,7 +798,7 @@ namespace ChessGame.BoardSearching
                     CalculateAllowedLeftMoves(board, pieceIndex, colour));
         }
 
-        internal static ulong CalculateAllowedQueenMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedQueenMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             return (CalculateAllowedUpMoves(board, pieceIndex, colour) |
                     CalculateAllowedRightMoves(board, pieceIndex, colour) |
@@ -810,7 +810,7 @@ namespace ChessGame.BoardSearching
                     CalculateAllowedUpLeftMoves(board, pieceIndex, colour));
         }
 
-        internal static ulong CalculateAllowedQueenMoves(Board board, ulong pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedQueenMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             return (CalculateAllowedUpMoves(board, pieceIndex, colour) |
                      CalculateAllowedRightMoves(board, pieceIndex, colour) |
@@ -824,7 +824,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate up moves
 
-        internal static ulong CalculateAllowedUpMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedUpMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var upBoard = LookupTables.UpBoard[pieceIndex];
 
@@ -833,7 +833,7 @@ namespace ChessGame.BoardSearching
                                                       colour);
         }
 
-        internal static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedUpMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             var upBoard = GetUpBoard(pieceIndex);
 
@@ -842,7 +842,7 @@ namespace ChessGame.BoardSearching
                                                       colour);
         }
 
-        private static ulong CalculateAllowedUpMovesFromBoard(Board board, 
+        private static ulong CalculateAllowedUpMovesFromBoard(IBoard board, 
                                                                 ulong upBoard, 
                                                                 PieceColour colour)
         {
@@ -874,7 +874,7 @@ namespace ChessGame.BoardSearching
 
         #region calculate right moves
 
-        internal static ulong CalculateAllowedRightMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedRightMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var rightBoard = LookupTables.RightBoard[pieceIndex];
 
@@ -883,7 +883,7 @@ namespace ChessGame.BoardSearching
                                                             colour);
         }
 
-        internal static ulong CalculateAllowedRightMoves(Board board, ulong pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedRightMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             var rightBoard = GetRightBoard(pieceIndex);
 
@@ -892,7 +892,7 @@ namespace ChessGame.BoardSearching
                                                             colour);
         }
 
-        private static ulong CalculateAllowedRightMovesFromBoard(Board board, 
+        private static ulong CalculateAllowedRightMovesFromBoard(IBoard board, 
                                                                       ulong rightBoard, 
                                                                       PieceColour colour)
         {
@@ -922,7 +922,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate down moves
 
-        internal static ulong CalculateAllowedDownMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedDownMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var downBoard = LookupTables.DownBoard[pieceIndex];
 
@@ -931,7 +931,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        internal static ulong CalculateAllowedDownMoves(Board board, ulong pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedDownMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             var downBoard = GetDownBoard(pieceIndex);
 
@@ -940,7 +940,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        private static ulong CalculateAllowedDownMovesFromBoard(Board board,
+        private static ulong CalculateAllowedDownMovesFromBoard(IBoard board,
                                                                     ulong downBoard,
                                                                     PieceColour colour)
         {
@@ -972,7 +972,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate left moves
 
-        internal static ulong CalculateAllowedLeftMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedLeftMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var leftBoard = LookupTables.LeftBoard[pieceIndex];
 
@@ -981,7 +981,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        private static ulong CalculateAllowedLeftMoves(Board board, ulong pieceIndex, PieceColour colour)
+        private static ulong CalculateAllowedLeftMoves(IBoard board, ulong pieceIndex, PieceColour colour)
         {
             var leftBoard = GetLeftBoard(pieceIndex);
 
@@ -990,7 +990,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        private static ulong CalculateAllowedLeftMovesFromBoard(Board board,
+        private static ulong CalculateAllowedLeftMovesFromBoard(IBoard board,
                                                                     ulong leftBoard,
                                                                     PieceColour colour)
         {
@@ -1024,7 +1024,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate up right moves
 
-        internal static ulong CalculateAllowedUpRightMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedUpRightMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var upRightBoard = LookupTables.UpRightBoard[pieceIndex];
 
@@ -1033,7 +1033,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        internal static ulong CalculateAllowedUpRightMoves(Board board, ulong piecePosition, PieceColour colour)
+        internal static ulong CalculateAllowedUpRightMoves(IBoard board, ulong piecePosition, PieceColour colour)
         {
             var upRightBoard = GetUpRightBoard(piecePosition);
 
@@ -1042,7 +1042,7 @@ namespace ChessGame.BoardSearching
                                                          colour);
         }
 
-        private static ulong CalculateAllowedUpRightMovesFromBoard(Board board,
+        private static ulong CalculateAllowedUpRightMovesFromBoard(IBoard board,
                                                                     ulong upRightBoard,
                                                                     PieceColour colour)
         {
@@ -1076,7 +1076,7 @@ namespace ChessGame.BoardSearching
         
         #region Calculate down right moves
 
-        internal static ulong CalculateAllowedDownRightMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedDownRightMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var downRightBoard = LookupTables.DownRightBoard[pieceIndex];
 
@@ -1085,7 +1085,7 @@ namespace ChessGame.BoardSearching
                                                            colour);
         }
 
-        internal static ulong CalculateAllowedDownRightMoves(Board board, ulong piecePosition, PieceColour colour)
+        internal static ulong CalculateAllowedDownRightMoves(IBoard board, ulong piecePosition, PieceColour colour)
         {
             var downRightBoard = GetDownRightBoard(piecePosition);
 
@@ -1094,7 +1094,7 @@ namespace ChessGame.BoardSearching
                                                          colour);
         }
 
-        private static ulong CalculateAllowedDownRightMovesFromBoard(Board board,
+        private static ulong CalculateAllowedDownRightMovesFromBoard(IBoard board,
                                                                    ulong downRightBoard,
                                                                    PieceColour colour)
         {
@@ -1128,7 +1128,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate down left moves
         
-        internal static ulong CalculateAllowedDownLeftMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedDownLeftMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var downLeftBoard = LookupTables.DownLeftBoard[pieceIndex];
 
@@ -1137,7 +1137,7 @@ namespace ChessGame.BoardSearching
                                                            colour);
         }
 
-        internal static ulong CalculateAllowedDownLeftMoves(Board board, ulong piecePosition, PieceColour colour)
+        internal static ulong CalculateAllowedDownLeftMoves(IBoard board, ulong piecePosition, PieceColour colour)
         {
             //ulong downLeftBoard = LookupTables.DownLeftBoard[BitboardOperations.GetSquareIndexFromBoardValue(piecePosition)];
             var downLeftBoard = GetDownLeftBoard(piecePosition);
@@ -1147,7 +1147,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        private static ulong CalculateAllowedDownLeftMovesFromBoard(Board board,
+        private static ulong CalculateAllowedDownLeftMovesFromBoard(IBoard board,
                                                                     ulong downLeftBoard,
                                                                     PieceColour colour)
         {
@@ -1180,7 +1180,7 @@ namespace ChessGame.BoardSearching
 
         #region Calculate up left moves
 
-        internal static ulong CalculateAllowedUpLeftMoves(Board board, byte pieceIndex, PieceColour colour)
+        internal static ulong CalculateAllowedUpLeftMoves(IBoard board, byte pieceIndex, PieceColour colour)
         {
             var upLeftBoard = LookupTables.UpLeftBoard[pieceIndex];
 
@@ -1189,7 +1189,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        internal static ulong CalculateAllowedUpLeftMoves(Board board, ulong piecePosition, PieceColour colour)
+        internal static ulong CalculateAllowedUpLeftMoves(IBoard board, ulong piecePosition, PieceColour colour)
         {
             var upLeftBoard = GetUpLeftBoard(piecePosition);
 
@@ -1198,7 +1198,7 @@ namespace ChessGame.BoardSearching
                                                           colour);
         }
 
-        private static ulong CalculateAllowedUpLeftMovesFromBoard(Board board,
+        private static ulong CalculateAllowedUpLeftMovesFromBoard(IBoard board,
                                                                     ulong upLeftBoard,
                                                                     PieceColour colour)
         {
@@ -1237,7 +1237,7 @@ namespace ChessGame.BoardSearching
         /// <summary>
         /// Returns the bitboard value of the first piece, of any colour, up from the given squarePosition
         /// </summary>
-        internal static ulong FindUpBlockingPosition(Board board, ulong square)
+        internal static ulong FindUpBlockingPosition(IBoard board, ulong square)
         {
             var upBoard = GetUpBoard(square);
 
@@ -1255,7 +1255,7 @@ namespace ChessGame.BoardSearching
             return upMoves & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindUpRightBlockingPosition(Board board, ulong square)
+        internal static ulong FindUpRightBlockingPosition(IBoard board, ulong square)
         {
             var upRightBoard = GetUpRightBoard(square);
 
@@ -1275,7 +1275,7 @@ namespace ChessGame.BoardSearching
             return notAboveRight & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindRightBlockingPosition(Board board, ulong square)
+        internal static ulong FindRightBlockingPosition(IBoard board, ulong square)
         {
             var rightBoard = GetRightBoard(square);
             
@@ -1295,7 +1295,7 @@ namespace ChessGame.BoardSearching
             return notRight & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindDownRightBlockingPosition(Board board, ulong square)
+        internal static ulong FindDownRightBlockingPosition(IBoard board, ulong square)
         {
             var downRightBoard = GetDownRightBoard(square);
             
@@ -1318,7 +1318,7 @@ namespace ChessGame.BoardSearching
         /// <summary>
         /// Returns the bitboard value of the first piece, of any colour, down from the given square
         /// </summary>
-        internal static ulong FindDownBlockingPosition(Board board, ulong square)
+        internal static ulong FindDownBlockingPosition(IBoard board, ulong square)
         {
             var downBoard = GetDownBoard(square);
 
@@ -1331,7 +1331,7 @@ namespace ChessGame.BoardSearching
             return notBelow & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindDownLeftBlockingPosition(Board board, ulong square)
+        internal static ulong FindDownLeftBlockingPosition(IBoard board, ulong square)
         {
             //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
             //ulong downLeftBoard = LookupTables.DownLeftBoard[squareIndex];
@@ -1347,7 +1347,7 @@ namespace ChessGame.BoardSearching
             return notBelowRight & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindLeftBlockingPosition(Board board, ulong square)
+        internal static ulong FindLeftBlockingPosition(IBoard board, ulong square)
         {
             //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
             //ulong leftBoard = LookupTables.LeftBoard[squareIndex];
@@ -1364,7 +1364,7 @@ namespace ChessGame.BoardSearching
             return notLeft & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindUpLeftBlockingPosition(Board board, ulong square)
+        internal static ulong FindUpLeftBlockingPosition(IBoard board, ulong square)
         {
             var upLeftBoard = GetUpLeftBoard(square);
 

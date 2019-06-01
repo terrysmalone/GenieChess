@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ChessGame.BoardRepresentation;
 using ChessGame.Properties;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
@@ -97,7 +98,7 @@ namespace ChessGame
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            game = new Game(scoreCalculator);
+            game = new Game(scoreCalculator, new Board());
             game.LoadDefaultOpeningBook();
             game.UseOpeningBook = true;
         }
@@ -183,7 +184,7 @@ namespace ChessGame
 
         private void PrintFEN()
         {
-            var fen = FenTranslator.ToFENString(game.CurrentBoard.GetCurrentBoardState());           
+            var fen = FenTranslator.ToFENString(game.GetCurrentBoardState());           
         }
     }
 }

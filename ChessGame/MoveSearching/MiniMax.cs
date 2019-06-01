@@ -1,11 +1,7 @@
 ﻿using ChessGame.BoardRepresentation;
 using ChessGame.PossibleMoves;
 using ChessGame.ScoreCalculation;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
@@ -14,15 +10,15 @@ namespace ChessGame.MoveSearching
 {
     public class MiniMax
     {
-        private Board m_BoardPosition;
+        private IBoard m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalc;
 
         private decimal score;
 
-        public MiniMax(Board boardPosition, IScoreCalculator scoreCalc)
+        public MiniMax(IBoard boardPosition, IScoreCalculator scoreCalc)
         {
-            this.m_BoardPosition = boardPosition;
-            this.m_ScoreCalc = scoreCalc;
+            m_BoardPosition = boardPosition;
+            m_ScoreCalc = scoreCalc;
         }
 
         public PieceMoves MoveCalculate(int depth)
@@ -149,7 +145,7 @@ namespace ChessGame.MoveSearching
             return min;
         }
 
-        private decimal Evaluate(Board boardPosition)
+        private decimal Evaluate(IBoard boardPosition)
         {
             return m_ScoreCalc.CalculateScore(boardPosition);
         }
