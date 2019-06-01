@@ -12,7 +12,7 @@ using ChessGame.ScoreCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.NotationHelpers;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]  
     public class ScoreCalculatorTests

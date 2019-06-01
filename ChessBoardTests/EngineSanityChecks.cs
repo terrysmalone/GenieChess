@@ -1,4 +1,4 @@
-﻿using ChessBoardTests.Properties;
+﻿using ChessEngineTests.Properties;
 using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.ScoreCalculation;
@@ -14,7 +14,7 @@ using ChessGame.MoveSearching;
 using ChessGame.PossibleMoves;
 using ChessGame.NotationHelpers;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class EngineSanityChecks

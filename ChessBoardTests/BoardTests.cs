@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
 using ChessGame.NotationHelpers;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class BoardTests
@@ -249,7 +249,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestSetFenSetFENPosition_Initial()
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
              
             //Check piece positions
