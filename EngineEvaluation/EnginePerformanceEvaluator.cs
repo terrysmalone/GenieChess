@@ -111,7 +111,7 @@ namespace EngineEvaluation
             Board board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(testPos.FenPosition));
 
-            ScoreCalculator scoreCalc = ResourceLoader.LoadScoreValues("ScoreValues.xml");
+            ScoreCalculator scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Stopwatch timer = new Stopwatch();
 

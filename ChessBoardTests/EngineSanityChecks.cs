@@ -26,7 +26,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_White_Depth2()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -46,7 +46,7 @@ namespace ChessBoardTests
         public void TestMateInOne_White_Depth3()
         {
             ;
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -65,7 +65,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_White_Depth4()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -84,7 +84,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_White_Depth5()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -103,7 +103,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_White_Depth6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -122,7 +122,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_Black_Depth2()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -141,7 +141,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_Black_Depth3()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -160,7 +160,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_Black_Depth4()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -179,7 +179,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_Black_Depth5()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -198,7 +198,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestMateInOne_Black_Depth6()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -232,7 +232,7 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
 
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -244,7 +244,7 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -260,7 +260,7 @@ namespace ChessBoardTests
         {
             throw new NotImplementedException();
             
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             Game game = new Game(scoreCalculator);
             game.ClearBoard();
@@ -291,7 +291,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestKingCastlingWhileInCheckBug()
         {
-            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.LoadScoreValuesPath("ScoreValues.xml"));
+            ScoreCalculator scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
              Game game = new Game(scoreCalculator);
             game.ClearBoard();

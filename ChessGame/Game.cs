@@ -9,6 +9,7 @@ using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using log4net;
 using ChessGame.Books;
+using ChessGame.ResourceLoading;
 
 namespace ChessGame
 {
@@ -20,15 +21,15 @@ namespace ChessGame
 
         #region Game settings
 
-        private OpeningBook openingBook;
+        private OpeningBook m_OpeningBook;
 
-        private int thinkingDepth = 8;
+        private int m_ThinkingDepth = 8;
 
         #endregion Game settings
         
-        private bool gameIsActive = true;
+        private bool m_GameIsActive = true;
 
-        private ScoreCalculator scoreCalc;
+        private readonly ScoreCalculator m_ScoreCalculator;
 
         #endregion private properties
 
@@ -44,11 +45,12 @@ namespace ChessGame
 
         public int ThinkingDepth
         {
-            get { return thinkingDepth; }
+            get => m_ThinkingDepth;
+
             set 
             {
                 Log.Info($"Setting default thinking depth to {value}");
-                thinkingDepth = value; 
+                m_ThinkingDepth = value; 
             }
         }
 
@@ -71,7 +73,7 @@ namespace ChessGame
         {
             Log.Info($"Loading default score set: {"ScoreValues.xml"}");
 
-            this.scoreCalc = ResourceLoading.ResourceLoader.LoadScoreValues("ScoreValues.xml");
+            m_ScoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
@@ -85,16 +87,10 @@ namespace ChessGame
             LogGameSettings();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p"></param>
-        public Game(string scoreFilePath)
+        public Game(ScoreCalculator scoreCalculator)
         {
-            Log.Info(string.Format("Loading score set: {0}", scoreFilePath));
-
-            this.scoreCalc = new ScoreCalculator(File.ReadAllText(scoreFilePath));
-
+            m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
+            
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
@@ -103,21 +99,7 @@ namespace ChessGame
             CurrentBoard.InitaliseStartingPosition();
 
             Log.Info("Initialised Game to starting position");
-            LogGameSettings();
-        }
 
-        public Game(ScoreCalculator scoreCalc)
-        {
-            this.scoreCalc = scoreCalc;
-
-            LookupTables.InitialiseAllTables();
-            ZobristHash.Initialise();
-            TranspositionTable.InitialiseTable();
-
-            CurrentBoard = new Board();
-            CurrentBoard.InitaliseStartingPosition();
-
-            Log.Info("Initialised Game to starting position");
             LogGameSettings();
         }
 
@@ -131,9 +113,9 @@ namespace ChessGame
         /// <param name="moveString">The moves to make</param>
         public void ReceiveUciMoves(string moveString)
         {
-            string[] moves = moveString.Split();
+            var moves = moveString.Split();
 
-            foreach (string move in moves)
+            foreach (var move in moves)
             {
                 ReceiveUciMove(move);
             }
@@ -143,7 +125,7 @@ namespace ChessGame
         {
             if (UseOpeningBook)
             {
-                openingBook.RegisterMadeMove(move);
+                m_OpeningBook.RegisterMadeMove(move);
             }
 
             var pieceMove = UCIMoveTranslator.ToGameMove(move, CurrentBoard);
@@ -169,7 +151,7 @@ namespace ChessGame
             if (currentMove.Type != PieceType.None)
                 CurrentBoard.MakeMove(currentMove, true);
             else
-                gameIsActive = false;
+                m_GameIsActive = false;
 
             return currentMove;
         }
@@ -178,13 +160,14 @@ namespace ChessGame
         {
             if(UseOpeningBook)
             {
-                var openingMoveUci = openingBook.GetMove();
+                var openingMoveUci = m_OpeningBook.GetMove();
 
                 if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    PieceMoves openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, CurrentBoard);
+                    var openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, CurrentBoard);
 
-                    string uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
+                    var uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
+
                     Log.Info($"Move {uciMove} retrieved from opening book");
 
                     Console.WriteLine($"info string {uciMove} retrieved from opening book");
@@ -195,6 +178,7 @@ namespace ChessGame
                 UseOpeningBook = false;
 
                 Console.WriteLine("Opening book was unable to make a move. Reverting to search");
+
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
@@ -202,24 +186,23 @@ namespace ChessGame
 
             if (WhiteSearchType == SearchStrategy.MiniMax)
             {
-                MiniMax miniMax = new MiniMax(CurrentBoard, scoreCalc);
-                currentMove = miniMax.MoveCalculate(thinkingDepth);
+                var miniMax = new MiniMax(CurrentBoard, m_ScoreCalculator);
+
+                currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
 
             }
             else if (WhiteSearchType == SearchStrategy.NegaMax)
             {
-                NegaMax negaMax = new NegaMax(CurrentBoard, scoreCalc);
-                currentMove = negaMax.MoveCalculate(thinkingDepth);
+                var negaMax = new NegaMax(CurrentBoard, m_ScoreCalculator);
+
+                currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
             }
             else if (WhiteSearchType == SearchStrategy.AlphaBeta)
             {
-                AlphaBetaSearch search = new AlphaBetaSearch(CurrentBoard, scoreCalc);
+                var search = new AlphaBetaSearch(CurrentBoard, m_ScoreCalculator);
 
-                if (UseIterativeDeepening)
-                    currentMove = search.StartSearch(thinkingDepth);
-                else
-                    currentMove = search.MoveCalculate(thinkingDepth);
-
+                currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+                                                    : search.MoveCalculate(m_ThinkingDepth);
             }
 
             return currentMove;
@@ -230,7 +213,7 @@ namespace ChessGame
         /// <summary>
         /// Initialises the pieces to a games starting position
         /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
-        /// therefore the far left digit is a1 and the leftmeos digit is h8
+        /// therefore the far left digit is a1 and the leftmost digit is h8
         /// </summary>
         public void InitaliseStartingPosition()
         {
@@ -293,22 +276,22 @@ namespace ChessGame
 
         public void LoadDefaultOpeningBook()
         {
-            var bookName = "book.txt";
+            var bookFile = ResourceLoader.GetResourcePath("book.txt");
 
 #if UCI
-            Console.WriteLine($"Loading opening book: {bookName}");               
+            Console.WriteLine($"Loading opening book: {bookFile}");               
 #endif
 
-            LoadOpeningBook(bookName);
+            LoadOpeningBook(bookFile);
         }
 
-        public void LoadOpeningBook(string bookName)
+        public void LoadOpeningBook(string bookFile)
         {
             try
             {
-                openingBook = new OpeningBook(bookName);
+                m_OpeningBook = new OpeningBook(bookFile);
 
-                Log.Info($"Opening book {bookName} loaded");
+                Log.Info($"Opening book {bookFile} loaded");
 #if UCI
                 Console.WriteLine($"Opening book {bookName} loaded");               
 #endif
@@ -317,7 +300,7 @@ namespace ChessGame
             }
             catch (Exception exc)
             {
-                Log.Error(String.Format("Error loading opening book {0}", bookName), exc);
+                Log.Error($"Error loading opening book {bookFile}", exc);
 
 #if UCI
                 Console.WriteLine($"Error loading opening book {bookName}. Exception:{exc}");               
@@ -336,11 +319,11 @@ namespace ChessGame
 
         private void LogGameSettings()
         {
-            Log.Info(string.Format("Max thinking depth:{0}", thinkingDepth));
-            Log.Info(string.Format("Use iterative deepening:{0}", UseIterativeDeepening));
+            Log.Info($"Thinking depth:{m_ThinkingDepth}");
+            Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
 
-            Log.Info(string.Format("White search strategy:{0}", WhiteSearchType));
-            Log.Info(string.Format("Black search strategy:{0}", BlackSearchType));  
+            Log.Info($"White search strategy:{WhiteSearchType}");
+            Log.Info($"Black search strategy:{BlackSearchType}");  
         }
 
         #endregion logging

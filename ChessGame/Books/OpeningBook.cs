@@ -1,23 +1,61 @@
-﻿using ChessGame.NotationHelpers;
-using ChessGame.PossibleMoves;
-using ChessGame.ResourceLoading;
+﻿using ChessGame.ResourceLoading;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace ChessGame.Books
 {
     public class OpeningBook
     {
+        public string FilePath { get; }
+
         private readonly List<Opening> m_Openings;
+
         private int m_PlyCount;
+
         private readonly Random m_Rand = new Random();
 
-        public OpeningBook(string bookName)
+        public OpeningBook(string bookNameFilePath)
         {
-            m_Openings = ResourceLoader.LoadOpeningBook(bookName);
+            m_Openings = LoadOpeningBook(bookNameFilePath);
+
+            FilePath = bookNameFilePath;
+        }
+
+        private static List<Opening> LoadOpeningBook(string bookNamePath)
+        {
+            var openings = new List<Opening>();
+
+            var lines = File.ReadAllLines(bookNamePath);
+
+            foreach (var line in lines)
+            {
+                var moves = SplitIntoChunks(line, 4);
+
+                var opening = new Opening { moves = moves };
+
+                openings.Add(opening);
+            }
+
+            return openings;
+        }
+
+        private static string[] SplitIntoChunks(string str, int chunkSize)
+        {
+            var moveCount = Convert.ToInt32(Math.Ceiling((double)str.Length / (double)chunkSize));
+
+            var parts = new string[moveCount];
+
+            for (var i = 0; i < parts.Length; i++)
+            {
+                parts[i] = str.Substring(i * chunkSize, chunkSize);
+            }
+
+            //Last one may be smaller so get it here
+            //int lastSize = str.Length % chunkSize;
+            //parts[parts.Length - 1] = str.Substring(start, lastSize);
+
+            return parts;
         }
 
         /// <summary>
