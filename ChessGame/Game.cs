@@ -8,7 +8,6 @@ using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using log4net;
 using ChessGame.Books;
-using ChessGame.ResourceLoading;
 
 namespace ChessGame
 {
@@ -16,7 +15,7 @@ namespace ChessGame
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
-        private OpeningBook m_OpeningBook;
+        private readonly IOpeningBook m_OpeningBook;
 
         private int m_ThinkingDepth = 8;
         
@@ -48,11 +47,18 @@ namespace ChessGame
 
         public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
         
-        public Game(IScoreCalculator scoreCalculator, IBoard board)
+        public Game(IScoreCalculator scoreCalculator, IBoard board, IOpeningBook openingBook)
         {
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 
             m_CurrentBoard = board ?? throw new ArgumentNullException(nameof(board));
+
+            m_OpeningBook = openingBook;
+
+            if (openingBook != null)
+            {
+                UseOpeningBook = true;
+            }
 
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
@@ -83,7 +89,7 @@ namespace ChessGame
 
         public void ReceiveUciMove(string move)
         {
-            if (UseOpeningBook)
+            if (UseOpeningBook && m_OpeningBook != null)
             {
                 m_OpeningBook.RegisterMadeMove(move);
             }
@@ -100,16 +106,20 @@ namespace ChessGame
             var currentMove = GetBestMove();
 
             if (currentMove.Type != PieceType.None)
+            {
                 m_CurrentBoard.MakeMove(currentMove, true);
+            }
             else
+            {
                 m_GameIsActive = false;
+            }
 
             return currentMove;
         }
 
         public PieceMoves GetBestMove()
         {
-            if(UseOpeningBook)
+            if(UseOpeningBook && m_OpeningBook != null)
             {
                 var openingMoveUci = m_OpeningBook.GetMove();
 
@@ -126,6 +136,8 @@ namespace ChessGame
                     return openingMove;
                 }
 
+                // If the opening book didn't return any moves it means it's exhausted
+                // it's possibilities. Turn it off
                 UseOpeningBook = false;
 
                 Console.WriteLine("Opening book was unable to make a move. Reverting to search");
@@ -135,25 +147,42 @@ namespace ChessGame
 
             var currentMove = new PieceMoves();
 
-            if (WhiteSearchType == SearchStrategy.MiniMax)
+            switch (WhiteSearchType)
             {
-                var miniMax = new MiniMax(m_CurrentBoard, m_ScoreCalculator);
+                case SearchStrategy.MiniMax:
+                {
+                    var miniMax = new MiniMax(m_CurrentBoard, m_ScoreCalculator);
 
-                currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
+                    currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
+                    break;
+                }
 
-            }
-            else if (WhiteSearchType == SearchStrategy.NegaMax)
-            {
-                var negaMax = new NegaMax(m_CurrentBoard, m_ScoreCalculator);
+                case SearchStrategy.NegaMax:
+                {
+                    var negaMax = new NegaMax(m_CurrentBoard, m_ScoreCalculator);
 
-                currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
-            }
-            else if (WhiteSearchType == SearchStrategy.AlphaBeta)
-            {
-                var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
+                    currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
+                    break;
+                }
 
-                currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-                                                    : search.MoveCalculate(m_ThinkingDepth);
+                case SearchStrategy.AlphaBeta:
+                {
+                    var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
+
+                    currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+                        : search.MoveCalculate(m_ThinkingDepth);
+                    break;
+                }
+
+                case SearchStrategy.AlphaBetaWithZobrisk:
+                {
+                    throw new NotImplementedException();
+                }
+
+                default:
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
             }
 
             return currentMove;
@@ -172,14 +201,19 @@ namespace ChessGame
 
         #region Board setup methods
 
-            /// <summary>
-            /// Initialises the pieces to a games starting position
-            /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
-            /// therefore the far left digit is a1 and the leftmost digit is h8
-            /// </summary>
-            public void InitaliseStartingPosition()
+        /// <summary>
+        /// Initialises the pieces to a games starting position
+        /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
+        /// therefore the far left digit is a1 and the leftmost digit is h8
+        /// </summary>
+        public void InitaliseStartingPosition()
         {
             m_CurrentBoard.InitaliseStartingPosition();
+
+            if (m_OpeningBook != null)
+            {
+                m_OpeningBook.ResetBook();
+            }
         }
 
         /// <summary>
@@ -233,46 +267,6 @@ namespace ChessGame
         {
             m_CurrentBoard.ResetFlags();
         }
-
-        #region opening book
-
-        public void LoadDefaultOpeningBook()
-        {
-            var bookFile = ResourceLoader.GetResourcePath("book.txt");
-
-#if UCI
-            Console.WriteLine($"Loading opening book: {bookFile}");               
-#endif
-
-            LoadOpeningBook(bookFile);
-        }
-
-        public void LoadOpeningBook(string bookFile)
-        {
-            try
-            {
-                m_OpeningBook = new OpeningBook(bookFile);
-
-                Log.Info($"Opening book {bookFile} loaded");
-#if UCI
-                Console.WriteLine($"Opening book {bookName} loaded");               
-#endif
-
-                UseOpeningBook = true;
-            }
-            catch (Exception exc)
-            {
-                Log.Error($"Error loading opening book {bookFile}", exc);
-
-#if UCI
-                Console.WriteLine($"Error loading opening book {bookName}. Exception:{exc}");               
-#endif
-
-                UseOpeningBook = false;
-            }
-        }
-
-        #endregion opening book
 
         #region logging
 

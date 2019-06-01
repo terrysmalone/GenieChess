@@ -5,11 +5,11 @@ using System.IO;
 
 namespace ChessGame.Books
 {
-    public class OpeningBook
+    public class OpeningBook : IOpeningBook
     {
         public string FilePath { get; }
 
-        private readonly List<Opening> m_Openings;
+        private List<Opening> m_Openings;
 
         private int m_PlyCount;
 
@@ -22,8 +22,10 @@ namespace ChessGame.Books
             FilePath = bookNameFilePath;
         }
 
-        private static List<Opening> LoadOpeningBook(string bookNamePath)
+        private List<Opening> LoadOpeningBook(string bookNamePath)
         {
+            m_PlyCount = 0;
+
             var openings = new List<Opening>();
 
             var lines = File.ReadAllLines(bookNamePath);
@@ -42,7 +44,7 @@ namespace ChessGame.Books
 
         private static string[] SplitIntoChunks(string str, int chunkSize)
         {
-            var moveCount = Convert.ToInt32(Math.Ceiling((double)str.Length / (double)chunkSize));
+            var moveCount = Convert.ToInt32(Math.Ceiling(str.Length / (double)chunkSize));
 
             var parts = new string[moveCount];
 
@@ -107,6 +109,12 @@ namespace ChessGame.Books
             }
 
             m_PlyCount++;
+        }
+
+        public void ResetBook()
+        {
+            m_PlyCount = 0;
+            m_Openings = LoadOpeningBook(FilePath);
         }
     }
 }

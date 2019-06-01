@@ -19,7 +19,7 @@ namespace EngineEvaluation.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -65,10 +65,10 @@ namespace EngineEvaluation.Properties {
         ///3r1k2/4npp1/1ppr3p/p6P/P2PPPP1/1NR5/5K2/2R5 w - -,d5,BK.02
         ///2q1rr1k/3bbnnp/p2p1pp1/2pPp3/PpP1P1P1/1P2BNNP/2BQ1PRK/7R b - -,f5,BK.03
         ///rnbqkb1r/p3pppp/1p6/2ppP3/3N4/2P5/PPP1QPPP/R1B1KB1R w KQkq -,e6,BK.04
-        ///r1b2rk1/2q1b1pp/p2ppn2/1p6/3QP3/1BN1B3/PPP3PP/R4RK1 w - -,Nd5 a4,BK.05
+        ///r1b2rk1/2q1b1pp/p2ppn2/1p6/3QP3/1BN1B3/PPP3PP/R4RK1 w - -,Nd5,BK.05
         ///2r3k1/pppR1pp1/4p3/4P1P1/5P2/1P4K1/P1P5/8 w - -,g6,BK.06
         ///1nk1r1r1/pp2n1pp/4p3/q2pPp1N/b1pP1P2/B1P2R2/2P1B1PP/R2Q2K1 w - -,Nf6,BK.07
-        ///4b3/p3kp2/6p1/3pP2p/2pP1P2/4K1P1/P3N2P/8  [rest of string was truncated]&quot;;.
+        ///4b3/p3kp2/6p1/3pP2p/2pP1P2/4K1P1/P3N2P/8 w - [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string BratkoKopecPositions {
             get {

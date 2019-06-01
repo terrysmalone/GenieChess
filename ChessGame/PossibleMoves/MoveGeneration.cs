@@ -14,7 +14,7 @@ namespace ChessGame.PossibleMoves
 
         private static List<PieceMoves> _allMovesList;
 
-        private static PieceColour m_FriendlyColour = PieceColour.White; //These are swapped at the end of every...
+        private static PieceColour m_FriendlyColour = PieceColour.White; //These are swapped at the end of every turn
        
         private static int _checkCount;     //Used to find if king is in double check
         
