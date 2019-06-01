@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ChessGame</RootNamespace>
     <AssemblyName>Genie</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -175,9 +175,10 @@
     <Compile Include="BoardRepresentation\Enums\PieceColour.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceType.cs" />
     <Compile Include="BoardRepresentation\Enums\SearchStrategy.cs" />
+    <Compile Include="Books\IOpeningBook.cs" />
     <Compile Include="Books\Opening.cs" />
     <Compile Include="Books\OpeningBook.cs" />
-    <Compile Include="ChessGameFactory.cs" />
+    <Compile Include="GameFactory.cs" />
     <Compile Include="Exceptions\BitboardException.cs" />
     <Compile Include="Exceptions\ChessBoardException.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
@@ -218,7 +219,7 @@
     <Compile Include="ScoreCalculation\IScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreValueXmlReader.cs" />
-    <Compile Include="UCI.cs" />
+    <Compile Include="Uci.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

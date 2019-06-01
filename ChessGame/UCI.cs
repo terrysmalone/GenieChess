@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
+using ChessGame.Books;
 using ChessGame.Properties;
 using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
@@ -15,22 +16,22 @@ namespace ChessGame
     /// <summary>
     /// Deals with the UCICommunication for interfacing with GUI's
     /// </summary>
-    public class UCI
+    public class Uci
     {
         private static string ENGINE_NAME = "Genie v0.01";
 
         private Game game;
 
-        public UCI()
+        public Uci()
         {
 
         }
 
-        public void UCICommunication()
+        public void UciCommunication()
         {
             while (true)
             {
-                String input = Console.ReadLine();
+                var input = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(input))
                 {
@@ -98,9 +99,10 @@ namespace ChessGame
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            game = new Game(scoreCalculator, new Board());
-            game.LoadDefaultOpeningBook();
-            game.UseOpeningBook = true;
+            var openingBook = new OpeningBook(ResourceLoader.GetResourcePath("book.txt"));
+
+            game = new Game(scoreCalculator, new Board(), openingBook);
+            
         }
 
         /// <summary>
@@ -125,13 +127,12 @@ namespace ChessGame
                 //Console.WriteLine(string.Format("DEBUGGING-startpos detected: INPUT={0}", input));
             
                 game.InitaliseStartingPosition();
-                game.LoadDefaultOpeningBook();
-
+                
                 if (input.Contains("moves"))
                 {
-                    int moveStart = input.IndexOf("moves");
+                    var moveStart = input.IndexOf("moves");
 
-                    string moves = input.Substring(moveStart + 6);
+                    var moves = input.Substring(moveStart + 6);
 
                     //Console.WriteLine(string.Format("DEBUGGING-MAKING MOVE: INPUT={0}", moves));
 

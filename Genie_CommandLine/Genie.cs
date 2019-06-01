@@ -28,7 +28,7 @@ namespace Genie_CommandLine
             Log.Info("Running Genie - Command-line version");
             Log.Info("");
 
-            var chessGameFactory = new ChessGameFactory();
+            var chessGameFactory = new GameFactory(null); //TODO: pass in the logger
 
             m_Game = chessGameFactory.CreateChessGame();
 
@@ -36,11 +36,7 @@ namespace Genie_CommandLine
             m_Game.ThinkingDepth = 7;
 
             m_Game.InitaliseStartingPosition();
-
-            m_Game.LoadDefaultOpeningBook();
-
-            //game.SetFENPosition("4k3/2p5/4P3/8/8/1B4B1/8/4K3 w - - 0 1");
-
+            
             CountDebugger.ClearAll();
 
             while (true)

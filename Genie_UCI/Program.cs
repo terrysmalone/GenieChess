@@ -21,8 +21,8 @@ namespace Genie_UCI
             Log.Info("Running Genie - UCI version");
             Log.Info("");
             
-            var uci = new UCI();
-            uci.UCICommunication();
+            var uci = new Uci();
+            uci.UciCommunication();
         }
     }
 }
