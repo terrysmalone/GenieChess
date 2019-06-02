@@ -2,6 +2,6 @@
 {
     public interface IChessGameFactory
     {
-        Game CreateChessGame();
+        Game CreateChessGame(bool useOpeningBook);
     }
 }

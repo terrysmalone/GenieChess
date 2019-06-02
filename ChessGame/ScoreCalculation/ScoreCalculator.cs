@@ -113,8 +113,9 @@ namespace ChessGame.ScoreCalculation
         /// <returns></returns>
         public decimal CalculateScore(IBoard currentBoard)
         {
+#if Debug
             CountDebugger.Evaluations++;
-
+#endif
             m_CurrentBoard = currentBoard;
 
             //StaticBoardChecks.Calculate(currentBoard);

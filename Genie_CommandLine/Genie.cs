@@ -20,7 +20,6 @@ namespace Genie_CommandLine
 
         public Genie()
         {
-
             log4net.Config.XmlConfigurator.Configure();
 
             Log.Info("==============================================================");
@@ -30,10 +29,14 @@ namespace Genie_CommandLine
 
             var chessGameFactory = new GameFactory(null); //TODO: pass in the logger
 
-            m_Game = chessGameFactory.CreateChessGame();
+            var useOpeningBook = false;
+
+            Log.Info($"useOpeningBook: {useOpeningBook}");
+
+            m_Game = chessGameFactory.CreateChessGame(useOpeningBook);
 
             m_Game.SetSearchType(SearchStrategy.AlphaBeta);
-            m_Game.ThinkingDepth = 7;
+            m_Game.ThinkingDepth = 6;
 
             m_Game.InitaliseStartingPosition();
             
