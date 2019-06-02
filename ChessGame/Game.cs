@@ -167,12 +167,14 @@ namespace ChessGame
 
                 case SearchStrategy.AlphaBeta:
                 {
-                    var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
+                    //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+                    var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator, null);
 
                     TranspositionTable.ClearAll();
 
-                   currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-                                                       : search.MoveCalculate(m_ThinkingDepth);
+                   //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+                   //                                    : search.MoveCalculate(m_ThinkingDepth);
                     break;
                 }
 

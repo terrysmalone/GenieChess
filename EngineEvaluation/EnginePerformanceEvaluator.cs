@@ -120,7 +120,7 @@ namespace EngineEvaluation
 
             timer.Start();
 
-            AlphaBetaSearch alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+            AlphaBetaSearchOld alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
             PieceMoves currentMove = alphaBeta.StartSearch(depth);
 
             timer.Stop();
