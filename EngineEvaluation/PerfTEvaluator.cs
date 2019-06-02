@@ -4,6 +4,7 @@ using System.IO;
 using ChessEngineTests;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation;
+using ChessGame.Debugging;
 using ChessGame.ResourceLoading;
 using ChessGame.NotationHelpers;
 
@@ -32,6 +33,7 @@ namespace EngineEvaluation
 
             LogLine("PerfTEvaluator");
             LogLine("");
+
             LogLine($"Logging started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
         }
 
@@ -82,8 +84,8 @@ namespace EngineEvaluation
             
             foreach (var perfTPosition in perfTPositions)
             {
-                if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
-                {
+                //if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
+                //{
 
                     LogLine("--------------------------------------------");
                     LogLine(perfTPosition.Name);
@@ -103,13 +105,15 @@ namespace EngineEvaluation
 
                             LogLine($"Time:{time.ToString()}");
 
+                            LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
+                            CountDebugger.ClearAll();
                         }
                         else
                         {
-                            LogLine(string.Format("N/A"));
+                            LogLine("N/A");
                         }
                     }
-                }
+               // }
             }
         }
 

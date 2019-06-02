@@ -24,17 +24,10 @@ namespace ChessEngineTests
 
                 if (hash.Key != 0 && hash.Depth == depth)
                 {
-                    //verify
-                    //string boardFEN = boardPosition.GetFENNotation();
-                    //boardFEN = boardFEN.Substring(0, boardFEN.Length - 3);
-                    //if (!hash.fenPosition.Substring(0, hash.fenPosition.Length - 3).Equals(boardFEN))
-                    //{
-                    //    Console.WriteLine("Positions do not match");
-                    //}
-
                     if (hash.NodeType == HashNodeType.Exact)
                     {
                         var nds = Convert.ToUInt64(hash.Score);
+
                         return nds;
                     }
                 }
@@ -44,18 +37,11 @@ namespace ChessEngineTests
 
             if (depth == 0)
             {
-                CountDebugger.Nodes++;
+                //CountDebugger.Nodes++;
                 return 1;
             }
-            //moves.CalculateAllMoves(boardPosition);
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
-
-            //if (depth == 1)
-            //{
-            //    CountDebugger.Nodes += (ulong)moveList.Count;
-            //    return (ulong)moveList.Count;
-            //}
 
             for (var i = 0; i < moveList.Count; i++) 
             {
@@ -63,7 +49,7 @@ namespace ChessEngineTests
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    PieceColour friendlyColour = PieceColour.White;
+                    var friendlyColour = PieceColour.White;
 
                     if(boardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
@@ -151,7 +137,7 @@ namespace ChessEngineTests
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
                 
-                 divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
+                divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
 
                 boardPosition.UnMakeLastMove(false);
             }
@@ -224,8 +210,6 @@ namespace ChessEngineTests
 
             var moveFrom = GetPostion(move.Position);
             var moveTo = GetPostion(move.Moves);
-
-            //movesList.Add(string.Format("{0}. {1}{2}-{3}", i, pieceLetter, moveFrom, moveTo));
 
             return ($"{pieceLetter}{moveFrom}-{moveTo}");
         }

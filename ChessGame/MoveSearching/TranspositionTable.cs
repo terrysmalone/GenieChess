@@ -21,7 +21,7 @@ namespace ChessGame.MoveSearching
 
 
 
-        private static ulong transpositionTableSize = 20940347; //2000003;// 1048583; //Must be prime 
+        private static ulong transpositionTableSize = 20940347; //218591;//548591;//20940347; //2000003;// 1048583; //Must be prime 
         private static bool initialised = false;
 
 
@@ -36,8 +36,7 @@ namespace ChessGame.MoveSearching
 
         internal static void InitialiseTable()
         {
-            if (!initialised)
-            {
+            if (!initialised){
                 ZobristHash.Initialise();
 
                 table = new Hash[transpositionTableSize];
@@ -47,45 +46,38 @@ namespace ChessGame.MoveSearching
 
         internal static void Add(Hash hash)
         {
-            ulong index = hash.Key % transpositionTableSize;
+            var index = hash.Key % transpositionTableSize;
 
-            //if(table.ContainsKey(index))  
+            var currentHash = table[index];
 
-            //Hash currentTable = table[index];
-            //if (currentTable.Key != 0)
-            //{
-                //VERIFY
+            if (currentHash.Key != 0)  //There's already one there
+            {
+                if (hash.Depth > currentHash.Depth)
+                {
+                    table[index] = hash;
+                }
+            }
 
-                //Decide if we should replace
-                //Replace if new depth is more than or equal to the stored depth
-                //if (hash.Depth >= currentTable.Depth)
-            //        table[index] = hash;
-
-                    //Replace always
-                    //table[index] = hash;
-            //}
-            //else
-           // {
-                table[index] = hash;
-           // }
+            //table[index] = hash;
+           
         }
 
         internal static Hash ProbeTable(ulong zobristKey, int depth, decimal alpha, decimal beta)
         {
             Hash hash = Search(zobristKey);
 
-            CountDebugger.Transposition_Searches++; 
+            //CountDebugger.Transposition_Searches++; 
 
             if (hash.Key != 0)
             {
                 //Verify
                 if (hash.Key == zobristKey)
                 {
-                    CountDebugger.Transposition_MatchCount++;
+                    //CountDebugger.Transposition_MatchCount++;
 
                     if (hash.Depth >= depth)
                     {
-                        CountDebugger.Transposition_MatchAndUsed++;
+                        //CountDebugger.Transposition_MatchAndUsed++;
 
                         return hash;
 
@@ -115,18 +107,13 @@ namespace ChessGame.MoveSearching
                 }
                 else
                 {
-                    CountDebugger.Transposition_CollisionCount++;
-                    //Collision
-                    //if (((Hash)hash).Depth <= depth)
-                    //    Add((Hash)hash);
-
+                    //CountDebugger.Transposition_CollisionCount++;
+                    
                     return new Hash();
-                    //return false;
                 }
             }
 
             return new Hash(); 
-            //return false;
         }
 
         private static Hash Search(ulong zobristKey)
