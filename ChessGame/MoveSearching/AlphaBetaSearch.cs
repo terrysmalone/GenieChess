@@ -1,8 +1,10 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardSearching;
 using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using ChessGame.PossibleMoves;
@@ -19,7 +21,7 @@ namespace ChessGame.MoveSearching
 
         private readonly IBoard m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalculator;
-        
+
         private List<MoveValueInfo> m_IterativeDeepeningMoves;
         private List<Tuple<decimal, PieceMoves>> m_IterativeDeepeningShuffleOrder;
 
@@ -82,14 +84,14 @@ namespace ChessGame.MoveSearching
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:ss'.'fff}s - " +
                            $"time for move: {moveValueInfo.AccumulatedTime:ss'.'fff}s");
-                
+
 //#if UCI
 //                var bestMove = UCIMoveTranslator.ToUCIMove();
 //                //Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, bestMove));
 //                //Console.WriteLine(String.Format("info currmove {0} depth {1} nodes {2} ", bestMove, i, pvInfo.NodesVisited));
 //                //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
 //                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
-                
+
 //                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
 //#endif
             }
@@ -108,45 +110,58 @@ namespace ChessGame.MoveSearching
 
             var bestMove = new PieceMoves();
 
-            var moveList = OrderFromIterativeDeepeningMoves();
+            List<PieceMoves> moveList;
+
+            if (m_IterativeDeepeningShuffleOrder.Count > 0)
+            {
+                moveList = OrderFromIterativeDeepeningMoves();
+            }
+            else
+            {
+                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
+
+                OrderMovesInPlace(moveList);
+            }
 
 #if Debug
             m_Log.Info("======================================================");
-                m_Log.Info($"Moves to Check: {moveList.Count}");
+            m_Log.Info($"Moves to Check: {moveList.Count}");
 #endif
 
-                for (var i = 0; i < moveList.Count; i++)
-                {
+            for (var i = 0; i < moveList.Count; i++)
+            {
 #if UCI
                             Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
-                    m_BoardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(moveList[i], false);
 
-                    var score = AlphaBeta(-beta, -alpha, depth - 1);
+                var score = AlphaBeta(-beta, -alpha, depth - 1);
 
-                    if (score > bestScore)
-                    {
-                        bestMove = moveList[i];
-                        bestScore = score;
-                    }
-
-#if Debug
-                    m_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(moveList[i])}  - Score: {score}");
-#endif
-                    m_IterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, moveList[i]));
-
-                    m_BoardPosition.UnMakeLastMove();
+                if (score > bestScore)
+                {
+                    bestMove = moveList[i];
+                    bestScore = score;
                 }
 
-                return bestMove;
+#if Debug
+                m_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(moveList[i])} - Score: {score}");
+#endif
+
+                m_IterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, moveList[i]));
+
+                m_BoardPosition.UnMakeLastMove();
             }
+
+            return bestMove;
+        }
 
         private List<PieceMoves> OrderFromIterativeDeepeningMoves()
         {
             var moveList = new List<PieceMoves>();
 
-            m_IterativeDeepeningShuffleOrder = m_IterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
+            m_IterativeDeepeningShuffleOrder =
+                m_IterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
 
             foreach (var move in m_IterativeDeepeningShuffleOrder)
             {
@@ -237,6 +252,8 @@ namespace ChessGame.MoveSearching
                 m_BoardPosition.UnMakeLastMove();
             }
 
+            OrderMovesInPlace(moveList);
+
             return bestScore;
         }
 
@@ -256,6 +273,11 @@ namespace ChessGame.MoveSearching
             {
                 return m_ScoreCalculator.CalculateScore(boardPosition);
             }
+        }
+
+        private void OrderMovesInPlace(List<PieceMoves> moveList)
+        {
+            throw new NotImplementedException();
         }
     }
 }
