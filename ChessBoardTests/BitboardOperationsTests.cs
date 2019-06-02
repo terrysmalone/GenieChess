@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardRepresentation;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     /// <summary>
     /// Summary description for BitboardOperationsTests

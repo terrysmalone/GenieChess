@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using log4net;
 using ChessGame.ResourceLoading;
@@ -32,16 +31,16 @@ namespace EngineEvaluation
 
         private static void ProfileMoveGeneration()
         {
-            List<PerfTPosition> perftPositions = ResourceLoader.LoadPerfTPositions();
+            var perftPositions = ResourceLoader.LoadPerfTPositions();
 
-            foreach (PerfTPosition pos in perftPositions)
+            foreach (var pos in perftPositions)
             {
-                Board board = new Board();
+                var board = new Board();
                 board.SetPosition(FenTranslator.ToBoardState(pos.FenPosition));
 
-                List<PieceMoves> moves = MoveGeneration.CalculateAllPseudoLegalMoves(board);  
+                var moves = MoveGeneration.CalculateAllPseudoLegalMoves(board);  
                 
-                foreach (PieceMoves move in moves)
+                foreach (var move in moves)
 	            {
                     board.MakeMove(move, false);
 
@@ -54,81 +53,81 @@ namespace EngineEvaluation
        
         private static void ArrayTest()
         {
-            ulong[] smallArray = new ulong[1000000];
-            ulong[] largeArray = new ulong[10000000];
+            var smallArray = new ulong[1000000];
+            var largeArray = new ulong[10000000];
 
-            Random rand = new Random();
+            var rand = new Random();
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             timer.Start();
 
-            for (int i = 0; i < 10000000; i++)
+            for (var i = 0; i < 10000000; i++)
             {
-                int pos = rand.Next(1000000);
+                var pos = rand.Next(1000000);
 
-                ulong result = smallArray[pos];
+                var result = smallArray[pos];
             }
 
             timer.Stop();
 
-            TimeSpan smallSpeed = new TimeSpan(timer.Elapsed.Ticks);
+            var smallSpeed = new TimeSpan(timer.Elapsed.Ticks);
 
             timer.Restart();
 
             timer.Start();
 
-            for (int i = 0; i < 10000000; i++)
+            for (var i = 0; i < 10000000; i++)
             {
-                int pos = rand.Next(10000000);
+                var pos = rand.Next(10000000);
 
-                ulong result = largeArray[pos];
+                var result = largeArray[pos];
             }
 
             timer.Stop();
 
-            TimeSpan largeSpeed = new TimeSpan(timer.Elapsed.Ticks);
+            var largeSpeed = new TimeSpan(timer.Elapsed.Ticks);
 
         }
 
         private static void EvaluatePerfTSpeeds()
         {
-            PerfTEvaluator peftEvaluator = new PerfTEvaluator();
+            var peftEvaluator = new PerfTEvaluator();
 
-            int minDepth = 1;
-            int maxDepth = 9;
-            int repeatCount = 1;
-            bool useHashing = true;
+            var minDepth = 1;
+            var maxDepth = 9;
+            var repeatCount = 1;
+            var useHashing = true;
 
             peftEvaluator.EvaluatePerft(minDepth, maxDepth, repeatCount, useHashing);
         }
         
         private static void EvaluateNodeCounts()
         {
-            NodeCountEvaluator nodeEval = new NodeCountEvaluator();
+            var nodeEval = new NodeCountEvaluator();
 
-            int minDepth = 8;
-            int maxDepth = 8;
+            var minDepth = 8;
+            var maxDepth = 8;
 
             nodeEval.EvaluateNodes(minDepth, maxDepth);
         }
 
         private static void EvaluateMoveTimes()
         {
-            int depth = 7;
-            int numOfMoves = 20;
+            var depth = 7;
+            var numOfMoves = 20;
 
-            MoveTimeEvaluator eval = new MoveTimeEvaluator();
+            var eval = new MoveTimeEvaluator();
             eval.EvaluateMoveTime(depth, numOfMoves);
         }
 
 
         private static void EvaluateEngine()
         {
-            EnginePerformanceEvaluator eval = new EnginePerformanceEvaluator();
+            var eval = new EnginePerformanceEvaluator();
             //eval.EvaluateMoveSpeed(6, 10);
 
-            int depth = 7;
+            var depth = 7;
             eval.EvaluateTestPositions(depth);
         }
     }

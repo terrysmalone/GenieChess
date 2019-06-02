@@ -6,7 +6,7 @@ using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     /// <summary>
     /// Tests to make sure the whole engine behaves as expected

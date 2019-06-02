@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using ChessBoardTests;
+using ChessEngineTests;
 using ChessGame.BoardRepresentation;
 using ChessGame.Debugging;
 using ChessGame.MoveSearching;

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessBoardTests;
+using ChessEngineTests;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation;
 using ChessGame.Debugging;
@@ -36,7 +33,8 @@ namespace EngineEvaluation
 
             LogLine("PerfTEvaluator");
             LogLine("");
-            LogLine($"Logging started at {DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")}");
+
+            LogLine($"Logging started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
         }
 
         #endregion constructor
@@ -56,7 +54,6 @@ namespace EngineEvaluation
             LogLine(perfTPos.FenPosition);
 
             var perfT = new PerfT();
-            //perfT.GetAllMoves(
         }
 
         internal void EvaluatePerft(int startDepth, int endDepth, bool useHashing)
@@ -107,9 +104,9 @@ namespace EngineEvaluation
                             var time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
 
                             LogLine($"Time:{time.ToString()}");
+
                             LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
                             CountDebugger.ClearAll();
-
                         }
                         else
                         {
@@ -130,8 +127,10 @@ namespace EngineEvaluation
 
             for (var i = 0; i < repeatCount; i++)
             {
-                var perft = new PerfT();
-                perft.UseHashing = useHashing;
+                var perft = new PerfT
+                {
+                    UseHashing = useHashing
+                };
 
                 var result = perft.Perft(board, depth);
 

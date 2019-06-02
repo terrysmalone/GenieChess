@@ -10,7 +10,7 @@ using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.PossibleMoves;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class ZobristHashTests

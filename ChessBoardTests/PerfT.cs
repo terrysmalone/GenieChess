@@ -7,7 +7,7 @@ using ChessGame.BoardSearching;
 using ChessGame.Debugging;
 using ChessGame.MoveSearching;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     public class PerfT
     {
@@ -30,7 +30,6 @@ namespace ChessBoardTests
 
                         return nds;
                     }
-                    
                 }
             }
 
@@ -43,7 +42,7 @@ namespace ChessBoardTests
             }
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
-            
+
             for (var i = 0; i < moveList.Count; i++) 
             {
                 var skipMove = false;
@@ -81,7 +80,7 @@ namespace ChessBoardTests
             return nodes;
         }
 
-        private void RecordHash(Board boardPosition, int depth, decimal score, HashNodeType hashNodeType)
+        private static void RecordHash(IBoard boardPosition, int depth, decimal score, HashNodeType hashNodeType)
         {
             var hash = new Hash();
 
@@ -135,10 +134,10 @@ namespace ChessBoardTests
             foreach (var move in moveList)
             {
                 boardPosition.MakeMove(move, false);
-                                 
-                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
+
+                var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
                 
-                 divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
+                divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
 
                 boardPosition.UnMakeLastMove(false);
             }
@@ -172,7 +171,7 @@ namespace ChessBoardTests
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(position));
             
-            foreach (var move  in moveList)
+            foreach (var move in moveList)
             {
                 var pieceMove = GetPieceMoveAsString(move);
                 movesList.Add(pieceMove);
@@ -211,7 +210,7 @@ namespace ChessBoardTests
 
             var moveFrom = GetPostion(move.Position);
             var moveTo = GetPostion(move.Moves);
-            
+
             return ($"{pieceLetter}{moveFrom}-{moveTo}");
         }
 

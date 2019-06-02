@@ -7,7 +7,7 @@ using ChessGame;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class LookupTablesTests

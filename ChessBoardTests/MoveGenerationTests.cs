@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.NotationHelpers;
 
-namespace ChessBoardTests
+namespace ChessEngineTests
 {
     [TestClass]
     public class MoveGenerationTests
@@ -20,7 +19,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestPawnMoves()
         {
-            Board board = new Board();
+            var board = new Board();
             board.PlacePiece(PieceType.Pawn, PieceColour.White, 1, 1);
             board.PlacePiece(PieceType.Pawn, PieceColour.Black, 1, 2);
 
@@ -32,7 +31,7 @@ namespace ChessBoardTests
             board.BlackCanCastleQueenside = false;
             board.BlackCanCastleKingside = false;
 
-            List<PieceMoves> moveList = MoveGeneration.CalculateAllMoves(board);
+            var moveList = MoveGeneration.CalculateAllMoves(board);
 
             Assert.AreEqual(8, moveList.Count);
 
@@ -71,7 +70,7 @@ namespace ChessBoardTests
         [TestMethod]
         public void TestEnPassantCaptureBlack()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.PlacePiece(PieceType.King, PieceColour.White, 0, 0);
             board.PlacePiece(PieceType.King, PieceColour.Black, 0, 7);
@@ -87,13 +86,15 @@ namespace ChessBoardTests
 
             board.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move h pawn 2 spaces
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
+
+            Assert.AreEqual(5, allMoves.Count);
         }
 
         [TestMethod]
         public void TestEnPassantCaptureWhite()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.PlacePiece(PieceType.King, PieceColour.White, 4, 3); 
             board.PlacePiece(PieceType.King, PieceColour.Black, 0, 7);
@@ -111,9 +112,9 @@ namespace ChessBoardTests
 
             board.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move black f-pawn 2 spaces
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-            //Check moves contain pawn caputer
+            Assert.AreEqual(9, allMoves.Count);
         }
 
         //[TestMethod]
@@ -146,7 +147,7 @@ namespace ChessBoardTests
             Assert.AreEqual((ulong)1048576, move1.Position);
             Assert.AreEqual((ulong)524288, move1.Moves);
 
-            PieceMoves move2 = allMoves[1];
+            var move2 = allMoves[1];
             Assert.AreEqual(PieceType.King, move2.Type);
             Assert.AreEqual((ulong)1048576, move2.Position);
             Assert.AreEqual((ulong)134217728, move2.Moves); 
