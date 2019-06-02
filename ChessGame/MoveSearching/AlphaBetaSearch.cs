@@ -110,23 +110,30 @@ namespace ChessGame.MoveSearching
 
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                var pvInfo = new PVInfo();
-                pvInfo.Move = bestIDMove;
-                pvInfo.Score = bestIDScore;
-                pvInfo.DepthTime = speed;
+                var pvInfo = new PVInfo
+                {
+                    Move = bestIDMove,
 
-                if (idMoves.Count > 0)
-                    pvInfo.AccumulatedTime = idMoves[idMoves.Count - 1].AccumulatedTime.Add(speed);
-                else
-                    pvInfo.AccumulatedTime = speed;
+                    Score = bestIDScore,
 
+                    DepthTime = speed,
+
+                    AccumulatedTime = idMoves.Count > 0
+                        ? idMoves[idMoves.Count - 1].AccumulatedTime.Add(speed)
+                        : speed,
+
+                    NodesVisited = CountDebugger.Evaluations
+                };
 #if Debug
-                pvInfo.NodesVisited = CountDebugger.Evaluations;
 #endif
                 idMoves.Add(pvInfo);
 
-                log.Info(
-                    $"{i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - score:{pvInfo.Score} - nodes:{pvInfo.NodesVisited} - time at depth:{pvInfo.DepthTime.ToString("ss'.'fff")}s - time for move:{pvInfo.AccumulatedTime.ToString("ss'.'fff")}s");
+                log.Info($"Depth {i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - " +
+                         $"score:{pvInfo.Score} - " +
+                         $"nodes:{pvInfo.NodesVisited} - " +
+                         $"time at depth:{pvInfo.DepthTime:ss'.'fff}s - " +
+                         $"time for move:{pvInfo.AccumulatedTime:ss'.'fff}s");
+
                  //LogPrincipalVariation(i);               
 
 #if UCI
@@ -242,8 +249,8 @@ namespace ChessGame.MoveSearching
         {
             startDepth = depth;
 
-            var alpha = Decimal.MinValue/2-1;
-            var beta = Decimal.MaxValue/2+1;
+            var alpha = decimal.MinValue/2-1;
+            var beta = decimal.MaxValue/2+1;
 
             Debug.Assert(depth >= 1);
 
@@ -328,7 +335,7 @@ namespace ChessGame.MoveSearching
 
         private decimal AlphaBeta(decimal alpha, decimal beta, int depth, bool allowNullMove)
         {
-            return AlphaBeta(alpha, beta, depth, allowNullMove, false, 0);
+            return AlphaBeta(alpha, beta, depth, allowNullMove, isNullMoveSearch: false, extensionDepth: 0);
         }
 
         private decimal AlphaBeta(decimal alpha, decimal beta, int depth, bool allowNullMove, bool isNullMoveSearch, int extensionDepth)
@@ -337,38 +344,53 @@ namespace ChessGame.MoveSearching
 
             var alphaOrig = alpha;
 
-            var score = Decimal.MinValue / 2 - 1;
+            var score = decimal.MinValue / 2 - 1;
 
-            #region transposition table lookup
+           #region transposition table lookup
 
-            var bestMoveSoFar = new PieceMoves();
-            var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depth, alpha, beta);
-            if (hash.Key != 0)
-            {
-                if (hash.Depth >= depth)
-                {
-                    var povScore = hash.Score;
+           var bestMoveSoFar = new PieceMoves();
 
-                    if (!m_BoardPosition.WhiteToMove)
-                        povScore = -hash.Score;
+           var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depth, alpha, beta);
 
-                    if (hash.NodeType == HashNodeType.Exact)
-                        return povScore;
-                    else if (hash.NodeType == HashNodeType.LowerBound)
-                        alpha = Math.Max(alpha, povScore);
-                    else if (hash.NodeType == HashNodeType.UpperBound)
-                        beta = Math.Min(beta, povScore);
+           if (hash.Key != 0)
+           {
+               if (hash.Depth >= depth)
+               {
+                   var povScore = hash.Score;
 
-                    if (alpha >= beta)
-                        return povScore;
-                    //return alpha;
-                }
+                   if (!m_BoardPosition.WhiteToMove)
+                   {
+                       povScore = -hash.Score;
+                   }
 
-                if(hash.BestMove.Type != PieceType.None)
-                    bestMoveSoFar = hash.BestMove; //move this to the front
-            }
+                   if (hash.NodeType == HashNodeType.Exact)
+                   {
+                       return povScore;
+                   }
+                   else if (hash.NodeType == HashNodeType.LowerBound)
+                   {
+                       alpha = Math.Max(alpha, povScore);
+                   }
+                   else if (hash.NodeType == HashNodeType.UpperBound)
+                   {
+                       beta = Math.Min(beta, povScore);
+                   }
 
-            #endregion transposition table lookup
+                   if (alpha >= beta)
+                   {
+                       return povScore;
+                   }
+
+                   //return alpha;
+               }
+
+               if (hash.BestMove.Type != PieceType.None)
+               {
+                   bestMoveSoFar = hash.BestMove; //move this to the front
+               }
+           }
+           
+           #endregion transposition table lookup
                                     
             var isPositionInCheck = false;
             var canKingMove = false;
@@ -901,27 +923,30 @@ namespace ChessGame.MoveSearching
         /// <param name="hashNodeType"></param>
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType, PieceMoves bestMove)
         {
-            var hash = new Hash();
+            var hash = new Hash
+            {
+                Key = m_BoardPosition.Zobrist,
+                Depth = depth,
+                NodeType = hashNodeType,
+                Score = score,
+                BestMove = bestMove
+            };
 
-            hash.Key = m_BoardPosition.Zobrist;
-            hash.Depth = depth;
-            hash.NodeType = hashNodeType;
-            hash.Score = score;
-            hash.BestMove = bestMove;
 
             TranspositionTable.Add(hash);
         }
 
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
         {
-            var hash = new Hash();
+            var hash = new Hash
+            {
+                Key = m_BoardPosition.Zobrist,
+                Depth = depth,
+                NodeType = hashNodeType,
+                Score = score
+            };
 
-            hash.Key = m_BoardPosition.Zobrist;
-            hash.Depth = depth;
-            hash.NodeType = hashNodeType;
-            hash.Score = score;
-
-            TranspositionTable.Add(hash);
+        TranspositionTable.Add(hash);
         }
 
         #region Logging

@@ -16,26 +16,30 @@ namespace ChessGame
             m_Log = log;
         }
 
-        public Game CreateChessGame()
+        public Game CreateChessGame(bool useOpeningBook)
         {
             var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
 
-            var openingBook = GetOpeningBook("book.txt");
-            
-            return new Game(scoreCalculator, new Board(), null);
+            IOpeningBook openingBook = null;
+
+            if (useOpeningBook)
+            {
+                openingBook = GetOpeningBook("book.txt");
+            }
+
+            return new Game(scoreCalculator, new Board(), openingBook);
         }
 
         private IOpeningBook GetOpeningBook(string bookName)
         {
-            IOpeningBook openingBook = null;
-
             try
             {
-                openingBook = new OpeningBook(ResourceLoader.GetResourcePath(bookName));
+                var openingBook = new OpeningBook(ResourceLoader.GetResourcePath(bookName));
 
 #if UCI
                 Console.WriteLine($"Opening book {openingBook.FilePath} loaded");
 #endif
+                return openingBook;
             }
             catch (Exception exc)
             {
@@ -46,7 +50,7 @@ namespace ChessGame
 #endif
             }
 
-            return openingBook;
+            return null;
         }
     }
 }

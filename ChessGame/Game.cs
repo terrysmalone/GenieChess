@@ -169,8 +169,10 @@ namespace ChessGame
                 {
                     var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-                    currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-                        : search.MoveCalculate(m_ThinkingDepth);
+                    TranspositionTable.ClearAll();
+
+                   currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+                                                       : search.MoveCalculate(m_ThinkingDepth);
                     break;
                 }
 
