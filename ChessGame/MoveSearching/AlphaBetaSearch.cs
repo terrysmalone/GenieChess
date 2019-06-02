@@ -8,6 +8,7 @@ using log4net;
 
 namespace ChessGame.MoveSearching
 {
+    // The basic algorithm performs a negamax alpha-beta pruning
     public sealed class AlphaBetaSearch
     {
         private static readonly ILog m_Log =
@@ -98,9 +99,9 @@ namespace ChessGame.MoveSearching
                         alpha = score;
                     }
                 }
-            }
 
-            m_BoardPosition.UnMakeLastMove();
+                m_BoardPosition.UnMakeLastMove();
+            }
 
             return bestScore;
         }
@@ -115,13 +116,11 @@ namespace ChessGame.MoveSearching
         {
             if (m_BoardPosition.WhiteToMove)
             {
-                //return m_ScoreCalculator.CalculateScore(boardPosition);
-                return 20;
+                return -m_ScoreCalculator.CalculateScore(boardPosition);
             }
             else
             {
-                //return -m_ScoreCalculator.CalculateScore(boardPosition);
-                return -20;
+                return m_ScoreCalculator.CalculateScore(boardPosition);
             }
         }
     }

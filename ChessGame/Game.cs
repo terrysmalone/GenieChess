@@ -145,7 +145,7 @@ namespace ChessGame
 
             var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-            var bestMove = search.CalculateBestMove(2);
+            var bestMove = search.CalculateBestMove(5);
 
             //TranspositionTable.ClearAll();
 
