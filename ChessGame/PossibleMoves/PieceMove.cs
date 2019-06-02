@@ -8,7 +8,7 @@ using ChessGame.BoardRepresentation.Enums;
 namespace ChessGame.PossibleMoves
 {
     /// <summary>
-    /// Stores data for a piece position and all its possble moves
+    /// Stores data for a piece position and all its possible moves
     /// </summary>
     public struct PieceMoves
     {

@@ -17,7 +17,7 @@ namespace ChessGame
         
         private readonly IOpeningBook m_OpeningBook;
 
-        private int m_ThinkingDepth = 8;
+        private int m_ThinkingDepth = 4;
         
         private bool m_GameIsActive = true;
 
@@ -38,7 +38,7 @@ namespace ChessGame
 
             set 
             {
-                Log.Info($"Setting default thinking depth to {value}");
+                //Log.Info($"Setting default thinking depth to {value}");
                 m_ThinkingDepth = value; 
             }
         }
@@ -145,7 +145,7 @@ namespace ChessGame
 
             var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-            var bestMove = search.CalculateBestMove(5);
+            var bestMove = search.CalculateBestMove(m_ThinkingDepth);
 
             //TranspositionTable.ClearAll();
 
@@ -235,7 +235,7 @@ namespace ChessGame
         private void LogGameSettings()
         {
             Log.Info($"Thinking depth:{m_ThinkingDepth}");
-            Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
+            //Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
         }
 
         #endregion logging

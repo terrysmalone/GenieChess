@@ -144,7 +144,7 @@ namespace EngineEvaluation
 
         }
 
-        private static ulong CountNodes(IEnumerable<PVInfo> idInfo)
+        private static ulong CountNodes(IEnumerable<MoveValueInfo> idInfo)
         {
             ulong nodes = 0;
 

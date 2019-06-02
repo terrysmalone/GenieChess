@@ -167,7 +167,7 @@ namespace ChessGame.PossibleMoves
             {
                 for (byte startRank = 0; startRank < 8; startRank++)
                 {
-                    //PieceMoves move = new PieceMoves();
+                    //PieceMove move = new PieceMove();
                     //move.Position = CalculateSquareValue(startFile, startRank);
                     //move.Type = PieceType.Knight;
 
@@ -254,7 +254,7 @@ namespace ChessGame.PossibleMoves
             {
                 for (byte startRank = 0; startRank < 8; startRank++)
                 {
-                    //PieceMoves move = new PieceMoves();
+                    //PieceMove move = new PieceMove();
                     //move.Position = CalculateSquareValue(startFile, startRank);
                     //move.Type = PieceType.King;
                     

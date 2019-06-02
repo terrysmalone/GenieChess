@@ -38,7 +38,7 @@ namespace ChessGame.MoveSearching
 
         private PieceMoves bestIDMove;
         private decimal bestIDScore;
-        private List<PVInfo> idMoves;
+        private List<MoveValueInfo> idMoves;
 
         private List<Tuple<decimal, PieceMoves>> idShuffleOrder;
         
@@ -50,7 +50,7 @@ namespace ChessGame.MoveSearching
 
         int EXTENSION_LIMIT = 10;
 
-        public List<PVInfo> IdMoves
+        public List<MoveValueInfo> IdMoves
         {
             get { return idMoves; }
         }
@@ -79,8 +79,8 @@ namespace ChessGame.MoveSearching
             //Reset iterative deepening variables
             useIterativeDeepening = true;
 
-            idMoves = new List<PVInfo>();
-            bestIDMove = new PieceMoves() { Moves = 0, Position = 0, SpecialMove = SpecialMoveType.Normal, Type = PieceType.None };
+            idMoves = new List<MoveValueInfo>();
+            bestIDMove = new PieceMoves { Moves = 0, Position = 0, SpecialMove = SpecialMoveType.Normal, Type = PieceType.None };
             bestIDScore = 0;
 
             //Reset killer moves
@@ -110,7 +110,7 @@ namespace ChessGame.MoveSearching
 
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                var pvInfo = new PVInfo
+                var pvInfo = new MoveValueInfo
                 {
                     Move = bestIDMove,
 
@@ -170,7 +170,7 @@ namespace ChessGame.MoveSearching
             //Reset iterative deepening variables
             useIterativeDeepening = true;
 
-            idMoves = new List<PVInfo>();
+            idMoves = new List<MoveValueInfo>();
             bestIDMove = new PieceMoves() { Moves = 0, Position = 0, SpecialMove = SpecialMoveType.Normal, Type = PieceType.None };
             bestIDScore = 0;
 
@@ -209,7 +209,7 @@ namespace ChessGame.MoveSearching
                 timer.Stop();
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                var pvInfo = new PVInfo();
+                var pvInfo = new MoveValueInfo();
                 pvInfo.Move = bestIDMove;
                 pvInfo.Score = bestIDScore;
                 pvInfo.DepthTime = speed;

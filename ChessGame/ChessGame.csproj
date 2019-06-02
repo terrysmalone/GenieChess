@@ -190,7 +190,7 @@
     <Compile Include="MoveSearching\MiniMax.cs" />
     <Compile Include="MoveSearching\NegaMax.cs" />
     <Compile Include="Debugging\CountDebugger.cs" />
-    <Compile Include="MoveSearching\PVInfo.cs" />
+    <Compile Include="MoveSearching\MoveValueInfo.cs" />
     <Compile Include="MoveSearching\TranspositionTable.cs" />
     <Compile Include="MoveSearching\ZobristKey.cs" />
     <Compile Include="MoveSearching\ZobristHash.cs" />
@@ -202,7 +202,7 @@
     <Compile Include="NotationHelpers\TranslationHelper.cs" />
     <Compile Include="NotationHelpers\UCIMoveTranslator.cs" />
     <Compile Include="PossibleMoves\MoveGeneration.cs" />
-    <Compile Include="PossibleMoves\PieceMoves.cs" />
+    <Compile Include="PossibleMoves\PieceMove.cs" />
     <Compile Include="PossibleMoves\PieceValidMoves.cs" />
     <Compile Include="PossibleMoves\SpecialMoveType.cs" />
     <Compile Include="PossibleMoves\ValidMoveArrays.cs" />

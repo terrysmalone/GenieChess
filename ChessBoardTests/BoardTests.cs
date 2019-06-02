@@ -443,7 +443,7 @@ namespace ChessEngineTests
         //    //ulong initialZobrist = game.CurrentBoard.Zobrist;
 
         //    ////e2-e4
-        //    //game.CurrentBoard.MakeMove(new PieceMoves { Position = LookupTables.E2, Moves = LookupTables.E4, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+        //    //game.CurrentBoard.MakeMove(new PieceMove { Position = LookupTables.E2, Moves = LookupTables.E4, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
         //    ////game.ReceiveUCIMove("e2e4");
 
         //    //ulong move1Zobrist = game.CurrentBoard.Zobrist;
