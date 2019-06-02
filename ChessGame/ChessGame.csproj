@@ -185,6 +185,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="BoardSearching\LookupTables.cs" />
     <Compile Include="IChessGameFactory.cs" />
+    <Compile Include="MoveSearching\AlphaBetaSearch.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearchOld.cs" />
     <Compile Include="MoveSearching\Hash.cs" />
     <Compile Include="MoveSearching\MiniMax.cs" />
