@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame.BoardSearching;
 using log4net;
 using ChessGame.ResourceLoading;
 using ChessGame.PossibleMoves;

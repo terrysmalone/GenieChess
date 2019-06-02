@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ChessBoardTests;
 using System.Diagnostics;
 using ChessGame.BoardRepresentation;
+using ChessGame.Debugging;
 using ChessGame.ResourceLoading;
 using ChessGame.NotationHelpers;
 
@@ -35,14 +36,14 @@ namespace EngineEvaluation
 
             LogLine("PerfTEvaluator");
             LogLine("");
-            LogLine(string.Format("Logging started at {0}", DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")));
+            LogLine($"Logging started at {DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")}");
         }
 
         #endregion constructor
 
         public void EvaluatePerft(List<PerfTPosition> perftPositions)
         {
-            foreach (PerfTPosition perfTPos in perftPositions)
+            foreach (var perfTPos in perftPositions)
             {
                 LogPerftScore(perfTPos);
             }
@@ -54,7 +55,7 @@ namespace EngineEvaluation
             LogLine(perfTPos.Name);
             LogLine(perfTPos.FenPosition);
 
-            PerfT perfT = new PerfT();
+            var perfT = new PerfT();
             //perfT.GetAllMoves(
         }
 
@@ -67,7 +68,7 @@ namespace EngineEvaluation
         {
             perfTPositions = ResourceLoader.LoadPerfTPositions();
 
-            string runs = "runs";
+            var runs = "runs";
 
             if (repeatCount < 1)
                 repeatCount = 1;
@@ -76,18 +77,18 @@ namespace EngineEvaluation
                 runs = "run";
 
 
-            LogLine(string.Format("startDepth {0}", startDepth));
-            LogLine(string.Format("endDepth {0}", endDepth));
-            LogLine(string.Format("repeatCount {0}", repeatCount));
-            LogLine(string.Format("useHashing {0}", useHashing));
+            LogLine($"startDepth {startDepth}");
+            LogLine($"endDepth {endDepth}");
+            LogLine($"repeatCount {repeatCount}");
+            LogLine($"useHashing {useHashing}");
             
             LogLine("");
-            LogLine(string.Format("All values taken as an average of {0} {1}", repeatCount, runs));
+            LogLine($"All values taken as an average of {repeatCount} {runs}");
             
-            foreach (PerfTPosition perfTPosition in perfTPositions)
+            foreach (var perfTPosition in perfTPositions)
             {
-                if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
-                {
+                //if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
+                //{
 
                     LogLine("--------------------------------------------");
                     LogLine(perfTPosition.Name);
@@ -97,40 +98,42 @@ namespace EngineEvaluation
                     if (startDepth < 1)
                         startDepth = 1;
 
-                    for (int i = startDepth; i <= endDepth; i++)
+                    for (var i = startDepth; i <= endDepth; i++)
                     {
-                        LogLine(string.Format("Depth:{0}", i));
+                        LogLine($"Depth:{i}");
 
                         if (perfTPosition.Results.Count >= i)
                         {
-                            TimeSpan time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
+                            var time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
 
-                            LogLine(string.Format("Time:{0}", time.ToString()));
+                            LogLine($"Time:{time.ToString()}");
+                            LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
+                            CountDebugger.ClearAll();
 
                         }
                         else
                         {
-                            LogLine(string.Format("N/A"));
+                            LogLine("N/A");
                         }
                     }
-                }
+               // }
             }
         }
 
         private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
             timer.Start();
 
-            for (int i = 0; i < repeatCount; i++)
+            for (var i = 0; i < repeatCount; i++)
             {
-                PerfT perft = new PerfT();
+                var perft = new PerfT();
                 perft.UseHashing = useHashing;
 
-                ulong result = perft.Perft(board, depth);
+                var result = perft.Perft(board, depth);
 
                 if (result != expectedResult)
                     LogLine("PERFT FAILED");
@@ -139,7 +142,7 @@ namespace EngineEvaluation
             timer.Stop();
             
             //TimeSpan averageSpeed = new TimeSpan(timer.ElapsedMilliseconds / repeatCount);
-            TimeSpan averageSpeed = new TimeSpan(timer.Elapsed.Ticks / repeatCount);
+            var averageSpeed = new TimeSpan(timer.Elapsed.Ticks / repeatCount);
 
             return averageSpeed;
         }
@@ -149,7 +152,7 @@ namespace EngineEvaluation
 
         private void CreateLogFile()
         {
-            string timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             logLocation += @"\" + timeStamp;
 
             Directory.CreateDirectory(logLocation);
@@ -160,7 +163,7 @@ namespace EngineEvaluation
 
         private void LogLine(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.WriteLine(text);
             }
@@ -168,7 +171,7 @@ namespace EngineEvaluation
 
         private void Log(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.Write(text);
             }
