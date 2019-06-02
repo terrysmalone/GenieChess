@@ -52,7 +52,7 @@ namespace ChessGame.MoveSearching
 
             if (currentHash.Key != 0)  //There's already one there
             {
-                if (hash.Depth > currentHash.Depth)
+                if (hash.Depth >= currentHash.Depth)
                 {
                     table[index] = hash;
                 }
