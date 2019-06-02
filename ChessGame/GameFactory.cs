@@ -22,7 +22,7 @@ namespace ChessGame
 
             var openingBook = GetOpeningBook("book.txt");
             
-            return new Game(scoreCalculator, new Board(), openingBook);
+            return new Game(scoreCalculator, new Board(), null);
         }
 
         private IOpeningBook GetOpeningBook(string bookName)

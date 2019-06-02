@@ -189,9 +189,15 @@ namespace ChessGame.ScoreCalculation
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKing) * kingScore;
 
             //Calculate double bishop bonus
-            pieceScore += whiteBishopCount * DoubleBishopScore;
-            pieceScore -= blackBishopCount * DoubleBishopScore;
+            if (whiteBishopCount == 2)
+            {
+                pieceScore += 1;
+            }
 
+            if (blackBishopCount == 2)
+            {
+                pieceScore -= 1;
+            }
 
             return pieceScore;
         }
