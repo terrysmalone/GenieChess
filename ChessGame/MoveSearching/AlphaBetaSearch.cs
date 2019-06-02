@@ -1,10 +1,8 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ChessGame.BoardRepresentation;
-using ChessGame.BoardSearching;
 using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using ChessGame.PossibleMoves;
@@ -14,6 +12,7 @@ using log4net;
 namespace ChessGame.MoveSearching
 {
     // The basic algorithm performs a negamax alpha-beta pruning
+    // using iterative deepening
     public sealed class AlphaBetaSearch
     {
         private static readonly ILog m_Log =
@@ -22,8 +21,8 @@ namespace ChessGame.MoveSearching
         private readonly IBoard m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalculator;
 
-        private List<MoveValueInfo> m_IterativeDeepeningMoves;
-        private List<Tuple<decimal, PieceMoves>> m_IterativeDeepeningShuffleOrder;
+        private List<MoveValueInfo> m_InitialMoves;
+        private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
@@ -34,11 +33,13 @@ namespace ChessGame.MoveSearching
 
         public PieceMoves CalculateBestMove(int maxDepth)
         {
+#if DEBUG
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             m_Log.Info($"Calculating move for {toMove}");
+#endif
 
-            m_IterativeDeepeningMoves = new List<MoveValueInfo>();
-            m_IterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
+            m_InitialMoves = new List<MoveValueInfo>();
+            m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
             var bestMove = new PieceMoves();
 
@@ -47,15 +48,13 @@ namespace ChessGame.MoveSearching
             for (var depth = 1; depth <= maxDepth; depth++)
             {
 #if UCI
-                    Console.WriteLine($"info depth {depth}");
+                Console.WriteLine($"info depth {depth}");
 #endif
-
-                CountDebugger.Evaluations = 0;
-
                 var timer = new Stopwatch();
 
                 timer.Start();
 
+                // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
 
                 timer.Stop();
@@ -65,19 +64,15 @@ namespace ChessGame.MoveSearching
                 var moveValueInfo = new MoveValueInfo
                 {
                     Move = bestMove,
-
                     Score = bestScore,
-
                     DepthTime = speed,
-
-                    AccumulatedTime = m_IterativeDeepeningMoves.Count > 0
-                        ? m_IterativeDeepeningMoves[m_IterativeDeepeningMoves.Count - 1].AccumulatedTime.Add(speed)
+                    AccumulatedTime = m_InitialMoves.Count > 0
+                        ? m_InitialMoves[m_InitialMoves.Count - 1].AccumulatedTime.Add(speed)
                         : speed,
-
                     NodesVisited = CountDebugger.Evaluations
                 };
 
-                m_IterativeDeepeningMoves.Add(moveValueInfo);
+                m_InitialMoves.Add(moveValueInfo);
 
                 m_Log.Info($"Depth {depth} : {UCIMoveTranslator.ToUCIMove(moveValueInfo.Move)} - " +
                            $"score: {moveValueInfo.Score} - " +
@@ -112,7 +107,9 @@ namespace ChessGame.MoveSearching
 
             List<PieceMoves> moveList;
 
-            if (m_IterativeDeepeningShuffleOrder.Count > 0)
+            // Order the initial moves by their scores from the last depth, if any.
+            // Otherwise orderthem based on....
+            if (m_InitialMovesIterativeDeepeningShuffleOrder.Count > 0)
             {
                 moveList = OrderFromIterativeDeepeningMoves();
             }
@@ -131,11 +128,12 @@ namespace ChessGame.MoveSearching
             for (var i = 0; i < moveList.Count; i++)
             {
 #if UCI
-                            Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
+                Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
                 m_BoardPosition.MakeMove(moveList[i], false);
 
+                // Since we're swapping colours at the next depth invert alpha and beta
                 var score = AlphaBeta(-beta, -alpha, depth - 1);
 
                 if (score > bestScore)
@@ -148,7 +146,7 @@ namespace ChessGame.MoveSearching
                 m_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(moveList[i])} - Score: {score}");
 #endif
 
-                m_IterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, moveList[i]));
+                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, moveList[i]));
 
                 m_BoardPosition.UnMakeLastMove();
             }
@@ -160,15 +158,15 @@ namespace ChessGame.MoveSearching
         {
             var moveList = new List<PieceMoves>();
 
-            m_IterativeDeepeningShuffleOrder =
-                m_IterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
+            m_InitialMovesIterativeDeepeningShuffleOrder =
+                m_InitialMovesIterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
 
-            foreach (var move in m_IterativeDeepeningShuffleOrder)
+            foreach (var move in m_InitialMovesIterativeDeepeningShuffleOrder)
             {
                 moveList.Add(move.Item2);
             }
 
-            m_IterativeDeepeningShuffleOrder.Clear();
+            m_InitialMovesIterativeDeepeningShuffleOrder.Clear();
 
             return moveList;
         }
@@ -277,7 +275,7 @@ namespace ChessGame.MoveSearching
 
         private void OrderMovesInPlace(List<PieceMoves> moveList)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
