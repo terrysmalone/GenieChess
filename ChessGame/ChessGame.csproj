@@ -174,7 +174,6 @@
     <Compile Include="BoardSearching\UsefulBitboards.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceColour.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceType.cs" />
-    <Compile Include="BoardRepresentation\Enums\SearchStrategy.cs" />
     <Compile Include="Books\IOpeningBook.cs" />
     <Compile Include="Books\Opening.cs" />
     <Compile Include="Books\OpeningBook.cs" />

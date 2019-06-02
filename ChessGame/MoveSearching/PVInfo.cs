@@ -10,7 +10,7 @@ namespace ChessGame.MoveSearching
     /// <summary>
     /// Stores info relating to a move. Used for storing iterative deepening lines
     /// </summary>
-    public struct PVInfo
+    public struct  PVInfo
     {
         public PieceMoves Move;
         public decimal Score;

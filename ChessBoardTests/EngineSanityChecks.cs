@@ -32,7 +32,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
             game.FindAndMakeBestMove();
             
@@ -50,7 +49,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 3;
             game.FindAndMakeBestMove();
             
@@ -67,7 +65,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 4;
             game.FindAndMakeBestMove();
 
@@ -84,7 +81,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
             
@@ -101,7 +97,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
             
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
             game.FindAndMakeBestMove();
             
@@ -118,7 +113,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 2;
             game.FindAndMakeBestMove();
             
@@ -135,7 +129,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 3;
             game.FindAndMakeBestMove();
 
@@ -152,7 +145,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 4;
             game.FindAndMakeBestMove();
             
@@ -169,7 +161,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
             
@@ -186,7 +177,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 6;
             game.FindAndMakeBestMove();
             
@@ -246,7 +236,6 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("q2k2q1/2nqn2b/1n1P1n1b/2rnr2Q/1NQ1QN1Q/3Q3B/2RQR2B/Q2K2Q1 w - -");
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
         }

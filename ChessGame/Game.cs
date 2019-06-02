@@ -42,10 +42,6 @@ namespace ChessGame
                 m_ThinkingDepth = value; 
             }
         }
-
-        public SearchStrategy WhiteSearchType { get; set; } = SearchStrategy.AlphaBeta;
-
-        public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
         
         public Game(IScoreCalculator scoreCalculator, IBoard board, IOpeningBook openingBook)
         {
@@ -144,52 +140,20 @@ namespace ChessGame
 
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
+            
+            //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            var currentMove = new PieceMoves();
+            var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-            switch (WhiteSearchType)
-            {
-                case SearchStrategy.MiniMax:
-                {
-                    var miniMax = new MiniMax(m_CurrentBoard, m_ScoreCalculator);
+            var bestMove = search.CalculateBestMove(2);
 
-                    currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
+            //TranspositionTable.ClearAll();
 
-                case SearchStrategy.NegaMax:
-                {
-                    var negaMax = new NegaMax(m_CurrentBoard, m_ScoreCalculator);
+            //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+            //  
 
-                    currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
 
-                case SearchStrategy.AlphaBeta:
-                {
-                    //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-                    var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator, null);
-
-                    TranspositionTable.ClearAll();
-
-                   //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-                   //                                    : search.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
-
-                case SearchStrategy.AlphaBetaWithZobrisk:
-                {
-                    throw new NotImplementedException();
-                }
-
-                default:
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            return currentMove;
+            return bestMove;
         }
 
         public BoardState GetCurrentBoardState()
@@ -255,12 +219,6 @@ namespace ChessGame
 
         #endregion  Board setup methods
         
-        public void SetSearchType(SearchStrategy searchType)
-        {
-            WhiteSearchType = searchType;
-            BlackSearchType = searchType;
-        }
-
         /// <summary>
         /// Resets various flags to their defaults 
         /// 
@@ -278,9 +236,6 @@ namespace ChessGame
         {
             Log.Info($"Thinking depth:{m_ThinkingDepth}");
             Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
-
-            Log.Info($"White search strategy:{WhiteSearchType}");
-            Log.Info($"Black search strategy:{BlackSearchType}");  
         }
 
         #endregion logging
