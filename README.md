@@ -45,26 +45,21 @@ If no location is given the default will be......
 
 #### Scoring ####
 
-The scoring criteria is taken from an external xml file, giving the scores ..............
-
-The location should be given at........
-
-If no location is given the default will be......
-
-* TODO list implemented and to implement features
+The scoring criteria is taken from an external xml file, attributing values to certain characteristics.
+These range from piece values, to positional advantages, to strategical factors
 
 #### Move searching ####
 
-##### AlphaBeta #####
+The search strategy used is a negamax implementation alpha beta pruning with iterative deepening.
 
-The search strategy used is alpha beta [Add description]
+##### Iterative deepening #####
 
+Iterative deepening starts by searching for the best move at a depth of one, while increasing the depth up to the max search depth (or allowed time). At the beginning of every new depth search the moves are ordered by their scores in the previous depth search. The idea behind this is to increase the number of pruned branches by starting with the highest scoring moves first. This should negate the extra searches that would normally be required from running the search multiple times.
 
-* Iterative deepening
 * Transposition table
 * Check extensions
 * Null move pruning
-* Move ordering - OrderSimple - OrderByMVVLVA - OrderByScore
+* Move ordering - Most Valuable Victim - Least Valuable Aggressor
 * Killer moves
 * Zobrist hashing
 
