@@ -9,17 +9,17 @@
   <QueenPieceValue>9</QueenPieceValue>
 
   <!-- Scores for having each piece near to the middle of the board -->
-  <InnerCentralPawnScore>0.2</InnerCentralPawnScore> <!-- Score for having the piece in the middle 4 squares of the board -->
+  <InnerCentralPawnScore>0.1</InnerCentralPawnScore> <!-- Score for having the piece in the middle 4 squares of the board -->
   <OuterCentralPawnScore>0.05</OuterCentralPawnScore> <!-- Score for having the piece in the outer ring (12 squars) of the middle 16 squares of the board -->
 
   <InnerCentralBishopScore>0.05</InnerCentralBishopScore>
-  <OuterCentralBishopScore>0.1</OuterCentralBishopScore> 
+  <OuterCentralBishopScore>0.05</OuterCentralBishopScore> 
 
-  <InnerCentralKnightScore>0.05</InnerCentralKnightScore> 
-  <OuterCentralKnightScore>0.1</OuterCentralKnightScore> 
+  <InnerCentralKnightScore>0.1</InnerCentralKnightScore> 
+  <OuterCentralKnightScore>0.05</OuterCentralKnightScore> 
 
-  <InnerCentralRookScore>0.01</InnerCentralRookScore> 
-  <OuterCentralRookScore>0.01</OuterCentralRookScore> 
+  <InnerCentralRookScore>0.00</InnerCentralRookScore> 
+  <OuterCentralRookScore>0.00</OuterCentralRookScore> 
 
   <InnerCentralQueenScore>0.05</InnerCentralQueenScore>
   <OuterCentralQueenScore>0.05</OuterCentralQueenScore>
