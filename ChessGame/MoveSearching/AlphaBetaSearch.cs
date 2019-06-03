@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using ChessGame.BoardRepresentation;
+using ChessGame.BoardRepresentation.Enums;
+using ChessGame.BoardSearching;
 using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using ChessGame.PossibleMoves;
@@ -20,7 +22,7 @@ namespace ChessGame.MoveSearching
 
         private readonly IBoard m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalculator;
-
+ 
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
@@ -273,9 +275,70 @@ namespace ChessGame.MoveSearching
             }
         }
 
-        private void OrderMovesInPlace(List<PieceMoves> moveList)
+        // Order all moves by MVV/LVA
+        private void OrderMovesInPlace(IList<PieceMoves> moveList)
         {
-            //throw new NotImplementedException();
+            // move list position, victim score, attacker score
+            var ordering = new List<Tuple<int, int, int>>();
+
+            //Move capture
+            for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
+            {
+                if (   moveList[moveNum].SpecialMove == SpecialMoveType.Capture 
+                    || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture 
+                    || IsPromotionCapture(moveList[moveNum].SpecialMove))
+                {
+                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
+
+                    ordering.Add(new Tuple<int, int, int>(moveNum, 
+                                                          GetPieceScore(victimType), 
+                                                          GetPieceScore(moveList[moveNum].Type)));
+                }
+            }
+
+            //Order by victim and then attacker. We do it in reverse
+            ordering = ordering.OrderBy(o => o.Item3).ThenBy(o => o.Item2).ToList();
+
+            for (var orderPosition = 0; orderPosition < ordering.Count; orderPosition++)
+            {
+                var toMove = moveList[ordering[orderPosition].Item1];
+
+                moveList.RemoveAt(ordering[orderPosition].Item1);
+                moveList.Insert(orderPosition, toMove);
+            }
+        }
+
+        private static bool IsPromotionCapture(SpecialMoveType specialMoveType)
+        {
+            return    specialMoveType == SpecialMoveType.BishopPromotionCapture
+                   || specialMoveType == SpecialMoveType.KnightPromotionCapture
+                   || specialMoveType == SpecialMoveType.RookPromotionCapture
+                   || specialMoveType == SpecialMoveType.QueenPromotionCapture;
+        }
+
+        private int GetPieceScore(PieceType pieceType)
+        {
+            switch (pieceType)
+            {
+                case PieceType.Pawn:
+                    return 1;
+                case PieceType.Knight:
+                    return 2;
+                case PieceType.Bishop:
+                    return 3;
+                case PieceType.Rook:
+                    return 4;
+                case PieceType.Queen:
+                    return 5;
+                case PieceType.King:
+                    return 6;
+                case PieceType.None:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, null);
+            }
+
+            return 0;
         }
     }
 }
