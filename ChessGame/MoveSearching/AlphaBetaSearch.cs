@@ -108,7 +108,7 @@ namespace ChessGame.MoveSearching
             List<PieceMoves> moveList;
 
             // Order the initial moves by their scores from the last depth, if any.
-            // Otherwise orderthem based on....
+            // Otherwise order them based on....
             if (m_InitialMovesIterativeDeepeningShuffleOrder.Count > 0)
             {
                 moveList = OrderFromIterativeDeepeningMoves();
@@ -125,28 +125,28 @@ namespace ChessGame.MoveSearching
             m_Log.Info($"Moves to Check: {moveList.Count}");
 #endif
 
-            for (var i = 0; i < moveList.Count; i++)
+            foreach (var move in moveList)
             {
 #if UCI
                 Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
-                m_BoardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
                 var score = AlphaBeta(-beta, -alpha, depth - 1);
 
                 if (score > bestScore)
                 {
-                    bestMove = moveList[i];
+                    bestMove = move;
                     bestScore = score;
                 }
 
 #if Debug
-                m_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(moveList[i])} - Score: {score}");
+                m_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(move)} - Score: {score}");
 #endif
 
-                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, moveList[i]));
+                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, move));
 
                 m_BoardPosition.UnMakeLastMove();
             }
@@ -225,9 +225,9 @@ namespace ChessGame.MoveSearching
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
 
-            for (var i = 0; i < moveList.Count; i++)
+            foreach (var move in moveList)
             {
-                m_BoardPosition.MakeMove(moveList[i], false);
+                m_BoardPosition.MakeMove(move, false);
 
                 var score = -AlphaBeta(-beta, -alpha, depthLeft - 1);
 

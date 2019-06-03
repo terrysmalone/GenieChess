@@ -17,11 +17,8 @@ namespace ChessGame
         
         private readonly IOpeningBook m_OpeningBook;
 
-        private int m_ThinkingDepth = 4;
-        
         private bool m_GameIsActive = true;
-
-
+        
         private IBoard m_CurrentBoard;
 
         private readonly IScoreCalculator m_ScoreCalculator;
@@ -31,17 +28,8 @@ namespace ChessGame
         public string OpeningBookFile { get; set; } = string.Empty;
 
         public bool UseIterativeDeepening { get; set; } = true;
-
-        public int ThinkingDepth
-        {
-            get => m_ThinkingDepth;
-
-            set 
-            {
-                //Log.Info($"Setting default thinking depth to {value}");
-                m_ThinkingDepth = value; 
-            }
-        }
+        
+        public int ThinkingDepth { get; set; }
         
         public Game(IScoreCalculator scoreCalculator, IBoard board, IOpeningBook openingBook)
         {
@@ -145,7 +133,7 @@ namespace ChessGame
 
             var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-            var bestMove = search.CalculateBestMove(m_ThinkingDepth);
+            var bestMove = search.CalculateBestMove(ThinkingDepth);
 
             //TranspositionTable.ClearAll();
 
@@ -234,7 +222,7 @@ namespace ChessGame
 
         private void LogGameSettings()
         {
-            Log.Info($"Thinking depth:{m_ThinkingDepth}");
+            Log.Info($"Thinking depth:{ThinkingDepth}");
             //Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
         }
 

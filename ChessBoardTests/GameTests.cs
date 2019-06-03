@@ -104,7 +104,296 @@ namespace ChessEngineTests
         //}
 
         #region simple capture
+
+        #region MiniMax
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_MiniMax_1()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 1;
+
+            game.AllowAllCastling(false);
             
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_MiniMax_3()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 2;
+
+            game.AllowAllCastling(false);
+            
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }  
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_MiniMax_6()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 6;
+
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }   
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_1()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 1;
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_3()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 3;
+
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_6()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 6;
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        #endregion MiniMax
+
+        #region NegaMax
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_NegaMax_1()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 1;
+
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_NegaMax_3()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 2;
+
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_White_NegaMax_6()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
+            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
+            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+
+            game.ThinkingDepth = 6;
+
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_1()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 1;
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_3()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 3;
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+        [TestMethod]
+        public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_6()
+        {
+            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+
+            game.ClearBoard();
+
+            game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+
+            game.ThinkingDepth = 6;
+            game.AllowAllCastling(false);
+
+            game.FindAndMakeBestMove();
+
+            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+
+            //Tests
+            Assert.AreEqual(expectedFen, fenNotation);
+        }
+
+        #endregion NegaMax
+
+        #region AlphaBeta
+
         #region King capture only piece (pawn)
 
         [TestMethod]
@@ -250,6 +539,8 @@ namespace ChessEngineTests
             //Tests
             Assert.AreEqual(expectedFen, fenNotation);
         }
+
+        #endregion AlphaBeta
 
         #endregion Simple capture
 
