@@ -35,15 +35,15 @@ namespace ChessGame.MoveSearching
 
         public PieceMoves CalculateBestMove(int maxDepth)
         {
-#if DEBUG
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             m_Log.Info($"Calculating move for {toMove}");
-#endif
 
             m_InitialMoves = new List<MoveValueInfo>();
             m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
             var bestMove = new PieceMoves();
+
+            CountDebugger.ClearTranspositionValues();
 
             // Calculate scores for each move, starting at a
             // depth of one and working to max
@@ -52,6 +52,11 @@ namespace ChessGame.MoveSearching
 #if UCI
                 Console.WriteLine($"info depth {depth}");
 #endif
+                m_Log.Info("----------------------------------------------------------------------------------");
+                m_Log.Info($"Depth {depth}");
+
+                CountDebugger.ClearNodesAndEvaluations();
+
                 var timer = new Stopwatch();
 
                 timer.Start();
@@ -76,11 +81,15 @@ namespace ChessGame.MoveSearching
 
                 m_InitialMoves.Add(moveValueInfo);
 
-                m_Log.Info($"Depth {depth} : {UCIMoveTranslator.ToUCIMove(moveValueInfo.Move)} - " +
+                //LogTranspositionCounts();
+
+                m_Log.Info($"Move info: {UCIMoveTranslator.ToUCIMove(moveValueInfo.Move)} - " +
                            $"score: {moveValueInfo.Score} - " +
                            $"nodes: {moveValueInfo.NodesVisited} - " +
-                           $"time at depth: {moveValueInfo.DepthTime:ss'.'fff}s - " +
-                           $"time for move: {moveValueInfo.AccumulatedTime:ss'.'fff}s");
+                           $"time at depth: {moveValueInfo.DepthTime.TotalMilliseconds} - " +
+                           $"Accumulated move time: {moveValueInfo.AccumulatedTime.TotalMilliseconds}");
+
+                
 
 //#if UCI
 //                var bestMove = UCIMoveTranslator.ToUCIMove();
@@ -89,8 +98,8 @@ namespace ChessGame.MoveSearching
 //                //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
 //                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
 
-//                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
-//#endif
+                //                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
+                //#endif
             }
 
             m_Log.Info($"Found move: {UCIMoveTranslator.ToUCIMove(bestMove)}");
@@ -119,11 +128,12 @@ namespace ChessGame.MoveSearching
             {
                 moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
 
+                //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList);
             }
 
 #if Debug
-            m_Log.Info("======================================================");
+            m_Log.Info("---------------------------------------------------------");
             m_Log.Info($"Moves to Check: {moveList.Count}");
 #endif
 
@@ -225,6 +235,38 @@ namespace ChessGame.MoveSearching
                 return Evaluate(m_BoardPosition);
             }
 
+            // Check transposition table
+            var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depthLeft, alpha, beta);
+
+            if (hash.Key != 0 && hash.Depth == depthLeft)
+            {
+                var povScore = hash.Score;
+
+                if (!m_BoardPosition.WhiteToMove)
+                {
+                    povScore = -hash.Score;
+                }
+
+                switch (hash.NodeType)
+                {
+                    case HashNodeType.Exact:
+                        return povScore;
+                    case HashNodeType.LowerBound:
+                        alpha = Math.Max(alpha, povScore);
+                        break;
+                    case HashNodeType.UpperBound:
+                        beta = Math.Min(beta, povScore);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                if (alpha >= beta)
+                {
+                    return povScore;
+                }
+            }
+
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
 
             foreach (var move in moveList)
@@ -236,6 +278,7 @@ namespace ChessGame.MoveSearching
                 if (score >= beta)
                 {
                     m_BoardPosition.UnMakeLastMove();
+
                     return score;
                 }
 
@@ -252,9 +295,50 @@ namespace ChessGame.MoveSearching
                 m_BoardPosition.UnMakeLastMove();
             }
 
+            // transposition table store
+            HashNodeType hashNodeType;
+
+            if (bestScore <= alpha)
+            {
+                hashNodeType = HashNodeType.UpperBound;
+            }
+            //else if (bestScore >= beta)
+            //{
+            //    hashNodeType = HashNodeType.LowerBound;
+            //}
+            else
+            {
+                hashNodeType = HashNodeType.Exact;
+            }
+
+            if (m_BoardPosition.WhiteToMove)
+            {
+                RecordHash(depthLeft, bestScore, hashNodeType);
+            }
+            else
+            {
+                RecordHash(depthLeft, -bestScore, hashNodeType);
+            }
+
+            //OrderMovesInPlaceByEvaluation(moveList);
             OrderMovesInPlace(moveList);
 
             return bestScore;
+        }
+
+        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
+        {
+            var hash = new Hash
+            {
+                Key = m_BoardPosition.Zobrist,
+                Depth = depth,
+                NodeType = hashNodeType,
+                Score = score,
+                //BestMove = bestMove
+            };
+
+
+            TranspositionTable.Add(hash);
         }
 
         /// <summary>
@@ -274,9 +358,33 @@ namespace ChessGame.MoveSearching
                 return m_ScoreCalculator.CalculateScore(boardPosition);
             }
         }
+        
+        private void OrderMovesInPlaceByEvaluation(IList<PieceMoves> moveList)
+        {
+            var scores = new List<Tuple<int, decimal>>();
+
+            for (var i = 0; i < moveList.Count; i++)
+            {
+                m_BoardPosition.MakeMove(moveList[i], false);
+
+                scores.Add(new Tuple<int, decimal>(i, Evaluate(m_BoardPosition)));
+
+                m_BoardPosition.UnMakeLastMove();
+            }
+
+            scores = scores.OrderBy(s => s.Item2).ToList();
+
+            for (var i = 0; i < scores.Count; i++)
+            {
+                var toMove = moveList[scores[i].Item1];
+
+                moveList.RemoveAt(scores[i].Item1);
+                moveList.Insert(0, toMove);
+            }
+        }
 
         // Order all moves by MVV/LVA
-        private void OrderMovesInPlace(IList<PieceMoves> moveList)
+            private void OrderMovesInPlace(IList<PieceMoves> moveList)
         {
             // move list position, victim score, attacker score
             var ordering = new List<Tuple<int, int, int>>();
@@ -339,6 +447,20 @@ namespace ChessGame.MoveSearching
             }
 
             return 0;
+        }
+
+        private void LogTranspositionCounts()
+        {
+            m_Log.Info("----------------------------------------------------------------------------------");
+            m_Log.Info("TRANSPOSITION DEBUGGING");
+            m_Log.Info($"Times hash added:              {CountDebugger.Transposition_HashAdded}");
+            m_Log.Info($"Times hash replaced:           {CountDebugger.Transposition_HashReplaced}");
+            m_Log.Info($"Times probed:                  {CountDebugger.Transposition_Searches}");
+            m_Log.Info($"Times hash returned:           {CountDebugger.Transposition_HashFound}");
+            m_Log.Info($"Times keys matched:            {CountDebugger.Transposition_MatchCount}");
+            m_Log.Info($"Times keys and depths matched: {CountDebugger.Transposition_MatchAndUsed}");
+            m_Log.Info($"Times not matched:             {CountDebugger.Transposition_Searches - CountDebugger.Transposition_MatchAndUsed}");
+            m_Log.Info("----------------------------------------------------------------------------------");
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Genie_CommandLine
             m_Game.InitaliseStartingPosition();
             
             CountDebugger.ClearAll();
-
+            
             while (true)
             {
                 Console.Write("?:");

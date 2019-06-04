@@ -56,25 +56,30 @@ namespace ChessGame.MoveSearching
                 if (hash.Depth >= currentHash.Depth)    
                 {
                     table[index] = hash;
+
+                    //CountDebugger.Transposition_HashReplaced++;
                 }
             }
             else
             {
                 table[index] = hash;
+                //CountDebugger.Transposition_HashAdded++;
             }
            
         }
 
         internal static Hash ProbeTable(ulong zobristKey, int depth, decimal alpha, decimal beta)
         {
-            Hash hash = Search(zobristKey);
+            var hash = Search(zobristKey);
 
             //CountDebugger.Transposition_Searches++; 
 
             if (hash.Key != 0)
             {
+                //CountDebugger.Transposition_HashFound++;
+
                 //Verify
-                if (hash.Key == zobristKey)
+                if (hash.Key == zobristKey)     
                 {
                     //CountDebugger.Transposition_MatchCount++;
 
@@ -110,8 +115,6 @@ namespace ChessGame.MoveSearching
                 }
                 else
                 {
-                    //CountDebugger.Transposition_CollisionCount++;
-                    
                     return new Hash();
                 }
             }

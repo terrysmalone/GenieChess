@@ -51,8 +51,6 @@ namespace ChessGame
             m_CurrentBoard.InitaliseStartingPosition();
 
             Log.Info("Initialised Game to starting position");
-
-            LogGameSettings();
         }
 
         #region UCI commands
@@ -128,8 +126,10 @@ namespace ChessGame
 
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
-            
+
             //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            Log.Info("---------------------------------------------------------------");
+            Log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
             var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
@@ -217,15 +217,5 @@ namespace ChessGame
         {
             m_CurrentBoard.ResetFlags();
         }
-
-        #region logging
-
-        private void LogGameSettings()
-        {
-            Log.Info($"Thinking depth:{ThinkingDepth}");
-            //Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
-        }
-
-        #endregion logging
     }
 }
