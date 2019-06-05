@@ -35,7 +35,7 @@ namespace Genie_CommandLine
 
             m_Game = chessGameFactory.CreateChessGame(useOpeningBook);
 
-            m_Game.ThinkingDepth = 6;
+            m_Game.ThinkingDepth = 5;
 
             m_Game.InitaliseStartingPosition();
             

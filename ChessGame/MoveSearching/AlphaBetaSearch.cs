@@ -148,7 +148,7 @@ namespace ChessGame.MoveSearching
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = AlphaBeta(-beta, -alpha, depth - 1);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1);
 
                 if (score > bestScore)
                 {
@@ -271,6 +271,9 @@ namespace ChessGame.MoveSearching
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
 
+            //OrderMovesInPlaceByEvaluation(moveList);
+            OrderMovesInPlace(moveList);
+
             foreach (var move in moveList)
             {
                 m_BoardPosition.MakeMove(move, false);
@@ -311,14 +314,10 @@ namespace ChessGame.MoveSearching
             else
             {
                 hashNodeType = HashNodeType.Exact;
-                RecordHash(depthLeft, bestScore, hashNodeType);
             }
 
-            //RecordHash(depthLeft, bestScore, hashNodeType);
+            RecordHash(depthLeft, bestScore, hashNodeType);
            
-            //OrderMovesInPlaceByEvaluation(moveList);
-            OrderMovesInPlace(moveList);
-
             return bestScore;
         }
 
@@ -343,21 +342,17 @@ namespace ChessGame.MoveSearching
             TranspositionTable.Add(hash);
         }
 
-        /// <summary>
         /// Evaluates the score relative to the current player
-        /// i.e. A high score means the position is better for the current player 
-        /// </summary>
-        /// <param name="boardPosition"></param>
-        /// <returns></returns>
+        /// i.e. A high score means the position is better for the current player
         private decimal Evaluate(IBoard boardPosition)
         {
             if (m_BoardPosition.WhiteToMove)
             {
-                return -m_ScoreCalculator.CalculateScore(boardPosition);
+                return m_ScoreCalculator.CalculateScore(boardPosition);
             }
             else
             {
-                return m_ScoreCalculator.CalculateScore(boardPosition);
+                return -m_ScoreCalculator.CalculateScore(boardPosition);
             }
         }
         

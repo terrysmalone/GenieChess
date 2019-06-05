@@ -47,7 +47,7 @@ namespace ChessGame
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
-            
+
             m_CurrentBoard.InitaliseStartingPosition();
 
             Log.Info("Initialised Game to starting position");
