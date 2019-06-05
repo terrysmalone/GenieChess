@@ -57,35 +57,47 @@ namespace ChessGame.MoveSearching
                 {
                     table[index] = hash;
 
-                    //CountDebugger.Transposition_HashReplaced++;
+#if FullNodeCountDebug
+                    CountDebugger.Transposition_HashReplaced++;
+#endif
                 }
             }
             else
             {
                 table[index] = hash;
-                //CountDebugger.Transposition_HashAdded++;
+
+#if FullNodeCountDebug
+                CountDebugger.Transposition_HashAdded++;
+#endif
             }
-           
+
         }
 
         internal static Hash ProbeTable(ulong zobristKey, int depth, decimal alpha, decimal beta)
         {
             var hash = Search(zobristKey);
 
-            //CountDebugger.Transposition_Searches++; 
+#if FullNodeCountDebug
+            CountDebugger.Transposition_Searches++; 
+#endif
 
             if (hash.Key != 0)
             {
-                //CountDebugger.Transposition_HashFound++;
-
+#if FullNodeCountDebug
+                CountDebugger.Transposition_HashFound++;
+#endif
                 //Verify
                 if (hash.Key == zobristKey)     
                 {
-                    //CountDebugger.Transposition_MatchCount++;
+#if FullNodeCountDebug
+                    CountDebugger.Transposition_MatchCount++;
+#endif
 
                     if (hash.Depth >= depth)
                     {
-                        //CountDebugger.Transposition_MatchAndUsed++;
+#if FullNodeCountDebug
+                        CountDebugger.Transposition_MatchAndUsed++;
+#endif
 
                         return hash;
 
@@ -124,16 +136,11 @@ namespace ChessGame.MoveSearching
 
         private static Hash Search(ulong zobristKey)
         {
-            ulong index = zobristKey % transpositionTableSize;
+            var index = zobristKey % transpositionTableSize;
                         
-            Hash hash = table[index];
-            //if (table.ContainsKey(index))
-            if (hash.Key != 0)
-            {
-                return hash;
-            }
-            else
-                return new Hash();
+            var hash = table[index];
+
+            return hash.Key != 0 ? hash : new Hash();
         }
 
         internal static void ClearAncients()
