@@ -120,14 +120,14 @@ namespace EngineEvaluation
 
             timer.Start();
 
-            AlphaBetaSearch alphaBeta = new AlphaBetaSearch(board, scoreCalc);
-            PieceMoves currentMove = alphaBeta.StartSearch(depth);
+            var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
+            var currentMove = alphaBeta.StartSearch(depth);
 
             timer.Stop();
 
             TimeSpan speed = new TimeSpan(timer.Elapsed.Ticks);
 
-            List<PVInfo> idInfo = alphaBeta.IdMoves;
+            List<MoveValueInfo> idInfo = alphaBeta.IdMoves;
             
             //for (int i = 0; i < depth; i++)
             //{

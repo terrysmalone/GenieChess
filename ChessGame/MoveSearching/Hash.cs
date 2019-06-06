@@ -13,6 +13,7 @@ namespace ChessGame.MoveSearching
     {
         internal ulong Key;
         internal int Depth;
+        internal bool WhiteToMove;
         internal int Flags;
         internal decimal Score;
         internal HashNodeType NodeType;

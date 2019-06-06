@@ -36,6 +36,8 @@ namespace ChessGame
             {
                 var openingBook = new OpeningBook(ResourceLoader.GetResourcePath(bookName));
 
+                m_Log.Info($"Opening book {openingBook.FilePath} loaded");
+
 #if UCI
                 Console.WriteLine($"Opening book {openingBook.FilePath} loaded");
 #endif

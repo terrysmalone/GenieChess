@@ -78,7 +78,7 @@ namespace EngineEvaluation
                 var timer = new Stopwatch();
                 timer.Start();
 
-                var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+                var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
                 var currentMove = alphaBeta.StartSearch(depth);
 
                 timer.Stop();
@@ -144,7 +144,7 @@ namespace EngineEvaluation
 
         }
 
-        private static ulong CountNodes(IEnumerable<PVInfo> idInfo)
+        private static ulong CountNodes(IEnumerable<MoveValueInfo> idInfo)
         {
             ulong nodes = 0;
 

@@ -15,7 +15,7 @@ using ChessGame.BoardSearching;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(
-typeof(BitboardVisualiser.DebuggerChessBoard),
+typeof(DebuggerChessBoard),
 typeof(VisualizerObjectSource),
 Target = typeof(Board),
 Description = "Displays the contents of a Chess board on an 8x8 grid")]

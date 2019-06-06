@@ -150,6 +150,34 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FullNodeCountDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\FullNodeCountDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FullNodeCountDebug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\FullNodeCountDebug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;Debug, FullNodeCountDebug</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'FullNodeCountDebug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\FullNodeCountDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -174,7 +202,6 @@
     <Compile Include="BoardSearching\UsefulBitboards.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceColour.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceType.cs" />
-    <Compile Include="BoardRepresentation\Enums\SearchStrategy.cs" />
     <Compile Include="Books\IOpeningBook.cs" />
     <Compile Include="Books\Opening.cs" />
     <Compile Include="Books\OpeningBook.cs" />
@@ -186,11 +213,12 @@
     <Compile Include="BoardSearching\LookupTables.cs" />
     <Compile Include="IChessGameFactory.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearch.cs" />
+    <Compile Include="MoveSearching\AlphaBetaSearchOld.cs" />
     <Compile Include="MoveSearching\Hash.cs" />
     <Compile Include="MoveSearching\MiniMax.cs" />
     <Compile Include="MoveSearching\NegaMax.cs" />
     <Compile Include="Debugging\CountDebugger.cs" />
-    <Compile Include="MoveSearching\PVInfo.cs" />
+    <Compile Include="MoveSearching\MoveValueInfo.cs" />
     <Compile Include="MoveSearching\TranspositionTable.cs" />
     <Compile Include="MoveSearching\ZobristKey.cs" />
     <Compile Include="MoveSearching\ZobristHash.cs" />
@@ -202,7 +230,7 @@
     <Compile Include="NotationHelpers\TranslationHelper.cs" />
     <Compile Include="NotationHelpers\UCIMoveTranslator.cs" />
     <Compile Include="PossibleMoves\MoveGeneration.cs" />
-    <Compile Include="PossibleMoves\PieceMoves.cs" />
+    <Compile Include="PossibleMoves\PieceMove.cs" />
     <Compile Include="PossibleMoves\PieceValidMoves.cs" />
     <Compile Include="PossibleMoves\SpecialMoveType.cs" />
     <Compile Include="PossibleMoves\ValidMoveArrays.cs" />

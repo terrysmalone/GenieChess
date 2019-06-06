@@ -56,31 +56,48 @@ namespace ChessGame.MoveSearching
                 if (hash.Depth >= currentHash.Depth)    
                 {
                     table[index] = hash;
+
+#if FullNodeCountDebug
+                    CountDebugger.Transposition_HashReplaced++;
+#endif
                 }
             }
             else
             {
                 table[index] = hash;
+
+#if FullNodeCountDebug
+                CountDebugger.Transposition_HashAdded++;
+#endif
             }
-           
+
         }
 
         internal static Hash ProbeTable(ulong zobristKey, int depth, decimal alpha, decimal beta)
         {
-            Hash hash = Search(zobristKey);
+            var hash = Search(zobristKey);
 
-            //CountDebugger.Transposition_Searches++; 
+#if FullNodeCountDebug
+            CountDebugger.Transposition_Searches++; 
+#endif
 
             if (hash.Key != 0)
             {
+#if FullNodeCountDebug
+                CountDebugger.Transposition_HashFound++;
+#endif
                 //Verify
-                if (hash.Key == zobristKey)
+                if (hash.Key == zobristKey)     
                 {
-                    //CountDebugger.Transposition_MatchCount++;
+#if FullNodeCountDebug
+                    CountDebugger.Transposition_MatchCount++;
+#endif
 
                     if (hash.Depth >= depth)
                     {
-                        //CountDebugger.Transposition_MatchAndUsed++;
+#if FullNodeCountDebug
+                        CountDebugger.Transposition_MatchAndUsed++;
+#endif
 
                         return hash;
 
@@ -110,8 +127,6 @@ namespace ChessGame.MoveSearching
                 }
                 else
                 {
-                    //CountDebugger.Transposition_CollisionCount++;
-                    
                     return new Hash();
                 }
             }
@@ -121,16 +136,11 @@ namespace ChessGame.MoveSearching
 
         private static Hash Search(ulong zobristKey)
         {
-            ulong index = zobristKey % transpositionTableSize;
+            var index = zobristKey % transpositionTableSize;
                         
-            Hash hash = table[index];
-            //if (table.ContainsKey(index))
-            if (hash.Key != 0)
-            {
-                return hash;
-            }
-            else
-                return new Hash();
+            var hash = table[index];
+
+            return hash.Key != 0 ? hash : new Hash();
         }
 
         internal static void ClearAncients()

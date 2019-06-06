@@ -123,7 +123,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
             
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -149,7 +148,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
             
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -174,7 +172,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -195,7 +192,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 1;
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -219,7 +215,6 @@ namespace ChessEngineTests
 
             game.ThinkingDepth = 3;
 
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -241,7 +236,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 6;
-            game.SetSearchType(SearchStrategy.MiniMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -273,7 +267,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -299,7 +292,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -324,7 +316,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -345,7 +336,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 1;
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -368,7 +358,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 3;
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -390,7 +379,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 6;
-            game.SetSearchType(SearchStrategy.NegaMax);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -424,7 +412,6 @@ namespace ChessEngineTests
             
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
             
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -450,7 +437,6 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
             
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -476,7 +462,6 @@ namespace ChessEngineTests
             
             game.AllowAllCastling(false);
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.FindAndMakeBestMove();
             
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
@@ -500,7 +485,6 @@ namespace ChessEngineTests
 
             game.ThinkingDepth = 1;
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -523,7 +507,6 @@ namespace ChessEngineTests
             game.SetFENPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
             game.ThinkingDepth = 3;
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();
@@ -546,7 +529,6 @@ namespace ChessEngineTests
 
             game.ThinkingDepth = 6;
 
-            game.SetSearchType(SearchStrategy.AlphaBeta);
             game.AllowAllCastling(false);
 
             game.FindAndMakeBestMove();

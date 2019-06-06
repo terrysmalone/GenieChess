@@ -17,11 +17,8 @@ namespace ChessGame
         
         private readonly IOpeningBook m_OpeningBook;
 
-        private int m_ThinkingDepth = 8;
-        
         private bool m_GameIsActive = true;
-
-
+        
         private IBoard m_CurrentBoard;
 
         private readonly IScoreCalculator m_ScoreCalculator;
@@ -31,21 +28,8 @@ namespace ChessGame
         public string OpeningBookFile { get; set; } = string.Empty;
 
         public bool UseIterativeDeepening { get; set; } = true;
-
-        public int ThinkingDepth
-        {
-            get => m_ThinkingDepth;
-
-            set 
-            {
-                Log.Info($"Setting default thinking depth to {value}");
-                m_ThinkingDepth = value; 
-            }
-        }
-
-        public SearchStrategy WhiteSearchType { get; set; } = SearchStrategy.AlphaBeta;
-
-        public SearchStrategy BlackSearchType { get; set; } = SearchStrategy.AlphaBeta;
+        
+        public int ThinkingDepth { get; set; }
         
         public Game(IScoreCalculator scoreCalculator, IBoard board, IOpeningBook openingBook)
         {
@@ -63,12 +47,10 @@ namespace ChessGame
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
-            
+
             m_CurrentBoard.InitaliseStartingPosition();
 
             Log.Info("Initialised Game to starting position");
-
-            LogGameSettings();
         }
 
         #region UCI commands
@@ -145,49 +127,21 @@ namespace ChessGame
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
-            var currentMove = new PieceMoves();
+            //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            Log.Info("---------------------------------------------------------------");
+            Log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
-            switch (WhiteSearchType)
-            {
-                case SearchStrategy.MiniMax:
-                {
-                    var miniMax = new MiniMax(m_CurrentBoard, m_ScoreCalculator);
+            var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-                    currentMove = miniMax.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
+            var bestMove = search.CalculateBestMove(ThinkingDepth);
 
-                case SearchStrategy.NegaMax:
-                {
-                    var negaMax = new NegaMax(m_CurrentBoard, m_ScoreCalculator);
+            //TranspositionTable.ClearAll();
 
-                    currentMove = negaMax.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
+            //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
+            //  
 
-                case SearchStrategy.AlphaBeta:
-                {
-                    var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
 
-                    TranspositionTable.ClearAll();
-
-                   currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-                                                       : search.MoveCalculate(m_ThinkingDepth);
-                    break;
-                }
-
-                case SearchStrategy.AlphaBetaWithZobrisk:
-                {
-                    throw new NotImplementedException();
-                }
-
-                default:
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-            }
-
-            return currentMove;
+            return bestMove;
         }
 
         public BoardState GetCurrentBoardState()
@@ -253,12 +207,6 @@ namespace ChessGame
 
         #endregion  Board setup methods
         
-        public void SetSearchType(SearchStrategy searchType)
-        {
-            WhiteSearchType = searchType;
-            BlackSearchType = searchType;
-        }
-
         /// <summary>
         /// Resets various flags to their defaults 
         /// 
@@ -269,18 +217,5 @@ namespace ChessGame
         {
             m_CurrentBoard.ResetFlags();
         }
-
-        #region logging
-
-        private void LogGameSettings()
-        {
-            Log.Info($"Thinking depth:{m_ThinkingDepth}");
-            Log.Info($"Use iterative deepening:{UseIterativeDeepening}");
-
-            Log.Info($"White search strategy:{WhiteSearchType}");
-            Log.Info($"Black search strategy:{BlackSearchType}");  
-        }
-
-        #endregion logging
     }
 }
