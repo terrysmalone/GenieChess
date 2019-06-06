@@ -246,6 +246,8 @@ namespace ChessGame.MoveSearching
                 {
                     m_BoardPosition.UnMakeLastMove();
 
+                    RecordHash(depthLeft, score, HashNodeType.LowerBound);
+
                     //Insert killer move
                     //for (var i = 0; i < m_KillerMovesToStore-1; i++)
                     //{
@@ -273,18 +275,8 @@ namespace ChessGame.MoveSearching
             // transposition table store
             HashNodeType hashNodeType;
 
-            if (bestScore <= alpha)
-            {
-                hashNodeType = HashNodeType.UpperBound;
-            }
-            else if (bestScore >= beta)
-            {
-                hashNodeType = HashNodeType.LowerBound;
-            }
-            else
-            {
-                hashNodeType = HashNodeType.Exact;
-            }
+            hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
+                                              : HashNodeType.Exact;
 
             RecordHash(depthLeft, bestScore, hashNodeType);
            
