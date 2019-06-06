@@ -210,17 +210,17 @@ namespace ChessGame.MoveSearching
 
             if (hash.Key !=0)
             {
-                var povScore = hash.Score;
+                var transpositionScore = hash.Score;
                 
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
-                        return povScore;
+                        return transpositionScore;
                     case HashNodeType.LowerBound:
-                        alpha = Math.Max(alpha, povScore);
+                        alpha = Math.Max(alpha, transpositionScore);
                         break;
                     case HashNodeType.UpperBound:
-                        beta = Math.Min(beta, povScore);
+                        beta = Math.Min(beta, transpositionScore);
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -228,7 +228,7 @@ namespace ChessGame.MoveSearching
 
                 if (alpha >= beta)
                 {
-                    return povScore;
+                    return transpositionScore;
                 }
             }
 
@@ -242,9 +242,11 @@ namespace ChessGame.MoveSearching
 
                 var score = -AlphaBeta(-beta, -alpha, depthLeft - 1);
 
+                m_BoardPosition.UnMakeLastMove();
+
                 if (score >= beta)
                 {
-                    m_BoardPosition.UnMakeLastMove();
+                    RecordHash(depthLeft, score, HashNodeType.LowerBound);
 
                     //Insert killer move
                     //for (var i = 0; i < m_KillerMovesToStore-1; i++)
@@ -266,25 +268,13 @@ namespace ChessGame.MoveSearching
                         alpha = score;
                     }
                 }
-
-                m_BoardPosition.UnMakeLastMove();
             }
 
             // transposition table store
             HashNodeType hashNodeType;
 
-            if (bestScore <= alpha)
-            {
-                hashNodeType = HashNodeType.UpperBound;
-            }
-            else if (bestScore >= beta)
-            {
-                hashNodeType = HashNodeType.LowerBound;
-            }
-            else
-            {
-                hashNodeType = HashNodeType.Exact;
-            }
+            hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
+                                              : HashNodeType.Exact;
 
             RecordHash(depthLeft, bestScore, hashNodeType);
            
