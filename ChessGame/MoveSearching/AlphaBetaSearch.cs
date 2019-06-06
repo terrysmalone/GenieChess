@@ -342,13 +342,14 @@ namespace ChessGame.MoveSearching
             //Move capture
             for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
             {
-                if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
+                if (   moveList[moveNum].SpecialMove == SpecialMoveType.Capture
                     || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
                     || IsPromotionCapture(moveList[moveNum].SpecialMove))
                 {
                     var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
 
-                    ordering.Add(new Tuple<int, int, int>(moveNum,
+                    ordering.Add(new Tuple<int, int, int>(
+                        moveNum,
                         GetPieceScore(victimType),
                         GetPieceScore(moveList[moveNum].Type)));
                 }
