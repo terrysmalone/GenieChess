@@ -288,28 +288,8 @@ namespace ChessGame.MoveSearching
 #endif
 
                 m_BoardPosition.MakeMove(moveList[i], false);
-
-                //if (depth > 2)
-                //{
-                //    score = -AlphaBeta(-wBeta, -wAlpha, depth - 1, true);
-
-                //    if (score <= wAlpha)
-                //    {
-                //        score = -AlphaBeta(-wBeta, -alpha, depth - 1, true);
-
-                //        if (score >= wBeta)
-                //            score = -AlphaBeta(-beta, -alpha, depth - 1, true);
-                //    }
-                //    else if (score >= wBeta)
-                //    {
-                //        score = -AlphaBeta(-beta, -wAlpha, depth - 1, true);
-
-                //        if (score <= wAlpha)
-                //            score = -AlphaBeta(-beta, -alpha, depth - 1, true);
-                //    }
-                //}
-                //else
-                    score = -AlphaBeta(-beta, -alpha, depth - 1, true);
+                
+                score = -AlphaBeta(-beta, -alpha, depth - 1, true);
                 
                 if (score > alpha)
                 {

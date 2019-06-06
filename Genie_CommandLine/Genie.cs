@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame;
-using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Debugging;
 using ChessGame.NotationHelpers;
 using log4net;
@@ -35,7 +30,7 @@ namespace Genie_CommandLine
 
             m_Game = chessGameFactory.CreateChessGame(useOpeningBook);
 
-            m_Game.ThinkingDepth = 5;
+            m_Game.ThinkingDepth = 6;
 
             m_Game.InitaliseStartingPosition();
             
