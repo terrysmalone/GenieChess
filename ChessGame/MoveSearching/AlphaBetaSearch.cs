@@ -46,6 +46,8 @@ namespace ChessGame.MoveSearching
             m_InitialMoves = new List<MoveValueInfo>();
             m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
+            TranspositionTable.ClearAncients();
+
             var bestMove = new PieceMoves();
 
             CountDebugger.ClearTranspositionValues();

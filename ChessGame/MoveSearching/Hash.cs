@@ -13,12 +13,10 @@ namespace ChessGame.MoveSearching
     {
         internal ulong Key;
         internal int Depth;
-        internal bool WhiteToMove;
-        internal int Flags;
         internal decimal Score;
         internal HashNodeType NodeType;
         internal PieceMoves BestMove;
-        internal int Ancient;
+        internal bool Ancient;
 
         //internal string fenPosition;  //For debugging only. remove once fixed
 

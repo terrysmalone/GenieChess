@@ -5,7 +5,7 @@ namespace ChessGame.MoveSearching
 {  
     public static class TranspositionTable
     {
-        private static Hash[] table;
+        private static Hash[] s_Table;
 
         /*****************************
          * Table size should be a prime number 
@@ -39,7 +39,7 @@ namespace ChessGame.MoveSearching
             if (!initialised){
                 ZobristHash.Initialise();
 
-                table = new Hash[transpositionTableSize];
+                s_Table = new Hash[transpositionTableSize];
                 initialised = true;
             }
         }
@@ -48,14 +48,14 @@ namespace ChessGame.MoveSearching
         {
             var index = hash.Key % transpositionTableSize;
 
-            var currentHash = table[index];
+            var currentHash = s_Table[index];
 
             if (currentHash.Key != 0)  //There's already one there
             {
                 // If the new one searches deeper replace it
-                if (hash.Depth >= currentHash.Depth)    
+                if (hash.Depth >= currentHash.Depth || currentHash.Ancient);    
                 {
-                    table[index] = hash;
+                    s_Table[index] = hash;
 
 #if FullNodeCountDebug
                     CountDebugger.Transposition_HashReplaced++;
@@ -64,13 +64,15 @@ namespace ChessGame.MoveSearching
             }
             else
             {
-                table[index] = hash;
+                if (currentHash.Ancient)
+                {
+                    s_Table[index] = hash;
 
 #if FullNodeCountDebug
                 CountDebugger.Transposition_HashAdded++;
 #endif
+                }
             }
-
         }
 
         internal static Hash ProbeTable(ulong zobristKey, int depth, decimal alpha, decimal beta)
@@ -99,31 +101,10 @@ namespace ChessGame.MoveSearching
                         CountDebugger.Transposition_MatchAndUsed++;
 #endif
 
-                        return hash;
+                        hash.Ancient = false;
 
-                        //if (((Hash)hash).NodeType == HashNodeType.Exact)
-                        //{
-                        //    value = ((Hash)hash).Score;
-                        //    return true;
-                        //}
-
-                        //if (((Hash)hash).NodeType == HashNodeType.Alpha &&
-                        //    ((Hash)hash).Score <= alpha)
-                        //{
-                        //    value =  alpha;
-                        //    return true;
-                        //}
-
-                        //if (((Hash)hash).NodeType == HashNodeType.Beta &&
-                        //    ((Hash)hash).Score >= beta)
-                        //{
-                        //    value = beta;
-                        //    return true;
-                        //}                            
+                        return hash;                         
                     }
-
-                    //RememberBestMove();
-                    
                 }
                 else
                 {
@@ -138,19 +119,22 @@ namespace ChessGame.MoveSearching
         {
             var index = zobristKey % transpositionTableSize;
                         
-            var hash = table[index];
+            var hash = s_Table[index];
 
             return hash.Key != 0 ? hash : new Hash();
         }
 
-        internal static void ClearAncients()
-        {
-            throw new NotImplementedException();
-        }
-
         internal static void ClearAll()
         {
-            table = new Hash[transpositionTableSize];
+            s_Table = new Hash[transpositionTableSize];
+        }
+
+        internal static void ClearAncients()
+        {
+            for (var i = 0; i < s_Table.Length; i++)
+            {
+                s_Table[i].Ancient = true;
+            }
         }
     }
 }
