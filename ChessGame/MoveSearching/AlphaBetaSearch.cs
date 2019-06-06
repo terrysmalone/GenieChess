@@ -26,8 +26,8 @@ namespace ChessGame.MoveSearching
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
-        private int m_KillerMovesToStore = 1;
-        private PieceMoves[,] m_KillerMoves;
+        //private int m_KillerMovesToStore = 1;
+        //private PieceMoves[,] m_KillerMoves;
 
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
@@ -41,7 +41,7 @@ namespace ChessGame.MoveSearching
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
 
-            m_KillerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
+            //m_KillerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
             m_InitialMoves = new List<MoveValueInfo>();
             m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
@@ -91,7 +91,7 @@ namespace ChessGame.MoveSearching
 #endif
 
 #if Debug
-                LogKillerMoves(m_KillerMoves);
+                //LogKillerMoves(m_KillerMoves);
 #endif
 
                 s_Log.Info($"Move info: {UCIMoveTranslator.ToUCIMove(moveValueInfo.Move)} - " +
@@ -109,7 +109,7 @@ namespace ChessGame.MoveSearching
 //                //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
 //                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
 
-                //                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
+                // //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
                 //#endif
             }
 
@@ -211,12 +211,7 @@ namespace ChessGame.MoveSearching
             if (hash.Key !=0)
             {
                 var povScore = hash.Score;
-
-                if (!m_BoardPosition.WhiteToMove)
-                {
-                    povScore = -hash.Score;
-                }
-
+                
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
@@ -239,7 +234,6 @@ namespace ChessGame.MoveSearching
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
 
-            //OrderMovesInPlaceByEvaluation(moveList);
             OrderMovesInPlace(moveList, depthLeft);
 
             foreach (var move in moveList)
@@ -253,12 +247,12 @@ namespace ChessGame.MoveSearching
                     m_BoardPosition.UnMakeLastMove();
 
                     //Insert killer move
-                    for (var i = 0; i < m_KillerMovesToStore-1; i++)
-                    {
-                        m_KillerMoves[depthLeft, i + 1] = m_KillerMoves[depthLeft, i];
-                    }
-
-                    m_KillerMoves[depthLeft, 0] = move;
+                    //for (var i = 0; i < m_KillerMovesToStore-1; i++)
+                    //{
+                    //    m_KillerMoves[depthLeft, i + 1] = m_KillerMoves[depthLeft, i];
+                    //}
+                    //
+                    //m_KillerMoves[depthLeft, 0] = move;
 
                     return score;
                 }
@@ -299,12 +293,6 @@ namespace ChessGame.MoveSearching
 
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
         {
-            if (!m_BoardPosition.WhiteToMove)
-            {
-                score = -score;
-
-            }
-            
             var hash = new Hash
             {
                 Key = m_BoardPosition.Zobrist,
@@ -374,33 +362,33 @@ namespace ChessGame.MoveSearching
             }
         }
 
-        private void BringKillerMovesToTheFront(IList<PieceMoves> moveList, int depth)
-        {
-            for (var slot = 0; slot < m_KillerMovesToStore; slot++)
-            {
-                var killerMove = m_KillerMoves[depth, slot];
+        //private void BringKillerMovesToTheFront(IList<PieceMoves> moveList, int depth)
+        //{
+        //    for (var slot = 0; slot < m_KillerMovesToStore; slot++)
+        //    {
+        //        var killerMove = m_KillerMoves[depth, slot];
 
-                // There are no more killer moves at this depth
-                if (killerMove.Type == PieceType.None)
-                {
-                    break;
-                }
+        //        // There are no more killer moves at this depth
+        //        if (killerMove.Type == PieceType.None)
+        //        {
+        //            break;
+        //        }
 
-                for (var i = 0; i < moveList.Count; i++)
-                {
-                    var move = moveList[0];
+        //        for (var i = 0; i < moveList.Count; i++)
+        //        {
+        //            var move = moveList[0];
 
-                    if (move == killerMove)
-                    {
-                        var toMove = moveList[i];
-                        moveList.RemoveAt(i);
-                        moveList.Insert(0, toMove);
-                    }
+        //            if (move == killerMove)
+        //            {
+        //                var toMove = moveList[i];
+        //                moveList.RemoveAt(i);
+        //                moveList.Insert(0, toMove);
+        //            }
 
-                    break;
-                }
-            }
-        }
+        //            break;
+        //        }
+        //    }
+        //}
 
         private static bool IsPromotionCapture(SpecialMoveType specialMoveType)
         {
