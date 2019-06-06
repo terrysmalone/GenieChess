@@ -137,10 +137,6 @@ namespace ChessGame
 
             //TranspositionTable.ClearAll();
 
-            //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-            //  
-
-
             return bestMove;
         }
 
