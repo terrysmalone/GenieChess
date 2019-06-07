@@ -127,8 +127,7 @@ namespace ChessGame
                 Log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
-            //private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-            Log.Info("---------------------------------------------------------------");
+            Log.Info("===============================================================");
             Log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
             var search = new AlphaBetaSearch(m_CurrentBoard, m_ScoreCalculator);
@@ -136,10 +135,6 @@ namespace ChessGame
             var bestMove = search.CalculateBestMove(ThinkingDepth);
 
             //TranspositionTable.ClearAll();
-
-            //currentMove = UseIterativeDeepening ? search.StartSearch(m_ThinkingDepth) 
-            //  
-
 
             return bestMove;
         }
