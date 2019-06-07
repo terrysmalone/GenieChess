@@ -1,14 +1,12 @@
-﻿using ChessGame.ResourceLoading;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using ResourceLoading;
 
-namespace ChessGame.Books
+namespace ResourceLoading
 {
     public class OpeningBook : IOpeningBook
     {
-        public string FilePath { get; }
-
         private List<Opening> m_Openings;
 
         private int m_PlyCount;
@@ -34,7 +32,7 @@ namespace ChessGame.Books
             {
                 var moves = SplitIntoChunks(line, 4);
 
-                var opening = new Opening { moves = moves };
+                var opening = new Opening { Moves = moves };
 
                 openings.Add(opening);
             }
@@ -60,12 +58,10 @@ namespace ChessGame.Books
             return parts;
         }
 
-        /// <summary>
-        /// Gets a move from the opening book
-        /// 
-        /// Note: The move isn't registered as having been made until a call to RegisterMadeMove is carried out
-        /// </summary>
-        /// <returns></returns>
+        // Gets a move from the opening book
+        // 
+        // Note: The move isn't registered as having been made until
+        //       a call to RegisterMadeMove is carried out
         public string GetMove()
         {
             //Filter out openings that don't have this move
@@ -73,7 +69,7 @@ namespace ChessGame.Books
             {
                 var currentOpening = m_Openings[i];
 
-                if (m_PlyCount >= currentOpening.moves.Length)
+                if (m_PlyCount >= currentOpening.Moves.Length)
                     m_Openings.RemoveAt(i);
             }
 
@@ -81,27 +77,25 @@ namespace ChessGame.Books
 
             var pos = m_Rand.Next(m_Openings.Count);
 
-            var move = m_Openings[pos].moves[m_PlyCount];
+            var move = m_Openings[pos].Moves[m_PlyCount];
 
             return move;
         }
 
-        /// <summary>
-        /// Tell the opening book that this move was made
-        /// </summary>
+        // Tell the opening book that this move was made
         public void RegisterMadeMove(string uciMove)
         {
             for (var i = m_Openings.Count-1; i >= 0; i--)
             {
                 var currentOpening = m_Openings[i];
 
-                if (m_PlyCount >= currentOpening.moves.Length)
+                if (m_PlyCount >= currentOpening.Moves.Length)
                 {
                     m_Openings.RemoveAt(i);
                 }
                 else
                 {
-                    if (currentOpening.moves[m_PlyCount] != uciMove)
+                    if (currentOpening.Moves[m_PlyCount] != uciMove)
                     {
                         m_Openings.RemoveAt(i);
                     }
@@ -116,5 +110,7 @@ namespace ChessGame.Books
             m_PlyCount = 0;
             m_Openings = LoadOpeningBook(FilePath);
         }
+
+        public string FilePath { get; }
     }
 }

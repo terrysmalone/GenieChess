@@ -63,6 +63,9 @@ namespace EngineEvaluation
 
         internal void EvaluatePerft(int startDepth, int endDepth, int repeatCount, bool useHashing)
         {
+            // Read the file as one string. 
+            var text = System.IO.File.ReadAllText(startupPath);
+
             perfTPositions = ResourceLoader.LoadPerfTPositions();
 
             var runs = "runs";

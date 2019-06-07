@@ -1,9 +1,8 @@
 ﻿using System;
 using ChessGame.BoardRepresentation;
-using ChessGame.Books;
-using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 using log4net;
+using ResourceLoading;
 
 namespace ChessGame
 {

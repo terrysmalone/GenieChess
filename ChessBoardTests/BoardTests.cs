@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;

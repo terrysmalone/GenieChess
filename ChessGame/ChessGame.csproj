@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ChessGame</RootNamespace>
     <AssemblyName>Genie</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -202,9 +202,6 @@
     <Compile Include="BoardSearching\UsefulBitboards.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceColour.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceType.cs" />
-    <Compile Include="Books\IOpeningBook.cs" />
-    <Compile Include="Books\Opening.cs" />
-    <Compile Include="Books\OpeningBook.cs" />
     <Compile Include="GameFactory.cs" />
     <Compile Include="Exceptions\BitboardException.cs" />
     <Compile Include="Exceptions\ChessBoardException.cs" />
@@ -241,9 +238,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ResourceLoading\PerfTPosition.cs" />
-    <Compile Include="ResourceLoading\ResourceLoader.cs" />
-    <Compile Include="ResourceLoading\TestPosition.cs" />
     <Compile Include="ScoreCalculation\IScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreCalculator.cs" />
     <Compile Include="ScoreCalculation\ScoreValueXmlReader.cs" />
@@ -279,8 +273,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="log4net.dll" />
-    <Content Include="Resources\book.txt" />
-    <Content Include="Resources\ScoreValues.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
+      <Project>{7d4f16b0-adfa-45ff-b0c0-1844b9ec3c35}</Project>
+      <Name>ResourceLoading</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

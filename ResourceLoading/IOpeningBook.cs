@@ -1,4 +1,4 @@
-﻿namespace ChessGame.Books
+﻿namespace ResourceLoading
 {
     public interface IOpeningBook
     {
