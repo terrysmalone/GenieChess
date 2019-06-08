@@ -200,8 +200,8 @@ namespace EngineEvaluation
 
             timer.Start();
 
-            var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
-            var currentMove = alphaBeta.MoveCalculate(depth);
+            var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+            var currentMove = alphaBeta.CalculateBestMove(depth);
 
             timer.Stop();
 
@@ -233,8 +233,8 @@ namespace EngineEvaluation
 
             timer.Start();
 
-            var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
-            var currentMove = alphaBeta.StartSearch(depth);
+            var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+            var currentMove = alphaBeta.CalculateBestMove(depth);
 
             timer.Stop();
 
@@ -242,25 +242,25 @@ namespace EngineEvaluation
                 
             LogLine(string.Format("AlphaBeta with iterative deepening"));
             
-            var idInfo = alphaBeta.IdMoves;
+            //var idInfo = alphaBeta.IdMoves;
 
-            ulong totalNodes = 0;
-            for (var i = 0; i < depth; i++)
-			{                
-                var move = UCIMoveTranslator.ToUCIMove(idInfo[i].Move);
+   //         ulong totalNodes = 0;
+   //         for (var i = 0; i < depth; i++)
+			//{                
+   //             var move = UCIMoveTranslator.ToUCIMove(idInfo[i].Move);
                 
-			    LogLine($"Depth {i + 1}");
+			//    LogLine($"Depth {i + 1}");
 
-                var nodes = idInfo[i].NodesVisited;
-                totalNodes += nodes;
-                LogLine(
-                    $"Nodes evaluated:{nodes:N0}/{nodeCounts[i]:N0}, Accumulated time:{idInfo[i].AccumulatedTime}, Best move:{move}, Score:{idInfo[i].Score}");
-			}
+   //             var nodes = idInfo[i].NodesVisited;
+   //             totalNodes += nodes;
+   //             LogLine(
+   //                 $"Nodes evaluated:{nodes:N0}/{nodeCounts[i]:N0}, Accumulated time:{idInfo[i].AccumulatedTime}, Best move:{move}, Score:{idInfo[i].Score}");
+			//}
 
-            LogLine("");
-            LogLine($"Total nodes: {totalNodes:N0}");    
-            LogLine($"Total time: {speed.ToString()}");            
-            LogLine("");
+            //LogLine("");
+            //LogLine($"Total nodes: {totalNodes:N0}");    
+            //LogLine($"Total time: {speed.ToString()}");            
+            //LogLine("");
         }
 
         #region logging

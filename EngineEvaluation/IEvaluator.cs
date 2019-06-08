@@ -1,0 +1,7 @@
+﻿namespace EngineEvaluation
+{
+    public interface IEvaluator
+    {
+        void Evaluate();
+    }
+}

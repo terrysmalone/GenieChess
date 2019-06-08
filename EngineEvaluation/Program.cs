@@ -10,16 +10,24 @@ namespace EngineEvaluation
 {
     class Program
     {
-        private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private static readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
-
+        
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            EvaluatePerfTSpeeds();
+            var performanceEvaluatorFactory = new PerformanceEvaluatorFactory();
+
+            var engineEvaluation = performanceEvaluatorFactory.CreatePerformanceEvaluator();
             
+            engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
+
+            //eval.EvaluateMoveSpeed(6, 10);
+
+            //eval.EvaluateTestPositions(depth);
+
+            //EvaluatePerfTSpeeds();
+
             //EvaluateNodeCounts();
 
             //EvaluateMoveTimes();
@@ -92,17 +100,17 @@ namespace EngineEvaluation
 
         }
 
-        private static void EvaluatePerfTSpeeds()
-        {
-            var peftEvaluator = new PerfTEvaluator();
+        //private static void EvaluatePerfTSpeeds()
+        //{
+        //    var peftEvaluator = new PerfTEvaluator();
 
-            var minDepth = 1;
-            var maxDepth = 9;
-            var repeatCount = 1;
-            var useHashing = true;
+        //    var minDepth = 1;
+        //    var maxDepth = 9;
+        //    var repeatCount = 1;
+        //    var useHashing = true;
 
-            peftEvaluator.EvaluatePerft(minDepth, maxDepth, repeatCount, useHashing);
-        }
+        //    peftEvaluator.EvaluatePerft(minDepth, maxDepth, repeatCount, useHashing);
+        //}
         
         private static void EvaluateNodeCounts()
         {
@@ -121,16 +129,6 @@ namespace EngineEvaluation
 
             var eval = new MoveTimeEvaluator();
             eval.EvaluateMoveTime(depth, numOfMoves);
-        }
-
-
-        private static void EvaluateEngine()
-        {
-            var eval = new EnginePerformanceEvaluator();
-            //eval.EvaluateMoveSpeed(6, 10);
-
-            var depth = 7;
-            eval.EvaluateTestPositions(depth);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
@@ -6,183 +7,195 @@ using ChessEngine.BoardRepresentation;
 using ChessEngine.Debugging;
 using ChessEngine.NotationHelpers;
 using ChessEngineTests;
+using log4net;
 using ResourceLoading;
 
 namespace EngineEvaluation
 {
-    /// <summary>
-    /// Benchmarks the time it takes to carry out PerfT evaluations
-    /// </summary>
-    public class PerfTEvaluator
+    // Benchmarks the time it takes to carry out PerfT evaluations
+    public class PerfTEvaluator : IEvaluator
     {
-        string logLocation = Environment.CurrentDirectory;
-        string logFile;
-        const int REPEAT_COUNT_DEFAULT = 1;
-
-        private protected List<PerfTPosition> perfTPositions;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        
+        private readonly string m_FullLogFile;
+        private readonly string m_HighlightsLogFile;
 
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
 
-        public string LogFile
+        public PerfTEvaluator(string highlightsLogFile, string fullLogFile)
         {
-            get { return logFile; }
-        }
+            if (highlightsLogFile == null)
+            {
+                Log.Error("No highlightsLogFile was passed to PerfTEvaluator");
+                throw new ArgumentNullException(nameof(highlightsLogFile));
+            }
 
-        #region constructor
+            m_HighlightsLogFile = highlightsLogFile;
 
-        public PerfTEvaluator()
-        {
-            CreateLogFile();
+            if (fullLogFile == null)
+            {
+                Log.Error("No fullLogFile was passed to PerfTEvaluator");
+                throw new ArgumentNullException(nameof(highlightsLogFile));
+            }
+
+            m_FullLogFile = fullLogFile;
 
             LogLine("PerfTEvaluator");
-            LogLine("");
-
-            LogLine($"Logging started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
         }
 
-        #endregion constructor
-
-        public void EvaluatePerft(List<PerfTPosition> perftPositions)
+        public void Evaluate()
         {
-            foreach (var perfTPos in perftPositions)
+            LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
+
+            var perfTPositions = m_ResourceLoader.LoadPerfTPositions();
+
+            foreach (var perfTPos in perfTPositions)
             {
-                LogPerftScore(perfTPos);
+                LogExpectedPerftScore(perfTPos);
             }
         }
 
-        private void LogPerftScore(PerfTPosition perfTPos)
+        private void LogExpectedPerftScore(PerfTPosition perfTPos)
         {
-            LogLine("");
-            LogLine(perfTPos.Name);
-            LogLine(perfTPos.FenPosition);
-
-            var perfT = new PerfT();
+            LogLineAsDetailed("");
+            LogLineAsDetailed(perfTPos.Name);
+            LogLineAsDetailed(perfTPos.FenPosition);
         }
 
-        internal void EvaluatePerft(int startDepth, int endDepth, bool useHashing)
-        {
-            EvaluatePerft(startDepth, endDepth, REPEAT_COUNT_DEFAULT, useHashing);
-        }
+        //internal void EvaluatePerft(int startDepth, int endDepth, bool useHashing)
+        //{
+        //    EvaluatePerft(startDepth, endDepth, REPEAT_COUNT_DEFAULT, useHashing);
+        //}
 
-        internal void EvaluatePerft(int startDepth, int endDepth, int repeatCount, bool useHashing)
-        {
-            // Read the file as one string. 
+        //internal void EvaluatePerft(int startDepth, int endDepth, int repeatCount, bool useHashing)
+        //{
+        //    // Read the file as one string. 
 
-            perfTPositions = m_ResourceLoader.LoadPerfTPositions();
+        //   // perfTPositions = m_ResourceLoader.LoadPerfTPositions();
 
-            var runs = "runs";
+        //    var runs = "runs";
 
-            if (repeatCount < 1)
-                repeatCount = 1;
+        //    if (repeatCount < 1)
+        //        repeatCount = 1;
 
-            if (repeatCount == 1)
-                runs = "run";
+        //    if (repeatCount == 1)
+        //        runs = "run";
 
 
-            LogLine($"startDepth {startDepth}");
-            LogLine($"endDepth {endDepth}");
-            LogLine($"repeatCount {repeatCount}");
-            LogLine($"useHashing {useHashing}");
+        //    LogLine($"startDepth {startDepth}");
+        //    LogLine($"endDepth {endDepth}");
+        //    LogLine($"repeatCount {repeatCount}");
+        //    LogLine($"useHashing {useHashing}");
             
-            LogLine("");
-            LogLine($"All values taken as an average of {repeatCount} {runs}");
+        //    LogLine("");
+        //    LogLine($"All values taken as an average of {repeatCount} {runs}");
             
-            foreach (var perfTPosition in perfTPositions)
-            {
-                //if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
-                //{
+        //    foreach (var perfTPosition in perfTPositions)
+        //    {
+        //        //if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
+        //        //{
 
-                    LogLine("--------------------------------------------");
-                    LogLine(perfTPosition.Name);
-                    LogLine(perfTPosition.FenPosition);
-                    LogLine("");
+        //            LogLine("--------------------------------------------");
+        //            LogLine(perfTPosition.Name);
+        //            LogLine(perfTPosition.FenPosition);
+        //            LogLine("");
 
-                    if (startDepth < 1)
-                        startDepth = 1;
+        //            if (startDepth < 1)
+        //                startDepth = 1;
 
-                    for (var i = startDepth; i <= endDepth; i++)
-                    {
-                        LogLine($"Depth:{i}");
+        //            for (var i = startDepth; i <= endDepth; i++)
+        //            {
+        //                LogLine($"Depth:{i}");
 
-                        if (perfTPosition.Results.Count >= i)
-                        {
-                            var time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
+        //                if (perfTPosition.Results.Count >= i)
+        //                {
+        //                    var time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
 
-                            LogLine($"Time:{time.ToString()}");
+        //                    LogLine($"Time:{time.ToString()}");
 
-                            LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
-                            CountDebugger.ClearAll();
-                        }
-                        else
-                        {
-                            LogLine("N/A");
-                        }
-                    }
-               // }
-            }
-        }
+        //                    LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
+        //                    CountDebugger.ClearAll();
+        //                }
+        //                else
+        //                {
+        //                    LogLine("N/A");
+        //                }
+        //            }
+        //       // }
+        //    }
+        //}
 
-        private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
-        {
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(startingPosition));
+        //private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
+        //{
+        //    var board = new Board();
+        //    board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            var timer = new Stopwatch();
-            timer.Start();
+        //    var timer = new Stopwatch();
+        //    timer.Start();
 
-            for (var i = 0; i < repeatCount; i++)
-            {
-                var perft = new PerfT
-                {
-                    UseHashing = useHashing
-                };
+        //    for (var i = 0; i < repeatCount; i++)
+        //    {
+        //        var perft = new PerfT
+        //        {
+        //            UseHashing = useHashing
+        //        };
 
-                var result = perft.Perft(board, depth);
+        //        var result = perft.Perft(board, depth);
 
-                if (result != expectedResult)
-                    LogLine("PERFT FAILED");
-            }
+        //        if (result != expectedResult)
+        //            LogLine("PERFT FAILED");
+        //    }
 
-            timer.Stop();
+        //    timer.Stop();
             
-            //TimeSpan averageSpeed = new TimeSpan(timer.ElapsedMilliseconds / repeatCount);
-            var averageSpeed = new TimeSpan(timer.Elapsed.Ticks / repeatCount);
+        //    //TimeSpan averageSpeed = new TimeSpan(timer.ElapsedMilliseconds / repeatCount);
+        //    var averageSpeed = new TimeSpan(timer.Elapsed.Ticks / repeatCount);
 
-            return averageSpeed;
-        }
+        //    return averageSpeed;
+        //}
 
-
-        #region logging
-
-        private void CreateLogFile()
+        private void LogLineAsHighlight(string text)
         {
-            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            logLocation += @"\" + timeStamp;
-
-            Directory.CreateDirectory(logLocation);
-
-            logFile = logLocation + @"\PerfTLogging.txt";
-            //File.Create(logFile);
-        }
-
-        private void LogLine(string text)
-        {
-            using (var stream = System.IO.File.AppendText(logFile))
+            using (var stream = File.AppendText(m_HighlightsLogFile))
             {
                 stream.WriteLine(text);
             }
         }
 
-        private void Log(string text)
+        private void LogLinesAsHighlight(IEnumerable text)
         {
-            using (var stream = System.IO.File.AppendText(logFile))
+            using (var stream = File.AppendText(m_HighlightsLogFile))
             {
-                stream.Write(text);
+                foreach (var line in text)
+                {
+                    stream.WriteLine(line);
+                }
             }
         }
 
-        #endregion logging
+        private void LogLine(string text)
+        {
+            LogLineAsDetailed(text);
+            LogLineAsHighlight(text);
+        }
 
-       
+        private void LogLineAsDetailed(string text)
+        {
+            using (var stream = File.AppendText(m_FullLogFile))
+            {
+                stream.WriteLine(text);
+            }
+        }
+
+        private void LogLinesAsDetailed(IEnumerable text)
+        {
+            using (var stream = File.AppendText(m_FullLogFile))
+            {
+                foreach (var line in text)
+                {
+                    stream.WriteLine(line);
+                }
+            }
+        }
     }
 }

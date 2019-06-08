@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
@@ -8,63 +9,54 @@ using ChessEngine.Debugging;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
+using log4net;
 using ResourceLoading;
 
 namespace EngineEvaluation
 {
-    /// <summary>
-    /// Runs and logs a full performance evaluation 
-    /// </summary>
+    // Runs and logs a full performance evaluation 
     public class EnginePerformanceEvaluator
     {
-        string logLocation = Environment.CurrentDirectory;
-        string logFile;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        List<PerfTPosition> perfTPositions;
         List<TestPosition> bratkoKopecPositions;
         List<TestPosition> kaufmanPositions;
 
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
-
-        #region properties
-
-        public string LogFile
+        
+        public EnginePerformanceEvaluator(string logFolder, string highlightsLogFile, IEnumerable<IEvaluator> evaluators)
         {
-            get { return logFile; }
-        }
-
-        #endregion properties
-
-        #region constructor
-
-        public EnginePerformanceEvaluator()
-        {
-            CreateLogFile();
-
-            perfTPositions = m_ResourceLoader.LoadPerfTPositions();
+            foreach (var evaluator in evaluators)
+            {
+                evaluator.Evaluate();
+            }
+            
             bratkoKopecPositions = m_ResourceLoader.LoadBratkoKopecPositions();
             kaufmanPositions = m_ResourceLoader.LoadKaufmanTestPositions();
             
-            LogLine("Performance Evaluator");
-            LogLine("");
-            LogLine(string.Format("Logging started at {0}", DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")));
-            LogLine("");
-        }        
+            //LogLine("Performance Evaluator");
+            //LogLine("");
+            //LogLine(string.Format("Logging started at {0}", DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")));
+            //LogLine("");
+        }
 
-        #endregion constructor
+        public void RunFullPerformanceEvaluation(int maxDepth)
+        {
+            throw new NotImplementedException();
+        }
 
         public void EvaluateTestPositions(int depth)
         {
-            LogLine("Evaluating Test position performance");
-            LogLine("");
+            //LogLine("Evaluating Test position performance");
+            //LogLine("");
              
-            LogLine("Bratko Kopec Positions");
-            LogLine("");
-            EvaluatePositions(bratkoKopecPositions, depth);
+            //LogLine("Bratko Kopec Positions");
+            //LogLine("");
+            //EvaluatePositions(bratkoKopecPositions, depth);
              
-            LogLine("Kaufman Positions");
-            LogLine(""); 
-            EvaluatePositions(kaufmanPositions, depth);
+            //LogLine("Kaufman Positions");
+            //LogLine(""); 
+            //EvaluatePositions(kaufmanPositions, depth);
 
              //foreach (TestPosition testPos in testPositions)
              //{
@@ -84,23 +76,23 @@ namespace EngineEvaluation
              //}                
         }
 
-        private void EvaluatePositions(List<TestPosition> testPositions, int depth)
-        {
-            var passed = 0;
+        //private void EvaluatePositions(List<TestPosition> testPositions, int depth)
+        //{
+        //    var passed = 0;
 
-            foreach (var testPos in testPositions)
-            {
-                LogLine("--------------------------------------------");
-                LogLine(testPos.Name);
-                LogLine(testPos.FenPosition);
+        //    foreach (var testPos in testPositions)
+        //    {
+        //        LogLine("--------------------------------------------");
+        //        LogLine(testPos.Name);
+        //        LogLine(testPos.FenPosition);
 
-                if (EvaluatePosition(testPos, depth))
-                    passed++;
-            }
+        //        if (EvaluatePosition(testPos, depth))
+        //            passed++;
+        //    }
 
-            LogLine(string.Format("Passed:{0}/{1}", passed, testPositions.Count));
+        //    LogLine(string.Format("Passed:{0}/{1}", passed, testPositions.Count));
             
-        }
+        //}
 
         private bool EvaluatePosition(TestPosition testPos, int depth)
         {
@@ -118,14 +110,14 @@ namespace EngineEvaluation
 
             timer.Start();
 
-            var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
-            var currentMove = alphaBeta.StartSearch(depth);
+            var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+            var currentMove = alphaBeta.CalculateBestMove(depth);
 
             timer.Stop();
 
             var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-            var idInfo = alphaBeta.IdMoves;
+            //var idInfo = alphaBeta.IdMoves;
             
             //for (int i = 0; i < depth; i++)
             //{
@@ -140,52 +132,21 @@ namespace EngineEvaluation
             //LogLine("");
 
             //string bestMove = UCIMoveTranslator.ToUCIMove(idInfo[idInfo.Count-1].Move);
-            var bestMove = PgnTranslator.ToPgnMove(board, idInfo[idInfo.Count - 1].Move.Position, idInfo[idInfo.Count - 1].Move.Moves, idInfo[idInfo.Count - 1].Move.Type);
+            //var bestMove = PgnTranslator.ToPgnMove(board, idInfo[idInfo.Count - 1].Move.Position, idInfo[idInfo.Count - 1].Move.Moves, idInfo[idInfo.Count - 1].Move.Type);
             
             var expectedMove = testPos.bestMoveFEN;
 
             var pass = "FAIL";
             var passed = false;
 
-            if (bestMove.Equals(expectedMove))
-            {
-                pass = "PASS";
-                passed = true;
-            }
+            //if (bestMove.Equals(expectedMove))
+            //{
+            //    pass = "PASS";
+            //    passed = true;
+            //}
 
-            LogLine(string.Format("Depth:{0} - Found move:{1}, Expected move:{2} - {3}", depth, bestMove, expectedMove, pass));
+            //LogLine($("Depth:{depth} - Found move:{1}, Expected move:{2} - {3}", depth, , expectedMove, pass));
             return passed;        
         }
-
-        #region logging
-
-        private void CreateLogFile()
-        {
-            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            logLocation += @"\" + timeStamp;
-
-            Directory.CreateDirectory(logLocation);
-
-            logFile = logLocation + @"\NodeCountLogging.txt";
-            //File.Create(logFile);
-        }
-
-        private void LogLine(string text)
-        {
-            using (var stream = System.IO.File.AppendText(logFile))
-            {
-                stream.WriteLine(text);
-            }
-        }
-
-        private void Log(string text)
-        {
-            using (var stream = System.IO.File.AppendText(logFile))
-            {
-                stream.Write(text);
-            }
-        }
-
-        #endregion logging
-    }    
+    }
 }

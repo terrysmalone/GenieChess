@@ -181,8 +181,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnginePerformanceEvaluator.cs" />
+    <Compile Include="IEvaluator.cs" />
+    <Compile Include="IPerformanceEvaluatorFactory.cs" />
     <Compile Include="MoveTimeEvaluator.cs" />
     <Compile Include="NodeCountEvaluator.cs" />
+    <Compile Include="PerformanceEvaluatorFactory.cs" />
     <Compile Include="PerfTEvaluator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

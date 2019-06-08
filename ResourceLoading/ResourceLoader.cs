@@ -22,17 +22,17 @@ namespace ResourceLoading
 
         public List<PerfTPosition> LoadPerfTPositions()
         {
-            return LoadPerfTPositions(GetGameResourcePath("PerfTPositions.txt"));
+            return LoadPerfTPositions(GetTestResourcePath("PerfTPositions.txt"));
         }
 
         public List<TestPosition> LoadBratkoKopecPositions()
         {
-            return LoadTestPositions(GetGameResourcePath("BratkoKopecPositions.txt"));
+            return LoadTestPositions(GetTestResourcePath("BratkoKopecPositions.txt"));
         }
 
         public List<TestPosition> LoadKaufmanTestPositions()
         {
-            return LoadTestPositions(GetGameResourcePath("KaufmanTestPositions.txt"));
+            return LoadTestPositions(GetTestResourcePath("KaufmanTestPositions.txt"));
 
         }
 
