@@ -191,13 +191,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessBoardTests\ChessEngineTests.csproj">
+    <ProjectReference Include="..\ChessEngineTests\ChessEngineTests.csproj">
       <Project>{9eb0e9f5-70bc-4a66-a513-2007059c0904}</Project>
       <Name>ChessEngineTests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChessGame\ChessGame.csproj">
+    <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
       <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
-      <Name>ChessGame</Name>
+      <Name>ChessEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
       <Project>{7D4F16B0-ADFA-45FF-B0C0-1844B9EC3C35}</Project>

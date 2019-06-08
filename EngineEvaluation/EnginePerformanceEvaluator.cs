@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ChessGame.Debugging;
-using ChessGame.BoardRepresentation;
-using ChessGame.ScoreCalculation;
 using System.Diagnostics;
-using ChessGame.MoveSearching;
-using ChessGame.NotationHelpers;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.Debugging;
+using ChessEngine.MoveSearching;
+using ChessEngine.NotationHelpers;
+using ChessEngine.ScoreCalculation;
 using ResourceLoading;
 
 namespace EngineEvaluation

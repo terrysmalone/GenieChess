@@ -1,7 +1,7 @@
 ﻿using System;
-using ChessGame;
-using ChessGame.Debugging;
-using ChessGame.NotationHelpers;
+using ChessEngine;
+using ChessEngine.Debugging;
+using ChessEngine.NotationHelpers;
 using log4net;
 
 namespace Genie_CommandLine

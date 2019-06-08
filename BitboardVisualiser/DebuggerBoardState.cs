@@ -1,7 +1,7 @@
 ﻿using System;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.BoardRepresentation.Enums;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using ChessGame.BoardRepresentation;
-using ChessGame.BoardRepresentation.Enums;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(
 typeof(BitboardVisualiser.DebuggerBoardState),

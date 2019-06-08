@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineTests", "ChessBoardTests\ChessEngineTests.csproj", "{9EB0E9F5-70BC-4A66-A513-2007059C0904}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngineTests", "ChessEngineTests\ChessEngineTests.csproj", "{9EB0E9F5-70BC-4A66-A513-2007059C0904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGame", "ChessGame\ChessGame.csproj", "{E4391067-8A7C-4FA1-B08D-BA250738B937}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessEngine", "ChessEngine\ChessEngine.csproj", "{E4391067-8A7C-4FA1-B08D-BA250738B937}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EngineEvaluation", "EngineEvaluation\EngineEvaluation.csproj", "{B73E8089-2EA5-439F-B4AD-0331480103CF}"
 EndProject

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 using log4net;
-using ChessGame.PossibleMoves;
-using ChessGame.BoardRepresentation;
-using ChessGame.NotationHelpers;
 using ResourceLoading;
 
 namespace EngineEvaluation

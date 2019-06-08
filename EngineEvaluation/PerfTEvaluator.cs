@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ChessEngineTests;
 using System.Diagnostics;
-using ChessGame.BoardRepresentation;
-using ChessGame.Debugging;
-using ChessGame.NotationHelpers;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.Debugging;
+using ChessEngine.NotationHelpers;
+using ChessEngineTests;
 using ResourceLoading;
 
 namespace EngineEvaluation

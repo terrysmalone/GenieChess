@@ -1,5 +1,4 @@
-﻿using ChessGame;
-using log4net;
+﻿using ChessEngine;using log4net;
 
 namespace Genie_UCI
 {

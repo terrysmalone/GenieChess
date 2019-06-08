@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
-using ChessGame.BoardRepresentation.Enums;
+using ChessEngine.BoardRepresentation.Enums;
 
 namespace BitboardVisualiser
 {
