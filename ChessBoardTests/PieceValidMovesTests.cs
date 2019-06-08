@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame;
-using ChessGame.PossibleMoves;
+﻿using ChessGame.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
 
@@ -18,7 +12,7 @@ namespace ChessEngineTests
         {
             PieceValidMoves.GenerateMoveArrays();
 
-            ulong movesFromD5 = ValidMoveArrays.KnightMoves[35];
+            var movesFromD5 = ValidMoveArrays.KnightMoves[35];
 
             Assert.AreEqual(LookupTables.F4, LookupTables.F4 & movesFromD5);
         }

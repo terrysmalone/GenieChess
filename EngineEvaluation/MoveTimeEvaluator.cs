@@ -2,17 +2,19 @@
 using ChessGame.Debugging;
 using ChessGame.MoveSearching;
 using ChessGame.NotationHelpers;
-using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using ResourceLoading;
 
 namespace EngineEvaluation
 {
     internal class MoveTimeEvaluator
     {
+        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+
         string logLocation = Environment.CurrentDirectory;
         string logFile;
 
@@ -40,16 +42,16 @@ namespace EngineEvaluation
 
         internal void EvaluateMoveTime(int depth, int numOfMoves)
         {
-            var position = ResourceLoader.LoadPerfTPosition("PerfTInitial");
+            //var position = m_ResourceLoader.LoadPerfTPositions();
 
-            LogLine("--------------------------------------------");
-            LogLine(position.Name);
-            LogLine(position.FenPosition);
-            LogLine("");
-            LogLine($"Depth:{depth}");
-            LogLine("");
+            //LogLine("--------------------------------------------");
+            //LogLine(position.Name);
+            //LogLine(position.FenPosition);
+            //LogLine("");
+            //LogLine($"Depth:{depth}");
+            //LogLine("");
 
-            EvaluateMoveSpeed(position, depth, numOfMoves);
+            //EvaluateMoveSpeed(position, depth, numOfMoves);
         }
 
         private void EvaluateMoveSpeed(PerfTPosition pos, int depth, int movesToMake)
@@ -57,7 +59,7 @@ namespace EngineEvaluation
             var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(pos.FenPosition));
             
-            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             TranspositionTable.Restart();
             CountDebugger.ClearAll();

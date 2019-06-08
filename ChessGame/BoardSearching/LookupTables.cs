@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessGame.BoardSearching
 {
@@ -272,7 +268,7 @@ namespace ChessGame.BoardSearching
         {
             SquareValuesFromIndex[0] = 1;
 
-            for (int i = 1; i < SquareValuesFromIndex.Length; i++)
+            for (var i = 1; i < SquareValuesFromIndex.Length; i++)
             {
                 //Left shift gives the same result as multiplying by two but is faster
                 SquareValuesFromIndex[i] = SquareValuesFromIndex[i - 1] << 1;
@@ -312,11 +308,11 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateUpDirectionBoards()
         {
-            for (int startRank = 0; startRank < 7; startRank++)        //Only goes to 7 as rank 8 will all be empty since there are no up moves
+            for (var startRank = 0; startRank < 7; startRank++)        //Only goes to 7 as rank 8 will all be empty since there are no up moves
             {
-                for (int startFile = 0; startFile < 8; startFile++)
+                for (var startFile = 0; startFile < 8; startFile++)
                 {
-                    int rank = startRank + 1;
+                    var rank = startRank + 1;
                     
                     ulong upSquares = 0;
 
@@ -334,11 +330,11 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateRightDirectionBoards()
         {
-            for (int startRank = 0; startRank < 8; startRank++)        
+            for (var startRank = 0; startRank < 8; startRank++)        
             {
-                for (int startFile = 0; startFile < 7; startFile++)    //Only goes to 7 as file 8 will all be empty since there are no right moves
+                for (var startFile = 0; startFile < 7; startFile++)    //Only goes to 7 as file 8 will all be empty since there are no right moves
                 {
-                    int file = startFile + 1;
+                    var file = startFile + 1;
 
                     ulong rightSquares = 0;
 
@@ -356,11 +352,11 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateDownDirectionBoards()
         {
-            for (int startRank = 1; startRank < 8; startRank++)        //Starts at 1 as rank 0 will all be empty since there are no up moves
+            for (var startRank = 1; startRank < 8; startRank++)        //Starts at 1 as rank 0 will all be empty since there are no up moves
             {
-                for (int startFile = 0; startFile < 8; startFile++)
+                for (var startFile = 0; startFile < 8; startFile++)
                 {
-                    int rank = startRank - 1;
+                    var rank = startRank - 1;
 
                     ulong downSquares = 0;
 
@@ -378,11 +374,11 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateLeftDirectionBoards()
         {
-            for (int startRank = 0; startRank < 8; startRank++)
+            for (var startRank = 0; startRank < 8; startRank++)
             {
-                for (int startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no left moves
+                for (var startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no left moves
                 {
-                    int file = startFile - 1;
+                    var file = startFile - 1;
 
                     ulong leftSquares = 0;
 
@@ -400,12 +396,12 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateUpRightDirectionBoards()
         {
-            for (int startRank = 0; startRank < 7; startRank++)
+            for (var startRank = 0; startRank < 7; startRank++)
             {
-                for (int startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file and rank 7 will all be empty since there are no up right moves
+                for (var startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file and rank 7 will all be empty since there are no up right moves
                 {
-                    int file = startFile + 1;
-                    int rank = startRank + 1;
+                    var file = startFile + 1;
+                    var rank = startRank + 1;
 
                     ulong upRightSquares = 0;
 
@@ -424,12 +420,12 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateDownRightDirectionBoards()
         {
-            for (int startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down right moves
+            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down right moves
             {
-                for (int startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file 7 will all be empty since there are no down right moves
+                for (var startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file 7 will all be empty since there are no down right moves
                 {
-                    int file = startFile + 1;
-                    int rank = startRank - 1;
+                    var file = startFile + 1;
+                    var rank = startRank - 1;
 
                     ulong downRightSquares = 0;
 
@@ -448,12 +444,12 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateDownLeftDirectionBoards()
         {
-            for (int startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down left moves
+            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down left moves
             {
-                for (int startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no down left moves
+                for (var startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no down left moves
                 {
-                    int file = startFile - 1;
-                    int rank = startRank - 1;
+                    var file = startFile - 1;
+                    var rank = startRank - 1;
 
                     ulong downLeftSquares = 0;
 
@@ -472,12 +468,12 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateUpLeftDirectionBoards()
         {
-            for (int startRank = 0; startRank < 7; startRank++)     
+            for (var startRank = 0; startRank < 7; startRank++)     
             {
-                for (int startFile = 1; startFile < 8; startFile++)   
+                for (var startFile = 1; startFile < 8; startFile++)   
                 {
-                    int file = startFile - 1;
-                    int rank = startRank + 1;
+                    var file = startFile - 1;
+                    var rank = startRank + 1;
 
                     ulong upLeftSquares = 0;
 
@@ -527,7 +523,7 @@ namespace ChessGame.BoardSearching
         {
             ulong mask = 0;
 
-            for (int column = 0; column < 8; column++)
+            for (var column = 0; column < 8; column++)
             {
                 mask = mask | SquareValuesFromPosition[row, column];
             }
@@ -551,7 +547,7 @@ namespace ChessGame.BoardSearching
         {
             ulong mask = 0;
 
-            for (int row = 0; row < 8; row++)
+            for (var row = 0; row < 8; row++)
             {
                 mask = mask | SquareValuesFromPosition[row, column];
             }
@@ -575,9 +571,9 @@ namespace ChessGame.BoardSearching
 
         private static void CalculateFileMaskByIndex()
         {  
-            for (int index = 0; index < 64; index++)
+            for (var index = 0; index < 64; index++)
             {
-                int column = index % 8;
+                var column = index % 8;
 
                 switch (column)
                 {

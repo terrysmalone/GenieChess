@@ -4,7 +4,6 @@ using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
 using ChessGame.BoardSearching;
-using ChessGame.Debugging;
 using ChessGame.MoveSearching;
 
 namespace ChessEngineTests

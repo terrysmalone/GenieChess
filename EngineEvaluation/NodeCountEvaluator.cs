@@ -7,19 +7,21 @@ using ChessGame.BoardRepresentation;
 using ChessGame.Debugging;
 using ChessGame.MoveSearching;
 using ChessGame.NotationHelpers;
-using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
+using ResourceLoading;
 
 namespace EngineEvaluation
 {
-    class NodeCountEvaluator
+    internal sealed class NodeCountEvaluator
     {
-        string logLocation = Environment.CurrentDirectory;
-        string logFile;
-               
-        const int REPEAT_COUNT_DEFAULT = 1;
-        List<PerfTPosition> positions;
-        
+        private string logLocation = Environment.CurrentDirectory;
+        private string logFile;
+
+        private const int REPEAT_COUNT_DEFAULT = 1;
+        private List<PerfTPosition> positions;
+
+        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+
         #region properties
 
         public string LogFile
@@ -45,7 +47,7 @@ namespace EngineEvaluation
 
         internal void EvaluateNodes(int minDepth, int maxDepth)
         {          
-            positions = ResourceLoader.LoadPerfTPositions();
+            positions = m_ResourceLoader.LoadPerfTPositions();
               
             LogLine("");
             
@@ -128,7 +130,7 @@ namespace EngineEvaluation
             var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var colour = FenTranslator.GetPlayerColour(startingPosition);
 
@@ -159,7 +161,7 @@ namespace EngineEvaluation
    
             board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var colour = FenTranslator.GetPlayerColour(startingPosition);
 
@@ -188,7 +190,7 @@ namespace EngineEvaluation
             var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var colour = FenTranslator.GetPlayerColour(startingPosition);
 
@@ -220,7 +222,7 @@ namespace EngineEvaluation
             var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(startingPosition));
 
-            var scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var colour = FenTranslator.GetPlayerColour(startingPosition);
 

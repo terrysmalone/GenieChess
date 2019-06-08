@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessGame.PossibleMoves
+﻿namespace ChessGame.PossibleMoves
 {
     /// <summary>
     /// Currently uses ray attacks for sliding piece generation. This will be replaced with rotated bitboards eventually

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
@@ -15,7 +14,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWriteBoardToConsole()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.InitaliseStartingPosition();
             board.WriteBoardToConsole();
@@ -25,14 +24,14 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestInitaliseStartingPosition()
         {
-            Board board = new Board();
+            var board = new Board();
             
             board.InitaliseStartingPosition();
             board.CalculateUsefulBitboards();
 
-            ulong allWhite = board.AllWhiteOccupiedSquares;
-            ulong allBlack = board.AllBlackOccupiedSquares;
-            ulong allPieces = board.AllOccupiedSquares;            
+            var allWhite = board.AllWhiteOccupiedSquares;
+            var allBlack = board.AllBlackOccupiedSquares;
+            var allPieces = board.AllOccupiedSquares;            
 
             //Random checks                        
             Assert.AreEqual((ulong)512, allPieces & LookupTables.B2);   //Checks that one of the pieces are on B1            
@@ -50,7 +49,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPieceBitboardsInInitialPosition()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitaliseStartingPosition();
 
             Assert.AreEqual((ulong)65280, board.WhitePawns);
@@ -74,31 +73,31 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestUsefulBitboardsInInitialPosition()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitaliseStartingPosition();
             board.CalculateUsefulBitboards();
 
-            ulong allWhite = board.AllWhiteOccupiedSquares;
+            var allWhite = board.AllWhiteOccupiedSquares;
             const ulong expectedAllWhite = 65535;
             Assert.AreEqual(expectedAllWhite, allWhite);
 
-            ulong allBlack = board.AllBlackOccupiedSquares;
+            var allBlack = board.AllBlackOccupiedSquares;
             const ulong expectedAllBlack = 18446462598732840960;
             Assert.AreEqual(expectedAllBlack, allBlack);
 
-            ulong allPieces = board.AllOccupiedSquares;
+            var allPieces = board.AllOccupiedSquares;
             const ulong expectedAll = 18446462598732906495;
             Assert.AreEqual(expectedAll, allPieces);
 
-            ulong emptySquares = board.EmptySquares;
+            var emptySquares = board.EmptySquares;
             const ulong expectedEmpty = 281474976645120;
             Assert.AreEqual(expectedEmpty, emptySquares);
 
-            ulong whiteOrEmpty = board.WhiteOrEmpty;
+            var whiteOrEmpty = board.WhiteOrEmpty;
             const ulong expectedWhiteOrEmpty = 281474976710655;
             Assert.AreEqual(expectedWhiteOrEmpty, whiteOrEmpty);
 
-            ulong blackOrEmpty = board.BlackOrEmpty;
+            var blackOrEmpty = board.BlackOrEmpty;
             const ulong expectedBlackOrEmpty = 18446744073709486080;
             Assert.AreEqual(expectedBlackOrEmpty, blackOrEmpty);
         }
@@ -112,7 +111,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestRemovePiece()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitaliseStartingPosition();
 
             // Remove from index 3 (white queen)
@@ -157,7 +156,7 @@ namespace ChessEngineTests
 
         private void CheckAllPiecesArePresent(Board board, PieceType type, PieceColour colour)
         {
-            Board compareBoard = new Board();
+            var compareBoard = new Board();
             compareBoard.InitaliseStartingPosition();
 
             ulong comparePieceBoard = 0;
@@ -230,15 +229,15 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMakeUnMakeMove()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitaliseStartingPosition();
 
-            List<PieceMoves> moves = MoveGeneration.CalculateAllMoves(board);
+            var moves = MoveGeneration.CalculateAllMoves(board);
             Assert.AreEqual(20, moves.Count);
 
             board.MakeMove(512, 33554432, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b2-b4
 
-            List<PieceMoves> moves2 = MoveGeneration.CalculateAllMoves(board);
+            var moves2 = MoveGeneration.CalculateAllMoves(board);
             Assert.AreEqual(20, moves2.Count);
 
             board.MakeMove(562949953421312, 8589934592, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b7-b5
@@ -293,7 +292,7 @@ namespace ChessEngineTests
             //board.BlackCanCastleQueenside = false;
             //board.WhiteCanCastleQueenside = false;
 
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
 
             Assert.AreEqual((ulong)8594161664, board.WhitePawns);
@@ -323,7 +322,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestClearBoard()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.InitaliseStartingPosition();
 
@@ -376,7 +375,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMoveColour()
         {
-            Board board = new Board();
+            var board = new Board();
             board.InitaliseStartingPosition();
 
             Assert.AreEqual(PieceColour.White, board.MoveColour);

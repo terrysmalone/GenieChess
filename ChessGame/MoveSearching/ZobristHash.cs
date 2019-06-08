@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.Extensions;
@@ -45,15 +41,15 @@ namespace ChessGame.MoveSearching
 
         internal static void Initialise()
         {
-            Random rand = new Random();
+            var rand = new Random();
 
             if (initialised == false)
             {
                 ZobristKey.PiecePositions = new ulong[12,64];
 
-                for (int i = 0; i < 12; i++)
+                for (var i = 0; i < 12; i++)
                 {
-                    for (int j = 0; j < 64; j++)
+                    for (var j = 0; j < 64; j++)
                     {
                         ZobristKey.PiecePositions[i, j] = rand.NextUlong();
                     }
@@ -121,7 +117,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whitePawns = boardState.WhitePawns;
+            var whitePawns = boardState.WhitePawns;
 
             hash ^= HashBitboard(whitePawns, WHITE_PAWN);
 
@@ -132,7 +128,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whiteKnights = boardState.WhiteKnights;
+            var whiteKnights = boardState.WhiteKnights;
 
             hash ^= HashBitboard(whiteKnights, WHITE_KNIGHT);
 
@@ -143,7 +139,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whiteBishops = boardState.WhiteBishops;
+            var whiteBishops = boardState.WhiteBishops;
 
             hash ^= HashBitboard(whiteBishops, WHITE_BISHOP);
 
@@ -154,7 +150,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whiteRooks = boardState.WhiteRooks;
+            var whiteRooks = boardState.WhiteRooks;
 
             hash ^= HashBitboard(whiteRooks, WHITE_ROOK);
 
@@ -165,7 +161,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whiteQueens = boardState.WhiteQueen;
+            var whiteQueens = boardState.WhiteQueen;
 
             hash ^= HashBitboard(whiteQueens, WHITE_QUEEN);
 
@@ -176,7 +172,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong whiteKing = boardState.WhiteKing;
+            var whiteKing = boardState.WhiteKing;
 
             hash ^= HashBitboard(whiteKing, WHITE_KING);
 
@@ -187,7 +183,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackPawns = boardState.BlackPawns;
+            var blackPawns = boardState.BlackPawns;
 
             hash ^= HashBitboard(blackPawns, BLACK_PAWN);
 
@@ -198,7 +194,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackKnights = boardState.BlackKnights;
+            var blackKnights = boardState.BlackKnights;
 
             hash ^= HashBitboard(blackKnights, BLACK_KNIGHT);
 
@@ -209,7 +205,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackBishops = boardState.BlackBishops;
+            var blackBishops = boardState.BlackBishops;
 
             hash ^= HashBitboard(blackBishops, BLACK_BISHOP);
 
@@ -220,7 +216,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackRooks = boardState.BlackRooks;
+            var blackRooks = boardState.BlackRooks;
 
             hash ^= HashBitboard(blackRooks, BLACK_ROOK);
 
@@ -231,7 +227,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackQueens = boardState.BlackQueen;
+            var blackQueens = boardState.BlackQueen;
 
             hash ^= HashBitboard(blackQueens, BLACK_QUEEN);
 
@@ -242,7 +238,7 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            ulong blackKing = boardState.BlackKing;
+            var blackKing = boardState.BlackKing;
 
             hash ^= HashBitboard(blackKing, BLACK_KING);
 
@@ -253,9 +249,9 @@ namespace ChessGame.MoveSearching
         {
             ulong hash = 0;
 
-            List<byte> indexes = BitboardOperations.GetSquareIndexesFromBoardValue(board);
+            var indexes = BitboardOperations.GetSquareIndexesFromBoardValue(board);
 
-            foreach (byte index in indexes)
+            foreach (var index in indexes)
             {
                 hash ^= ZobristKey.PiecePositions[WHITE_PAWN, index];
             }
@@ -314,7 +310,7 @@ namespace ChessGame.MoveSearching
 
         internal static int GetPieceValue(PieceType pieceType, PieceColour colour)
         {
-            int val = 0;
+            var val = 0;
 
             switch (pieceType)
             {
@@ -350,9 +346,9 @@ namespace ChessGame.MoveSearching
 
             ZobristKey.PiecePositions = new ulong[12, 64];
 
-            for (int i = 0; i < 12; i++)
+            for (var i = 0; i < 12; i++)
             {
-                for (int j = 0; j < 64; j++)
+                for (var j = 0; j < 64; j++)
                 {
                     ZobristKey.PiecePositions[i, j] = 0;
                 }

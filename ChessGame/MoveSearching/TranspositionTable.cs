@@ -1,7 +1,4 @@
-﻿using System;
-using ChessGame.Debugging;
-
-namespace ChessGame.MoveSearching
+﻿namespace ChessGame.MoveSearching
 {  
     public static class TranspositionTable
     {

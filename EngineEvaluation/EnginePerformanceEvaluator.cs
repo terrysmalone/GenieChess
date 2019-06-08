@@ -1,17 +1,14 @@
-﻿using ChessGame.ResourceLoading;
+﻿
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.Debugging;
 using ChessGame.BoardRepresentation;
 using ChessGame.ScoreCalculation;
 using System.Diagnostics;
 using ChessGame.MoveSearching;
-using ChessGame.PossibleMoves;
 using ChessGame.NotationHelpers;
+using ResourceLoading;
 
 namespace EngineEvaluation
 {
@@ -27,6 +24,7 @@ namespace EngineEvaluation
         List<TestPosition> bratkoKopecPositions;
         List<TestPosition> kaufmanPositions;
 
+        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
 
         #region properties
 
@@ -43,9 +41,9 @@ namespace EngineEvaluation
         {
             CreateLogFile();
 
-            perfTPositions = ResourceLoader.LoadPerfTPositions();
-            bratkoKopecPositions = ResourceLoader.LoadBratkoKopecPositions();
-            kaufmanPositions = ResourceLoader.LoadKaufmanTestPositions();
+            perfTPositions = m_ResourceLoader.LoadPerfTPositions();
+            bratkoKopecPositions = m_ResourceLoader.LoadBratkoKopecPositions();
+            kaufmanPositions = m_ResourceLoader.LoadKaufmanTestPositions();
             
             LogLine("Performance Evaluator");
             LogLine("");
@@ -88,9 +86,9 @@ namespace EngineEvaluation
 
         private void EvaluatePositions(List<TestPosition> testPositions, int depth)
         {
-            int passed = 0;
+            var passed = 0;
 
-            foreach (TestPosition testPos in testPositions)
+            foreach (var testPos in testPositions)
             {
                 LogLine("--------------------------------------------");
                 LogLine(testPos.Name);
@@ -108,12 +106,12 @@ namespace EngineEvaluation
         {
             CountDebugger.ClearAll();
 
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(testPos.FenPosition));
 
-            ScoreCalculator scoreCalc = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalc = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            Stopwatch timer = new Stopwatch();
+            var timer = new Stopwatch();
 
             TranspositionTable.Restart();
             CountDebugger.ClearAll();
@@ -125,9 +123,9 @@ namespace EngineEvaluation
 
             timer.Stop();
 
-            TimeSpan speed = new TimeSpan(timer.Elapsed.Ticks);
+            var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-            List<MoveValueInfo> idInfo = alphaBeta.IdMoves;
+            var idInfo = alphaBeta.IdMoves;
             
             //for (int i = 0; i < depth; i++)
             //{
@@ -142,12 +140,12 @@ namespace EngineEvaluation
             //LogLine("");
 
             //string bestMove = UCIMoveTranslator.ToUCIMove(idInfo[idInfo.Count-1].Move);
-            string bestMove = PgnTranslator.ToPgnMove(board, idInfo[idInfo.Count - 1].Move.Position, idInfo[idInfo.Count - 1].Move.Moves, idInfo[idInfo.Count - 1].Move.Type);
+            var bestMove = PgnTranslator.ToPgnMove(board, idInfo[idInfo.Count - 1].Move.Position, idInfo[idInfo.Count - 1].Move.Moves, idInfo[idInfo.Count - 1].Move.Type);
             
-            string expectedMove = testPos.bestMoveFEN;
+            var expectedMove = testPos.bestMoveFEN;
 
-            string pass = "FAIL";
-            bool passed = false;
+            var pass = "FAIL";
+            var passed = false;
 
             if (bestMove.Equals(expectedMove))
             {
@@ -163,7 +161,7 @@ namespace EngineEvaluation
 
         private void CreateLogFile()
         {
-            string timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
             logLocation += @"\" + timeStamp;
 
             Directory.CreateDirectory(logLocation);
@@ -174,7 +172,7 @@ namespace EngineEvaluation
 
         private void LogLine(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.WriteLine(text);
             }
@@ -182,7 +180,7 @@ namespace EngineEvaluation
 
         private void Log(string text)
         {
-            using (System.IO.StreamWriter stream = System.IO.File.AppendText(logFile))
+            using (var stream = System.IO.File.AppendText(logFile))
             {
                 stream.Write(text);
             }

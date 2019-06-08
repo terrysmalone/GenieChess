@@ -17,23 +17,25 @@ namespace ChessGame
 
         public Game CreateChessGame(bool useOpeningBook)
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var resourceLoader = new ResourceLoader();
+            
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             IOpeningBook openingBook = null;
 
             if (useOpeningBook)
             {
-                openingBook = GetOpeningBook("book.txt");
+                openingBook = GetOpeningBook(resourceLoader, "book.txt");
             }
 
             return new Game(scoreCalculator, new Board(), openingBook);
         }
 
-        private IOpeningBook GetOpeningBook(string bookName)
+        private IOpeningBook GetOpeningBook(IResourceLoader resourceLoader, string bookName)
         {
             try
             {
-                var openingBook = new OpeningBook(ResourceLoader.GetResourcePath(bookName));
+                var openingBook = new OpeningBook(resourceLoader.GetGameResourcePath(bookName));
 
                 m_Log.Info($"Opening book {openingBook.FilePath} loaded");
 

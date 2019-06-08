@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
-using ChessGame.Books;
-using ChessGame.Properties;
-using ChessGame.ResourceLoading;
 using ChessGame.ScoreCalculation;
 using ChessGame.NotationHelpers;
+using ResourceLoading;
 
 namespace ChessGame
 {
@@ -97,12 +90,13 @@ namespace ChessGame
         /// </summary>
         private void InputUCINewGame()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var resourceLoader = new ResourceLoader(); 
 
-            var openingBook = new OpeningBook(ResourceLoader.GetResourcePath("book.txt"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var openingBook = new OpeningBook(resourceLoader.GetGameResourcePath("book.txt"));
 
             game = new Game(scoreCalculator, new Board(), openingBook);
-            
         }
 
         /// <summary>
@@ -141,8 +135,8 @@ namespace ChessGame
             }
             else if (input.Contains("fen"))
             {                
-                int fenStart = input.IndexOf("fen");
-                string fen = input.Substring(fenStart + 4);
+                var fenStart = input.IndexOf("fen");
+                var fen = input.Substring(fenStart + 4);
 
                 //Console.WriteLine(string.Format("DEBUGGING-fen detected: INPUT={0}", fen));
             
@@ -150,10 +144,10 @@ namespace ChessGame
                 {
                     //Console.WriteLine(string.Format("DEBUGGING-MAKING MOVE: INPUT={0}", input));
 
-                    int moveStart = input.IndexOf("moves");
+                    var moveStart = input.IndexOf("moves");
 
-                    string fenPos = input.Substring(0, moveStart - 1);
-                    string moves = input.Substring(moveStart+6);
+                    var fenPos = input.Substring(0, moveStart - 1);
+                    var moves = input.Substring(moveStart+6);
 
                     //Console.WriteLine(string.Format("DEBUGGING-fenPos: INPUT={0}", fenPos));
                     //Console.WriteLine(string.Format("DEBUGGING-moves: INPUT={0}", moves));

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.PossibleMoves;
@@ -134,15 +133,15 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestDoubleCheck()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1"));
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
             
             Assert.AreEqual(2, allMoves.Count);
 
-            PieceMoves move1 = allMoves[0];
+            var move1 = allMoves[0];
             Assert.AreEqual(PieceType.King, move1.Type);
             Assert.AreEqual((ulong)1048576, move1.Position);
             Assert.AreEqual((ulong)524288, move1.Moves);
@@ -166,20 +165,20 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlockingPieceCantMove1()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("b4k2/8/8/8/8/8/6P1/7K w - - 0 1"));
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
 
             Assert.AreEqual(2, allMoves.Count);
 
-            PieceMoves move1 = allMoves[0];
+            var move1 = allMoves[0];
             Assert.AreEqual(PieceType.King, move1.Type);
             Assert.AreEqual((ulong)128, move1.Position);
             Assert.AreEqual((ulong)64, move1.Moves);
 
-            PieceMoves move2 = allMoves[1];
+            var move2 = allMoves[1];
             Assert.AreEqual(PieceType.King, move2.Type);
             Assert.AreEqual((ulong)128, move2.Position);
             Assert.AreEqual((ulong)32768, move2.Moves);        
@@ -188,15 +187,15 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlockingPieceCantMove2()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1"));
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
 
             Assert.AreEqual(4, allMoves.Count);
 
-            foreach (PieceMoves pieceMove in allMoves)
+            foreach (var pieceMove in allMoves)
             {
                 Assert.AreEqual(PieceType.King, pieceMove.Type);
                 Assert.AreEqual((ulong)16, pieceMove.Position);
@@ -210,11 +209,11 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestCheckWrapping()
         {
-            Board board = new Board();
+            var board = new Board();
 
             board.SetPosition(FenTranslator.ToBoardState("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1"));
 
-            List<PieceMoves> allMoves = MoveGeneration.CalculateAllMoves(board);
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
 
             Assert.AreEqual(2, allMoves.Count);
 
@@ -251,17 +250,17 @@ namespace ChessEngineTests
 
         private TimeSpan GetRunningTime(string boardPosition, int depth)
         {
-            Board board = new Board();
+            var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState(boardPosition));
 
-            DateTime startTime = DateTime.Now;
-            PerfT perft = new PerfT();
+            var startTime = DateTime.Now;
+            var perft = new PerfT();
 
             perft.Perft(board, depth);
 
-            DateTime endTime = DateTime.Now;
+            var endTime = DateTime.Now;
 
-            TimeSpan time = endTime - startTime;
+            var time = endTime - startTime;
 
             return time;
         }

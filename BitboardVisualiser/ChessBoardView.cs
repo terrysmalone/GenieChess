@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using ChessGame.BoardRepresentation.Enums;
 
@@ -23,9 +16,9 @@ namespace BitboardVisualiser
 
             chessSquare = new PictureBox[8, 8];
 
-            for (int i = 0; i < 8; i++)
+            for (var i = 0; i < 8; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (var j = 0; j < 8; j++)
                 {
                     chessSquare[i, j] = new PictureBox();
                     chessSquare[i, j].Size = new Size(50, 50);
@@ -58,10 +51,10 @@ namespace BitboardVisualiser
         {
             //0 is bottom left travelling right and up 
                         
-            int row = (int)location / 8;
-            int col = (int)location % 8;
+            var row = (int)location / 8;
+            var col = (int)location % 8;
 
-            Image image = GetImage(pieceType, pieceColour);
+            var image = GetImage(pieceType, pieceColour);
             chessSquare[col, row].Image = image;
 
         }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardSearching;
 using log4net;
 using ChessGame.BoardRepresentation;
@@ -27,9 +24,9 @@ namespace ChessGame.NotationHelpers
                 case PieceType.None:
                     return string.Empty;
                 case PieceType.Pawn:
-                    byte index = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
+                    var index = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
 
-                    int col = index % 8 + 1;
+                    var col = index % 8 + 1;
 
                     return ColumnToString(col);
                 case PieceType.Knight:
@@ -49,12 +46,12 @@ namespace ChessGame.NotationHelpers
 
         internal static string SquareBitboardToSquareString(ulong bitBoard)
         {
-            byte index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
+            var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
 
-            int row = index / 8;
-            int col = (index % 8)+1;
+            var row = index / 8;
+            var col = (index % 8)+1;
 
-            string square = ColumnToString(col) + RowToString(row);
+            var square = ColumnToString(col) + RowToString(row);
 
             return square;
         }
@@ -66,7 +63,7 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         private static string ColumnToString(int number)
         {
-            Char c = (Char)(97 + (number - 1));
+            var c = (Char)(97 + (number - 1));
             return c.ToString();
         }
 
@@ -88,8 +85,8 @@ namespace ChessGame.NotationHelpers
             ulong bitboard = 0;
             try
             {
-                int file = TextToNumber(position.Substring(0, 1).ToUpperInvariant()) - 1;
-                int rank = Convert.ToInt32(position.Substring(1, 1)) - 1;
+                var file = TextToNumber(position.Substring(0, 1).ToUpperInvariant()) - 1;
+                var rank = Convert.ToInt32(position.Substring(1, 1)) - 1;
                 
 
                 bitboard = LookupTables.SquareValuesFromPosition[file, rank];

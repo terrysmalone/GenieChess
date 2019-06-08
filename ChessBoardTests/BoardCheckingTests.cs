@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ChessGame.BoardRepresentation;
+﻿using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;

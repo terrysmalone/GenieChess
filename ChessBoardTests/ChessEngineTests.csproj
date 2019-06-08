@@ -202,11 +202,6 @@
     <Compile Include="PerftRuns.cs" />
     <Compile Include="PieceValidMovesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="GameTests.cs" />
     <Compile Include="PgnTranslatorTests.cs" />
     <Compile Include="BoardStateTests.cs" />
@@ -221,16 +216,14 @@
       <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
       <Name>ChessGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
+      <Project>{7D4F16B0-ADFA-45FF-B0C0-1844B9EC3C35}</Project>
+      <Name>ResourceLoading</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Resources\TestScoreCalculatorValues.txt" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

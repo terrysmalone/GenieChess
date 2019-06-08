@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
@@ -26,15 +23,15 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static BoardState ToBoardState(string fenNotation)
         {
-            BoardState state = new BoardState();
+            var state = new BoardState();
 
             try
             {
-                string[] parts = fenNotation.Split(null);
+                var parts = fenNotation.Split(null);
 
                 SetBoard(ref state, parts[0]);
 
-                string colour = parts[1];
+                var colour = parts[1];
 
                 if (colour.Equals("w", StringComparison.InvariantCultureIgnoreCase))
                     state.WhiteToMove = true;
@@ -75,12 +72,12 @@ namespace ChessGame.NotationHelpers
 
         private static void SetBoard(ref BoardState state, string parts)
         {
-            int currentRank = 7;
-            int currentFile = 0;
+            var currentRank = 7;
+            var currentFile = 0;
 
-            char[] fenLetters = parts.ToCharArray();
+            var fenLetters = parts.ToCharArray();
 
-            foreach (char letter in fenLetters)
+            foreach (var letter in fenLetters)
             {
                 if (letter.Equals('/'))
                 {
@@ -149,7 +146,7 @@ namespace ChessGame.NotationHelpers
                 }
                 else if (char.IsNumber(letter))
                 {
-                    int num = (int)char.GetNumericValue(letter);
+                    var num = (int)char.GetNumericValue(letter);
 
                     currentFile += num;
                 }
@@ -163,9 +160,9 @@ namespace ChessGame.NotationHelpers
 
         private static void SetCastlingStatus(ref BoardState state, string castlingLetters)
         {
-            char[] castlingChars = castlingLetters.ToCharArray();
+            var castlingChars = castlingLetters.ToCharArray();
 
-            foreach (char letter in castlingChars)
+            foreach (var letter in castlingChars)
             {
                 if (letter.Equals('-'))
                 {
@@ -195,11 +192,11 @@ namespace ChessGame.NotationHelpers
 
         private static void SetEnPassantPosition(ref BoardState state, string enPassantLetters)
         {
-            char[] enPassantChars = enPassantLetters.ToCharArray();
+            var enPassantChars = enPassantLetters.ToCharArray();
 
-            int enPassantFilePos = 0;
+            var enPassantFilePos = 0;
 
-            foreach (char letter in enPassantChars)
+            foreach (var letter in enPassantChars)
             {
                 if (letter.Equals('-'))
                 {
@@ -256,7 +253,7 @@ namespace ChessGame.NotationHelpers
 
         public static string ToFENString(BoardState boardState)
         {
-            string fenNotation = string.Empty;
+            var fenNotation = string.Empty;
 
             try
             {
@@ -294,60 +291,60 @@ namespace ChessGame.NotationHelpers
 
         private static string CalculateBoardString(BoardState boardState)
         {
-            char[,] board = new char[8,8];
+            var board = new char[8,8];
 
-            List<byte> whitePawnPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhitePawns);
+            var whitePawnPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhitePawns);
             PlaceLetter(ref board, whitePawnPositions, 'P');
 
-            List<byte> whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteKnights);
+            var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteKnights);
             PlaceLetter(ref board, whiteKnightPositions, 'N');
 
-            List<byte> whiteBishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteBishops);
+            var whiteBishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteBishops);
             PlaceLetter(ref board, whiteBishopPositions, 'B');
 
-            List<byte> whiteRookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteRooks);
+            var whiteRookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteRooks);
             PlaceLetter(ref board, whiteRookPositions, 'R');
 
-            List<byte> whiteQueenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteQueen);
+            var whiteQueenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteQueen);
             PlaceLetter(ref board, whiteQueenPositions, 'Q');
 
-            List<byte> whiteKingPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteKing);
+            var whiteKingPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteKing);
             PlaceLetter(ref board, whiteKingPositions, 'K');
 
-            List<byte> blackPawnPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackPawns);
+            var blackPawnPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackPawns);
             PlaceLetter(ref board, blackPawnPositions, 'p');
 
-            List<byte> blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackKnights);
+            var blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackKnights);
             PlaceLetter(ref board, blackKnightPositions, 'n');
 
-            List<byte> blackBishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackBishops);
+            var blackBishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackBishops);
             PlaceLetter(ref board, blackBishopPositions, 'b');
 
-            List<byte> blackRookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackRooks);
+            var blackRookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackRooks);
             PlaceLetter(ref board, blackRookPositions, 'r');
 
-            List<byte> blackQueenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackQueen);
+            var blackQueenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackQueen);
             PlaceLetter(ref board, blackQueenPositions, 'q');
 
-            List<byte> blackKingPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackKing);
+            var blackKingPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackKing);
             PlaceLetter(ref board, blackKingPositions, 'k');
 
-            string boardString = WriteBoardToString(board);
+            var boardString = WriteBoardToString(board);
 
             return boardString;
         }
 
         private static string WriteBoardToString(char[,] board)
         {
-            string fenBoard = string.Empty;
+            var fenBoard = string.Empty;
 
-            int spaceNum = 0;
+            var spaceNum = 0;
             
-            for (int row = 7; row >= 0; row--)
+            for (var row = 7; row >= 0; row--)
             {
-                for (int column = 0; column < 8; column++)
+                for (var column = 0; column < 8; column++)
                 {
-                    char currentChar = board[column, row];
+                    var currentChar = board[column, row];
 
                     if (char.IsLetter(currentChar))
                     {
@@ -381,10 +378,10 @@ namespace ChessGame.NotationHelpers
 
         private static void PlaceLetter(ref char[,] board, List<byte> piecePositions, char pieceLetter)
         {
-            foreach (byte pieceIndex in piecePositions)
+            foreach (var pieceIndex in piecePositions)
             {
-                byte row = (byte)(pieceIndex / 8);    // bottom to top
-                byte column = (byte)(pieceIndex % 8);  //left to right
+                var row = (byte)(pieceIndex / 8);    // bottom to top
+                var column = (byte)(pieceIndex % 8);  //left to right
 
                 board[column, row] = pieceLetter;
             }
@@ -392,7 +389,7 @@ namespace ChessGame.NotationHelpers
 
         private static string CalculateCastlingRights(BoardState boardState)
         {
-            string castlingString = string.Empty;
+            var castlingString = string.Empty;
 
             if (!boardState.WhiteCanCastleKingside && !boardState.WhiteCanCastleQueenside && !boardState.BlackCanCastleKingside && !boardState.BlackCanCastleQueenside)
                 castlingString += "-";
@@ -424,14 +421,14 @@ namespace ChessGame.NotationHelpers
 
         private static string CalculateEnPassantSquare(ulong squareValue)
         {
-            string square = string.Empty;
+            var square = string.Empty;
 
-            byte index = BitboardOperations.GetSquareIndexFromBoardValue(squareValue);
+            var index = BitboardOperations.GetSquareIndexFromBoardValue(squareValue);
 
-            int row = index / 8;
-            int column = (index % 8);
+            var row = index / 8;
+            var column = (index % 8);
 
-            string columnString = string.Empty;
+            var columnString = string.Empty;
 
             switch (column)
             {
@@ -478,9 +475,9 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static PieceColour GetPlayerColour(string startingPosition)
         {
-            string[] parts = startingPosition.Split(null);
+            var parts = startingPosition.Split(null);
 
-            string colour = parts[1];
+            var colour = parts[1];
 
             if (colour.Equals("w", StringComparison.InvariantCultureIgnoreCase))
                 return PieceColour.White;

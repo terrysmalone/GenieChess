@@ -29,6 +29,8 @@ namespace ChessGame.MoveSearching
         private int m_KillerMovesToStore = 2;
         private PieceMoves[,] m_KillerMoves;
 
+        private int m_EvaluationDepth;
+
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
@@ -67,6 +69,8 @@ namespace ChessGame.MoveSearching
                 var timer = new Stopwatch();
 
                 timer.Start();
+
+                m_EvaluationDepth = depth;
 
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
@@ -140,7 +144,7 @@ namespace ChessGame.MoveSearching
             else
             {
                 moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
-
+                
                 //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList, depth);
             }
@@ -218,6 +222,11 @@ namespace ChessGame.MoveSearching
             }
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
+
+            if (moveList.Count == 0)
+            {
+                return EvaluateEndGame(depthLeft);
+            }
 
             OrderMovesInPlace(moveList, depthLeft);
 
@@ -428,6 +437,27 @@ namespace ChessGame.MoveSearching
             }
 
             return 0;
+        }
+
+        // Evaluates the end game relative to the current player
+        // (i.e. A low score if the current player loses)
+        private decimal EvaluateEndGame(int depth)
+        {
+            var movesToend = (m_EvaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
+
+            bool isInCheck;
+
+            isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, m_BoardPosition.WhiteToMove ? PieceColour.White 
+                                                                                                     : PieceColour.Black);
+
+            if (isInCheck)
+            {
+                return decimal.MinValue / 2 + (100000 * movesToend); // Player is in checkmate
+            }
+            else
+            {
+                return 0; //stalemate
+            }
         }
 
         private void LogTranspositionCounts()

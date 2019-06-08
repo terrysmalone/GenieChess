@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame.BoardRepresentation;
+﻿using ChessGame.BoardRepresentation;
 using ChessGame.BoardSearching;
 using ChessGame.PossibleMoves;
 
@@ -21,10 +16,10 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static string ToUCIMove(PieceMoves move)
         {
-            string moveString = string.Empty;
+            var moveString = string.Empty;
 
-            ulong moveFromBoard = move.Position;
-            ulong moveToBoard = move.Moves;
+            var moveFromBoard = move.Position;
+            var moveToBoard = move.Moves;
 
             moveString = TranslationHelper.SquareBitboardToSquareString(moveFromBoard);
             moveString += TranslationHelper.SquareBitboardToSquareString(moveToBoard);
@@ -66,14 +61,14 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static PieceMoves ToGameMove(string move, IBoard board)
         {            
-            PieceMoves pieceMove = new PieceMoves();
+            var pieceMove = new PieceMoves();
 
             //split string into pairs
-            string moveFrom = move.Substring(0, 2);
-            string moveTo = move.Substring(2, 2);
+            var moveFrom = move.Substring(0, 2);
+            var moveTo = move.Substring(2, 2);
 
-            ulong MoveFromPosition = TranslationHelper.BitboardFromSquareString(moveFrom);
-            ulong MoveToPosition = TranslationHelper.BitboardFromSquareString(moveTo);
+            var MoveFromPosition = TranslationHelper.BitboardFromSquareString(moveFrom);
+            var MoveToPosition = TranslationHelper.BitboardFromSquareString(moveTo);
 
             pieceMove.Position = MoveFromPosition;
             pieceMove.Moves = MoveToPosition;

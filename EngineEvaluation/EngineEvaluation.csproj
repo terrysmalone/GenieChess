@@ -199,6 +199,10 @@
       <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
       <Name>ChessGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
+      <Project>{7D4F16B0-ADFA-45FF-B0C0-1844B9EC3C35}</Project>
+      <Name>ResourceLoading</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

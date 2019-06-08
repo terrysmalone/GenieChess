@@ -281,7 +281,7 @@ namespace ChessGame.BoardRepresentation
         /// </summary>
         public void RemovePiece(int positionToClear)
         {
-            ulong squareToClear = LookupTables.SquareValuesFromIndex[positionToClear];
+            var squareToClear = LookupTables.SquareValuesFromIndex[positionToClear];
 
             RemovePiece(squareToClear);
 
@@ -292,7 +292,7 @@ namespace ChessGame.BoardRepresentation
         /// </summary>
         public void RemovePiece(int file, int rank)
         {
-            ulong squareToClear = LookupTables.SquareValuesFromPosition[file, rank];
+            var squareToClear = LookupTables.SquareValuesFromPosition[file, rank];
 
             RemovePiece(squareToClear);
         }
@@ -749,7 +749,7 @@ namespace ChessGame.BoardRepresentation
             {
                 if (WhiteToMove)
                 {
-                    int differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
                     if ((moveToBoard & EnPassantPosition) != 0)      //Move is an en-passant capture
                     {
                         //Remove captured piece
@@ -765,7 +765,7 @@ namespace ChessGame.BoardRepresentation
                 }
                 else
                 {
-                    int differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
                     if ((moveToBoard & EnPassantPosition) != 0)      //Move is an en-passant capture
                     {
                         //Remove captured piece
@@ -910,7 +910,7 @@ namespace ChessGame.BoardRepresentation
         {
             const string piece = " ";
 
-            char[] squares = new char[64];
+            var squares = new char[64];
 
             AddPieceLetterToSquares(squares, WhitePawns, 'p');
             AddPieceLetterToSquares(squares, BlackPawns, 'P');
@@ -930,7 +930,7 @@ namespace ChessGame.BoardRepresentation
             AddPieceLetterToSquares(squares, WhiteKing, 'k');
             AddPieceLetterToSquares(squares, BlackKing, 'K');
 
-            for (int rank = 7; rank >= 0; rank--)
+            for (var rank = 7; rank >= 0; rank--)
             {
                 Console.WriteLine("");
                 Console.WriteLine(@"-------------------------");
@@ -962,7 +962,7 @@ namespace ChessGame.BoardRepresentation
             var boardPos = string.Empty;
             const string piece = " ";
 
-            char[] squares = new char[64];
+            var squares = new char[64];
 
             AddPieceLetterToSquares(squares, WhitePawns, 'p');
             AddPieceLetterToSquares(squares, BlackPawns, 'P');
@@ -982,15 +982,15 @@ namespace ChessGame.BoardRepresentation
             AddPieceLetterToSquares(squares, WhiteKing, 'k');
             AddPieceLetterToSquares(squares, BlackKing, 'K');
 
-            for (int rank = 7; rank >= 0; rank--)
+            for (var rank = 7; rank >= 0; rank--)
             {
                 boardPos += Environment.NewLine;
                 boardPos += "-------------------------" + Environment.NewLine;
                 boardPos += "|";
 
-                for (int file = 0; file < 8; file++)
+                for (var file = 0; file < 8; file++)
                 {
-                    int index = rank * 8 + file;
+                    var index = rank * 8 + file;
 
                     if (char.IsLetter(squares[index]))
                         boardPos += squares[index];
@@ -1026,7 +1026,7 @@ namespace ChessGame.BoardRepresentation
         {
             if (BlackKing == 0)
             {
-                string moveList = GetMovesList();
+                var moveList = GetMovesList();
 
                 throw new ChessBoardException(string.Format("There is no black king: {0}", moveList));
             }
@@ -1053,9 +1053,9 @@ namespace ChessGame.BoardRepresentation
         /// <returns></returns>
         private string GetMovesList()
         {
-            string movesList = string.Empty;
+            var movesList = string.Empty;
 
-            foreach (BoardState state in History)
+            foreach (var state in History)
             {
                 movesList += FenTranslator.ToFENString(state) + " || ";
             }
@@ -1116,23 +1116,23 @@ namespace ChessGame.BoardRepresentation
             if (IsMovePromotionCapture(specialMove))
             {
                 //remove captured piece
-                PieceType capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
+                var capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
                 Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add promoted piece
-                PieceType promotedPiece = PromotedPiece(specialMove);
+                var promotedPiece = PromotedPiece(specialMove);
                 Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if(IsMovePromotionNonCapture(specialMove))
             {
                 //Add promoted piece
-                PieceType promotedPiece = PromotedPiece(specialMove);
+                var promotedPiece = PromotedPiece(specialMove);
                 Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if (specialMove == SpecialMoveType.Capture)
             {
                 //remove captured piece
-                PieceType capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
+                var capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
                 Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add moved piece

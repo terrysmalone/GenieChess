@@ -39,7 +39,7 @@ namespace Genie_CommandLine
             while (true)
             {
                 Console.Write("?:");
-                string moveText = Console.ReadLine();
+                var moveText = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(moveText))
                 {

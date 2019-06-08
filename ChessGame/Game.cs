@@ -6,8 +6,8 @@ using ChessGame.MoveSearching;
 using ChessGame.BoardSearching;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
-using ChessGame.ResourceLoading;
 using log4net;
+using ResourceLoading;
 
 namespace ChessGame
 {
@@ -15,7 +15,7 @@ namespace ChessGame
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
-        private readonly ResourceLoader.IOpeningBook m_OpeningBook;
+        private readonly IOpeningBook m_OpeningBook;
 
         private bool m_GameIsActive = true;
         

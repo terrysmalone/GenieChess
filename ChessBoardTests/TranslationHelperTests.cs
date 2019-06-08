@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame.BoardRepresentation.Enums;
+﻿using ChessGame.BoardRepresentation.Enums;
 using ChessGame.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardSearching;
@@ -19,7 +14,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_pawn_1()
         {
-            string pieceLetter =  TranslationHelper.GetPieceLetter(PieceType.Pawn, 281474976710656);
+            var pieceLetter =  TranslationHelper.GetPieceLetter(PieceType.Pawn, 281474976710656);
 
             Assert.AreEqual("a", pieceLetter);
         }
@@ -27,7 +22,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_pawn_2()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Pawn, 549755813888);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Pawn, 549755813888);
 
             Assert.AreEqual("h", pieceLetter);
         }
@@ -35,7 +30,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_Knight()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Knight, 0);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Knight, 0);
 
             Assert.AreEqual("N", pieceLetter);
         }
@@ -43,7 +38,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_Bishop()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Bishop, 0);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Bishop, 0);
 
             Assert.AreEqual("B", pieceLetter);
         }
@@ -51,7 +46,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_Rook()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Rook, 0);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Rook, 0);
 
             Assert.AreEqual("R", pieceLetter); 
         }
@@ -59,7 +54,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_Queen()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Queen, 0);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Queen, 0);
 
             Assert.AreEqual("Q", pieceLetter);
         }
@@ -67,7 +62,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetPieceLetter_King()
         {
-            string pieceLetter = TranslationHelper.GetPieceLetter(PieceType.King, 0);
+            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.King, 0);
 
             Assert.AreEqual("K", pieceLetter);
         }
@@ -79,7 +74,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestSquareBitboardToString_a1()
         {
-            string square = TranslationHelper.SquareBitboardToSquareString((ulong)1);
+            var square = TranslationHelper.SquareBitboardToSquareString((ulong)1);
             Assert.AreEqual("a1", square);
 
         }
@@ -87,7 +82,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestSquareBitboardToString_e4()
         {
-            string square = TranslationHelper.SquareBitboardToSquareString((ulong)268435456);
+            var square = TranslationHelper.SquareBitboardToSquareString((ulong)268435456);
             Assert.AreEqual("e4", square);
 
         }
@@ -95,7 +90,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestSquareBitboardToString_h8()
         {
-            string square = TranslationHelper.SquareBitboardToSquareString((ulong)9223372036854775808);
+            var square = TranslationHelper.SquareBitboardToSquareString((ulong)9223372036854775808);
             Assert.AreEqual("h8", square);
         }
 
@@ -108,7 +103,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("a1");
+            var result = TranslationHelper.BitboardFromSquareString("a1");
 
             Assert.AreEqual((ulong)1, result);
         }
@@ -118,7 +113,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("A1");
+            var result = TranslationHelper.BitboardFromSquareString("A1");
 
             Assert.AreEqual((ulong)1, result);
         }
@@ -128,7 +123,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
             
-            ulong result = TranslationHelper.BitboardFromSquareString("a5");
+            var result = TranslationHelper.BitboardFromSquareString("a5");
 
             Assert.AreEqual((ulong)4294967296, result);
         }
@@ -138,7 +133,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("A5");
+            var result = TranslationHelper.BitboardFromSquareString("A5");
 
             Assert.AreEqual((ulong)4294967296, result);
         }
@@ -148,7 +143,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("h3");
+            var result = TranslationHelper.BitboardFromSquareString("h3");
 
             Assert.AreEqual((ulong)8388608, result);
         }
@@ -158,7 +153,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("H3");
+            var result = TranslationHelper.BitboardFromSquareString("H3");
 
             Assert.AreEqual((ulong)8388608, result);
         }
@@ -168,7 +163,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("c3");
+            var result = TranslationHelper.BitboardFromSquareString("c3");
 
             Assert.AreEqual((ulong)262144, result);
         }
@@ -178,7 +173,7 @@ namespace ChessEngineTests
         {
             LookupTables.InitialiseAllTables();
 
-            ulong result = TranslationHelper.BitboardFromSquareString("C3");
+            var result = TranslationHelper.BitboardFromSquareString("C3");
 
             Assert.AreEqual((ulong)262144, result);
         }

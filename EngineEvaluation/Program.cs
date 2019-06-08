@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using log4net;
-using ChessGame.ResourceLoading;
 using ChessGame.PossibleMoves;
 using ChessGame.BoardRepresentation;
 using ChessGame.NotationHelpers;
+using ResourceLoading;
 
 namespace EngineEvaluation
 {
     class Program
     {
         private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private static readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
 
         static void Main(string[] args)
         {
@@ -31,7 +33,7 @@ namespace EngineEvaluation
 
         private static void ProfileMoveGeneration()
         {
-            var perftPositions = ResourceLoader.LoadPerfTPositions();
+            var perftPositions = m_ResourceLoader.LoadPerfTPositions();
 
             foreach (var pos in perftPositions)
             {

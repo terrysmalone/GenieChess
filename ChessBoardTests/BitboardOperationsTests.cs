@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChessGame.BoardRepresentation;
 
@@ -63,7 +62,7 @@ namespace ChessEngineTests
         {
             ulong before = 16;
             
-            ulong after = BitboardOperations.FlipVertical(before);
+            var after = BitboardOperations.FlipVertical(before);
 
             Assert.AreEqual((ulong)1152921504606846976, after);
 
@@ -74,7 +73,7 @@ namespace ChessEngineTests
         {
             ulong before = 137707913216;
 
-            ulong after = BitboardOperations.FlipVertical(before);
+            var after = BitboardOperations.FlipVertical(before);
 
             Assert.AreEqual((ulong)8865349369856, after);
 
@@ -85,7 +84,7 @@ namespace ChessEngineTests
         {
             ulong before = 2160124144;
 
-            ulong after = BitboardOperations.FlipVertical(before);
+            var after = BitboardOperations.FlipVertical(before);
 
             Assert.AreEqual((ulong)17357084619874238464, after);
 
@@ -113,26 +112,26 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetSquareIndexFromBoardValueSpeed()
         {
-            Random rand = new Random();
+            var rand = new Random();
 
-            DateTime start = DateTime.UtcNow;
+            var start = DateTime.UtcNow;
 
-            for (int i = 0; i < 4000000; i++)
+            for (var i = 0; i < 4000000; i++)
             {
-                byte position = BitboardOperations.GetSquareIndexFromBoardValue((ulong)Math.Pow(1, rand.Next(64)));
+                var position = BitboardOperations.GetSquareIndexFromBoardValue((ulong)Math.Pow(1, rand.Next(64)));
             }
 
-            DateTime end = DateTime.UtcNow;
+            var end = DateTime.UtcNow;
 
-            TimeSpan diff = end - start;
+            var diff = end - start;
 
             Console.WriteLine(string.Format("New:{0}", diff));
 
             start = DateTime.UtcNow;
 
-            for (int i = 0; i < 4000000; i++)
+            for (var i = 0; i < 4000000; i++)
             {
-                byte position = BitboardOperations.GetSquareIndexFromBoardValueOld((ulong)Math.Pow(1, rand.Next(64)));
+                var position = BitboardOperations.GetSquareIndexFromBoardValueOld((ulong)Math.Pow(1, rand.Next(64)));
             }
 
             end = DateTime.UtcNow;
@@ -146,7 +145,7 @@ namespace ChessEngineTests
         public void TestGetSquareIndexesFromBoardValue()
         {
             //byte[] returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);
-            List<byte> returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);
+            var returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);
 
 
             Assert.AreEqual(3, returnedIndexes.Count);
@@ -174,17 +173,17 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestGetSquareIndexesFromBoardValueSpeed()
         {
-            Random rand = new Random();
-            DateTime start = DateTime.UtcNow;
+            var rand = new Random();
+            var start = DateTime.UtcNow;
 
-            for (int i = 0; i < 1000000; i++)
+            for (var i = 0; i < 1000000; i++)
             {
-                List<byte> positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
+                var positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
             }
 
-            DateTime end = DateTime.UtcNow;
+            var end = DateTime.UtcNow;
 
-            TimeSpan diff = end - start;
+            var diff = end - start;
 
             Console.WriteLine(string.Format("New:{0}", diff));
         }
@@ -192,7 +191,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestSplitBoard()
         {
-            ulong[] split = BitboardOperations.SplitBoardToArray(17626747109376);
+            var split = BitboardOperations.SplitBoardToArray(17626747109376);
 
             Assert.AreEqual(4, split.Length);
 
@@ -205,18 +204,18 @@ namespace ChessEngineTests
         [TestMethod]
         private void TestFastestPopCount()
         {
-            Random rand = new Random();
-            DateTime start = DateTime.UtcNow;
+            var rand = new Random();
+            var start = DateTime.UtcNow;
 
-            for (int i = 0; i < 10000000; i++)
+            for (var i = 0; i < 10000000; i++)
             {
-                List<byte> positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
+                var positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
                 //positions.Count();
             }
 
-            DateTime end = DateTime.UtcNow;
+            var end = DateTime.UtcNow;
 
-            TimeSpan diff = end - start;
+            var diff = end - start;
 
             Console.WriteLine(string.Format("Finding bits:{0}", diff));
 
@@ -224,9 +223,9 @@ namespace ChessEngineTests
 
             start = DateTime.UtcNow;
 
-            for (int i = 0; i < 10000000; i++)
+            for (var i = 0; i < 10000000; i++)
             {
-                byte popCount = BitboardOperations.GetPopCount(rand.Nextulong());
+                var popCount = BitboardOperations.GetPopCount(rand.Nextulong());
             }
 
             end = DateTime.UtcNow;

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChessGame.PossibleMoves
 {
@@ -51,8 +47,8 @@ namespace ChessGame.PossibleMoves
                 {
                     ulong validMoves = 0;
 
-                    byte file = (byte)(startFile);
-                    byte rank = (byte)(startRank + 1);
+                    var file = (byte)(startFile);
+                    var rank = (byte)(startRank + 1);
 
                     validMoves = validMoves | CalculateSquareValue(file, rank);
 
@@ -63,7 +59,7 @@ namespace ChessGame.PossibleMoves
                         validMoves = validMoves | CalculateSquareValue(file, rank);
                     }
 
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
                     ValidMoveArrays.WhitePawnMoves[startSquare] = validMoves;
                 }
             }
@@ -77,8 +73,8 @@ namespace ChessGame.PossibleMoves
                 {
                     ulong validMoves = 0;
 
-                    byte file = (byte)(startFile + 1);
-                    byte rank = (byte)(startRank + 1);
+                    var file = (byte)(startFile + 1);
+                    var rank = (byte)(startRank + 1);
 
                     if (file >= 0 && file < 8)
                     {
@@ -93,7 +89,7 @@ namespace ChessGame.PossibleMoves
                         validMoves = validMoves | CalculateSquareValue(file, rank);
                     }
                    
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
                     ValidMoveArrays.WhitePawnCaptures[startSquare] = validMoves;
                 }
             }
@@ -113,8 +109,8 @@ namespace ChessGame.PossibleMoves
                 {
                     ulong validMoves = 0;
 
-                    byte file = (byte)(startFile);
-                    byte rank = (byte)(startRank - 1);
+                    var file = (byte)(startFile);
+                    var rank = (byte)(startRank - 1);
 
                     validMoves = validMoves | CalculateSquareValue(file, rank);
 
@@ -125,7 +121,7 @@ namespace ChessGame.PossibleMoves
                         validMoves = validMoves | CalculateSquareValue(file, rank);
                     }
 
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
                     ValidMoveArrays.BlackPawnMoves[startSquare] = validMoves;
                 }
             }
@@ -139,8 +135,8 @@ namespace ChessGame.PossibleMoves
                 {
                     ulong validMoves = 0;
 
-                    byte file = (byte)(startFile + 1);
-                    byte rank = (byte)(startRank - 1);
+                    var file = (byte)(startFile + 1);
+                    var rank = (byte)(startRank - 1);
 
                     if (file >= 0 && file < 8)
                     {
@@ -155,7 +151,7 @@ namespace ChessGame.PossibleMoves
                         validMoves = validMoves | CalculateSquareValue(file, rank);
                     }
 
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
                     ValidMoveArrays.BlackPawnCaptures[startSquare] = validMoves;
                 }
             }
@@ -174,8 +170,8 @@ namespace ChessGame.PossibleMoves
                     ulong validMoves = 0;
 
                     //
-                    byte file = (byte)(startFile + 1);
-                    byte rank = (byte)(startRank + 2);
+                    var file = (byte)(startFile + 1);
+                    var rank = (byte)(startRank + 2);
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
@@ -240,7 +236,7 @@ namespace ChessGame.PossibleMoves
 
                     //move.Moves = validMoves;
 
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
 
                     ValidMoveArrays.KnightMoves[startSquare] = validMoves;
                 }
@@ -261,8 +257,8 @@ namespace ChessGame.PossibleMoves
                     ulong validMoves = 0;
                     
                     //Up
-                    byte file = startFile;
-                    byte rank = startRank;
+                    var file = startFile;
+                    var rank = startRank;
 
                     if (rank < 7)
                     {
@@ -350,7 +346,7 @@ namespace ChessGame.PossibleMoves
 
                     //move.Moves = validMoves;
 
-                    byte startSquare = (byte)(startFile + (startRank * 8));
+                    var startSquare = (byte)(startFile + (startRank * 8));
 
                     ValidMoveArrays.KingMoves[startSquare] = validMoves;
 
@@ -365,7 +361,7 @@ namespace ChessGame.PossibleMoves
         private static ulong CalculateSquareValue(byte file, byte rank)
         {
             ulong moveIndex = (byte)(file + (rank * 8));
-            ulong moveSquare = (ulong)Math.Pow(2, moveIndex);
+            var moveSquare = (ulong)Math.Pow(2, moveIndex);
 
             return moveSquare;
         }

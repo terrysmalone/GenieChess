@@ -1,24 +1,22 @@
-﻿using ChessEngineTests.Properties;
-using ChessGame;
+﻿using ChessGame;
 using ChessGame.BoardRepresentation;
 using ChessGame.ScoreCalculation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChessGame.BoardRepresentation.Enums;
-using ChessGame.ResourceLoading;
-using ChessGame.MoveSearching;
-using ChessGame.PossibleMoves;
 using ChessGame.NotationHelpers;
+using log4net;
+using ResourceLoading;
 
 namespace ChessEngineTests
 {
     [TestClass]
     public class EngineSanityChecks
     {
+        private static readonly ILog Log =
+            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        private readonly IResourceLoader resourceLoader = new ResourceLoader();
+
         #region Tests that player attempts check mate
 
         #region Mate in one
@@ -26,16 +24,16 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_White_Depth2()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
-            game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
+            game.SetFENPosition("7k/7r/8/Q7/8/8/8/3K2R1 w - - 0 1");
             
             game.ThinkingDepth = 2;
             game.FindAndMakeBestMove();
             
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+            Assert.AreEqual("Q6k/7r/8/8/8/8/8/3K2R1 b - - 1 1", 
                             FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
@@ -43,7 +41,7 @@ namespace ChessEngineTests
         public void TestMateInOne_White_Depth3()
         {
             ;
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -59,7 +57,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_White_Depth4()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -75,7 +73,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_White_Depth5()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -91,7 +89,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_White_Depth6()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -107,7 +105,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_Black_Depth2()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -123,7 +121,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_Black_Depth3()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -139,7 +137,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_Black_Depth4()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -155,7 +153,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_Black_Depth5()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -171,7 +169,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestMateInOne_Black_Depth6()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -202,7 +200,7 @@ namespace ChessEngineTests
         {
             throw new NotImplementedException();
 
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -214,7 +212,7 @@ namespace ChessEngineTests
         {
             throw new NotImplementedException();
             
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -230,7 +228,7 @@ namespace ChessEngineTests
         {
             throw new NotImplementedException();
             
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
@@ -260,7 +258,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestKingCastlingWhileInCheckBug()
         {
-            var scoreCalculator = new ScoreCalculator(ResourceLoader.GetResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();

@@ -25,12 +25,12 @@ namespace ChessGame.MoveSearching
         {
             Debug.Assert(depth >= 1);
 
-            PieceMoves bestMove = new PieceMoves();
+            var bestMove = new PieceMoves();
 
-            decimal max = decimal.MinValue;
+            var max = decimal.MinValue;
 
 
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             PieceColour colour;
 
@@ -39,13 +39,13 @@ namespace ChessGame.MoveSearching
             else
                 colour = PieceColour.Black;
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
-                bool skipMove = false;
+                var skipMove = false;
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    PieceColour friendlyColour = PieceColour.White;
+                    var friendlyColour = PieceColour.White;
 
                     if(m_BoardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
@@ -91,11 +91,11 @@ namespace ChessGame.MoveSearching
             if (depth == 0)
                 return Evaluate(m_BoardPosition);
 
-            decimal max = decimal.MinValue;
+            var max = decimal.MinValue;
 
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 m_BoardPosition.MakeMove(moveList[i], false);
 
@@ -123,11 +123,11 @@ namespace ChessGame.MoveSearching
             if (depth == 0)
                 return Evaluate(m_BoardPosition);
 
-            decimal min = decimal.MaxValue;
+            var min = decimal.MaxValue;
                         
-            List<PieceMoves> moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
-            for (int i = 0; i < moveList.Count; i++)
+            for (var i = 0; i < moveList.Count; i++)
             {
                 m_BoardPosition.MakeMove(moveList[i], false);
 

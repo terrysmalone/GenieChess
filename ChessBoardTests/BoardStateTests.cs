@@ -1,6 +1,4 @@
-﻿using System;
-using ChessGame;
-using ChessGame.BoardRepresentation;
+﻿using ChessGame.BoardRepresentation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ChessEngineTests
@@ -11,8 +9,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestInitialized()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             Assert.IsTrue(board1.Equals(board2));
 
@@ -21,8 +19,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteToMove()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
             
             board1.WhiteToMove = true;
             Assert.IsFalse(board1.Equals(board2));
@@ -34,8 +32,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhitePawns()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhitePawns = (ulong)67637760;
             Assert.IsFalse(board1.Equals(board2));
@@ -47,8 +45,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteKnights()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackPawns = (ulong)283794259050496;
             Assert.IsFalse(board1.Equals(board2));
@@ -60,8 +58,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteBishops()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteBishops = (ulong)134217730;
             Assert.IsFalse(board1.Equals(board2));
@@ -73,8 +71,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteRooks()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteRooks = (ulong)2147483649;
             Assert.IsFalse(board1.Equals(board2));
@@ -86,8 +84,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteQueen()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteQueen = (ulong)524288;
             Assert.IsFalse(board1.Equals(board2));
@@ -99,8 +97,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteKing()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteKing = (ulong)576460752303423488;
             Assert.IsFalse(board1.Equals(board2));
@@ -112,8 +110,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackPawns()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackPawns = (ulong)848857336381440;
             Assert.IsFalse(board1.Equals(board2));
@@ -125,8 +123,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackKnights()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackKnights = (ulong)4755801206503243776;
             Assert.IsFalse(board1.Equals(board2));
@@ -138,8 +136,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackBishops()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackBishops = (ulong)4611686018427518976;
             Assert.IsFalse(board1.Equals(board2));
@@ -151,8 +149,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackRooks()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackRooks = (ulong)4683743612465315840;
             Assert.IsFalse(board1.Equals(board2));
@@ -163,8 +161,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackQueen()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackQueen = (ulong)17592186044416;
             Assert.IsFalse(board1.Equals(board2));
@@ -176,8 +174,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackKing()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackKing = (ulong)2251799813685248;
             Assert.IsFalse(board1.Equals(board2));
@@ -189,8 +187,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestEnPassantPosition()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.EnPassantPosition = (ulong)4398046511104;
             Assert.IsFalse(board1.Equals(board2));
@@ -202,8 +200,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteCanCastleQueenside()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteCanCastleQueenside = true;
             Assert.IsFalse(board1.Equals(board2));
@@ -215,8 +213,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestWhiteCanCastleKingside()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.WhiteCanCastleKingside = true;
             Assert.IsFalse(board1.Equals(board2));
@@ -228,8 +226,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackCanCastleQueenside()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackCanCastleQueenside = true;
             Assert.IsFalse(board1.Equals(board2));
@@ -241,8 +239,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestBlackCanCastleKingside()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.BlackCanCastleKingside = true;
             Assert.IsFalse(board1.Equals(board2));
@@ -254,8 +252,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestHalfMoveClock()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.HalfMoveClock = 5;
             Assert.IsFalse(board1.Equals(board2));
@@ -267,8 +265,8 @@ namespace ChessEngineTests
          [TestMethod]
         public void TestFullMoveClock()
         {
-            BoardState board1 = new BoardState();
-            BoardState board2 = new BoardState();
+            var board1 = new BoardState();
+            var board2 = new BoardState();
 
             board1.HalfMoveClock = 8;
             Assert.IsFalse(board1.Equals(board2));
@@ -293,8 +291,8 @@ namespace ChessEngineTests
          [TestMethod]
          public void TestZobristKey()
          {
-             BoardState board1 = new BoardState();
-             BoardState board2 = new BoardState();
+             var board1 = new BoardState();
+             var board2 = new BoardState();
 
              board1.ZobristKey = (ulong)7658768968969597578;
              Assert.IsFalse(board1.Equals(board2));

@@ -1,10 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace ChessGame.ScoreCalculation
@@ -24,23 +21,23 @@ namespace ChessGame.ScoreCalculation
 
                 doc = XDocument.Load(xmlFileName);
                            
-                List<XElement> score = doc.Elements("ScoreSet").ToList();
-                List<XElement> scoreValues = score[0].Descendants().ToList();
+                var score = doc.Elements("ScoreSet").ToList();
+                var scoreValues = score[0].Descendants().ToList();
 
-                foreach (XElement scoreVal in scoreValues)
+                foreach (var scoreVal in scoreValues)
 	            {
-                    string name = string.Empty;
+                    var name = string.Empty;
                     try
                     {
                         name = scoreVal.Name.ToString();
 
                         if (name.EndsWith("SquareTable"))
                         {
-                            object squareTable = scoreCalc.GetType().GetProperty(name).GetValue(scoreCalc, null);
+                            var squareTable = scoreCalc.GetType().GetProperty(name).GetValue(scoreCalc, null);
 
                             if (squareTable is Array)
                             {
-                                Array arr = (Array)squareTable;
+                                var arr = (Array)squareTable;
 
                                 GetSquareTable(scoreVal.Value).CopyTo((Array)squareTable, 0);
                                 //squareTable = squareValues;
@@ -54,7 +51,7 @@ namespace ChessGame.ScoreCalculation
                         }
                         else
                         {
-                            decimal val = Convert.ToDecimal(scoreVal.Value);
+                            var val = Convert.ToDecimal(scoreVal.Value);
                             scoreCalc.GetType().GetProperty(name).SetValue(scoreCalc, val, null);
                         }
                     }
@@ -72,7 +69,7 @@ namespace ChessGame.ScoreCalculation
 
         private static decimal GetScore(List<XElement> scoreValues, string scoreName)
         {
-            XElement element = scoreValues.Descendants(scoreName).SingleOrDefault();
+            var element = scoreValues.Descendants(scoreName).SingleOrDefault();
 
             return (decimal)element;
         }
@@ -81,13 +78,13 @@ namespace ChessGame.ScoreCalculation
         {
             //string match = scoreValues.FirstOrDefault(stringToCheck => stringToCheck.Contains(valueString));
 
-            decimal[] values = new decimal[64];
+            var values = new decimal[64];
                        
-            string[] scoreParts = valueString.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+            var scoreParts = valueString.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 
             if (scoreParts.Length == 64)
             {
-                for (int i = 0; i < 64; i++)
+                for (var i = 0; i < 64; i++)
                 {
                     values[i] = Decimal.Parse(scoreParts[i]);
                 }

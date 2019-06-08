@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ResourceLoading
 {
@@ -6,16 +8,32 @@ namespace ResourceLoading
     {
         public string GetGameResourcePath(string fileName)
         {
-            var fullFileName = Path.Combine(new [] { GetSolutionDirectory(), "//Game//", fileName });
+            var fullFileName = Path.Combine(new [] { GetSolutionDirectory(), "SharedResources", "Game", fileName });
 
             return fullFileName;
         }
 
         public string GetTestResourcePath(string fileName)
         {
-            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "//Test//", fileName });
+            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", fileName });
 
             return fullFileName;
+        }
+
+        public List<PerfTPosition> LoadPerfTPositions()
+        {
+            return LoadPerfTPositions(GetGameResourcePath("PerfTPositions.txt"));
+        }
+
+        public List<TestPosition> LoadBratkoKopecPositions()
+        {
+            return LoadTestPositions(GetGameResourcePath("BratkoKopecPositions.txt"));
+        }
+
+        public List<TestPosition> LoadKaufmanTestPositions()
+        {
+            return LoadTestPositions(GetGameResourcePath("KaufmanTestPositions.txt"));
+
         }
 
         private static string GetSolutionDirectory()
@@ -28,116 +46,54 @@ namespace ResourceLoading
             return solutionDirectory;
         }
 
+        public static List<PerfTPosition> LoadPerfTPositions(string perfTFile)
+        {
+            var position = new List<PerfTPosition>();
 
-        //public static PerfTPosition LoadPerfTPosition(string perfTName)
-        //{
-        //    var positions = LoadPerfTPositions();
+            var lines = File.ReadAllLines(perfTFile);
 
-        //    var position = positions.Find(p => p.Name.ToLowerInvariant().Equals(perfTName.ToLowerInvariant()));
+            foreach (var line in lines)
+            {
+                var parts = line.Split(',');
 
-        //    return position;
-        //}
+                var perfTPos = new PerfTPosition { Name = parts[0], FenPosition = parts[1] };
 
-        //public static List<PerfTPosition> LoadPerfTPositions()
-        //{
-        //    var position = new List<PerfTPosition>();
+                var results = new List<ulong>();
 
-        //    var perfTFile = GetEvaluationResourcePath() + "PerfTPositions.txt";
+                for (var i = 2; i < parts.Length; i++)
+                {
+                    results.Add(Convert.ToUInt64(parts[i]));
+                }
 
-        //    var lines = File.ReadAllLines(perfTFile);
+                perfTPos.Results = results;
 
-        //    foreach (var line in lines)
-        //    {
-        //        var parts = line.Split(',');
+                position.Add(perfTPos);
+            }
 
-        //        var perfTPos = new PerfTPosition
-        //        {
-        //            Name = parts[0],
-        //            FenPosition = parts[1]
-        //        };
+            return position;
+        }
 
-        //        var results = new List<ulong>();
+        private static List<TestPosition> LoadTestPositions(string testFilePath)
+        {
+            var position = new List<TestPosition>();
 
-        //        for (var i = 2; i < parts.Length; i++)
-        //        {
-        //            results.Add(Convert.ToUInt64(parts[i]));
-        //        }
+            var lines = File.ReadAllLines(testFilePath);
 
-        //        perfTPos.Results = results;
+            foreach (var line in lines)
+            {
+                var parts = line.Split(',');
 
-        //        position.Add(perfTPos);
-        //    }
+                var testPos = new TestPosition
+                {
+                    FenPosition = parts[0],
+                    bestMoveFEN = parts[1],
+                    Name = parts[2]
+                };
+                
+                position.Add(testPos);
+            }
 
-        //    return position;
-        //}
-
-        //public static List<TestPosition> LoadKaufmanTestPositions()
-        //{
-        //    var perfTFile = GetEvaluationResourcePath() + "KaufmanTestPositions.txt";
-
-        //    return LoadTestPositions(perfTFile);
-        //}
-
-        //public static List<TestPosition> LoadBratkoKopecPositions()
-        //{
-        //    var perfTFile = GetEvaluationResourcePath() + "BratkoKopecPositions.txt";
-
-        //    return LoadTestPositions(perfTFile);
-        //}
-
-        //private static List<TestPosition> LoadTestPositions(string testFilePath)
-        //{
-        //    var position = new List<TestPosition>();
-
-        //    var lines = File.ReadAllLines(testFilePath);
-
-        //    foreach (var line in lines)
-        //    {
-        //        var parts = line.Split(',');
-
-        //        var testPos = new TestPosition
-        //        {
-        //            FenPosition = parts[0],
-        //            bestMoveFEN = parts[1],
-        //            Name = parts[2]
-        //        };
-
-
-        //        position.Add(testPos);
-        //    }
-
-        //    return position;
-        //}
-
-        //#region resource paths
-
-        //private static string GetEvaluationResourcePath()
-        //{
-        //    var current = Environment.CurrentDirectory;
-        //    var parent = Path.GetFullPath(Path.Combine(current, @"..\..\..\..\"));
-        //    var evaluationResources = parent + @"EngineEvaluation\Resources\";
-
-        //    return evaluationResources;
-        //}
-
-        //#endregion resource paths 
-
-        //public static string GetResourcePath(string fileName)
-        //{
-        //    var current = Environment.CurrentDirectory;
-        //    var parent = Path.GetFullPath(Path.Combine(current, @"..\..\..\"));
-        //    var resources = parent + @"ChessGame\Resources\";
-
-        //    return resources + fileName;
-        //}
-
-        //internal static string GetTestResourcePath(string fileName)
-        //{
-        //    var current = Environment.CurrentDirectory;
-        //    var parent = Path.GetFullPath(Path.Combine(current, @"..\..\..\"));
-        //    var resources = parent + @"Resources\";
-
-        //    return resources + fileName;
-        //}
+            return position;
+        }
     }
 }

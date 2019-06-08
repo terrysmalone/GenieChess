@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using ChessGame.BoardRepresentation;
 using ChessGame.BoardRepresentation.Enums;
 using ChessGame.BoardSearching;
@@ -32,20 +27,20 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static string ToPgnMovesList(Board board)
         {
-            string pgnString = string.Empty;
+            var pgnString = string.Empty;
                         
             if (!DidGameStartFromInitialPosition(board))
             {
-                string fenNotation = FenTranslator.ToFENString(board.History[0]);
+                var fenNotation = FenTranslator.ToFENString(board.History[0]);
 
                 pgnString += "[FEN \"" + fenNotation + "\"]\n";
             }
 
             pgnString += "\n";
 
-            List<BoardState> boardStates = board.History;
+            var boardStates = board.History;
 
-            bool whiteStarted = true;
+            var whiteStarted = true;
 
             if (boardStates[0].HalfMoveClock % 2 != 0)
                 whiteStarted = false;
@@ -55,11 +50,11 @@ namespace ChessGame.NotationHelpers
 
         private static bool DidGameStartFromInitialPosition(Board board)
         {
-            BoardState initialPosition = board.History[0];
+            var initialPosition = board.History[0];
 
-            Board startBoard = new Board();
+            var startBoard = new Board();
             startBoard.InitaliseStartingPosition();
-            BoardState startState = startBoard.History[0];
+            var startState = startBoard.History[0];
 
             if (initialPosition.Equals(startState))
                 return true;
@@ -76,11 +71,11 @@ namespace ChessGame.NotationHelpers
         /// <returns></returns>
         public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
         {
-            bool moveIsCapture = false;
+            var moveIsCapture = false;
 
-            string move = string.Empty;
+            var move = string.Empty;
 
-            PieceType movedPiece = BoardChecking.GetPieceTypeOnSquare(board, moveFromBoard);    //Can#t trust pieceToMove since it may have changed (i.e. promotion)
+            var movedPiece = BoardChecking.GetPieceTypeOnSquare(board, moveFromBoard);    //Can#t trust pieceToMove since it may have changed (i.e. promotion)
 
             move = CheckForCastling(board, moveFromBoard, moveToBoard, movedPiece);
 
@@ -95,7 +90,7 @@ namespace ChessGame.NotationHelpers
                 //Get string of piece to move 
                 move += TranslationHelper.GetPieceLetter(movedPiece, moveFromBoard);
 
-                PieceType capturedPiece = PieceType.None; 
+                var capturedPiece = PieceType.None; 
 
                 //Is it a capture, if so use 'x'
                 if (BoardChecking.IsEnemyPieceOnSquare(board, moveToBoard))
@@ -107,7 +102,7 @@ namespace ChessGame.NotationHelpers
                 }
 
                 //Get string of position moved to
-                string moveTo = TranslationHelper.SquareBitboardToSquareString(moveToBoard);
+                var moveTo = TranslationHelper.SquareBitboardToSquareString(moveToBoard);
 
 #warning ToDo
                 //If another piece can move here, specify which it was
