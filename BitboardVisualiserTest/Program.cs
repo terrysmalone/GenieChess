@@ -1,5 +1,5 @@
 ﻿using BitboardVisualiser;
-using ChessGame.BoardRepresentation;
+using ChessEngine.BoardRepresentation;
 
 namespace BitboardVisualiserTest
 {

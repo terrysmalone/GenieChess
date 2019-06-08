@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ChessEngineTests;
 using System.Diagnostics;
-using ChessGame.BoardRepresentation;
-using ChessGame.Debugging;
-using ChessGame.ResourceLoading;
-using ChessGame.NotationHelpers;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.Debugging;
+using ChessEngine.NotationHelpers;
+using ChessEngineTests;
+using ResourceLoading;
 
 namespace EngineEvaluation
 {
@@ -18,7 +18,10 @@ namespace EngineEvaluation
         string logLocation = Environment.CurrentDirectory;
         string logFile;
         const int REPEAT_COUNT_DEFAULT = 1;
-        List<PerfTPosition> perfTPositions;
+
+        private protected List<PerfTPosition> perfTPositions;
+
+        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
 
         public string LogFile
         {
@@ -63,7 +66,9 @@ namespace EngineEvaluation
 
         internal void EvaluatePerft(int startDepth, int endDepth, int repeatCount, bool useHashing)
         {
-            perfTPositions = ResourceLoader.LoadPerfTPositions();
+            // Read the file as one string. 
+
+            perfTPositions = m_ResourceLoader.LoadPerfTPositions();
 
             var runs = "runs";
 

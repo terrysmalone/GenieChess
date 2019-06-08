@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BitboardVisualiser</RootNamespace>
     <AssemblyName>BitboardVisualiser</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -195,9 +195,9 @@
     <None Include="Resources\rook_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChessGame\ChessGame.csproj">
+    <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
       <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
-      <Name>ChessGame</Name>
+      <Name>ChessEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

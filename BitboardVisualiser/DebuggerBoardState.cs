@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using ChessEngine.BoardRepresentation;
+using ChessEngine.BoardRepresentation.Enums;
 using Microsoft.VisualStudio.DebuggerVisualizers;
-using ChessGame.BoardRepresentation;
-using ChessGame.BoardRepresentation.Enums;
 
 [assembly: System.Diagnostics.DebuggerVisualizer(
 typeof(BitboardVisualiser.DebuggerBoardState),
@@ -16,9 +15,9 @@ namespace BitboardVisualiser
     {
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider)
         {
-            BoardState board = (BoardState)objectProvider.GetObject();
+            var board = (BoardState)objectProvider.GetObject();
             
-            ChessBoardView chessBoardView = new ChessBoardView();
+            var chessBoardView = new ChessBoardView();
 
             AddPieces(board, chessBoardView);
 
@@ -44,14 +43,14 @@ namespace BitboardVisualiser
 
         private void AddPawns(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhitePawns);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhitePawns);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Pawn, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackPawns);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Pawn, PieceColour.Black, location);
             }
@@ -59,14 +58,14 @@ namespace BitboardVisualiser
 
         private void AddKnights(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKnights);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKnights);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Knight, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackKnights);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Knight, PieceColour.Black, location);
             }
@@ -74,14 +73,14 @@ namespace BitboardVisualiser
 
         private void AddBishops(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteBishops);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteBishops);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Bishop, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackBishops);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Bishop, PieceColour.Black, location);
             }
@@ -89,14 +88,14 @@ namespace BitboardVisualiser
 
         private void AddRooks(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteRooks);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteRooks);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Rook, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackRooks);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Rook, PieceColour.Black, location);
             }
@@ -104,14 +103,14 @@ namespace BitboardVisualiser
 
         private void AddQueens(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteQueen);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteQueen);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Queen, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackQueen);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.Queen, PieceColour.Black, location);
             }
@@ -119,14 +118,14 @@ namespace BitboardVisualiser
 
         private void AddKings(BoardState chessBoard, ChessBoardView chessBoardView)
         {
-            List<byte> locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKing);
-            foreach (byte location in locations)
+            var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKing);
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.King, PieceColour.White, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackKing);
-            foreach (byte location in locations)
+            foreach (var location in locations)
             {
                 chessBoardView.AddPiece(PieceType.King, PieceColour.Black, location);
             }
@@ -134,9 +133,9 @@ namespace BitboardVisualiser
 
         public string BoardToString(BoardState chessBoard)
         {
-            string board = "";
+            var board = "";
 
-            char[] squares = new char[64];
+            var squares = new char[64];
 
             AddPieceLetterToSquares(squares, chessBoard.WhitePawns, 'p');
             AddPieceLetterToSquares(squares, chessBoard.BlackPawns, 'P');
@@ -156,14 +155,14 @@ namespace BitboardVisualiser
             AddPieceLetterToSquares(squares, chessBoard.WhiteKing, 'k');
             AddPieceLetterToSquares(squares, chessBoard.BlackKing, 'K');
 
-            for (int rank = 7; rank >= 0; rank--)
+            for (var rank = 7; rank >= 0; rank--)
             {
                 board += "\n";
                 board += "|";
 
-                for (int file = 0; file < 8; file++)
+                for (var file = 0; file < 8; file++)
                 {
-                    int index = rank * 8 + file;
+                    var index = rank * 8 + file;
 
                     if (char.IsLetter(squares[index]))
                     {
@@ -187,9 +186,9 @@ namespace BitboardVisualiser
 
         private void AddPieceLetterToSquares(char[] squares, UInt64 piecePosition, char letterToAdd)
         {
-            List<byte> pieceSquares = BitboardOperations.GetSquareIndexesFromBoardValue(piecePosition);
+            var pieceSquares = BitboardOperations.GetSquareIndexesFromBoardValue(piecePosition);
 
-            for (int i = 0; i < pieceSquares.Count; i++)
+            for (var i = 0; i < pieceSquares.Count; i++)
             {
                 squares[pieceSquares[i]] = letterToAdd;
             }
@@ -197,7 +196,7 @@ namespace BitboardVisualiser
 
         public static void TestShowVisualizer(object objectToVisualize)
         {
-            VisualizerDevelopmentHost visualizerHost = new VisualizerDevelopmentHost(objectToVisualize, typeof(DebuggerChessBoard));
+            var visualizerHost = new VisualizerDevelopmentHost(objectToVisualize, typeof(DebuggerChessBoard));
             visualizerHost.ShowVisualizer();
         }
     }

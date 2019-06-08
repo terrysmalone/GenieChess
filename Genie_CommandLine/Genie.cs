@@ -1,7 +1,7 @@
 ﻿using System;
-using ChessGame;
-using ChessGame.Debugging;
-using ChessGame.NotationHelpers;
+using ChessEngine;
+using ChessEngine.Debugging;
+using ChessEngine.NotationHelpers;
 using log4net;
 
 namespace Genie_CommandLine
@@ -39,7 +39,7 @@ namespace Genie_CommandLine
             while (true)
             {
                 Console.Write("?:");
-                string moveText = Console.ReadLine();
+                var moveText = Console.ReadLine();
 
                 if (!string.IsNullOrEmpty(moveText))
                 {
