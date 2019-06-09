@@ -369,6 +369,7 @@ namespace ChessEngine.MoveSearching
 
             //Order by victim and then attacker. We do it in reverse
             ordering = ordering.OrderBy(o => o.Item3).ThenBy(o => o.Item2).ToList();
+            //ordering = ordering.OrderBy(o => o.Item2).ThenByDescending(o => o.Item3).ToList();
 
             for (var orderPosition = 0; orderPosition < ordering.Count; orderPosition++)
             {

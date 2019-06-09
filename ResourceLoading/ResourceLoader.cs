@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 
 namespace ResourceLoading
 {
@@ -44,11 +45,29 @@ namespace ResourceLoading
         private static string GetSolutionDirectory()
         {
             // ReSharper disable PossibleNullReferenceException
-            var solutionDirectory = 
-                Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
+
+            var currentDirectory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            var carryOn = true;
+
+            while (carryOn)
+            {
+                if (Directory.GetFiles(currentDirectory.FullName).Length > 0 && 
+                    Directory.GetFiles(currentDirectory.FullName, "*.sln").Length > 0)
+                {
+                    carryOn = false;
+                }
+                else
+                {
+                    currentDirectory = Directory.GetParent(currentDirectory.FullName);
+                }
+            }
+
+            //var solutionDirectory = 
+            //    Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
             // ReSharper restore PossibleNullReferenceException
 
-            return solutionDirectory;
+            return currentDirectory.FullName;
         }
 
         public static List<PerfTPosition> LoadPerfTPositions(string perfTFile)
