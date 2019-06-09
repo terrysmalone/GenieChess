@@ -26,22 +26,6 @@ namespace ResourceLoading
             return LoadPerfTPositions(GetTestResourcePath("PerfTPositions.txt"));
         }
 
-        public List<TestPosition> LoadBratkoKopecPositions()
-        {
-            return LoadTestPositions(GetTestResourcePath("BratkoKopecPositions.txt"));
-        }
-
-        public List<TestPosition> LoadKaufmanTestPositions()
-        {
-            return LoadTestPositions(GetTestResourcePath("KaufmanTestPositions.txt"));
-
-        }
-
-        List<TestPosition> IResourceLoader.LoadTestPositions(string fileName)
-        {
-            return LoadTestPositions(GetTestResourcePath(fileName));
-        }
-
         private static string GetSolutionDirectory()
         {
             // ReSharper disable PossibleNullReferenceException
@@ -97,7 +81,7 @@ namespace ResourceLoading
             return position;
         }
 
-        private static List<TestPosition> LoadTestPositions(string testFilePath)
+        public List<TestPosition> LoadTestPositions(string testFilePath)
         {
             var position = new List<TestPosition>();
 
@@ -105,13 +89,25 @@ namespace ResourceLoading
 
             foreach (var line in lines)
             {
-                var parts = line.Split(',');
+                var parts = line.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var subParts = parts[0].Split(new string[] {"bm"}, StringSplitOptions.None);
+
+                var id = parts[1];
+
+                if (id.Contains("am"))  //skip the alternative move 
+                {
+                    id = parts[2];
+                }
+                
+                var start = id.IndexOf("\"", StringComparison.Ordinal) + 1;   // Add one to not include quote
+                var end = id.LastIndexOf("\"", StringComparison.Ordinal) - start;
 
                 var testPos = new TestPosition
                 {
-                    FenPosition = parts[0],
-                    BestMovePgn = parts[1],
-                    Name = parts[2]
+                    FenPosition = subParts[0].Trim(),
+                    BestMovePgn = subParts[1].Trim(),
+                    Name        = id.Substring(start, end)
                 };
                 
                 position.Add(testPos);

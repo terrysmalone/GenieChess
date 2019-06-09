@@ -10,10 +10,6 @@ namespace ResourceLoading
 
         List<PerfTPosition> LoadPerfTPositions();
 
-        List<TestPosition> LoadBratkoKopecPositions();
-
-        List<TestPosition> LoadKaufmanTestPositions();
-
         List<TestPosition> LoadTestPositions(string fileName);
     }
 }
