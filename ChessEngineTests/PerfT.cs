@@ -81,15 +81,8 @@ namespace ChessEngineTests
 
         private static void RecordHash(IBoard boardPosition, int depth, decimal score, HashNodeType hashNodeType)
         {
-            var hash = new Hash();
-
-            hash.Key = boardPosition.Zobrist;
-            hash.Depth = depth;
-            hash.NodeType = hashNodeType;
-            hash.Score = score;
-            //phashe->best = BestMove();
-            //hash.fenPosition = FenTranslator.ToFENString(boardPosition.GetCurrentBoardState());
-
+            var hash = new Hash {Key = boardPosition.Zobrist, Depth = depth, NodeType = hashNodeType, Score = score};
+            
             TranspositionTable.Add(hash);
         }
 
@@ -254,6 +247,5 @@ namespace ChessEngineTests
 
             return fileLetter + (rank + 1);
         }
-
     }
 }

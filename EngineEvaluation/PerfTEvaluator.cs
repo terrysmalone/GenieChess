@@ -3,186 +3,131 @@ using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
-using ChessEngine.Debugging;
 using ChessEngine.NotationHelpers;
 using ChessEngineTests;
+using log4net;
 using ResourceLoading;
 
 namespace EngineEvaluation
 {
-    /// <summary>
-    /// Benchmarks the time it takes to carry out PerfT evaluations
-    /// </summary>
-    public class PerfTEvaluator
+    // Benchmarks the time it takes to carry out PerfT evaluations
+    public sealed class PerfTEvaluator : IEvaluator
     {
-        string logLocation = Environment.CurrentDirectory;
-        string logFile;
-        const int REPEAT_COUNT_DEFAULT = 1;
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private protected List<PerfTPosition> perfTPositions;
+        private List<PerfTPosition> m_PerfTPositions;
 
-        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+        private readonly string m_FullLogFile;
+        private readonly string m_HighlightsLogFile;
 
-        public string LogFile
+        public PerfTEvaluator(List<PerfTPosition> perfTPositions, string highlightsLogFile, string fullLogFile)
         {
-            get { return logFile; }
-        }
+            if (perfTPositions == null)
+            {
+                Log.Error("No perfTPositions were passed to PerfTEvaluator");
+                throw new ArgumentNullException(nameof(perfTPositions));
+            }
 
-        #region constructor
+            m_PerfTPositions = perfTPositions;
 
-        public PerfTEvaluator()
-        {
-            CreateLogFile();
+            if (highlightsLogFile == null)
+            {
+                Log.Error("No highlightsLogFile was passed to PerfTEvaluator");
+                throw new ArgumentNullException(nameof(highlightsLogFile));
+            }
 
+            m_HighlightsLogFile = highlightsLogFile;
+
+            if (fullLogFile == null)
+            {
+                Log.Error("No fullLogFile was passed to PerfTEvaluator");
+                throw new ArgumentNullException(nameof(highlightsLogFile));
+            }
+
+            m_FullLogFile = fullLogFile;
+
+            LogLine("====================================================================");
             LogLine("PerfTEvaluator");
-            LogLine("");
-
-            LogLine($"Logging started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
         }
 
-        #endregion constructor
-
-        public void EvaluatePerft(List<PerfTPosition> perftPositions)
+        public void Evaluate(int evaluationDepth)
         {
-            foreach (var perfTPos in perftPositions)
-            {
-                LogPerftScore(perfTPos);
-            }
-        }
-
-        private void LogPerftScore(PerfTPosition perfTPos)
-        {
-            LogLine("");
-            LogLine(perfTPos.Name);
-            LogLine(perfTPos.FenPosition);
-
-            var perfT = new PerfT();
-        }
-
-        internal void EvaluatePerft(int startDepth, int endDepth, bool useHashing)
-        {
-            EvaluatePerft(startDepth, endDepth, REPEAT_COUNT_DEFAULT, useHashing);
-        }
-
-        internal void EvaluatePerft(int startDepth, int endDepth, int repeatCount, bool useHashing)
-        {
-            // Read the file as one string. 
-
-            perfTPositions = m_ResourceLoader.LoadPerfTPositions();
-
-            var runs = "runs";
-
-            if (repeatCount < 1)
-                repeatCount = 1;
-
-            if (repeatCount == 1)
-                runs = "run";
-
-
-            LogLine($"startDepth {startDepth}");
-            LogLine($"endDepth {endDepth}");
-            LogLine($"repeatCount {repeatCount}");
-            LogLine($"useHashing {useHashing}");
+            LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
+            LogLineAsDetailed($"Logging PerfT scores with a max search of  {evaluationDepth}");
             
-            LogLine("");
-            LogLine($"All values taken as an average of {repeatCount} {runs}");
-            
-            foreach (var perfTPosition in perfTPositions)
+            foreach (var perfTPos in m_PerfTPositions)
             {
-                //if (perfTPosition.FenPosition == "4k3/1P6/8/8/8/8/K7/8 w - - 0 1")
-                //{
+                var maxDepth = Math.Min(evaluationDepth, perfTPos.Results.Count);
 
-                    LogLine("--------------------------------------------");
-                    LogLine(perfTPosition.Name);
-                    LogLine(perfTPosition.FenPosition);
-                    LogLine("");
+                LogLine("--------------------------------------------------------------");
+                LogLine($"{perfTPos.Name} - {perfTPos.FenPosition} - Depth {maxDepth}");
 
-                    if (startDepth < 1)
-                        startDepth = 1;
+                var totalTime = TimeSpan.Zero;
 
-                    for (var i = startDepth; i <= endDepth; i++)
-                    {
-                        LogLine($"Depth:{i}");
+                var passedOverall = "PASSED";
 
-                        if (perfTPosition.Results.Count >= i)
-                        {
-                            var time = TimePerfT(perfTPosition.FenPosition, i, perfTPosition.Results[i - 1], repeatCount, useHashing);
-
-                            LogLine($"Time:{time.ToString()}");
-
-                            LogLine($"Total nodes:{perfTPosition.Results[i-1]} - VisitedNodes:{CountDebugger.Nodes.ToString()}");
-                            CountDebugger.ClearAll();
-                        }
-                        else
-                        {
-                            LogLine("N/A");
-                        }
-                    }
-               // }
-            }
-        }
-
-        private TimeSpan TimePerfT(string startingPosition, int depth, ulong expectedResult, int repeatCount, bool useHashing)
-        {
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(startingPosition));
-
-            var timer = new Stopwatch();
-            timer.Start();
-
-            for (var i = 0; i < repeatCount; i++)
-            {
-                var perft = new PerfT
+                for (var i = 0; i < maxDepth; i++)
                 {
-                    UseHashing = useHashing
-                };
+                    var depth = i + 1;
 
-                var result = perft.Perft(board, depth);
+                    var board = new Board();
+                    board.SetPosition(FenTranslator.ToBoardState(perfTPos.FenPosition));
 
-                if (result != expectedResult)
-                    LogLine("PERFT FAILED");
+                    var perft = new PerfT { UseHashing = true };
+
+                    var timer = new Stopwatch();
+                    timer.Start();
+
+                    var result = perft.Perft(board, depth);
+
+                    timer.Stop();
+
+                    totalTime = totalTime.Add(timer.Elapsed);
+
+                    LogPerfTResults(depth, result, perfTPos.Results[i], timer.Elapsed);
+
+                    if (result != perfTPos.Results[i])
+                    {
+                        passedOverall = "FAILED";
+                    }
+                }
+
+                LogLine($"{passedOverall} - Total time: {totalTime}");
             }
-
-            timer.Stop();
-            
-            //TimeSpan averageSpeed = new TimeSpan(timer.ElapsedMilliseconds / repeatCount);
-            var averageSpeed = new TimeSpan(timer.Elapsed.Ticks / repeatCount);
-
-            return averageSpeed;
         }
 
-
-        #region logging
-
-        private void CreateLogFile()
+        private void LogPerfTResults(int depth, ulong result, ulong expectedResult, TimeSpan elapsedTime)
         {
-            var timeStamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            logLocation += @"\" + timeStamp;
+            var passed = "FAILED";
 
-            Directory.CreateDirectory(logLocation);
+            if (result == expectedResult)
+            {
+                passed = "Passed";
+            }
 
-            logFile = logLocation + @"\PerfTLogging.txt";
-            //File.Create(logFile);
+            LogLineAsDetailed($"Depth: {depth} - Expected count: {expectedResult} - Actual count {result} - Time {elapsedTime} - {passed}");
         }
 
         private void LogLine(string text)
         {
-            using (var stream = System.IO.File.AppendText(logFile))
+            LogLineAsDetailed(text);
+            LogLineAsHighlight(text);
+        }
+
+        private void LogLineAsHighlight(string text)
+        {
+            using (var stream = File.AppendText(m_HighlightsLogFile))
             {
                 stream.WriteLine(text);
             }
         }
-
-        private void Log(string text)
+        
+        private void LogLineAsDetailed(string text)
         {
-            using (var stream = System.IO.File.AppendText(logFile))
+            using (var stream = File.AppendText(m_FullLogFile))
             {
-                stream.Write(text);
+                stream.WriteLine(text);
             }
         }
-
-        #endregion logging
-
-       
     }
 }

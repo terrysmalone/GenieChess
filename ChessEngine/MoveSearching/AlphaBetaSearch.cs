@@ -26,7 +26,7 @@ namespace ChessEngine.MoveSearching
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
-        private int m_KillerMovesToStore = 2;
+        private int m_KillerMovesToStore = 1;
         private PieceMoves[,] m_KillerMoves;
 
         private int m_EvaluationDepth;
@@ -42,6 +42,7 @@ namespace ChessEngine.MoveSearching
         {
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
+            s_Log.Info(FenTranslator.ToFENString(m_BoardPosition.GetCurrentBoardState()));
 
             m_KillerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
@@ -100,7 +101,7 @@ namespace ChessEngine.MoveSearching
                 LogKillerMoves(m_KillerMoves);
 #endif
 
-                s_Log.Info($"Move info: {UCIMoveTranslator.ToUCIMove(moveValueInfo.Move)} - " +
+                s_Log.Info($"Move info: {UciMoveTranslator.ToUciMove(moveValueInfo.Move)} - " +
                            $"score: {moveValueInfo.Score} - " +
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
@@ -109,17 +110,17 @@ namespace ChessEngine.MoveSearching
 
 
 //#if UCI
-//                var bestMove = UCIMoveTranslator.ToUCIMove();
+//                var bestMove = UciMoveTranslator.ToUciMove();
 //                //Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, bestMove));
 //                //Console.WriteLine(String.Format("info currmove {0} depth {1} nodes {2} ", bestMove, i, pvInfo.NodesVisited));
 //                //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
 //                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
 
-                // //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
+                // //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UciMoveTranslator.ToUciMove(bestIDMove)));
                 //#endif
             }
 
-            s_Log.Info($"Found move: {UCIMoveTranslator.ToUCIMove(bestMove)}");
+            s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
 
             return bestMove;
         }
@@ -157,7 +158,7 @@ namespace ChessEngine.MoveSearching
             foreach (var move in moveList)
             {
 #if UCI
-                Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
+                Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
                 m_BoardPosition.MakeMove(move, false);
@@ -172,7 +173,7 @@ namespace ChessEngine.MoveSearching
                 }
 
 #if Debug
-                s_Log.Info($"Move: {UCIMoveTranslator.ToUCIMove(move)} - Score: {score}");
+                s_Log.Info($"Move: {UciMoveTranslator.ToUciMove(move)} - Score: {score}");
 #endif
 
                 m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, move));
@@ -348,33 +349,43 @@ namespace ChessEngine.MoveSearching
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
         {
             // move list position, victim score, attacker score
-            var ordering = new List<Tuple<int, int, int>>();
+            var ordering = new List<Tuple<PieceMoves, int, int>>();
+
+            var toRemove = new List<int>();
 
             //Move capture
             for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
             {
-                if (   moveList[moveNum].SpecialMove == SpecialMoveType.Capture
+                if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
                     || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
                     || IsPromotionCapture(moveList[moveNum].SpecialMove))
                 {
                     var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
 
-                    ordering.Add(new Tuple<int, int, int>(
-                        moveNum,
+                    ordering.Add(new Tuple<PieceMoves, int, int>(
+                        moveList[moveNum],
                         GetPieceScore(victimType),
                         GetPieceScore(moveList[moveNum].Type)));
+
+                    toRemove.Add(moveNum);
                 }
             }
 
-            //Order by victim and then attacker. We do it in reverse
-            ordering = ordering.OrderBy(o => o.Item3).ThenBy(o => o.Item2).ToList();
+            //We need to remove them in reverse so we don't change the numbers
+            // of the others to remove
+            toRemove = toRemove.OrderByDescending(t => t).ToList();
 
+            foreach (var remove in toRemove)
+            {
+                moveList.RemoveAt(remove);
+            }
+
+            //Order by victim and then attacker. We do it in reverse
+            ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
+            
             for (var orderPosition = 0; orderPosition < ordering.Count; orderPosition++)
             {
-                var toMove = moveList[ordering[orderPosition].Item1];
-
-                moveList.RemoveAt(ordering[orderPosition].Item1);
-                moveList.Insert(orderPosition, toMove);
+                moveList.Insert(orderPosition, ordering[orderPosition].Item1);
             }
         }
 
@@ -489,7 +500,7 @@ namespace ChessEngine.MoveSearching
                     
                     if (killerMove.Type != PieceType.None)
                     {
-                        killerMovesList.Add(UCIMoveTranslator.ToUCIMove(killerMoves[depth, move]));
+                        killerMovesList.Add(UciMoveTranslator.ToUciMove(killerMoves[depth, move]));
                     }
                 }
 
@@ -500,6 +511,11 @@ namespace ChessEngine.MoveSearching
             }
 
             s_Log.Info("----------------------------------------------------------------------------------");
+        }
+
+        public List<MoveValueInfo> GetMoveValueInfo()
+        {
+            return m_InitialMoves;
         }
     }
 }

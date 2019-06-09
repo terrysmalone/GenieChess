@@ -76,7 +76,7 @@ namespace ChessEngine
                 m_OpeningBook.RegisterMadeMove(move);
             }
 
-            var pieceMove = UCIMoveTranslator.ToGameMove(move, m_CurrentBoard);
+            var pieceMove = UciMoveTranslator.ToGameMove(move, m_CurrentBoard);
 
             m_CurrentBoard.MakeMove(pieceMove, true);
         }
@@ -107,9 +107,9 @@ namespace ChessEngine
 
                 if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    var openingMove = UCIMoveTranslator.ToGameMove(openingMoveUci, m_CurrentBoard);
+                    var openingMove = UciMoveTranslator.ToGameMove(openingMoveUci, m_CurrentBoard);
 
-                    var uciMove = UCIMoveTranslator.ToUCIMove(openingMove);
+                    var uciMove = UciMoveTranslator.ToUciMove(openingMove);
 
                     Log.Info($"Move {uciMove} retrieved from opening book");
 

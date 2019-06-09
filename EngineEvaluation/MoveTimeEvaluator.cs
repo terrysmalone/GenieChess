@@ -80,37 +80,37 @@ namespace EngineEvaluation
                 var timer = new Stopwatch();
                 timer.Start();
 
-                var alphaBeta = new AlphaBetaSearchOld(board, scoreCalc);
-                var currentMove = alphaBeta.StartSearch(depth);
+                var alphaBeta = new AlphaBetaSearch(board, scoreCalc);
+                var currentMove = alphaBeta.CalculateBestMove(depth);
 
                 timer.Stop();
 
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
 
-                var idInfo = alphaBeta.IdMoves;
+//var idInfo = alphaBeta.IdMoves;
 
-                var moveNodes = CountNodes(idInfo);
-                totalNodes += moveNodes;
+                //var moveNodes = CountNodes(idInfo);
+                //totalNodes += moveNodes;
 
                 totalTime = totalTime.Add(speed);
 
-                if (board.WhiteToMove)
-                {
-                    totalWhite = totalWhite.Add(speed);
-                    totalWhiteNodes += moveNodes;
-                    whiteMoves++;
-                }
-                else
-                {
-                    totalBlack = totalBlack.Add(speed);
-                    totalBlackNodes += moveNodes;
-                    blackMoves++;
-                }
+                //if (board.WhiteToMove)
+                //{
+                //    totalWhite = totalWhite.Add(speed);
+                //    totalWhiteNodes += moveNodes;
+                //    whiteMoves++;
+                //}
+                //else
+                //{
+                //    totalBlack = totalBlack.Add(speed);
+                //    totalBlackNodes += moveNodes;
+                //    blackMoves++;
+                //}
 
-                LogLine($"{i}-Move nodes:{moveNodes:N0}, " +
-                        $"Move time:{speed:ss'.'fff}, " +
-                        $"Move made:{UCIMoveTranslator.ToUCIMove(currentMove)}, " +
-                        $"Move score:{idInfo[idInfo.Count - 1].Score}");
+                //LogLine($"{i}-Move nodes:{moveNodes:N0}, " +
+                //        $"Move time:{speed:ss'.'fff}, " +
+                //        $"Move made:{UciMoveTranslator.ToUciMove(currentMove)}, " +
+                //        $"Move score:{idInfo[idInfo.Count - 1].Score}");
 
                 board.MakeMove(currentMove, true);
             }

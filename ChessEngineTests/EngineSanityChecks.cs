@@ -4,7 +4,6 @@ using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
-using log4net;
 using ResourceLoading;
 
 namespace ChessEngineTests
@@ -12,9 +11,6 @@ namespace ChessEngineTests
     [TestClass]
     public class EngineSanityChecks
     {
-        private static readonly ILog Log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IResourceLoader resourceLoader = new ResourceLoader();
 
         #region Tests that player attempts check mate
@@ -45,12 +41,12 @@ namespace ChessEngineTests
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
-            game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
+            game.SetFENPosition("7k/7r/8/Q7/8/8/8/3K2R1 w - - 0 1");
             
             game.ThinkingDepth = 3;
             game.FindAndMakeBestMove();
             
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
+            Assert.AreEqual("Q6k/7r/8/8/8/8/8/3K2R1 b - - 1 1",
                             FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
@@ -61,12 +57,12 @@ namespace ChessEngineTests
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
-            game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
+            game.SetFENPosition("7k/7r/8/Q7/8/8/8/3K2R1 w - - 0 1");
             
             game.ThinkingDepth = 4;
             game.FindAndMakeBestMove();
 
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+            Assert.AreEqual("Q6k/7r/8/8/8/8/8/3K2R1 b - - 1 1", 
                             FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
@@ -77,12 +73,12 @@ namespace ChessEngineTests
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
-            game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
+            game.SetFENPosition("7k/7r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
             game.ThinkingDepth = 5;
             game.FindAndMakeBestMove();
             
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1",
+            Assert.AreEqual("Q6k/7r/8/8/8/8/8/3K2R1 b - - 1 1",
                             FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
@@ -93,12 +89,12 @@ namespace ChessEngineTests
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
             game.ClearBoard();
-            game.SetFENPosition("7k/7r/8/R7/8/8/8/3K2Q1 w - - 0 1");
+            game.SetFENPosition("7k/7r/8/Q7/8/8/8/3K2R1 w - - 0 1");
             
             game.ThinkingDepth = 6;
             game.FindAndMakeBestMove();
             
-            Assert.AreEqual("R6k/7r/8/8/8/8/8/3K2Q1 b - - 1 1", 
+            Assert.AreEqual("Q6k/7r/8/8/8/8/8/3K2R1 b - - 1 1", 
                             FenTranslator.ToFENString(game.GetCurrentBoardState()));
         }
 
@@ -264,7 +260,7 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("r3k2r/p2b1ppp/2p2n2/b2p4/5B2/3B4/PPP1NPPP/R3K2R w KQkq - 0 1");
 
-            var move = UCIMoveTranslator.ToUCIMove(game.GetBestMove());
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
 
             Assert.AreNotEqual("e1g1", move);
         }
