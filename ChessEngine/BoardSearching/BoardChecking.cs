@@ -414,7 +414,7 @@ namespace ChessEngine.BoardSearching
         /// <returns></returns>
         private static bool IsSquareAttackedSuperFast(IBoard board, ulong pieceBoard, PieceColour friendlyColour)
         {
-             if (IsKnightAttackingSquareFast(board, pieceBoard, friendlyColour))
+             if (IsKnightAttackingSquare(board, pieceBoard, friendlyColour))
                 return true;
 
             //Check if piece is surrounded by friends. If so, we only need to worry about 
@@ -456,7 +456,7 @@ namespace ChessEngine.BoardSearching
         //    if (IsPawnAttackingSquareFast(board, squarePositionBoard, friendlyColour))
         //        return true;
 
-        //    if (IsKnightAttackingSquareFast(board, squarePositionBoard, friendlyColour))
+        //    if (IsKnightAttackingSquare(board, squarePositionBoard, friendlyColour))
         //        return true;
 
         //    if (IsSquareAttackedByKing(board, squarePositionBoard, friendlyColour))
@@ -519,7 +519,7 @@ namespace ChessEngine.BoardSearching
         /// Checks if a knight is attacking square. There is no need to check all knights for double-check 
         /// since only one knight can be attacking the king at once
         /// </summary>
-        internal static bool IsKnightAttackingSquareFast(IBoard board, ulong squarePosition, PieceColour friendlyColour)
+        internal static bool IsKnightAttackingSquare(IBoard board, ulong squarePosition, PieceColour friendlyColour)
         {
             ulong knights;
 

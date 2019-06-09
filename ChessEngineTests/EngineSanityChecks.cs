@@ -4,7 +4,6 @@ using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
-using log4net;
 using ResourceLoading;
 
 namespace ChessEngineTests
@@ -12,9 +11,6 @@ namespace ChessEngineTests
     [TestClass]
     public class EngineSanityChecks
     {
-        private static readonly ILog Log =
-            LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private readonly IResourceLoader resourceLoader = new ResourceLoader();
 
         #region Tests that player attempts check mate
@@ -264,7 +260,7 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("r3k2r/p2b1ppp/2p2n2/b2p4/5B2/3B4/PPP1NPPP/R3K2R w KQkq - 0 1");
 
-            var move = UCIMoveTranslator.ToUCIMove(game.GetBestMove());
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
 
             Assert.AreNotEqual("e1g1", move);
         }

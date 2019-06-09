@@ -9,7 +9,7 @@ namespace ChessEngine.NotationHelpers
 {
     internal static class TranslationHelper
     {
-        private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// 
@@ -93,7 +93,7 @@ namespace ChessEngine.NotationHelpers
             }
             catch(Exception exc)
             {
-                log.Error(string.Format("Error converting string {0} to bitboard.", position), exc);
+                Log.Error(string.Format("Error converting string {0} to bitboard.", position), exc);
             }
 
             return bitboard;

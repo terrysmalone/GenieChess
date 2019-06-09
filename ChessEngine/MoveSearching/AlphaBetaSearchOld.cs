@@ -128,7 +128,7 @@ namespace ChessEngine.MoveSearching
 #endif
                 idMoves.Add(pvInfo);
 
-                log.Info($"Depth {i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - " +
+                log.Info($"Depth {i}: {UciMoveTranslator.ToUciMove(pvInfo.Move)} - " +
                          $"score:{pvInfo.Score} - " +
                          $"nodes:{pvInfo.NodesVisited} - " +
                          $"time at depth:{pvInfo.DepthTime:ss'.'fff}s - " +
@@ -137,17 +137,17 @@ namespace ChessEngine.MoveSearching
                  //LogPrincipalVariation(i);               
 
 #if UCI
-                var bestMove = UCIMoveTranslator.ToUCIMove(bestIDMove);
+                var bestMove = UciMoveTranslator.ToUciMove(bestIDMove);
                 //Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, bestMove));
                 //Console.WriteLine(String.Format("info currmove {0} depth {1} nodes {2} ", bestMove, i, pvInfo.NodesVisited));
                 //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
                 Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
                 
-                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove)));
+                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UciMoveTranslator.ToUciMove(bestIDMove)));
 #endif
             }
 
-            log.Info($"Found move {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
+            log.Info($"Found move {UciMoveTranslator.ToUciMove(bestIDMove)}");
 
             LogKillerMoves();
             return bestIDMove;
@@ -225,16 +225,16 @@ namespace ChessEngine.MoveSearching
                 idMoves.Add(pvInfo);
 
                 log.Info(
-                    $"{i}: {UCIMoveTranslator.ToUCIMove(pvInfo.Move)} - score:{pvInfo.Score} - nodes:{pvInfo.NodesVisited} - time at depth:{pvInfo.DepthTime.ToString("ss'.'fff")}s - time for move:{pvInfo.AccumulatedTime.ToString("ss'.'fff")}s");
+                    $"{i}: {UciMoveTranslator.ToUciMove(pvInfo.Move)} - score:{pvInfo.Score} - nodes:{pvInfo.NodesVisited} - time at depth:{pvInfo.DepthTime.ToString("ss'.'fff")}s - time for move:{pvInfo.AccumulatedTime.ToString("ss'.'fff")}s");
                 //LogPrincipalVariation(i);               
 
 #if UCI
-                Console.WriteLine($"Best move at depth {i}: {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
-                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UCIMoveTranslator.ToUCIMove(bestIDMove))); 
+                Console.WriteLine($"Best move at depth {i}: {UciMoveTranslator.ToUciMove(bestIDMove)}");
+                //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UciMoveTranslator.ToUciMove(bestIDMove))); 
 #endif
             }
 
-            log.Info($"Found move {UCIMoveTranslator.ToUCIMove(bestIDMove)}");
+            log.Info($"Found move {UciMoveTranslator.ToUciMove(bestIDMove)}");
         }
 
         public PieceMoves MoveCalculate(int depth)
@@ -284,7 +284,7 @@ namespace ChessEngine.MoveSearching
             for (var i = 0; i < moveList.Count; i++)
             {
 #if UCI
-                Console.WriteLine($"info currmove {UCIMoveTranslator.ToUCIMove(moveList[i])} currmovenumber {i + 1}");
+                Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
                 m_BoardPosition.MakeMove(moveList[i], false);
@@ -937,7 +937,7 @@ namespace ChessEngine.MoveSearching
 
         //    foreach (PieceMoves move in principalVariation)
         //    {
-        //        pvList += UCIMoveTranslator.ToUCIMove(move);
+        //        pvList += UciMoveTranslator.ToUciMove(move);
         //        pvList += ", ";
         //    }
 
@@ -961,13 +961,13 @@ namespace ChessEngine.MoveSearching
 
                 if (killerMove != null)
                 {
-                    p1 = UCIMoveTranslator.ToUCIMove(killerMove.Item1);
+                    p1 = UciMoveTranslator.ToUciMove(killerMove.Item1);
                     score1 = "-" + killerMove.Item2;
                 }
 
                 if (killerMove2 != null)
                 {
-                    p2 = UCIMoveTranslator.ToUCIMove(killerMove2.Item1);
+                    p2 = UciMoveTranslator.ToUciMove(killerMove2.Item1);
                     score2 = "-" + killerMove2.Item2;
                 }
 

@@ -53,7 +53,7 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {
-                        var bestMove = UCIMoveTranslator.ToUCIMove(m_Game.GetBestMove());
+                        var bestMove = UciMoveTranslator.ToUciMove(m_Game.GetBestMove());
 
                         Console.WriteLine($"Computer move: {bestMove}");
 

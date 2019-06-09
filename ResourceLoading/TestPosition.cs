@@ -5,6 +5,6 @@
         public string Name;
         public string FenPosition;
 
-        public string bestMoveFEN;
+        public string BestMovePgn;
     }
 }

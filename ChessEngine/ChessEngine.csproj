@@ -224,7 +224,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NotationHelpers\TranslationHelper.cs" />
-    <Compile Include="NotationHelpers\UCIMoveTranslator.cs" />
+    <Compile Include="NotationHelpers\UciMoveTranslator.cs" />
     <Compile Include="PossibleMoves\MoveGeneration.cs" />
     <Compile Include="PossibleMoves\PieceMove.cs" />
     <Compile Include="PossibleMoves\PieceValidMoves.cs" />

@@ -209,7 +209,7 @@ namespace EngineEvaluation
 
             LogLine($"AlphaBeta nodes evaluated: {CountDebugger.Evaluations}/{nodeCount}");
             LogLine($"Time: {speed.ToString()}");
-            LogLine($"Best move: {UCIMoveTranslator.ToUCIMove(currentMove)}");
+            LogLine($"Best move: {UciMoveTranslator.ToUciMove(currentMove)}");
             LogLine("");
         }
 
@@ -247,7 +247,7 @@ namespace EngineEvaluation
    //         ulong totalNodes = 0;
    //         for (var i = 0; i < depth; i++)
 			//{                
-   //             var move = UCIMoveTranslator.ToUCIMove(idInfo[i].Move);
+   //             var move = UciMoveTranslator.ToUciMove(idInfo[i].Move);
                 
 			//    LogLine($"Depth {i + 1}");
 

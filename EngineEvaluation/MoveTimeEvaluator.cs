@@ -109,7 +109,7 @@ namespace EngineEvaluation
 
                 //LogLine($"{i}-Move nodes:{moveNodes:N0}, " +
                 //        $"Move time:{speed:ss'.'fff}, " +
-                //        $"Move made:{UCIMoveTranslator.ToUCIMove(currentMove)}, " +
+                //        $"Move made:{UciMoveTranslator.ToUciMove(currentMove)}, " +
                 //        $"Move score:{idInfo[idInfo.Count - 1].Score}");
 
                 board.MakeMove(currentMove, true);

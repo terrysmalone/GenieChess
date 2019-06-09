@@ -172,7 +172,7 @@ namespace ChessEngine
 
             var bestMove = game.GetBestMove();
 
-            var bestMoveUci =  UCIMoveTranslator.ToUCIMove(bestMove);
+            var bestMoveUci =  UciMoveTranslator.ToUciMove(bestMove);
             
             Console.WriteLine($"bestmove {bestMoveUci}");
         }

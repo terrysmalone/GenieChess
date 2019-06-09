@@ -36,6 +36,11 @@ namespace ResourceLoading
 
         }
 
+        List<TestPosition> IResourceLoader.LoadTestPositions(string fileName)
+        {
+            return LoadTestPositions(GetTestResourcePath(fileName));
+        }
+
         private static string GetSolutionDirectory()
         {
             // ReSharper disable PossibleNullReferenceException
@@ -86,7 +91,7 @@ namespace ResourceLoading
                 var testPos = new TestPosition
                 {
                     FenPosition = parts[0],
-                    bestMoveFEN = parts[1],
+                    BestMovePgn = parts[1],
                     Name = parts[2]
                 };
                 

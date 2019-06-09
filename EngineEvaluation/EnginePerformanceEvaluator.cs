@@ -1,8 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.Debugging;
@@ -19,30 +17,27 @@ namespace EngineEvaluation
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        List<TestPosition> bratkoKopecPositions;
-        List<TestPosition> kaufmanPositions;
-
+        private readonly List<IEvaluator> m_Evaluators;
+        
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
         
-        public EnginePerformanceEvaluator(string logFolder, string highlightsLogFile, IEnumerable<IEvaluator> evaluators)
+        public EnginePerformanceEvaluator(List<IEvaluator> evaluators)
         {
-            foreach (var evaluator in evaluators)
+            if (evaluators == null)
             {
-                evaluator.Evaluate();
+                Log.Error("Evaluators list passed into EnginePerformanceEvaluator was null");
+                throw new ArgumentNullException(nameof(evaluators));
             }
-            
-            bratkoKopecPositions = m_ResourceLoader.LoadBratkoKopecPositions();
-            kaufmanPositions = m_ResourceLoader.LoadKaufmanTestPositions();
-            
-            //LogLine("Performance Evaluator");
-            //LogLine("");
-            //LogLine(string.Format("Logging started at {0}", DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")));
-            //LogLine("");
+
+            m_Evaluators = evaluators;
         }
 
         public void RunFullPerformanceEvaluation(int maxDepth)
         {
-            throw new NotImplementedException();
+            foreach (var evaluator in m_Evaluators)
+            {
+                evaluator.Evaluate(maxDepth);
+            }
         }
 
         public void EvaluateTestPositions(int depth)
@@ -121,7 +116,7 @@ namespace EngineEvaluation
             
             //for (int i = 0; i < depth; i++)
             //{
-            //    string move = UCIMoveTranslator.ToUCIMove(idInfo[i].Move);
+            //    string move = UciMoveTranslator.ToUciMove(idInfo[i].Move);
 
             //    LogLine(string.Format("Depth {0}", i + 1));
             //    LogLine(string.Format("Nodes evaluated:{0}, Accumulated time:{1}, Best move:{2}, Score:{3}", idInfo[i].NodesVisited, idInfo[i].AccumulatedTime, move, idInfo[i].Score));
@@ -131,10 +126,10 @@ namespace EngineEvaluation
             //LogLine(string.Format("Total time: {0}", speed.ToString()));
             //LogLine("");
 
-            //string bestMove = UCIMoveTranslator.ToUCIMove(idInfo[idInfo.Count-1].Move);
+            //string bestMove = UciMoveTranslator.ToUciMove(idInfo[idInfo.Count-1].Move);
             //var bestMove = PgnTranslator.ToPgnMove(board, idInfo[idInfo.Count - 1].Move.Position, idInfo[idInfo.Count - 1].Move.Moves, idInfo[idInfo.Count - 1].Move.Type);
             
-            var expectedMove = testPos.bestMoveFEN;
+            var expectedMove = testPos.BestMovePgn;
 
             var pass = "FAIL";
             var passed = false;

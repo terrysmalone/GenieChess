@@ -13,5 +13,7 @@ namespace ResourceLoading
         List<TestPosition> LoadBratkoKopecPositions();
 
         List<TestPosition> LoadKaufmanTestPositions();
+
+        List<TestPosition> LoadTestPositions(string fileName);
     }
 }

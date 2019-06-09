@@ -2,6 +2,6 @@
 {
     public interface IEvaluator
     {
-        void Evaluate();
+        void Evaluate(int maxDepth);
     }
 }

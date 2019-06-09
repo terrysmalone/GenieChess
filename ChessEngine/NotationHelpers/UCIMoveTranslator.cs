@@ -7,14 +7,14 @@ namespace ChessEngine.NotationHelpers
     /// <summary>
     /// Translates to and from UCI moves
     /// </summary>
-    public static class UCIMoveTranslator
+    public static class UciMoveTranslator
     {
         /// <summary>
         /// Converts a move into the appropriate UCI string
         /// </summary>
         /// <param name="move"></param>
         /// <returns></returns>
-        public static string ToUCIMove(PieceMoves move)
+        public static string ToUciMove(PieceMoves move)
         {
             var moveString = string.Empty;
 
