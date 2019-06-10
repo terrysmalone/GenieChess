@@ -59,8 +59,8 @@ namespace EngineEvaluation
             var kaufmanTestPositions = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("KaufmanTestSuite.epd"));
             testSuites.Add(new Tuple<string, List<TestPosition>>("KaufmanTestSuite", kaufmanTestPositions));
 
-            var lctII = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("LctIiTestSuite.epd"));
-            testSuites.Add(new Tuple<string, List<TestPosition>>("LctIiTestSuite", lctII));
+            var lctIi = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("LctIiTestSuite.epd"));
+            testSuites.Add(new Tuple<string, List<TestPosition>>("LctIiTestSuite", lctIi));
 
             var nolotTestSuite = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("NolotTestSuite.epd"));
             testSuites.Add(new Tuple<string, List<TestPosition>>("NolotTestSuite.epd", nolotTestSuite));
@@ -116,25 +116,28 @@ namespace EngineEvaluation
             var sts15 = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("STS15.epd"));
             testSuites.Add(new Tuple<string, List<TestPosition>>("STS15.epd", sts15));
 
-            var counter = 0;
-            var resetAt = 12;
-
-            foreach (var testSuite in testSuites)
+            if (!runFullTestSuiteEvaluation)
             {
-                for (var i = testSuite.Item2.Count - 1; i >= 0; i--)
-                {
-                    if (counter != 0)
-                    {
-                        testSuite.Item2.RemoveAt(i);
-                    }
+                var counter = 0;
+                var resetAt = 12;
 
-                    if (counter == resetAt)
+                foreach (var testSuite in testSuites)
+                {
+                    for (var i = testSuite.Item2.Count - 1; i >= 0; i--)
                     {
-                        counter = 0;
-                    }
-                    else
-                    {
-                        counter++;
+                        if (counter != 0)
+                        {
+                            testSuite.Item2.RemoveAt(i);
+                        }
+
+                        if (counter == resetAt)
+                        {
+                            counter = 0;
+                        }
+                        else
+                        {
+                            counter++;
+                        }
                     }
                 }
             }
@@ -144,8 +147,8 @@ namespace EngineEvaluation
             //foreach (var testSuite in testSuites)
             //{
             //    numberOfPositions += testSuite.Item2.Count;
-                
             //}
+            
 
             return testSuites;
         }
