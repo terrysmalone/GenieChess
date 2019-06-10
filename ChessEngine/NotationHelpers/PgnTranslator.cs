@@ -139,7 +139,7 @@ namespace ChessEngine.NotationHelpers
                 //board.RemovePiece(moveFromBoard);
                 //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
                 board.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
-                if (BoardChecking.IsKingInCheckFast(board, colour))
+                if (BoardChecking.IsKingInCheck(board, colour))
                     move += "+";
                 
                 board.UnMakeLastMove();

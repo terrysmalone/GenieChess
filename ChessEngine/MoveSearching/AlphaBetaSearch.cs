@@ -222,7 +222,7 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
-            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
             if (moveList.Count == 0)
             {
@@ -231,11 +231,27 @@ namespace ChessEngine.MoveSearching
 
             OrderMovesInPlace(moveList, depthLeft);
 
+            // Check the colour before moving since this is the king we have to check for 
+            // legal move generation.
+            // Plus, we only have to do it once for all moves.
+            var colourToMove = m_BoardPosition.MoveColour;
+
+            var noMovesAnalysed = true;
+
             foreach (var move in moveList)
             {
                 m_BoardPosition.MakeMove(move, false);
+                
+                // If this move isn't legal skip to the next iteration of the loop
+                if (BoardChecking.IsKingInCheck(m_BoardPosition, colourToMove))
+                {
+                    m_BoardPosition.UnMakeLastMove();
+                    continue;
+                }
 
                 var score = -AlphaBeta(-beta, -alpha, depthLeft - 1);
+
+                noMovesAnalysed = false;
 
                 m_BoardPosition.UnMakeLastMove();
 
@@ -279,6 +295,11 @@ namespace ChessEngine.MoveSearching
                         alpha = score;
                     }
                 }
+            }
+
+            if (noMovesAnalysed)
+            {
+                return EvaluateEndGame(depthLeft);
             }
 
             // transposition table store
@@ -454,16 +475,16 @@ namespace ChessEngine.MoveSearching
         // (i.e. A low score if the current player loses)
         private decimal EvaluateEndGame(int depth)
         {
-            var movesToend = (m_EvaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
+            var movesToEnd = (m_EvaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
 
             bool isInCheck;
 
-            isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, m_BoardPosition.WhiteToMove ? PieceColour.White 
-                                                                                                     : PieceColour.Black);
+            isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove ? PieceColour.White
+                                                                                                 : PieceColour.Black);
 
             if (isInCheck)
             {
-                return decimal.MinValue / 2 + (100000 * movesToend); // Player is in checkmate
+                return decimal.MinValue / 2 + (100000 * movesToEnd); // Player is in checkmate
             }
             else
             {

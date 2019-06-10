@@ -90,7 +90,7 @@ namespace ChessEngine.PossibleMoves
                 
                 m_CurrentBoard.MakeMove(currentMove.Position, currentMove.Moves, currentMove.Type, currentMove.SpecialMove, false);
 
-                if (BoardChecking.IsKingInCheckFast(m_CurrentBoard, m_FriendlyColour))
+                if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_FriendlyColour))
                 {
                     _allMovesList.RemoveAt(i);
                 }
@@ -117,7 +117,7 @@ namespace ChessEngine.PossibleMoves
             else
                 colourToCheck = PieceColour.White; 
 
-            if (BoardChecking.IsKingInCheckFast(board, colourToCheck))
+            if (BoardChecking.IsKingInCheck(board, colourToCheck))
                 valid = false;
             else
                 valid =  true;
@@ -986,7 +986,7 @@ namespace ChessEngine.PossibleMoves
         {
             if (m_FriendlyColour == PieceColour.White)
             {
-                if (!BoardChecking.IsKingInCheckFast(m_CurrentBoard, PieceColour.White))
+                if (!BoardChecking.IsKingInCheck(m_CurrentBoard, PieceColour.White))
                 {
                     if (m_CurrentBoard.WhiteCanCastleQueenside)
                     {
@@ -1010,7 +1010,7 @@ namespace ChessEngine.PossibleMoves
             }
             else
             {
-                if (!BoardChecking.IsKingInCheckFast(m_CurrentBoard, PieceColour.White))
+                if (!BoardChecking.IsKingInCheck(m_CurrentBoard, PieceColour.White))
                 {
                     if (m_CurrentBoard.BlackCanCastleQueenside)
                     {

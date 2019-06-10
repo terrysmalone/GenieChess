@@ -50,7 +50,7 @@ namespace ChessEngine.MoveSearching
                     if(m_BoardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
 
-                    if (BoardChecking.IsKingInCheckFast(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }
