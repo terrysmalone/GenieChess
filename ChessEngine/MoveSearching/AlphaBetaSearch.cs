@@ -26,7 +26,7 @@ namespace ChessEngine.MoveSearching
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
-        private int m_KillerMovesToStore = 1;
+        private int m_KillerMovesToStore = 2;
         private PieceMoves[,] m_KillerMoves;
 
         private int m_EvaluationDepth;
