@@ -210,11 +210,8 @@ namespace ChessEngine.PossibleMoves
                 //Check for promotions
                 var promotionsBoard = (pawnSingleMove & LookupTables.RankMask8) & ~m_CurrentBoard.AllOccupiedSquares;
 
-                if (promotionsBoard > 0)    //There are promortions. Split moves
+                if (promotionsBoard > 0)    //There are promotions. Split moves
                 {
-                    //Remove promotions from pawn moves
-                    //pawnSingleMove = pawnSingleMove & ~promotionsBoard;
-
                     //Add promotions to a new move
                     _allMovesList.Add(new PieceMoves { Type = PieceType.Pawn, Position = currentPosition, Moves = promotionsBoard, SpecialMove = SpecialMoveType.KnightPromotion });
                     _allMovesList.Add(new PieceMoves { Type = PieceType.Pawn, Position = currentPosition, Moves = promotionsBoard, SpecialMove = SpecialMoveType.BishopPromotion });
@@ -223,7 +220,7 @@ namespace ChessEngine.PossibleMoves
                 }
                 else
                 {
-                    pawnSingleMove = pawnSingleMove & m_CurrentBoard.EmptySquares;
+                    pawnSingleMove &= m_CurrentBoard.EmptySquares;
 
                     if (pawnSingleMove > 0)
                     {
@@ -981,6 +978,58 @@ namespace ChessEngine.PossibleMoves
 
             _allMovesList.Add(enPassantCapture);
         }
+
+        //private static void CheckForCastlingMoves()
+        //{
+        //    if (m_FriendlyColour == PieceColour.White)
+        //    {
+        //        if (m_CurrentBoard.WhiteCanCastleQueenside)
+        //        {
+        //            _allMovesList.Add(new PieceMoves
+        //                              {
+        //                                  Type = PieceType.King,
+        //                                  Position = m_CurrentBoard.WhiteKing,
+        //                                  Moves = LookupTables.C1,
+        //                                  SpecialMove = SpecialMoveType.QueenCastle
+        //                              });
+        //        }
+
+        //        if (m_CurrentBoard.WhiteCanCastleKingside)
+        //        {
+        //            _allMovesList.Add(new PieceMoves
+        //                              {
+        //                                  Type = PieceType.King,
+        //                                  Position = m_CurrentBoard.WhiteKing,
+        //                                  Moves = LookupTables.G1,
+        //                                  SpecialMove = SpecialMoveType.KingCastle
+        //                              });
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (m_CurrentBoard.BlackCanCastleQueenside)
+        //        {
+        //            _allMovesList.Add(new PieceMoves
+        //                              {
+        //                                  Type = PieceType.King,
+        //                                  Position = m_CurrentBoard.BlackKing,
+        //                                  Moves = LookupTables.C8,
+        //                                  SpecialMove = SpecialMoveType.QueenCastle
+        //                              });
+        //        }
+
+        //        if (m_CurrentBoard.BlackCanCastleKingside)
+        //        {
+        //            _allMovesList.Add(new PieceMoves
+        //                              {
+        //                                  Type = PieceType.King,
+        //                                  Position = m_CurrentBoard.BlackKing,
+        //                                  Moves = LookupTables.G8,
+        //                                  SpecialMove = SpecialMoveType.KingCastle
+        //                              });
+        //        }
+        //    }
+        //}
 
         private static void CheckForCastlingMoves()
         {
