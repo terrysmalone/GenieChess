@@ -16,24 +16,24 @@ namespace EngineEvaluation
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private List<Tuple<string, List<TestPosition>>> m_TestPositions;
+        private List<Tuple<string, List<TestPosition>>> m_TestPositionSuites;
 
         private readonly string m_FullLogFile;
         private readonly string m_HighlightsLogFile;
 
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
 
-        public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositions, 
+        public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites, 
                                       string highlightsLogFile, 
                                       string fullLogFile)
         {
-            if (testPositions == null)
+            if (testPositionSuites == null)
             {
-                Log.Error("No testPositions were passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(testPositions));
+                Log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
+                throw new ArgumentNullException(nameof(testPositionSuites));
             }
 
-            m_TestPositions = testPositions;
+            m_TestPositionSuites = testPositionSuites;
 
             if (highlightsLogFile == null)
             {
@@ -60,17 +60,17 @@ namespace EngineEvaluation
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
             LogLineAsDetailed($"Logging Test positions with a search depth of {evaluationDepth}");
             
-            foreach (var testPosition in m_TestPositions)
+            foreach (var testPositionSuite in m_TestPositionSuites)
             {
                 LogLine("--------------------------------------------------------------");
-                LogLine($"Test set: {testPosition.Item1}");
+                LogLine($"Test set: {testPositionSuite.Item1}");
                 
 
                 var totalTime = TimeSpan.Zero;
 
-                var passedOverall = "PASSED";
+                var passedTestPositions = 0;
 
-                foreach (var position in testPosition.Item2)
+                foreach (var position in testPositionSuite.Item2)
                 {
                     var board = new Board();
                     board.SetPosition(FenTranslator.ToBoardState(position.FenPosition));
@@ -93,26 +93,34 @@ namespace EngineEvaluation
                     var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (decimal)n.NodesVisited);
 
                     var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
+
+                    var passed = false;
+                    
+                    if (position.BestMovePgn == chosenMove)
+                    {
+                        passedTestPositions++;
+                        passed = true;
+                    }
                     
                     LogTestPositionResults(
                         chosenMove, 
-                        position.BestMovePgn, 
+                        position.BestMovePgn,
+                        passed,
                         timer.Elapsed,
                         totalNodes);
-
-                    if (chosenMove != position.BestMovePgn)
-                    {
-                        passedOverall = "FAILED";
-                    }
                 }
 
-                LogLine($"{passedOverall} - Total time: {totalTime}");
+                var totalTestPositions = testPositionSuite.Item2.Count;
+
+                var passedSuite = passedTestPositions == totalTestPositions ? "Passed" : "FAILED";
+                
+                LogLine($"{passedSuite} - {passedTestPositions}/{totalTestPositions} - Total time: {totalTime}");
             }
         }
 
-        private void LogTestPositionResults(string chosenMove, string bestMove, TimeSpan elapsedTime, decimal totalNodes)
+        private void LogTestPositionResults(string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, decimal totalNodes)
         {
-            var result = chosenMove == bestMove ? "Passed" : "FAILED";
+            var result = passed ? "Passed" : "FAILED";
 
             LogLineAsDetailed($"Best move:{ bestMove } - " +
                               $"Selected move {chosenMove} - " +
