@@ -814,12 +814,12 @@ namespace ChessEngine.MoveSearching
 
             if(m_BoardPosition.WhiteToMove)
             {
-                isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, PieceColour.White);
+                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, PieceColour.White);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.White); 
             }
             else
             {
-                isInCheck = BoardChecking.IsKingInCheckFast(m_BoardPosition, PieceColour.Black);
+                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, PieceColour.Black);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.Black); 
             }                        
         }
@@ -879,7 +879,7 @@ namespace ChessEngine.MoveSearching
             //else
             //if (boardPosition.WhiteToMove)
             //{
-                //if (BoardChecking.IsKingInCheckFast(boardPosition, PieceColour.White))
+                //if (BoardChecking.IsKingInCheck(boardPosition, PieceColour.White))
                 if(isInCheck)
                     return decimal.MinValue/2 + (100000 * movesToend);  //White is in checkmate
                 else
@@ -887,7 +887,7 @@ namespace ChessEngine.MoveSearching
             //}
             //else
             //{
-            //    //if (BoardChecking.IsKingInCheckFast(boardPosition, PieceColour.Black))
+            //    //if (BoardChecking.IsKingInCheck(boardPosition, PieceColour.Black))
             //    if (isInCheck)
             //        return decimal.MinValue/2;
             //    else

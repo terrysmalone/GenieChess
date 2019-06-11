@@ -53,7 +53,7 @@ namespace ChessEngineTests
                     if(boardPosition.WhiteToMove == false)
                         friendlyColour = PieceColour.Black;
 
-                    if (BoardChecking.IsKingInCheckFast(boardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(boardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }

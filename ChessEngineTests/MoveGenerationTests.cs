@@ -4,7 +4,7 @@ using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ResourceLoading;
+using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace ChessEngineTests
 {
@@ -154,15 +154,7 @@ namespace ChessEngineTests
         }
 
         #region Test blocking checks
-
-        //[TestMethod]
-        //public void TestCheckBlockingWorks()
-        //{
-        //    throw new NotImplementedException();
-
-        //    //Test that ray attacks that are blocked do not check king
-        //}
-
+        
         [TestMethod]
         public void TestBlockingPieceCantMove1()
         {

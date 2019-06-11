@@ -59,7 +59,10 @@ namespace EngineEvaluation
         {
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
             LogLineAsDetailed($"Logging Test positions with a search depth of {evaluationDepth}");
-            
+
+            var totalTestPositions = 0;
+            var totalPassedTestPositions = 0;
+
             foreach (var testPositionSuite in m_TestPositionSuites)
             {
                 LogLine("--------------------------------------------------------------");
@@ -110,12 +113,17 @@ namespace EngineEvaluation
                         totalNodes);
                 }
 
-                var totalTestPositions = testPositionSuite.Item2.Count;
+                var totalSuiteTestPositions = testPositionSuite.Item2.Count;
 
-                var passedSuite = passedTestPositions == totalTestPositions ? "Passed" : "FAILED";
+                var passedSuite = passedTestPositions == totalSuiteTestPositions ? "Passed" : "FAILED";
                 
-                LogLine($"{passedSuite} - {passedTestPositions}/{totalTestPositions} - Total time: {totalTime}");
+                LogLine($"{passedSuite} - {passedTestPositions}/{totalSuiteTestPositions} - Total time: {totalTime}");
+
+                totalPassedTestPositions += passedTestPositions;
+                totalTestPositions += totalSuiteTestPositions;
             }
+
+            LogLine($"Total passed: {totalPassedTestPositions}/{ totalTestPositions}");
         }
 
         private void LogTestPositionResults(string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, decimal totalNodes)

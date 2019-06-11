@@ -333,7 +333,7 @@ namespace ChessEngine.BoardSearching
         /// checking king use this over IsKingInCheck since it returns true as soon as it knows
         /// </summary>
         /// <returns></returns>
-        internal static bool IsKingInCheckFast(IBoard board, PieceColour friendlyColour)
+        internal static bool IsKingInCheck(IBoard board, PieceColour friendlyColour)
         {
             ulong friendlyKing;
 
