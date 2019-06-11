@@ -44,6 +44,8 @@ namespace ChessEngine
                 UseOpeningBook = true;
             }
 
+            ThinkingDepth = 1;
+
             LookupTables.InitialiseAllTables();
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();

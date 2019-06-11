@@ -240,6 +240,22 @@ namespace ChessEngine.MoveSearching
 
             foreach (var move in moveList)
             {
+                // Since we do pseudo legal move generation we need to validate 
+                // any castling moves
+                if (move.SpecialMove == SpecialMoveType.KingCastle || move.SpecialMove == SpecialMoveType.QueenCastle)
+                {
+                    // If king is in check he can't move
+                    if (BoardChecking.IsKingInCheck(m_BoardPosition, colourToMove))
+                    {
+                        continue;
+                    }
+
+                    if (!MoveGeneration.ValidateCastlingMove(m_BoardPosition, move))
+                    {
+                        continue;
+                    }
+                }
+
                 m_BoardPosition.MakeMove(move, false);
                 
                 // If this move isn't legal skip to the next iteration of the loop
