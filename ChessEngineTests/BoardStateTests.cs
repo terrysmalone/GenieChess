@@ -35,10 +35,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.WhitePawns = (ulong)67637760;
+            board1.WhitePawns = 67637760;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.WhitePawns = (ulong)67637760;
+            board2.WhitePawns = 67637760;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -48,10 +48,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackPawns = (ulong)283794259050496;
+            board1.BlackPawns = 283794259050496;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackPawns = (ulong)283794259050496;
+            board2.BlackPawns = 283794259050496;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -61,10 +61,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.WhiteBishops = (ulong)134217730;
+            board1.WhiteBishops = 134217730;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.WhiteBishops = (ulong)134217730;
+            board2.WhiteBishops = 134217730;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -74,10 +74,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.WhiteRooks = (ulong)2147483649;
+            board1.WhiteRooks = 2147483649;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.WhiteRooks = (ulong)2147483649;
+            board2.WhiteRooks = 2147483649;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -87,10 +87,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.WhiteQueen = (ulong)524288;
+            board1.WhiteQueen = 524288;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.WhiteQueen = (ulong)524288;
+            board2.WhiteQueen = 524288;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -100,10 +100,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.WhiteKing = (ulong)576460752303423488;
+            board1.WhiteKing = 576460752303423488;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.WhiteKing = (ulong)576460752303423488;
+            board2.WhiteKing = 576460752303423488;
             Assert.IsTrue(board1.Equals(board2));
         }        
 
@@ -113,10 +113,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackPawns = (ulong)848857336381440;
+            board1.BlackPawns = 848857336381440;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackPawns = (ulong)848857336381440;
+            board2.BlackPawns = 848857336381440;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -126,10 +126,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackKnights = (ulong)4755801206503243776;
+            board1.BlackKnights = 4755801206503243776;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackKnights = (ulong)4755801206503243776;
+            board2.BlackKnights = 4755801206503243776;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -139,10 +139,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackBishops = (ulong)4611686018427518976;
+            board1.BlackBishops = 4611686018427518976;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackBishops = (ulong)4611686018427518976;
+            board2.BlackBishops = 4611686018427518976;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -152,10 +152,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackRooks = (ulong)4683743612465315840;
+            board1.BlackRooks = 4683743612465315840;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackRooks = (ulong)4683743612465315840;
+            board2.BlackRooks = 4683743612465315840;
             Assert.IsTrue(board1.Equals(board2));
         }
         [TestMethod]
@@ -164,10 +164,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackQueen = (ulong)17592186044416;
+            board1.BlackQueen = 17592186044416;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackQueen = (ulong)17592186044416;
+            board2.BlackQueen = 17592186044416;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -177,10 +177,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.BlackKing = (ulong)2251799813685248;
+            board1.BlackKing = 2251799813685248;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.BlackKing = (ulong)2251799813685248;
+            board2.BlackKing = 2251799813685248;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -190,10 +190,10 @@ namespace ChessEngineTests
             var board1 = new BoardState();
             var board2 = new BoardState();
 
-            board1.EnPassantPosition = (ulong)4398046511104;
+            board1.EnPassantPosition = 4398046511104;
             Assert.IsFalse(board1.Equals(board2));
 
-            board2.EnPassantPosition = (ulong)4398046511104;
+            board2.EnPassantPosition = 4398046511104;
             Assert.IsTrue(board1.Equals(board2));
         }
 
@@ -294,10 +294,10 @@ namespace ChessEngineTests
              var board1 = new BoardState();
              var board2 = new BoardState();
 
-             board1.ZobristKey = (ulong)7658768968969597578;
+             board1.ZobristKey = 7658768968969597578;
              Assert.IsFalse(board1.Equals(board2));
 
-             board2.ZobristKey = (ulong)7658768968969597578;
+             board2.ZobristKey = 7658768968969597578;
              Assert.IsTrue(board1.Equals(board2));
          }
 

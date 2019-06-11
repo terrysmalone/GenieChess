@@ -689,56 +689,6 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        //private static void CheckForCastlingMoves()
-        //{
-        //    if (m_FriendlyColour == PieceColour.White)
-        //    {
-        //        if (!BoardChecking.IsKingInCheck(m_CurrentBoard, PieceColour.White))
-        //        {
-        //            if (m_CurrentBoard.WhiteCanCastleQueenside)
-        //            {
-        //                if (CheckIfPathIsClear(LookupTables.WhiteCastlingQueensideObstructionPath))
-        //                {
-        //                    //if (!IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, PieceColour.White))
-        //                    _allMovesList.Add(new PieceMoves { Type = PieceType.King, Position = m_CurrentBoard.WhiteKing, Moves = LookupTables.C1, SpecialMove = SpecialMoveType.QueenCastle });
-        //                }
-        //            }
-
-        //            if (m_CurrentBoard.WhiteCanCastleKingside)
-        //            {
-
-        //                if (CheckIfPathIsClear(LookupTables.WhiteCastlingKingsideObstructionPath))
-        //                {
-        //                    //if (!IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, PieceColour.White))
-        //                    _allMovesList.Add(new PieceMoves { Type = PieceType.King, Position = m_CurrentBoard.WhiteKing, Moves = LookupTables.G1, SpecialMove = SpecialMoveType.KingCastle });
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (!BoardChecking.IsKingInCheck(m_CurrentBoard, PieceColour.White))
-        //        {
-        //            if (m_CurrentBoard.BlackCanCastleQueenside)
-        //            {
-        //                if (CheckIfPathIsClear(LookupTables.BlackCastlingQueensideObstructionPath))
-        //                {
-        //                    //if (!IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, PieceColour.Black))
-        //                    _allMovesList.Add(new PieceMoves { Type = PieceType.King, Position = m_CurrentBoard.BlackKing, Moves = LookupTables.C8, SpecialMove = SpecialMoveType.QueenCastle });
-        //                }
-        //            }
-        //            if (m_CurrentBoard.BlackCanCastleKingside)
-        //            {
-        //                if (CheckIfPathIsClear(LookupTables.BlackCastlingKingsideObstructionPath))
-        //                {
-        //                    //if (!IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, PieceColour.Black))
-        //                    _allMovesList.Add(new PieceMoves { Type = PieceType.King, Position = m_CurrentBoard.BlackKing, Moves = LookupTables.G8, SpecialMove = SpecialMoveType.KingCastle });
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
         #endregion Special move methods
 
         #region Attack calculations

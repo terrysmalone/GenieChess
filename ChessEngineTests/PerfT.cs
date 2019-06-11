@@ -10,7 +10,7 @@ namespace ChessEngineTests
 {
     public class PerfT
     {
-        public bool UseHashing { get; set; } = false;
+        public bool UseHashing { get; set; } = true;
 
         public ulong Perft(Board boardPosition, int depth)
         {
@@ -36,7 +36,6 @@ namespace ChessEngineTests
 
             if (depth == 0)
             {
-                //CountDebugger.Nodes++;
                 return 1;
             }
 
