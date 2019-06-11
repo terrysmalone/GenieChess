@@ -1,13 +1,9 @@
 ﻿using System;
-using System.CodeDom;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
-using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework;
-using ResourceLoading;
 using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace ChessEngineTests
@@ -15,55 +11,6 @@ namespace ChessEngineTests
     [TestClass]
     public class MoveGenerationTests
     {
-        [Test]
-        public void PseudoLegalMoveGenerationWhiteCantCastleWhileInCheck()
-        {
-            var board = new Board();
-            board.PlacePiece(PieceType.King, PieceColour.White, 4, 0);
-            board.PlacePiece(PieceType.King, PieceColour.Black, 4, 7);
-
-            board.PlacePiece(PieceType.Rook, PieceColour.White, 0, 0);
-
-            board.PlacePiece(PieceType.Rook, PieceColour.Black, 4, 6);
-
-            board.WhiteCanCastleQueenside = true;
-
-            var moveList = MoveGeneration.CalculateAllPseudoLegalMoves(board);
-
-            //Remove checking moves
-            for (var i = moveList.Count-1; i >= 0; i--)
-            {
-                var currentMove = moveList[i];
-                board.MakeMove(currentMove, false);
-                if (BoardChecking.IsKingInCheck(board, PieceColour.White))
-                {
-                    moveList.RemoveAt(i);
-                }
-                board.UnMakeLastMove();
-            }
-
-            // remove invalid castling moves
-            for (var i = moveList.Count-1; i >= 0; i--)
-            {
-                var currentMove = moveList[i];
-                if (currentMove.SpecialMove == SpecialMoveType.KingCastle || currentMove.SpecialMove == SpecialMoveType.QueenCastle)
-                {
-                    // If king is in check he can't move
-                    if (BoardChecking.IsKingInCheck(board, PieceColour.White))
-                    {
-                        moveList.RemoveAt(i);
-                    }
-
-                    if (!MoveGeneration.ValidateCastlingMove(board, currentMove))
-                    {
-                        moveList.RemoveAt(i);
-                    }
-                }
-            }
-
-            Assert.Fail();
-        }
-
         #region move calculation tests
         
         /// <summary>
@@ -207,15 +154,7 @@ namespace ChessEngineTests
         }
 
         #region Test blocking checks
-
-        //[TestMethod]
-        //public void TestCheckBlockingWorks()
-        //{
-        //    throw new NotImplementedException();
-
-        //    //Test that ray attacks that are blocked do not check king
-        //}
-
+        
         [TestMethod]
         public void TestBlockingPieceCantMove1()
         {

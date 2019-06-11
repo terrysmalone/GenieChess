@@ -538,33 +538,30 @@ namespace ChessEngine.PossibleMoves
 
             var whiteKingMoves = ValidMoveArrays.KingMoves[whiteKingPosition];
 
-            if (m_CurrentBoard.WhiteKing > 0)
+            var splitMoves = BitboardOperations.SplitBoardToArray(whiteKingMoves);
+
+            foreach (var moveBoard in splitMoves)
             {
-                var splitMoves = BitboardOperations.SplitBoardToArray(whiteKingMoves);
-
-                foreach (var moveBoard in splitMoves)
+                if ((moveBoard & m_CurrentBoard.EmptySquares) > 0)
                 {
-                    if ((moveBoard & m_CurrentBoard.EmptySquares) > 0)
-                    {
-                        _allMovesList.Add(new PieceMoves
-                                          {
-                                              Type        = PieceType.King,
-                                              Position    = m_CurrentBoard.WhiteKing,
-                                              Moves       = moveBoard,
-                                              SpecialMove = SpecialMoveType.Normal
-                                          });
-                    }
+                    _allMovesList.Add(new PieceMoves
+                                      {
+                                          Type        = PieceType.King,
+                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Moves       = moveBoard,
+                                          SpecialMove = SpecialMoveType.Normal
+                                      });
+                }
 
-                    if ((moveBoard & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
-                    {
-                        _allMovesList.Add(new PieceMoves
-                                          {
-                                              Type        = PieceType.King,
-                                              Position    = m_CurrentBoard.WhiteKing,
-                                              Moves       = moveBoard,
-                                              SpecialMove = SpecialMoveType.Capture
-                                          });
-                    }
+                if ((moveBoard & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
+                {
+                    _allMovesList.Add(new PieceMoves
+                                      {
+                                          Type        = PieceType.King,
+                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Moves       = moveBoard,
+                                          SpecialMove = SpecialMoveType.Capture
+                                      });
                 }
             }
         }
@@ -575,32 +572,28 @@ namespace ChessEngine.PossibleMoves
 
             var blackKingMoves = ValidMoveArrays.KingMoves[blackKingPosition];
             
-            if (m_CurrentBoard.BlackKing > 0)
+            var splitMoves = BitboardOperations.SplitBoardToArray(blackKingMoves);
+
+            foreach (var moveBoard in splitMoves)
             {
-                var splitMoves = BitboardOperations.SplitBoardToArray(blackKingMoves);
-
-                foreach (var moveBoard in splitMoves)
+                if ((moveBoard & m_CurrentBoard.EmptySquares) > 0)
                 {
-                    if ((moveBoard & m_CurrentBoard.EmptySquares) > 0)
-                    {
-                        _allMovesList.Add(new PieceMoves
-                                          {
-                                              Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
-                                              Moves = moveBoard, SpecialMove   = SpecialMoveType.Normal
-                                          });
-                    }
+                    _allMovesList.Add(new PieceMoves
+                                      {
+                                          Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
+                                          Moves = moveBoard, SpecialMove   = SpecialMoveType.Normal
+                                      });
+                }
 
-                    if ((moveBoard & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
-                    {
-                        _allMovesList.Add(new PieceMoves
-                                          {
-                                              Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
-                                              Moves = moveBoard, SpecialMove   = SpecialMoveType.Capture
-                                          });
-                    }
+                if ((moveBoard & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
+                {
+                    _allMovesList.Add(new PieceMoves
+                                      {
+                                          Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
+                                          Moves = moveBoard, SpecialMove   = SpecialMoveType.Capture
+                                      });
                 }
             }
-            
         }
 
         #endregion King moves
