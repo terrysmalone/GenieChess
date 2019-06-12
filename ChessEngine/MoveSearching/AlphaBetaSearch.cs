@@ -223,7 +223,7 @@ namespace ChessEngine.MoveSearching
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
             
-            // There are no possible moves. It's either chack mate or stale mate
+            // There are no possible moves. It's either check mate or stale mate
             if (moveList.Count == 0)
             {
                 return EvaluateEndGame(depthLeft);
@@ -374,17 +374,13 @@ namespace ChessEngine.MoveSearching
                 alpha = evaluationScore;
             }
 
-            // We only need to generate captures here. We should find a better way of doing this
-            var moves = MoveGeneration.CalculateAllMoves(m_BoardPosition);
+            var moves = MoveGeneration.CalculateAllCapturingMoves(m_BoardPosition);
 
-            for (var i = moves.Count-1; i >= 0; i--)
+            if (moves.Count == 0)
             {
-                if (moves[i].SpecialMove != SpecialMoveType.Capture)
-                {
-                    moves.RemoveAt(i);
-                }
+                return alpha;
             }
-
+            
             OrderMovesByMvvVla(moves);
 
             foreach (var move in moves)

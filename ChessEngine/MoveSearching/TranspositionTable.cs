@@ -18,7 +18,7 @@
 
 
 
-        private static ulong transpositionTableSize = 1048583; //20940347; //Must be prime 
+        private static ulong transpositionTableSize = 20940347; //1048583; 20940347; //Must be prime 
         private static bool initialised = false;
 
 
