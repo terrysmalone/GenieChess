@@ -191,8 +191,10 @@ namespace ChessEngine.MoveSearching
             if (depthLeft == 0)
             {
                 //TODO: Perform quiescience search
+                
+                //return Evaluate(m_BoardPosition);
 
-                return Evaluate(m_BoardPosition);
+                return QuiescenceEvaluate(alpha, beta);
             }
 
             // Check transposition table
@@ -357,6 +359,55 @@ namespace ChessEngine.MoveSearching
             {
                 return -m_ScoreCalculator.CalculateScore(boardPosition);
             }
+        }
+
+        private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
+        {
+            var evaluationScore = Evaluate(m_BoardPosition);
+
+            if (evaluationScore >= beta)
+            {
+                return beta;
+            }
+
+            if (evaluationScore > alpha)
+            {
+                alpha = evaluationScore;
+            }
+
+            //GenerateCaptures()
+            var moves = MoveGeneration.CalculateAllMoves(m_BoardPosition);
+
+            for (var i = moves.Count-1; i >= 0; i--)
+            {
+                if (moves[i].SpecialMove != SpecialMoveType.Capture)
+                {
+                    moves.RemoveAt(i);
+                }
+            }
+
+            OrderMovesByMvvVla(moves);
+
+            foreach (var move in moves)
+            {
+                m_BoardPosition.MakeMove(move, false);
+
+                evaluationScore = -QuiescenceEvaluate(-beta, -alpha);
+
+                m_BoardPosition.UnMakeLastMove();
+
+                if (evaluationScore >= beta)
+                {
+                    return beta;
+                }
+
+                if (evaluationScore > alpha)
+                {
+                    alpha = evaluationScore;
+                }
+            }
+
+            return alpha;
         }
 
         private List<PieceMoves> OrderFromIterativeDeepeningMoves()
