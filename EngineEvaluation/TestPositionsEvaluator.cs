@@ -106,6 +106,7 @@ namespace EngineEvaluation
                     }
                     
                     LogTestPositionResults(
+                        position.Name,
                         chosenMove, 
                         position.BestMovePgn,
                         passed,
@@ -126,11 +127,13 @@ namespace EngineEvaluation
             LogLine($"Total passed: {totalPassedTestPositions}/{ totalTestPositions}");
         }
 
-        private void LogTestPositionResults(string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, decimal totalNodes)
+        private void LogTestPositionResults(
+            string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, decimal totalNodes)
         {
             var result = passed ? "Passed" : "FAILED";
 
-            LogLineAsDetailed($"Best move:{ bestMove } - " +
+            LogLineAsDetailed($"Name:{ positionName } - " + 
+                              $"Best move:{ bestMove } - " +
                               $"Selected move {chosenMove} - " +
                               $"Total time: {elapsedTime} - " +
                               $"Total nodes visited { totalNodes } - " +
