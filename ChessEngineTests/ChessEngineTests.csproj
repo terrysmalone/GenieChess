@@ -205,7 +205,7 @@
     <Compile Include="PgnTranslatorTests.cs" />
     <Compile Include="BoardStateTests.cs" />
     <Compile Include="RandomExtensions.cs" />
-    <Compile Include="ScoreCalculatorTests.cs" />
+    <Compile Include="ScoreCalculation\ScoreCalculatorTests.cs" />
     <Compile Include="TranslationHelperTests.cs" />
     <Compile Include="UCIMoveTranslatorTests.cs" />
     <Compile Include="ZobristHashTests.cs" />

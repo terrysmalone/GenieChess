@@ -91,7 +91,7 @@ namespace ChessEngineTests
         //[TestMethod]
         //private void TestComputerPlayingFullGame()
         //{
-        //    ScoreCalculator scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+        //    ScoreCalculator scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
         //    Game game = new Game(scoreCalculator);
 
@@ -112,7 +112,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -137,7 +137,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -161,7 +161,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -186,7 +186,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -208,7 +208,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -230,7 +230,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -256,7 +256,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -281,7 +281,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -305,7 +305,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -330,7 +330,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -352,7 +352,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -373,7 +373,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -401,7 +401,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -426,7 +426,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -451,7 +451,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -478,7 +478,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_1()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -501,7 +501,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_3()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -522,7 +522,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_6()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
             game.ClearBoard();
@@ -549,7 +549,7 @@ namespace ChessEngineTests
         [TestMethod]
         private void TestPlayingGameSimpleMaterialGain()
         {
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetTestResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var game = new Game(scoreCalculator, new Board(), openingBook: null);
 
