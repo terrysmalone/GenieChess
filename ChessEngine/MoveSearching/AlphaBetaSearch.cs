@@ -153,6 +153,7 @@ namespace ChessEngine.MoveSearching
 #if Debug
             s_Log.Info("---------------------------------------------------------");
             s_Log.Info($"Moves to Check: {moveList.Count}");
+            s_Log.Info("Shown in order checked");
 #endif
 
             foreach (var move in moveList)
@@ -194,13 +195,20 @@ namespace ChessEngine.MoveSearching
                 return QuiescenceEvaluate(alpha, beta);
             }
 
+            PieceMoves? bestHashMove = null;
+
             // Check transposition table
             var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depthLeft, alpha, beta);
 
             if (hash.Key !=0)
             {
                 var transpositionScore = hash.Score;
-                
+
+                if (hash.BestMove.Type != PieceType.None)
+                {
+                    bestHashMove = hash.BestMove;
+                }
+
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
@@ -229,7 +237,10 @@ namespace ChessEngine.MoveSearching
                 return EvaluateEndGame(depthLeft);
             }
 
-            OrderMovesInPlace(moveList, depthLeft);
+            OrderMovesInPlace(moveList, depthLeft, bestHashMove);
+
+            PieceMoves? bestMoveSoFar = null;
+            var bestScoreSoFar = positionValue;
 
             // Check the colour before moving since it's this colour king we have to check for 
             // legal move generation.
@@ -237,7 +248,7 @@ namespace ChessEngine.MoveSearching
             var colourToMove = m_BoardPosition.MoveColour;
 
             var noMovesAnalysed = true;
-
+            
             foreach (var move in moveList)
             {
                 // Since we do pseudo legal move generation we need to validate 
@@ -271,6 +282,13 @@ namespace ChessEngine.MoveSearching
                 noMovesAnalysed = false;
 
                 m_BoardPosition.UnMakeLastMove();
+
+                // Save the best move so far for the transposition table
+                if (score > bestScoreSoFar)
+                {
+                    bestMoveSoFar = move;
+                    bestScoreSoFar = score;
+                }
 
                 positionValue = Math.Max(alpha, score);
 
@@ -317,21 +335,25 @@ namespace ChessEngine.MoveSearching
             var hashNodeType = positionValue <= alpha ? HashNodeType.UpperBound 
                                                       : HashNodeType.Exact;
 
-            RecordHash(depthLeft, positionValue, hashNodeType);
+            RecordHash(depthLeft, positionValue, hashNodeType, bestMoveSoFar);
            
             return positionValue;
         }
 
-        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
+        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType, PieceMoves? bestMove = null)
         {
             var hash = new Hash
-            {
-                Key = m_BoardPosition.Zobrist,
-                Depth = depth,
-                NodeType = hashNodeType,
-                Score = score
-            };
+                       {
+                           Key      = m_BoardPosition.Zobrist,
+                           Depth    = depth,
+                           NodeType = hashNodeType,
+                           Score    = score
+                       };
 
+            if (bestMove != null)
+            {
+                hash.BestMove = (PieceMoves)bestMove;
+            }
 
             TranspositionTable.Add(hash);
         }
@@ -416,6 +438,18 @@ namespace ChessEngine.MoveSearching
             BringKillerMovesToTheFront(moveList, depth);
         }
 
+        private void OrderMovesInPlace(IList<PieceMoves> moveList, int depth, PieceMoves? bestHashMove)
+        {
+            OrderMovesByMvvVla(moveList);
+
+            BringKillerMovesToTheFront(moveList, depth);
+
+            if (bestHashMove != null)
+            {
+                BringBestHashMoveToTheFront(moveList, (PieceMoves)bestHashMove);
+            }
+        }
+
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
         {
             // move list position, victim score, attacker score
@@ -485,6 +519,16 @@ namespace ChessEngine.MoveSearching
                     }
                 }
             }
+        }
+
+        private void BringBestHashMoveToTheFront(IList<PieceMoves> moveList, PieceMoves bestHashMove)
+        {
+            if (moveList.Remove(bestHashMove) == false)
+            {
+                throw new ArgumentNullException(nameof(bestHashMove), "The best hash move was not in the list of moves");
+            }
+
+            moveList.Insert(0, bestHashMove);
         }
 
         private static bool IsPromotionCapture(SpecialMoveType specialMoveType)

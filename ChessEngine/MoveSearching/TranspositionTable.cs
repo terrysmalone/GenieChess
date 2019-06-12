@@ -50,7 +50,8 @@
             if (currentHash.Key != 0)  //There's already one there
             {
                 // If the new one searches deeper replace it
-                if (hash.Depth >= currentHash.Depth || currentHash.Ancient)    
+                // Or if we've marked this as ancient and it's a different hash
+                if (hash.Depth >= currentHash.Depth || (hash.Key != currentHash.Key && currentHash.Ancient))    
                 {
                     s_Table[index] = hash;
 
