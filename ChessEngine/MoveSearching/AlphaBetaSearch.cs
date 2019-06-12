@@ -314,8 +314,8 @@ namespace ChessEngine.MoveSearching
             }
 
             // transposition table store
-            var hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
-                                                  : HashNodeType.Exact;
+            var hashNodeType = positionValue <= alpha ? HashNodeType.UpperBound 
+                                                      : HashNodeType.Exact;
 
             RecordHash(depthLeft, positionValue, hashNodeType);
            
@@ -368,10 +368,7 @@ namespace ChessEngine.MoveSearching
 
             var moves = MoveGeneration.CalculateAllCapturingMoves(m_BoardPosition);
 
-            if (moves.Count == 0)
-            {
-                return alpha;
-            }
+            if (moves.Count == 0) { return alpha; }
             
             OrderMovesByMvvVla(moves);
 
@@ -383,10 +380,7 @@ namespace ChessEngine.MoveSearching
 
                 m_BoardPosition.UnMakeLastMove();
 
-                if (evaluationScore >= beta)
-                {
-                    return beta;
-                }
+                if (evaluationScore >= beta) { return beta; }
 
                 if (evaluationScore > alpha)
                 {
