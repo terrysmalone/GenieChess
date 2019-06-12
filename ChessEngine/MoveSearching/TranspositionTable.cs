@@ -50,7 +50,7 @@
             if (currentHash.Key != 0)  //There's already one there
             {
                 // If the new one searches deeper replace it
-                if (hash.Depth >= currentHash.Depth || currentHash.Ancient);    
+                if (hash.Depth >= currentHash.Depth || currentHash.Ancient)    
                 {
                     s_Table[index] = hash;
 
@@ -98,6 +98,7 @@
                         CountDebugger.Transposition_MatchAndUsed++;
 #endif
 
+                        // If we probed it then it's proven useful. Set it to not be ancient
                         hash.Ancient = false;
 
                         return hash;                         
@@ -126,7 +127,7 @@
             s_Table = new Hash[transpositionTableSize];
         }
 
-        internal static void ClearAncients()
+        internal static void ResetAncients()
         {
             for (var i = 0; i < s_Table.Length; i++)
             {

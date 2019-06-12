@@ -49,7 +49,7 @@ namespace ChessEngine.MoveSearching
             m_InitialMoves = new List<MoveValueInfo>();
             m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
-            TranspositionTable.ClearAncients();
+            TranspositionTable.ResetAncients();
 
             var bestMove = new PieceMoves();
 
@@ -190,10 +190,7 @@ namespace ChessEngine.MoveSearching
 
             if (depthLeft == 0)
             {
-                //TODO: Perform quiescience search
-                
                 //return Evaluate(m_BoardPosition);
-
                 return QuiescenceEvaluate(alpha, beta);
             }
 
@@ -225,7 +222,8 @@ namespace ChessEngine.MoveSearching
             }
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
-
+            
+            // There are no possible moves. It's either chack mate or stale mate
             if (moveList.Count == 0)
             {
                 return EvaluateEndGame(depthLeft);
@@ -233,7 +231,7 @@ namespace ChessEngine.MoveSearching
 
             OrderMovesInPlace(moveList, depthLeft);
 
-            // Check the colour before moving since this is the king we have to check for 
+            // Check the colour before moving since it's this colour king we have to check for 
             // legal move generation.
             // Plus, we only have to do it once for all moves.
             var colourToMove = m_BoardPosition.MoveColour;
@@ -322,10 +320,9 @@ namespace ChessEngine.MoveSearching
             }
 
             // transposition table store
-            HashNodeType hashNodeType;
 
-            hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
-                                              : HashNodeType.Exact;
+            var hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
+                                                  : HashNodeType.Exact;
 
             RecordHash(depthLeft, bestScore, hashNodeType);
            
@@ -361,6 +358,8 @@ namespace ChessEngine.MoveSearching
             }
         }
 
+        // Keep examining down the tree until all moves are quiet.
+        // Quiet moves are ones without captures
         private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
         {
             var evaluationScore = Evaluate(m_BoardPosition);
@@ -375,7 +374,7 @@ namespace ChessEngine.MoveSearching
                 alpha = evaluationScore;
             }
 
-            //GenerateCaptures()
+            // We only need to generate captures here. We should find a better way of doing this
             var moves = MoveGeneration.CalculateAllMoves(m_BoardPosition);
 
             for (var i = moves.Count-1; i >= 0; i--)
