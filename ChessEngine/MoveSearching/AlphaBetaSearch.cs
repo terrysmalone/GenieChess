@@ -26,7 +26,7 @@ namespace ChessEngine.MoveSearching
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
-        private int m_KillerMovesToStore = 2;
+        private int m_KillerMovesToStore = 3;
         private PieceMoves[,] m_KillerMoves;
 
         private int m_EvaluationDepth;
@@ -505,18 +505,9 @@ namespace ChessEngine.MoveSearching
                     break;
                 }
 
-                for (var i = 0; i < moveList.Count; i++)
+                if(moveList.Remove(killerMove))
                 {
-                    var move = moveList[i];
-
-                    if (move == killerMove)
-                    {
-                        var toMove = moveList[i];
-                        moveList.RemoveAt(i);
-                        moveList.Insert(0, toMove);
-
-                        break;
-                    }
+                    moveList.Insert(0, killerMove);
                 }
             }
         }
