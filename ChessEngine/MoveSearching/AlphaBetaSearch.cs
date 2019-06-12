@@ -186,7 +186,7 @@ namespace ChessEngine.MoveSearching
 
         private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft)
         {
-            var bestScore = decimal.MinValue / 2 + 1;
+            var positionValue = decimal.MinValue / 2 + 1;
 
             if (depthLeft == 0)
             {
@@ -272,7 +272,11 @@ namespace ChessEngine.MoveSearching
 
                 m_BoardPosition.UnMakeLastMove();
 
-                if (score >= beta)
+                positionValue = Math.Max(alpha, score);
+
+                alpha = Math.Max(alpha, positionValue);
+
+                if (alpha >= beta)
                 {
                     RecordHash(depthLeft, score, HashNodeType.LowerBound);
 
@@ -302,16 +306,6 @@ namespace ChessEngine.MoveSearching
 
                     return score;
                 }
-
-                if (score > bestScore)
-                {
-                    bestScore = score;
-
-                    if (score > alpha)
-                    {
-                        alpha = score;
-                    }
-                }
             }
 
             if (noMovesAnalysed)
@@ -320,13 +314,12 @@ namespace ChessEngine.MoveSearching
             }
 
             // transposition table store
-
             var hashNodeType = bestScore <= alpha ? HashNodeType.UpperBound 
                                                   : HashNodeType.Exact;
 
-            RecordHash(depthLeft, bestScore, hashNodeType);
+            RecordHash(depthLeft, positionValue, hashNodeType);
            
-            return bestScore;
+            return positionValue;
         }
 
         private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
@@ -336,8 +329,7 @@ namespace ChessEngine.MoveSearching
                 Key = m_BoardPosition.Zobrist,
                 Depth = depth,
                 NodeType = hashNodeType,
-                Score = score,
-                //BestMove = bestMove
+                Score = score
             };
 
 
