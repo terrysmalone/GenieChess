@@ -239,14 +239,15 @@ namespace ChessEngine.MoveSearching
                 return EvaluateEndGame(depthLeft);
             }
 
-            //Internal iterative deepening start
-
+            // Internal iterative deepening
+            // If we're near the last node of this search and we have no best move from
+            // the transposition table perform a limited iterative deepening search
             if (bestHashMove == null && depthLeft > 2 && depthLeft == m_EvaluationDepth-1)
             {
                 m_BestMoveSoFar = null;
 
                 //Call this just to get the best move
-                var iidScore = -AlphaBeta(-beta, -alpha, depthLeft - 2);
+                AlphaBeta(alpha, beta, depthLeft - 1);
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -262,10 +263,6 @@ namespace ChessEngine.MoveSearching
             {
                 OrderMovesInPlace(moveList, depthLeft, bestHashMove);
             }
-
-            // Internal iterative deepening end
-
-            // OrderMovesInPlace(moveList, depthLeft, bestHashMove);
 
             PieceMoves? bestMoveSoFar = null;
             var bestScoreSoFar = positionValue;
@@ -599,8 +596,6 @@ namespace ChessEngine.MoveSearching
             {
                 moveList.Insert(0, bestHashMove);
             }
-
-            
         }
 
         private static bool IsPromotionCapture(SpecialMoveType specialMoveType)
