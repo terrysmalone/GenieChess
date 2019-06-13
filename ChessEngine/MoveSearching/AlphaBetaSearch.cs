@@ -31,6 +31,8 @@ namespace ChessEngine.MoveSearching
 
         private int m_EvaluationDepth;
 
+        private PieceMoves? m_BestMoveSoFar;
+
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
@@ -237,7 +239,33 @@ namespace ChessEngine.MoveSearching
                 return EvaluateEndGame(depthLeft);
             }
 
-            OrderMovesInPlace(moveList, depthLeft, bestHashMove);
+            //Internal iterative deepening start
+
+            if (bestHashMove == null && depthLeft > 2 && depthLeft == m_EvaluationDepth-1)
+            {
+                m_BestMoveSoFar = null;
+
+                //Call this just to get the best move
+                var iidScore = -AlphaBeta(-beta, -alpha, depthLeft - 2);
+
+                if (m_BestMoveSoFar != null)
+                {
+                    OrderMovesInPlace(moveList, depthLeft, m_BestMoveSoFar);
+                }
+                else
+                {
+                    //This never seems to be hit. I'm not sure if it's needed
+                    OrderMovesInPlace(moveList, depthLeft, null);
+                }
+            }
+            else
+            {
+                OrderMovesInPlace(moveList, depthLeft, bestHashMove);
+            }
+
+            // Internal iterative deepening end
+
+            // OrderMovesInPlace(moveList, depthLeft, bestHashMove);
 
             PieceMoves? bestMoveSoFar = null;
             var bestScoreSoFar = positionValue;
@@ -288,6 +316,8 @@ namespace ChessEngine.MoveSearching
                 {
                     bestMoveSoFar = move;
                     bestScoreSoFar = score;
+
+                    m_BestMoveSoFar = move;
                 }
 
                 positionValue = Math.Max(alpha, score);
@@ -563,14 +593,14 @@ namespace ChessEngine.MoveSearching
             }
         }
 
-        private void BringBestHashMoveToTheFront(IList<PieceMoves> moveList, PieceMoves bestHashMove)
+        private static void BringBestHashMoveToTheFront(IList<PieceMoves> moveList, PieceMoves bestHashMove)
         {
-            if (moveList.Remove(bestHashMove) == false)
+            if (moveList.Remove(bestHashMove))
             {
-                throw new ArgumentNullException(nameof(bestHashMove), "The best hash move was not in the list of moves");
+                moveList.Insert(0, bestHashMove);
             }
 
-            moveList.Insert(0, bestHashMove);
+            
         }
 
         private static bool IsPromotionCapture(SpecialMoveType specialMoveType)
