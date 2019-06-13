@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Reflection;
 
 namespace ResourceLoading
 {
@@ -29,8 +30,11 @@ namespace ResourceLoading
         private static string GetSolutionDirectory()
         {
             // ReSharper disable PossibleNullReferenceException
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
 
-            var currentDirectory = Directory.GetParent(Directory.GetCurrentDirectory());
+            var currentDirectory = Directory.GetParent(Path.GetDirectoryName(path));
 
             var carryOn = true;
 

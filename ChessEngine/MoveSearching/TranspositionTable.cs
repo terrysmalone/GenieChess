@@ -18,7 +18,7 @@
 
 
 
-        private static ulong transpositionTableSize = 1048583; //20940347; //Must be prime 
+        private static ulong transpositionTableSize = 20940347; //1048583; 20940347; //Must be prime 
         private static bool initialised = false;
 
 
@@ -50,7 +50,8 @@
             if (currentHash.Key != 0)  //There's already one there
             {
                 // If the new one searches deeper replace it
-                if (hash.Depth >= currentHash.Depth || currentHash.Ancient);    
+                // Or if we've marked this as ancient and it's a different hash
+                if (hash.Depth >= currentHash.Depth || (hash.Key != currentHash.Key && currentHash.Ancient))    
                 {
                     s_Table[index] = hash;
 
@@ -98,6 +99,7 @@
                         CountDebugger.Transposition_MatchAndUsed++;
 #endif
 
+                        // If we probed it then it's proven useful. Set it to not be ancient
                         hash.Ancient = false;
 
                         return hash;                         
@@ -126,7 +128,7 @@
             s_Table = new Hash[transpositionTableSize];
         }
 
-        internal static void ClearAncients()
+        internal static void ResetAncients()
         {
             for (var i = 0; i < s_Table.Length; i++)
             {

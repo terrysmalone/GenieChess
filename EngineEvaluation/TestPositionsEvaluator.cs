@@ -60,8 +60,11 @@ namespace EngineEvaluation
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
             LogLineAsDetailed($"Logging Test positions with a search depth of {evaluationDepth}");
 
-            var totalTestPositions = 0;
-            var totalPassedTestPositions = 0;
+            var overallTestPositions = 0;
+            var overallPassedTestPositions = 0;
+
+            var overallTestSuiteTime = TimeSpan.Zero;
+            var overallTestSuiteNodes = 0.0m;
 
             foreach (var testPositionSuite in m_TestPositionSuites)
             {
@@ -69,9 +72,10 @@ namespace EngineEvaluation
                 LogLine($"Test set: {testPositionSuite.Item1}");
                 
 
-                var totalTime = TimeSpan.Zero;
+                var totalTestSuiteTime = TimeSpan.Zero;
+                var totalTestSuiteNodeCount = 0.0m;
 
-                var passedTestPositions = 0;
+                var passedTestSuitePositions = 0;
 
                 foreach (var position in testPositionSuite.Item2)
                 {
@@ -91,9 +95,10 @@ namespace EngineEvaluation
 
                     timer.Stop();
 
-                    totalTime = totalTime.Add(timer.Elapsed);
+                    totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
 
                     var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (decimal)n.NodesVisited);
+                    totalTestSuiteNodeCount += totalNodes;
 
                     var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
 
@@ -101,7 +106,7 @@ namespace EngineEvaluation
                     
                     if (position.BestMovePgn == chosenMove)
                     {
-                        passedTestPositions++;
+                        passedTestSuitePositions++;
                         passed = true;
                     }
                     
@@ -116,15 +121,21 @@ namespace EngineEvaluation
 
                 var totalSuiteTestPositions = testPositionSuite.Item2.Count;
 
-                var passedSuite = passedTestPositions == totalSuiteTestPositions ? "Passed" : "FAILED";
+                var passedSuite = passedTestSuitePositions == totalSuiteTestPositions ? "Passed" : "FAILED";
                 
-                LogLine($"{passedSuite} - {passedTestPositions}/{totalSuiteTestPositions} - Total time: {totalTime}");
+                LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - Total time: {totalTestSuiteTime} - Total node visited: {totalTestSuiteNodeCount}");
 
-                totalPassedTestPositions += passedTestPositions;
-                totalTestPositions += totalSuiteTestPositions;
+                overallPassedTestPositions += passedTestSuitePositions;
+                overallTestPositions += totalSuiteTestPositions;
+
+                overallTestSuiteTime = overallTestSuiteTime.Add(totalTestSuiteTime);
+
+                overallTestSuiteNodes += totalTestSuiteNodeCount;
             }
 
-            LogLine($"Total passed: {totalPassedTestPositions}/{ totalTestPositions}");
+            LogLine($"Overall passed: {overallPassedTestPositions}/{ overallTestPositions}");
+            LogLine($"Overall time: {overallTestSuiteTime}");
+            LogLine($"Overall node count: {overallTestSuiteNodes}");
         }
 
         private void LogTestPositionResults(

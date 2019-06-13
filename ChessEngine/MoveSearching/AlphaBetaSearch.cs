@@ -31,6 +31,8 @@ namespace ChessEngine.MoveSearching
 
         private int m_EvaluationDepth;
 
+        private PieceMoves? m_BestMoveSoFar;
+
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
@@ -49,7 +51,7 @@ namespace ChessEngine.MoveSearching
             m_InitialMoves = new List<MoveValueInfo>();
             m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
 
-            TranspositionTable.ClearAncients();
+            TranspositionTable.ResetAncients();
 
             var bestMove = new PieceMoves();
 
@@ -153,6 +155,7 @@ namespace ChessEngine.MoveSearching
 #if Debug
             s_Log.Info("---------------------------------------------------------");
             s_Log.Info($"Moves to Check: {moveList.Count}");
+            s_Log.Info("Shown in order checked");
 #endif
 
             foreach (var move in moveList)
@@ -190,10 +193,11 @@ namespace ChessEngine.MoveSearching
 
             if (depthLeft == 0)
             {
-                //TODO: Perform quiescience search
-
-                return Evaluate(m_BoardPosition);
+                //return Evaluate(m_BoardPosition);
+                return QuiescenceEvaluate(alpha, beta);
             }
+
+            PieceMoves? bestHashMove = null;
 
             // Check transposition table
             var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depthLeft, alpha, beta);
@@ -201,7 +205,12 @@ namespace ChessEngine.MoveSearching
             if (hash.Key !=0)
             {
                 var transpositionScore = hash.Score;
-                
+
+                if (hash.BestMove.Type != PieceType.None)
+                {
+                    bestHashMove = hash.BestMove;
+                }
+
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
@@ -223,21 +232,48 @@ namespace ChessEngine.MoveSearching
             }
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
-
+            
+            // There are no possible moves. It's either check mate or stale mate
             if (moveList.Count == 0)
             {
                 return EvaluateEndGame(depthLeft);
             }
 
-            OrderMovesInPlace(moveList, depthLeft);
+            // Internal iterative deepening
+            // If we're near the last node of this search and we have no best move from
+            // the transposition table perform a limited iterative deepening search
+            if (bestHashMove == null && depthLeft > 2 && depthLeft == m_EvaluationDepth-1)
+            {
+                m_BestMoveSoFar = null;
 
-            // Check the colour before moving since this is the king we have to check for 
+                //Call this just to get the best move
+                AlphaBeta(alpha, beta, depthLeft - 1);
+
+                if (m_BestMoveSoFar != null)
+                {
+                    OrderMovesInPlace(moveList, depthLeft, m_BestMoveSoFar);
+                }
+                else
+                {
+                    //This never seems to be hit. I'm not sure if it's needed
+                    OrderMovesInPlace(moveList, depthLeft, null);
+                }
+            }
+            else
+            {
+                OrderMovesInPlace(moveList, depthLeft, bestHashMove);
+            }
+
+            PieceMoves? bestMoveSoFar = null;
+            var bestScoreSoFar = positionValue;
+
+            // Check the colour before moving since it's this colour king we have to check for 
             // legal move generation.
             // Plus, we only have to do it once for all moves.
             var colourToMove = m_BoardPosition.MoveColour;
 
             var noMovesAnalysed = true;
-
+            
             foreach (var move in moveList)
             {
                 // Since we do pseudo legal move generation we need to validate 
@@ -271,6 +307,15 @@ namespace ChessEngine.MoveSearching
                 noMovesAnalysed = false;
 
                 m_BoardPosition.UnMakeLastMove();
+
+                // Save the best move so far for the transposition table
+                if (score > bestScoreSoFar)
+                {
+                    bestMoveSoFar = move;
+                    bestScoreSoFar = score;
+
+                    m_BestMoveSoFar = move;
+                }
 
                 positionValue = Math.Max(alpha, score);
 
@@ -314,26 +359,28 @@ namespace ChessEngine.MoveSearching
             }
 
             // transposition table store
-            HashNodeType hashNodeType;
+            var hashNodeType = positionValue <= alpha ? HashNodeType.UpperBound 
+                                                      : HashNodeType.Exact;
 
-            hashNodeType = positionValue <= alpha ? HashNodeType.UpperBound 
-                                                  : HashNodeType.Exact;
-
-            RecordHash(depthLeft, positionValue, hashNodeType);
+            RecordHash(depthLeft, positionValue, hashNodeType, bestMoveSoFar);
            
             return positionValue;
         }
 
-        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType)
+        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType, PieceMoves? bestMove = null)
         {
             var hash = new Hash
-            {
-                Key = m_BoardPosition.Zobrist,
-                Depth = depth,
-                NodeType = hashNodeType,
-                Score = score
-            };
+                       {
+                           Key      = m_BoardPosition.Zobrist,
+                           Depth    = depth,
+                           NodeType = hashNodeType,
+                           Score    = score
+                       };
 
+            if (bestMove != null)
+            {
+                hash.BestMove = (PieceMoves)bestMove;
+            }
 
             TranspositionTable.Add(hash);
         }
@@ -350,6 +397,47 @@ namespace ChessEngine.MoveSearching
             {
                 return -m_ScoreCalculator.CalculateScore(boardPosition);
             }
+        }
+
+        // Keep examining down the tree until all moves are quiet.
+        // Quiet moves are ones without captures
+        private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
+        {
+            var evaluationScore = Evaluate(m_BoardPosition);
+            
+            if (evaluationScore >= beta)
+            {
+                return beta;
+            }
+
+            if (evaluationScore > alpha)
+            {
+                alpha = evaluationScore;
+            }
+
+            var moves = MoveGeneration.CalculateAllCapturingMoves(m_BoardPosition);
+
+            if (moves.Count == 0) { return alpha; }
+            
+            OrderMovesByMvvVla(moves);
+
+            foreach (var move in moves)
+            {
+                m_BoardPosition.MakeMove(move, false);
+
+                evaluationScore = -QuiescenceEvaluate(-beta, -alpha);
+
+                m_BoardPosition.UnMakeLastMove();
+
+                if (evaluationScore >= beta) { return beta; }
+
+                if (evaluationScore > alpha)
+                {
+                    alpha = evaluationScore;
+                }
+            }
+
+            return alpha;
         }
 
         private List<PieceMoves> OrderFromIterativeDeepeningMoves()
@@ -375,6 +463,60 @@ namespace ChessEngine.MoveSearching
             OrderMovesByMvvVla(moveList);
 
             BringKillerMovesToTheFront(moveList, depth);
+        }
+
+        private void OrderMovesInPlace(IList<PieceMoves> moveList, int depth, PieceMoves? bestHashMove)
+        {
+            OrderMovesByMvvVla(moveList);
+
+            BringKillerMovesToTheFront(moveList, depth);
+
+            if (bestHashMove != null)
+            {
+                BringBestHashMoveToTheFront(moveList, (PieceMoves)bestHashMove);
+            }
+        }
+
+        private void OrderMovesByMvvVlaNew(IList<PieceMoves> moveList)
+        {
+            // move list position, victim score, attacker score
+            var ordering = new List<Tuple<PieceMoves, int, int>>();
+
+            var toRemove = new List<int>();
+
+            //Move capture
+            for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
+            {
+                if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
+                 || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
+                 || IsPromotionCapture(moveList[moveNum].SpecialMove))
+                {
+                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
+
+                    ordering.Add(new Tuple<PieceMoves, int, int>(
+                                     moveList[moveNum],
+                                     GetPieceScore(victimType),
+                                     GetPieceScore(moveList[moveNum].Type)));
+
+                    //toRemove.Add(moveNum);
+                }
+            }
+
+            //Order by victim and then attacker. We do it in reverse
+            ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
+
+            foreach (var order in ordering)
+            {
+                if (moveList.Remove(order.Item1))
+                {
+
+                    moveList.Add(order.Item1);
+                }
+                else
+                {
+                    Console.WriteLine("This shouldn't happen");
+                }
+            }
         }
 
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
@@ -445,6 +587,14 @@ namespace ChessEngine.MoveSearching
                         break;
                     }
                 }
+            }
+        }
+
+        private static void BringBestHashMoveToTheFront(IList<PieceMoves> moveList, PieceMoves bestHashMove)
+        {
+            if (moveList.Remove(bestHashMove))
+            {
+                moveList.Insert(0, bestHashMove);
             }
         }
 

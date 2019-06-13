@@ -1,6 +1,7 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -20,12 +21,12 @@ namespace ChessEngine.ScoreCalculation
                 log.Info(string.Format("Loading score set {0}: ", xmlFileName));
 
                 doc = XDocument.Load(xmlFileName);
-                           
-                var score = doc.Elements("ScoreSet").ToList();
+
+                var score       = doc.Elements("ScoreSet").ToList();
                 var scoreValues = score[0].Descendants().ToList();
 
                 foreach (var scoreVal in scoreValues)
-	            {
+                {
                     var name = string.Empty;
                     try
                     {
@@ -37,9 +38,9 @@ namespace ChessEngine.ScoreCalculation
 
                             if (squareTable is Array)
                             {
-                                var arr = (Array)squareTable;
+                                var arr = (Array) squareTable;
 
-                                GetSquareTable(scoreVal.Value).CopyTo((Array)squareTable, 0);
+                                GetSquareTable(scoreVal.Value).CopyTo((Array) squareTable, 0);
                                 //squareTable = squareValues;
                             }
                             else
@@ -58,12 +59,22 @@ namespace ChessEngine.ScoreCalculation
                     catch (Exception exc)
                     {
                         log.Error(string.Format("Error writing score value for {0}", name), exc);
+
+                        throw;
                     }
-	            }
+                }
+            }
+            catch (FileNotFoundException fnfe)
+            {
+                log.Error(string.Format("File {0} not found", xmlFileName), fnfe);
+
+                throw;
             }
             catch (Exception exc)
             {
                 log.Error(string.Format("Error reading xml file:{0}", xmlFileName), exc);
+
+                throw;
             }
         }
 
