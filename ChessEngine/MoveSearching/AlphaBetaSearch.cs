@@ -410,6 +410,33 @@ namespace ChessEngine.MoveSearching
                 return beta;
             }
 
+            // Check transposition table
+            var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
+
+            if (hash.Key != 0)
+            {
+                var transpositionScore = hash.Score;
+                
+                switch (hash.NodeType)
+                {
+                    case HashNodeType.Exact:
+                        return transpositionScore;
+                    case HashNodeType.LowerBound:
+                        alpha = Math.Max(alpha, transpositionScore);
+                        break;
+                    case HashNodeType.UpperBound:
+                        beta = Math.Min(beta, transpositionScore);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                if (alpha >= beta)
+                {
+                    return transpositionScore;
+                }
+            }
+
             if (evaluationScore > alpha)
             {
                 alpha = evaluationScore;
@@ -429,7 +456,12 @@ namespace ChessEngine.MoveSearching
 
                 m_BoardPosition.UnMakeLastMove();
 
-                if (evaluationScore >= beta) { return beta; }
+                if (evaluationScore >= beta)
+                {
+                    RecordQuiescenceHash(beta, HashNodeType.LowerBound);
+
+                    return beta;
+                }
 
                 if (evaluationScore > alpha)
                 {
@@ -437,7 +469,25 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
+            // transposition table store
+            var hashNodeType = evaluationScore <= alpha ? HashNodeType.UpperBound
+                                                        : HashNodeType.Exact;
+
+            RecordQuiescenceHash(alpha, hashNodeType);
+
             return alpha;
+        }
+
+        private void RecordQuiescenceHash(decimal evaluationScore, HashNodeType hashNodeType)
+        {
+            var hash = new Hash
+                       {
+                           Key      = m_BoardPosition.Zobrist,
+                           NodeType = hashNodeType,
+                           Score    = evaluationScore
+            };
+
+            TranspositionTable.AddQuiescenceHash(hash);
         }
 
         private List<PieceMoves> OrderFromIterativeDeepeningMoves()
