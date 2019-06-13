@@ -68,14 +68,11 @@
             }
             else
             {
-                if (currentHash.Ancient)
-                {
-                    s_Table[index] = hash;
+                s_Table[index] = hash;
 
 #if FullNodeCountDebug
                 CountDebugger.Transposition_HashAdded++;
 #endif
-                }
             }
         }
 
@@ -96,10 +93,7 @@
             }
             else
             {
-                if (currentHash.Ancient)
-                {
                     s_QuiescenceTable[index] = hash;
-                }
             }
         }
 
