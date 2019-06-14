@@ -33,6 +33,8 @@ namespace ChessEngine.MoveSearching
 
         private PieceMoves? m_BestMoveSoFar;
 
+        private int m_NullMoveR = 2;
+
         public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
@@ -167,7 +169,7 @@ namespace ChessEngine.MoveSearching
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true);
 
                 if (score > bestScore)
                 {
@@ -187,7 +189,7 @@ namespace ChessEngine.MoveSearching
             return bestMove;
         }
 
-        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft)
+        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull)
         {
             var positionValue = decimal.MinValue / 2 + 1;
 
@@ -231,6 +233,21 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
+            // Null move check 
+            if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.MoveColour))
+            {
+                m_BoardPosition.SwitchSides();
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - 2, allowNull: false);
+                m_BoardPosition.SwitchSides();
+
+                if (eval >= beta)
+                {
+                    //CountDebugger.NullMovesPruned++;
+
+                    return beta; // Cutoff
+                }
+            }
+
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
             
             // There are no possible moves. It's either check mate or stale mate
@@ -247,7 +264,7 @@ namespace ChessEngine.MoveSearching
                 m_BestMoveSoFar = null;
 
                 //Call this just to get the best move
-                AlphaBeta(alpha, beta, depthLeft - 1);
+                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: true);
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -292,6 +309,18 @@ namespace ChessEngine.MoveSearching
                     }
                 }
 
+                // Futility pruning
+                if (depthLeft == 1 &&
+                    move.SpecialMove != SpecialMoveType.Capture &&
+                    move.SpecialMove != SpecialMoveType.ENPassantCapture &&
+                    !IsPromotionCapture(move.SpecialMove))
+                {
+                    if (Evaluate(m_BoardPosition) + 1 < beta)
+                    {
+                        continue;
+                    }
+                }
+
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we do pseudo legal move generation we need to check if this move is legal
@@ -302,7 +331,7 @@ namespace ChessEngine.MoveSearching
                     continue;
                 }
 
-                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1);
+                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true);
 
                 noMovesAnalysed = false;
 
