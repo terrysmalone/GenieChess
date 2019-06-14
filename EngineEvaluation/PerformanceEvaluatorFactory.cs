@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using log4net;
 using ResourceLoading;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EngineEvaluation
 {
@@ -38,10 +41,12 @@ namespace EngineEvaluation
             {
                 var testPosLogFile = CreateAndGetLogFile(logFolder, "03 - TestPositionsEvaluator.txt");
 
+                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, "03b - TestPositionsEvaluator.xlsx");
+
                 var testPositions = InitialiseTestPositions(runFullTestSuiteEvaluation);
 
                 var testPositionsEvaluator =
-                    new TestPositionsEvaluator(testPositions, highlightsLogFile, testPosLogFile);
+                    new TestPositionsEvaluator(testPositions, highlightsLogFile, testPosLogFile, testExcelLogFile);
 
                 evaluators.Add(testPositionsEvaluator);
             }
@@ -118,36 +123,23 @@ namespace EngineEvaluation
 
             if (!runFullTestSuiteEvaluation)
             {
-                var counter = 0;
-                var resetAt = 12;
+                var keepFromEachSet = 6;
 
                 foreach (var testSuite in testSuites)
                 {
-                    for (var i = testSuite.Item2.Count - 1; i >= 0; i--)
+                    if (testSuite.Item2.Count > keepFromEachSet)
                     {
-                        if (counter != 0)
-                        {
-                            testSuite.Item2.RemoveAt(i);
-                        }
-
-                        if (counter == resetAt)
-                        {
-                            counter = 0;
-                        }
-                        else
-                        {
-                            counter++;
-                        }
+                        testSuite.Item2.RemoveRange(keepFromEachSet, testSuite.Item2.Count - keepFromEachSet);
                     }
                 }
             }
 
-            //var numberOfPositions = 0;
+            var numberOfPositions = 0;
 
-            //foreach (var testSuite in testSuites)
-            //{
-            //    numberOfPositions += testSuite.Item2.Count;
-            //}
+            foreach (var testSuite in testSuites)
+            {
+                numberOfPositions += testSuite.Item2.Count;
+            }
             
 
             return testSuites;
@@ -186,6 +178,51 @@ namespace EngineEvaluation
                 Log.Error("Error creating log file for PerformanceEvaluator highlights", e);
 
                 throw;
+            }
+
+            return logFile;
+        }
+
+        private static string CreateAndGetExcelLogFile(string logLocation, string fileName)
+        {
+            var logFile = Path.Combine(new[] { logLocation, fileName });
+
+            Excel.Application excelApp = null;
+            Excel.Workbook excelWorkbook = null;
+            Excel._Worksheet testSuiteSheet = null;
+            Excel._Worksheet testSheet = null;
+
+            try
+            {
+                excelApp = new Excel.Application { Visible = false };
+                excelApp.DisplayAlerts = false;
+
+                excelWorkbook = excelApp.Workbooks.Add();
+
+                testSuiteSheet = excelWorkbook.Worksheets.Add();
+                testSuiteSheet.Name = "Test suites";
+
+                testSheet = excelWorkbook.Worksheets.Add();
+                testSheet.Name = "Tests";
+
+                excelWorkbook.SaveAs(logFile);
+
+                excelApp.Workbooks.Close();
+                excelApp.Quit();
+            }
+            catch (Exception exc)
+            {
+                Log.Error($"Error creating excel log file: {fileName}", exc);
+            }
+            finally
+            {
+                if (testSheet != null) { Marshal.ReleaseComObject(testSheet); }
+
+                if (testSuiteSheet != null) { Marshal.ReleaseComObject(testSuiteSheet); }
+
+                if (excelWorkbook != null) { Marshal.ReleaseComObject(excelWorkbook); }
+
+                if (excelApp != null) { Marshal.ReleaseComObject(excelApp); }
             }
 
             return logFile;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using ChessEngine.BoardRepresentation;
@@ -9,6 +11,8 @@ using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
 using log4net;
 using ResourceLoading;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EngineEvaluation
 {
@@ -21,11 +25,15 @@ namespace EngineEvaluation
         private readonly string m_FullLogFile;
         private readonly string m_HighlightsLogFile;
 
-        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+        private readonly ExcelHandler m_ExcelHandler;
 
+
+        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+        
         public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites, 
                                       string highlightsLogFile, 
-                                      string fullLogFile)
+                                      string fullLogFile,
+                                      string testExcelLogFile)
         {
             if (testPositionSuites == null)
             {
@@ -46,10 +54,21 @@ namespace EngineEvaluation
             if (fullLogFile == null)
             {
                 Log.Error("No fullLogFile was passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(highlightsLogFile));
+                throw new ArgumentNullException(nameof(fullLogFile));
             }
 
             m_FullLogFile = fullLogFile;
+
+            if (testExcelLogFile == null)
+            {
+                Log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
+                throw new ArgumentNullException(nameof(testExcelLogFile));
+            }
+
+            m_ExcelHandler = new ExcelHandler(testExcelLogFile);
+
+            m_ExcelHandler.CreateHeaders("Test suites", new [] { "Test suite", "Result", "Test passed", "Number of tests", "Nodes visited", "Total time (hh:mm:ss.ms)"});
+            m_ExcelHandler.CreateHeaders("Tests", new[] { "Test suite", "Test name", "Passed", "Nodes visited", "Total time (hh:mm:ss.ms)" });
 
             LogLine("====================================================================");
             LogLine("Test positions evaluator");
@@ -64,16 +83,18 @@ namespace EngineEvaluation
             var overallPassedTestPositions = 0;
 
             var overallTestSuiteTime = TimeSpan.Zero;
-            var overallTestSuiteNodes = 0.0m;
+            float overallTestSuiteNodes = 0;
 
             foreach (var testPositionSuite in m_TestPositionSuites)
             {
+                var testSuiteName = testPositionSuite.Item1;
+
                 LogLine("--------------------------------------------------------------");
-                LogLine($"Test set: {testPositionSuite.Item1}");
+                LogLine($"Test set: {testSuiteName}");
                 
 
                 var totalTestSuiteTime = TimeSpan.Zero;
-                var totalTestSuiteNodeCount = 0.0m;
+                float totalTestSuiteNodeCount = 0;
 
                 var passedTestSuitePositions = 0;
 
@@ -97,7 +118,7 @@ namespace EngineEvaluation
 
                     totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
 
-                    var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (decimal)n.NodesVisited);
+                    var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (float)n.NodesVisited);
                     totalTestSuiteNodeCount += totalNodes;
 
                     var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
@@ -117,13 +138,34 @@ namespace EngineEvaluation
                         passed,
                         timer.Elapsed,
                         totalNodes);
+
+                    m_ExcelHandler.AddDataToSheet("Tests", new[]
+                                                           {
+                                                               testSuiteName,
+                                                               position.Name,
+                                                               passed.ToString(),
+                                                               $"{totalNodes:n0}",
+                                                               $"'{timer.Elapsed.ToString()}"
+                                                           });
                 }
 
                 var totalSuiteTestPositions = testPositionSuite.Item2.Count;
 
                 var passedSuite = passedTestSuitePositions == totalSuiteTestPositions ? "Passed" : "FAILED";
                 
-                LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - Total time: {totalTestSuiteTime} - Total node visited: {totalTestSuiteNodeCount}");
+                LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - " +
+                        $"Total time: {totalTestSuiteTime} - " +
+                        $"Total node visited: {totalTestSuiteNodeCount:n0}");
+
+                m_ExcelHandler.AddDataToSheet("Test suites", new[]
+                                                             {
+                                                                 testSuiteName,
+                                                                 passedSuite,
+                                                                 passedTestSuitePositions.ToString(CultureInfo.InvariantCulture),
+                                                                 totalSuiteTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                                 $"{totalTestSuiteNodeCount:n0}",
+                                                                 $"'{totalTestSuiteTime.ToString()}"
+                                                             });
 
                 overallPassedTestPositions += passedTestSuitePositions;
                 overallTestPositions += totalSuiteTestPositions;
@@ -135,11 +177,31 @@ namespace EngineEvaluation
 
             LogLine($"Overall passed: {overallPassedTestPositions}/{ overallTestPositions}");
             LogLine($"Overall time: {overallTestSuiteTime}");
-            LogLine($"Overall node count: {overallTestSuiteNodes}");
+            LogLine($"Overall node count: {overallTestSuiteNodes:n0}");
+
+            m_ExcelHandler.AddDataToSheet("Test suites", new[]
+                                                         {
+                                                             string.Empty,
+                                                             string.Empty,
+                                                             overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                             overallTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                             $"{overallTestSuiteNodes:n0}",
+                                                             $"'{overallTestSuiteTime.ToString()}"
+                                                         });
+
+            m_ExcelHandler.AddDataToSheet("Tests", new[]
+                                                   {
+                                                       string.Empty,
+                                                       string.Empty,
+                                                       overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                       overallTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                       $"{overallTestSuiteNodes:n0}",
+                                                       $"'{overallTestSuiteTime.ToString()}"
+                                                   });
         }
 
         private void LogTestPositionResults(
-            string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, decimal totalNodes)
+            string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, float totalNodes)
         {
             var result = passed ? "Passed" : "FAILED";
 
@@ -147,7 +209,7 @@ namespace EngineEvaluation
                               $"Best move:{ bestMove } - " +
                               $"Selected move {chosenMove} - " +
                               $"Total time: {elapsedTime} - " +
-                              $"Total nodes visited { totalNodes } - " +
+                              $"Total nodes visited {totalNodes:n0} - " +
                               $"{result}");
         }
 
