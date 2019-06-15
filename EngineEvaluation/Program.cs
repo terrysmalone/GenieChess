@@ -12,7 +12,7 @@
                                                                                           evaluateTestSuitePositions: true,
                                                                                           runFullTestSuiteEvaluation: false);
             
-            engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 5);
+            engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
         }
     }
 }

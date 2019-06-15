@@ -47,13 +47,13 @@
   <DoubledPawnPenalty>-0.15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns-->
   <PawnChainScore>0.2</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
 
-  <ConnectedRookBonus>0.2</ConnectedRookBonus> <!-- bonus for having connected rooks -->
+  <ConnectedRookBonus>0.1</ConnectedRookBonus> <!-- bonus for having connected rooks -->
 
-  <BoardCoverageBonus>0.1</BoardCoverageBonus> <!-- Bonus for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
+  <BoardCoverageBonus>0.05</BoardCoverageBonus> <!-- Bonus for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
   
-  <QueenCoverageBonus>0.1</QueenCoverageBonus> <!-- Bonus for every unoccupied square the queen can move to on next turn-->
-  <RookCoverageBonus>0.1</RookCoverageBonus> <!-- Bonus for every unoccupied square the rooks can move to on next turn-->
-  <BishopCoverageBonus>0.1</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
+  <QueenCoverageBonus>0.05</QueenCoverageBonus> <!-- Bonus for every unoccupied square the queen can move to on next turn-->
+  <RookCoverageBonus>0.05</RookCoverageBonus> <!-- Bonus for every unoccupied square the rooks can move to on next turn-->
+  <BishopCoverageBonus>0.05</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
 
   <AttackBonus>0.1</AttackBonus> <!-- Bonus for every attack on an enemy piece-->
   <MoreValuablePieceAttackBonus>0.2</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece--> 
