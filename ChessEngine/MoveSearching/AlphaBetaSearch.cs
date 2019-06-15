@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -193,17 +194,11 @@ namespace ChessEngine.MoveSearching
         {
             var positionValue = decimal.MinValue / 2 + 1;
 
-            if (depthLeft == 0)
-            {
-                //return Evaluate(m_BoardPosition);
-                return QuiescenceEvaluate(alpha, beta);
-            }
-
             PieceMoves? bestHashMove = null;
 
             // Check transposition table
             var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depthLeft, alpha, beta);
-
+            
             if (hash.Key !=0)
             {
                 var transpositionScore = hash.Score;
@@ -233,11 +228,17 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
+            if (depthLeft == 0)
+            {
+                //return Evaluate(m_BoardPosition);
+                return QuiescenceEvaluate(alpha, beta);
+            }
+
             // Null move check 
             if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.MoveColour))
             {
                 m_BoardPosition.SwitchSides();
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - 2, allowNull: false);
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR, allowNull: false);
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -259,7 +260,7 @@ namespace ChessEngine.MoveSearching
             // Internal iterative deepening
             // If we're near the last node of this search and we have no best move from
             // the transposition table perform a limited iterative deepening search
-            if (bestHashMove == null && depthLeft > 2 && depthLeft == m_EvaluationDepth-1)
+            if (bestHashMove == null && depthLeft > 3)
             {
                 m_BestMoveSoFar = null;
 
@@ -309,19 +310,19 @@ namespace ChessEngine.MoveSearching
                     }
                 }
 
-                // Futility pruning
-                if (depthLeft == 1 &&
-                    move.SpecialMove != SpecialMoveType.Capture &&
-                    move.SpecialMove != SpecialMoveType.ENPassantCapture &&
-                    !IsPromotionCapture(move.SpecialMove))
-                {
-                    if (Evaluate(m_BoardPosition) + 1 < beta)
-                    {
-                        continue;
-                    }
-                }
-
                 m_BoardPosition.MakeMove(move, false);
+
+                //// Futility pruning
+                //if (depthLeft == 1 &&
+                //    move.SpecialMove != SpecialMoveType.Capture &&
+                //    move.SpecialMove != SpecialMoveType.ENPassantCapture &&
+                //    !IsPromotionCapture(move.SpecialMove))
+                //{
+                //    if (Evaluate(m_BoardPosition) + 4 < alpha)
+                //    {
+                //        continue;
+                //    }
+                //}
 
                 // Since we do pseudo legal move generation we need to check if this move is legal
                 // otherwise skip to the next iteration of the loop
@@ -418,27 +419,26 @@ namespace ChessEngine.MoveSearching
         /// i.e. A high score means the position is better for the current player
         private decimal Evaluate(IBoard boardPosition)
         {
+            decimal score = 0;
+            
             if (m_BoardPosition.WhiteToMove)
             {
-                return m_ScoreCalculator.CalculateScore(boardPosition);
+                score = m_ScoreCalculator.CalculateScore(boardPosition);
             }
             else
             {
-                return -m_ScoreCalculator.CalculateScore(boardPosition);
+                score = -m_ScoreCalculator.CalculateScore(boardPosition);
             }
+
+            RecordHash(0, score, HashNodeType.Exact);
+
+            return score;
         }
 
         // Keep examining down the tree until all moves are quiet.
         // Quiet moves are ones without captures
         private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
         {
-            var evaluationScore = Evaluate(m_BoardPosition);
-            
-            if (evaluationScore >= beta)
-            {
-                return beta;
-            }
-
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
 
@@ -466,6 +466,15 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
+            var evaluationScore = Evaluate(m_BoardPosition);
+
+            if (evaluationScore >= beta)
+            {
+                RecordQuiescenceHash(beta, HashNodeType.LowerBound);
+
+                return beta;
+            }
+
             if (evaluationScore > alpha)
             {
                 alpha = evaluationScore;
@@ -473,7 +482,11 @@ namespace ChessEngine.MoveSearching
 
             var moves = MoveGeneration.CalculateAllCapturingMoves(m_BoardPosition);
 
-            if (moves.Count == 0) { return alpha; }
+            if (moves.Count == 0)
+            {
+                // We are effectively returning the max of evaluationScore and alpha
+                return alpha;
+            }
             
             OrderMovesByMvvVla(moves);
 
