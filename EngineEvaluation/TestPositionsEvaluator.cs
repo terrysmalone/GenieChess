@@ -91,8 +91,9 @@ namespace EngineEvaluation
 
                 LogLine("--------------------------------------------------------------");
                 LogLine($"Test set: {testSuiteName}");
-                
 
+                Log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
+                
                 var totalTestSuiteTime = TimeSpan.Zero;
                 float totalTestSuiteNodeCount = 0;
 
@@ -100,6 +101,8 @@ namespace EngineEvaluation
 
                 foreach (var position in testPositionSuite.Item2)
                 {
+                    Log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
+                    
                     var board = new Board();
                     board.SetPosition(FenTranslator.ToBoardState(position.FenPosition));
 
