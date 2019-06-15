@@ -199,12 +199,7 @@ namespace ChessEngine.MoveSearching
         private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, List<PieceMoves> pvPath)
         {
             var pvPosition = pvPath.Count;
-
-            //if (depthLeft == 1)
-            //{
-            //    pvPath.Add(new PieceMoves()); //reserve this position for this depth
-            //}
-
+            
             var positionValue = decimal.MinValue / 2 + 1;
 
             PieceMoves? bestHashMove = null;
@@ -257,14 +252,15 @@ namespace ChessEngine.MoveSearching
             if (depthLeft == 0)
             {
                 //return Evaluate(m_BoardPosition);
-                return QuiescenceEvaluate(alpha, beta);
+                return QuiescenceEvaluate(alpha, beta, pvPath);
             }
 
             // Null move check 
             if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.MoveColour))
             {
                 m_BoardPosition.SwitchSides();
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR, allowNull: false, new List<PieceMoves>()); //We don't care about the PV path. Maybe we should implement this differently
+                //We don't care about the PV path. Maybe we should implement this differently
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR, allowNull: false, new List<PieceMoves>());
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -291,7 +287,8 @@ namespace ChessEngine.MoveSearching
                 m_BestMoveSoFar = null;
 
                 //Call this just to get the best move
-                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: true, new List<PieceMoves>()); //We don't care about the PV path. Maybe we should implement this differently
+                //We don't care about the PV path. Maybe we should implement this differently
+                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: true, new List<PieceMoves>()); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -477,8 +474,10 @@ namespace ChessEngine.MoveSearching
 
         // Keep examining down the tree until all moves are quiet.
         // Quiet moves are ones without captures
-        private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
+        private decimal QuiescenceEvaluate(decimal alpha, decimal beta, List<PieceMoves> pvPath)
         {
+            var pvPosition = pvPath.Count;
+
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
 
@@ -534,7 +533,9 @@ namespace ChessEngine.MoveSearching
             {
                 m_BoardPosition.MakeMove(move, false);
 
-                evaluationScore = -QuiescenceEvaluate(-beta, -alpha);
+                var bestPath = new List<PieceMoves>();
+
+                evaluationScore = -QuiescenceEvaluate(-beta, -alpha, bestPath);
 
                 m_BoardPosition.UnMakeLastMove();
 
@@ -548,6 +549,10 @@ namespace ChessEngine.MoveSearching
                 if (evaluationScore > alpha)
                 {
                     alpha = evaluationScore;
+                    
+                    pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
+                    pvPath.Add(move);
+                    pvPath.AddRange(bestPath);
                 }
             }
 
@@ -567,7 +572,7 @@ namespace ChessEngine.MoveSearching
                            Key      = m_BoardPosition.Zobrist,
                            NodeType = hashNodeType,
                            Score    = evaluationScore
-            };
+                       };
 
             TranspositionTable.AddQuiescenceHash(hash);
         }
