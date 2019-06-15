@@ -657,10 +657,15 @@ namespace ChessEngine.ScoreCalculation
 
             whiteAttackBoard |= whiteKnightPossibleMoves & m_CurrentBoard.AllBlackOccupiedSquares;
 
+            // Points for every attack on a more valuable piece
+            attackScore += BitboardOperations.GetPopCount(
+                whiteKnightPossibleMoves & (m_CurrentBoard.BlackQueen | m_CurrentBoard.BlackRooks)) * MoreValuablePieceAttackBonus;
+
             //Pawns
-            var whitePawnPossibleAttackMoves =
-                BoardChecking.CalculateAllowedUpLeftMoves(m_CurrentBoard, m_CurrentBoard.WhitePawns, PieceColour.White)
-              | BoardChecking.CalculateAllowedUpRightMoves(m_CurrentBoard, m_CurrentBoard.WhitePawns, PieceColour.White);
+            const ulong notA = 18374403900871474942;
+            const ulong notH = 9187201950435737471;
+
+            var whitePawnPossibleAttackMoves = ((m_CurrentBoard.WhitePawns << 9) & notA) | ((m_CurrentBoard.WhitePawns << 7) & notH);
 
             if (whitePawnPossibleAttackMoves > 0)
             {
@@ -758,15 +763,13 @@ namespace ChessEngine.ScoreCalculation
                 blackKnightPossibleMoves & (m_CurrentBoard.WhiteQueen | m_CurrentBoard.WhiteRooks)) * MoreValuablePieceAttackBonus;
 
             //Pawns
-            var blackPawnPossibleAttackMoves =
-                BoardChecking.CalculateAllowedDownLeftMoves(m_CurrentBoard, m_CurrentBoard.BlackPawns, PieceColour.Black)
-              | BoardChecking.CalculateAllowedDownRightMoves(m_CurrentBoard, m_CurrentBoard.BlackPawns, PieceColour.Black);
+            var blackPawnPossibleAttackMoves = ((m_CurrentBoard.BlackPawns >> 7) & notA) | ((m_CurrentBoard.BlackPawns >> 7) & notH);
 
             if (blackPawnPossibleAttackMoves > 0)
             {
                 // There is no bonus for pawn coverage, just pawn attacks
                 // Add points for every attack on a more valuable piece
-                attackScore += BitboardOperations.GetPopCount(
+                attackScore -= BitboardOperations.GetPopCount(
                     blackPawnPossibleAttackMoves &
                         (m_CurrentBoard.WhiteQueen | m_CurrentBoard.WhiteRooks | m_CurrentBoard.WhiteBishops | m_CurrentBoard.WhiteKnights))
                     * MoreValuablePieceAttackBonus;

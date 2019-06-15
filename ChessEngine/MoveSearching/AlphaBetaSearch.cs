@@ -312,13 +312,13 @@ namespace ChessEngine.MoveSearching
 
                 m_BoardPosition.MakeMove(move, false);
 
-                //// Futility pruning
+                // Futility pruning
                 //if (depthLeft == 1 &&
                 //    move.SpecialMove != SpecialMoveType.Capture &&
                 //    move.SpecialMove != SpecialMoveType.ENPassantCapture &&
                 //    !IsPromotionCapture(move.SpecialMove))
                 //{
-                //    if (Evaluate(m_BoardPosition) + 4 < alpha)
+                //    if (Evaluate(m_BoardPosition) + 1.25m < alpha)
                 //    {
                 //        continue;
                 //    }
