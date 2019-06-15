@@ -40,55 +40,6 @@ namespace EngineEvaluation
             }
         }
 
-        public void EvaluateTestPositions(int depth)
-        {
-            //LogLine("Evaluating Test position performance");
-            //LogLine("");
-             
-            //LogLine("Bratko Kopec Positions");
-            //LogLine("");
-            //EvaluatePositions(bratkoKopecPositions, depth);
-             
-            //LogLine("Kaufman Positions");
-            //LogLine(""); 
-            //EvaluatePositions(kaufmanPositions, depth);
-
-             //foreach (TestPosition testPos in testPositions)
-             //{
-             //    LogLine("--------------------------------------------");
-             //    LogLine(testPos.Name);
-             //    LogLine(testPos.FenPosition);
-
-             //    for (int i = minDepth; i <= maxDepth; i++)
-             //    {
-             //        //LogLine("--------------------------------------------");
-             //        //LogLine("");
-             //        //LogLine(string.Format("Depth:{0}", i));
-             //        //LogLine("");
-             //        EvaluatePosition(testPos, i);
-
-             //    }
-             //}                
-        }
-
-        //private void EvaluatePositions(List<TestPosition> testPositions, int depth)
-        //{
-        //    var passed = 0;
-
-        //    foreach (var testPos in testPositions)
-        //    {
-        //        LogLine("--------------------------------------------");
-        //        LogLine(testPos.Name);
-        //        LogLine(testPos.FenPosition);
-
-        //        if (EvaluatePosition(testPos, depth))
-        //            passed++;
-        //    }
-
-        //    LogLine(string.Format("Passed:{0}/{1}", passed, testPositions.Count));
-            
-        //}
-
         private bool EvaluatePosition(TestPosition testPos, int depth)
         {
             CountDebugger.ClearAll();

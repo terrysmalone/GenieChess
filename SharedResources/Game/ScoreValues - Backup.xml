@@ -56,5 +56,6 @@
   <BishopCoverageBonus>0.1</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
 
   <AttackBonus>0.1</AttackBonus> <!-- Bonus for every attack on an enemy piece-->
-  <MoreValuablePieceAttackBonus>0.2</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece--> 
+  <MoreValuablePieceAttackBonus>0.1</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece-->
+
 </ScoreSet>
