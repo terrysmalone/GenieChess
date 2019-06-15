@@ -22,14 +22,16 @@ namespace EngineEvaluation
         {
             var logFolder = CreateAndGetLogFolder();
 
-            var highlightsLogFile = CreateAndGetLogFile(logFolder, "01 - Overview.txt");
+            var timeStamp = Path.GetFileNameWithoutExtension(logFolder);
+
+            var highlightsLogFile = CreateAndGetLogFile(logFolder, $"01 - Overview - {timeStamp}.txt");
 
             var evaluators = new List<IEvaluator>();
 
             // PerfTEvaluator
             if (evaluatePerfTPositions)
             {
-                var perfTLogFile = CreateAndGetLogFile(logFolder, "02 - PerfTEvaluator.txt");
+                var perfTLogFile = CreateAndGetLogFile(logFolder, $"02 - PerfTEvaluator - {timeStamp}.txt");
 
                 var perfTPositions = m_ResourceLoader.LoadPerfTPositions();
 
@@ -40,9 +42,9 @@ namespace EngineEvaluation
             // Test position evaluator
             if (evaluateTestSuitePositions)
             {
-                var testPosLogFile = CreateAndGetLogFile(logFolder, "03 - TestPositionsEvaluator.txt");
+                var testPosLogFile = CreateAndGetLogFile(logFolder, $"03 - TestPositionsEvaluator - {timeStamp}.txt");
 
-                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, "03b - TestPositionsEvaluator.xlsx");
+                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"03b - TestPositionsEvaluator - {timeStamp}.xlsx");
 
                 var testPositions = InitialiseTestPositions(runFullTestSuiteEvaluation);
 
