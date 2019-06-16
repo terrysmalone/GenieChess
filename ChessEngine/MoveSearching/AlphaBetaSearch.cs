@@ -260,7 +260,7 @@ namespace ChessEngine.MoveSearching
             {
                 m_BoardPosition.SwitchSides();
                 //We don't care about the PV path. Maybe we should implement this differently
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR, allowNull: false, new List<PieceMoves>());
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR - 1, allowNull: false, new List<PieceMoves>());
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -288,7 +288,7 @@ namespace ChessEngine.MoveSearching
 
                 //Call this just to get the best move
                 //We don't care about the PV path. Maybe we should implement this differently
-                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: true, new List<PieceMoves>()); 
+                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: false, new List<PieceMoves>()); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -467,8 +467,6 @@ namespace ChessEngine.MoveSearching
                 score = -m_ScoreCalculator.CalculateScore(boardPosition);
             }
 
-            RecordHash(0, score, HashNodeType.Exact);
-
             return score;
         }
 
@@ -531,6 +529,8 @@ namespace ChessEngine.MoveSearching
 
             foreach (var move in moves)
             {
+                pvPath.Add(move);
+
                 m_BoardPosition.MakeMove(move, false);
 
                 var bestPath = new List<PieceMoves>();
@@ -546,7 +546,8 @@ namespace ChessEngine.MoveSearching
                     return beta;
                 }
 
-                if (evaluationScore > alpha)
+                // This should actually be evaluationScore > alpha but we want this there to show the best path
+                if (evaluationScore >= alpha)
                 {
                     alpha = evaluationScore;
                     
