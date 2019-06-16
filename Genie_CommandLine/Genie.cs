@@ -30,10 +30,16 @@ namespace Genie_CommandLine
 
             m_Game = chessGameFactory.CreateChessGame(useOpeningBook);
 
-            m_Game.ThinkingDepth = 6;
+            m_Game.ThinkingDepth = 2;
 
-            m_Game.InitaliseStartingPosition();
-            
+            //m_Game.SetFENPosition("5r1k/8/8/R4b2/3N3P/6BK/6RR/8 w - - 0 1");
+            //m_Game.SetFENPosition("r1bqkb1r/pppp1ppp/2n1pn2/8/2B5/4PN2/PPPP1PPP/RNBQK2R w KQkq - 4 4");
+            //m_Game.SetFENPosition("4k3/4q3/4r3/4r3/4Q3/4R3/4R3/4K3 w - - 0 1"); //with depth 3 it should use check extensions to make the capture
+           // m_Game.SetFENPosition("3k4/3r4/3r4/8/3Q4/3R4/8/3K4 w - - 0 1"); //with depth 2 it should use check extensions to make the capture
+            m_Game.SetFENPosition("8/1n2k3/5q2/4N3/4p3/1QN5/3KR3/8 b - - 0 1"); 
+
+            //m_Game.InitaliseStartingPosition();
+
             CountDebugger.ClearAll();
             
             while (true)

@@ -264,5 +264,85 @@ namespace ChessEngineTests
 
             Assert.AreNotEqual("e1g1", move);
         }
+
+        #region Quiescence search checks
+
+        // If we search this position to a shallow depth of 2 it looks like white would lose the exchange
+        // The quiescence search should broaden the search to show that white easily wins
+        [TestMethod]
+        public void QuiescenceCausesWhiteToCapture()
+        {
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            game.ClearBoard();
+            game.SetFENPosition("3k4/3r4/3r4/8/3Q4/3R4/8/3K4 w - - 0 1");
+
+            game.ThinkingDepth = 2;
+
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
+
+            Assert.AreEqual("d4d6", move);
+        }
+
+        // At a depth of 2 this moe seems like white would win from the capture but the 
+        // quiescence should show otherwise
+        [TestMethod]
+        public void QuiescenceStopsWhiteFromCapturing()
+        {
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            game.ClearBoard();
+            game.SetFENPosition("8/8/3k4/3r4/3P4/8/3n1Q2/3K4 w - - 0 1");
+
+            game.ThinkingDepth = 2;
+
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
+
+            Assert.AreNotEqual("f2d2", move);
+
+        }
+
+        // If we search this position to a shallow depth of 2 it looks like black would lose the exchange
+        // The quiescence search should broaden the search to show that black easily wins
+        [TestMethod]
+        public void QuiescenceCausesBlackToCapture()
+        {
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            game.ClearBoard();
+            game.SetFENPosition("7k/6bp/5q2/8/3R4/8/1Q6/K7 b - - 0 1");
+
+            game.ThinkingDepth = 2;
+
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
+
+            Assert.AreEqual("f6d4", move);
+        }
+
+        // At a depth of 2 this move seems like black would win from the capture but the 
+        // quiescence should show otherwise
+        [TestMethod]
+        public void QuiescenceStopsBlackFromCapturing()
+        {
+            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            game.ClearBoard();
+            game.SetFENPosition("5n2/4k3/5q2/4N3/4p3/1QN5/3KR3/8 b - - 0 1");
+
+            game.ThinkingDepth = 2;
+
+            var move = UciMoveTranslator.ToUciMove(game.GetBestMove());
+
+            Assert.AreNotEqual("f6e5", move);
+
+        }
+
+        #endregion Quiescence search checks
     }
+
+
 }

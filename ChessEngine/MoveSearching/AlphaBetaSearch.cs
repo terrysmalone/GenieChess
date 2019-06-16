@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using ChessEngine.BoardRepresentation;
@@ -103,11 +104,10 @@ namespace ChessEngine.MoveSearching
 #endif
 
 #if Debug
-                LogKillerMoves(m_KillerMoves);
+                //LogKillerMoves(m_KillerMoves);
 #endif
-
                 s_Log.Info($"Move info: {UciMoveTranslator.ToUciMove(moveValueInfo.Move)} - " +
-                           $"score: {moveValueInfo.Score} - " +
+                           $"score: {GetScoreString(moveValueInfo.Score, m_BoardPosition.WhiteToMove)} - " +
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
                            $"Accumulated move time: {moveValueInfo.AccumulatedTime:mm\':\'ss\':\'ffff}");
@@ -160,17 +160,19 @@ namespace ChessEngine.MoveSearching
             s_Log.Info($"Moves to Check: {moveList.Count}");
             s_Log.Info("Shown in order checked");
 #endif
-
+            
             foreach (var move in moveList)
             {
 #if UCI
                 Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(moveList[i])} currmovenumber {i + 1}");
 #endif
 
+                var movePath = new List<PieceMoves>();
+
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, movePath);
 
                 if (score > bestScore)
                 {
@@ -178,20 +180,26 @@ namespace ChessEngine.MoveSearching
                     bestScore = score;
                 }
 
-#if Debug
-                s_Log.Info($"Move: {UciMoveTranslator.ToUciMove(move)} - Score: {score}");
-#endif
-
                 m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, move));
 
                 m_BoardPosition.UnMakeLastMove();
+
+#if Debug
+                
+                //Print move path
+                s_Log.Info($"Move: {UciMoveTranslator.ToUciMove(move)} - " +
+                           $"Score: {GetScoreString(score, m_BoardPosition.WhiteToMove)} - " +
+                           $"Best path: { string.Join(", ", movePath.Select(UciMoveTranslator.ToUciMove)) }");
+#endif
             }
 
             return bestMove;
         }
 
-        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull)
+        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, List<PieceMoves> pvPath)
         {
+            var pvPosition = pvPath.Count;
+            
             var positionValue = decimal.MinValue / 2 + 1;
 
             PieceMoves? bestHashMove = null;
@@ -211,6 +219,13 @@ namespace ChessEngine.MoveSearching
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
+                        //if (bestHashMove != null)
+                        //{
+                        //    pvPath.RemoveAt(pvPosition);
+                        //    pvPath.Insert(pvPosition, (PieceMoves) bestHashMove);
+                       
+                        //}
+
                         return transpositionScore;
                     case HashNodeType.LowerBound:
                         alpha = Math.Max(alpha, transpositionScore);
@@ -224,6 +239,12 @@ namespace ChessEngine.MoveSearching
 
                 if (alpha >= beta)
                 {
+                    //if (bestHashMove != null)
+                    //{
+                    //    pvPath.RemoveAt(pvPosition);
+                    //    pvPath.Insert(pvPosition, (PieceMoves) bestHashMove);
+                    //}
+
                     return transpositionScore;
                 }
             }
@@ -231,14 +252,15 @@ namespace ChessEngine.MoveSearching
             if (depthLeft == 0)
             {
                 //return Evaluate(m_BoardPosition);
-                return QuiescenceEvaluate(alpha, beta);
+                return QuiescenceEvaluate(alpha, beta, pvPath);
             }
 
             // Null move check 
             if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.MoveColour))
             {
                 m_BoardPosition.SwitchSides();
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR, allowNull: false);
+                //We don't care about the PV path. Maybe we should implement this differently
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR - 1, allowNull: false, new List<PieceMoves>());
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -265,7 +287,8 @@ namespace ChessEngine.MoveSearching
                 m_BestMoveSoFar = null;
 
                 //Call this just to get the best move
-                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: true);
+                //We don't care about the PV path. Maybe we should implement this differently
+                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: false, new List<PieceMoves>()); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -332,7 +355,9 @@ namespace ChessEngine.MoveSearching
                     continue;
                 }
 
-                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true);
+                var bestPath = new List<PieceMoves>();
+
+                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath);
 
                 noMovesAnalysed = false;
 
@@ -345,6 +370,18 @@ namespace ChessEngine.MoveSearching
                     bestScoreSoFar = score;
 
                     m_BestMoveSoFar = move;
+
+                    if (depthLeft == 1)
+                    {
+                        pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
+                        pvPath.Add(move);
+                    }
+                    else
+                    {
+                        pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
+                        pvPath.Add(move);
+                        pvPath.AddRange(bestPath);
+                    }
                 }
 
                 positionValue = Math.Max(alpha, score);
@@ -393,7 +430,7 @@ namespace ChessEngine.MoveSearching
                                                       : HashNodeType.Exact;
 
             RecordHash(depthLeft, positionValue, hashNodeType, bestMoveSoFar);
-           
+
             return positionValue;
         }
 
@@ -430,15 +467,15 @@ namespace ChessEngine.MoveSearching
                 score = -m_ScoreCalculator.CalculateScore(boardPosition);
             }
 
-            RecordHash(0, score, HashNodeType.Exact);
-
             return score;
         }
 
         // Keep examining down the tree until all moves are quiet.
         // Quiet moves are ones without captures
-        private decimal QuiescenceEvaluate(decimal alpha, decimal beta)
+        private decimal QuiescenceEvaluate(decimal alpha, decimal beta, List<PieceMoves> pvPath)
         {
+            var pvPosition = pvPath.Count;
+
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
 
@@ -492,9 +529,13 @@ namespace ChessEngine.MoveSearching
 
             foreach (var move in moves)
             {
+                pvPath.Add(move);
+
                 m_BoardPosition.MakeMove(move, false);
 
-                evaluationScore = -QuiescenceEvaluate(-beta, -alpha);
+                var bestPath = new List<PieceMoves>();
+
+                evaluationScore = -QuiescenceEvaluate(-beta, -alpha, bestPath);
 
                 m_BoardPosition.UnMakeLastMove();
 
@@ -505,9 +546,14 @@ namespace ChessEngine.MoveSearching
                     return beta;
                 }
 
-                if (evaluationScore > alpha)
+                // This should actually be evaluationScore > alpha but we want this there to show the best path
+                if (evaluationScore >= alpha)
                 {
                     alpha = evaluationScore;
+                    
+                    pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
+                    pvPath.Add(move);
+                    pvPath.AddRange(bestPath);
                 }
             }
 
@@ -527,7 +573,7 @@ namespace ChessEngine.MoveSearching
                            Key      = m_BoardPosition.Zobrist,
                            NodeType = hashNodeType,
                            Score    = evaluationScore
-            };
+                       };
 
             TranspositionTable.AddQuiescenceHash(hash);
         }
@@ -736,7 +782,7 @@ namespace ChessEngine.MoveSearching
 
             if (isInCheck)
             {
-                return decimal.MinValue / 2 + (100000 * movesToEnd); // Player is in checkmate
+                return decimal.MinValue / 2 + movesToEnd; // Player is in checkmate
             }
             else
             {
@@ -784,6 +830,32 @@ namespace ChessEngine.MoveSearching
             }
 
             s_Log.Info("----------------------------------------------------------------------------------");
+        }
+
+        private static string GetScoreString(decimal score, bool whiteToMove)
+        {
+            //We try to maximise the scores so for display purposes negate them for black
+            if (!whiteToMove)
+            {
+                score = -score;
+            }
+
+            var scoreString = score.ToString(CultureInfo.InvariantCulture);
+
+            if (score > decimal.MaxValue / 3)
+            {
+                var movesToMate = ((decimal.MaxValue / 2) - score) / 2;
+
+                scoreString = $"+M{movesToMate}";
+            }
+            else if (score < decimal.MinValue / 3)
+            {
+                var movesToMate = Math.Abs((decimal.MinValue / 2 - score) / 2);
+
+                scoreString = $"-M{movesToMate}";
+            }
+
+            return scoreString;
         }
 
         public List<MoveValueInfo> GetMoveValueInfo()

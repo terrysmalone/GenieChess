@@ -22,14 +22,16 @@ namespace EngineEvaluation
         {
             var logFolder = CreateAndGetLogFolder();
 
-            var highlightsLogFile = CreateAndGetLogFile(logFolder, "01 - Overview.txt");
+            var timeStamp = Path.GetFileNameWithoutExtension(logFolder);
+
+            var highlightsLogFile = CreateAndGetLogFile(logFolder, $"01 - Overview - {timeStamp}.txt");
 
             var evaluators = new List<IEvaluator>();
 
             // PerfTEvaluator
             if (evaluatePerfTPositions)
             {
-                var perfTLogFile = CreateAndGetLogFile(logFolder, "02 - PerfTEvaluator.txt");
+                var perfTLogFile = CreateAndGetLogFile(logFolder, $"02 - PerfTEvaluator - {timeStamp}.txt");
 
                 var perfTPositions = m_ResourceLoader.LoadPerfTPositions();
 
@@ -40,36 +42,36 @@ namespace EngineEvaluation
             // Test position evaluator
             if (evaluateTestSuitePositions)
             {
-                var testPosLogFile = CreateAndGetLogFile(logFolder, "03 - TestPositionsEvaluator.txt");
+                var testPosLogFile = CreateAndGetLogFile(logFolder, $"03 - TestPositionsEvaluator - {timeStamp}.txt");
 
-                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, "03b - TestPositionsEvaluator.xlsx");
+                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"03b - TestPositionsEvaluator - {timeStamp}.xlsx");
 
                 var testPositions = InitialiseTestPositions(runFullTestSuiteEvaluation);
 
                 //var chosenTest = testPositions.Where(ts => ts.Item2.Where(t => t.Name == "BK.02"));
 
-                TestPosition chosenTest = new TestPosition();
+                //TestPosition chosenTest = new TestPosition();
 
                 // Run specific test
-                foreach (var testSuite in testPositions)
-                {
-                    foreach (var testPosition in testSuite.Item2)
-                    {
-                        if (testPosition.Name == "BK.06")
-                        {
-                            chosenTest = testPosition;
-                        }
-                    }
-                }
+                //foreach (var testSuite in testPositions)
+                //{
+                //    foreach (var testPosition in testSuite.Item2)
+                //    {
+                //        if (testPosition.Name == "BK.06")
+                //        {
+                //            chosenTest = testPosition;
+                //        }
+                //    }
+                //}
 
-                var testes = new List<Tuple<string, List<TestPosition>>>
-                    {new Tuple<string, List<TestPosition>>("Chosen", new List<TestPosition> {chosenTest})};
-
-                var testPositionsEvaluator =
-                    new TestPositionsEvaluator(testes, highlightsLogFile, testPosLogFile, testExcelLogFile);
+                //var testes = new List<Tuple<string, List<TestPosition>>>
+                //    {new Tuple<string, List<TestPosition>>("Chosen", new List<TestPosition> {chosenTest})};
 
                 //var testPositionsEvaluator =
-                //    new TestPositionsEvaluator(testPositions, highlightsLogFile, testPosLogFile, testExcelLogFile);
+                //    new TestPositionsEvaluator(testes, highlightsLogFile, testPosLogFile, testExcelLogFile);
+
+                var testPositionsEvaluator =
+                    new TestPositionsEvaluator(testPositions, highlightsLogFile, testPosLogFile, testExcelLogFile);
 
                 evaluators.Add(testPositionsEvaluator);
             }
