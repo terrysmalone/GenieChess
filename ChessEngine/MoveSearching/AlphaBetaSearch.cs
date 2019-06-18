@@ -256,7 +256,7 @@ namespace ChessEngine.MoveSearching
             }
 
             // Null move check 
-            if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.MoveColour))
+            if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
             {
                 m_BoardPosition.SwitchSides();
                 //We don't care about the PV path. Maybe we should implement this differently
@@ -311,7 +311,7 @@ namespace ChessEngine.MoveSearching
             // Check the colour before moving since it's this colour king we have to check for 
             // legal move generation.
             // Plus, we only have to do it once for all moves.
-            var colourToMove = m_BoardPosition.MoveColour;
+            var colourToMove = m_BoardPosition.WhiteToMove;
 
             var noMovesAnalysed = true;
             
@@ -777,8 +777,7 @@ namespace ChessEngine.MoveSearching
 
             bool isInCheck;
 
-            isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove ? PieceColour.White
-                                                                                                 : PieceColour.Black);
+            isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove);
 
             if (isInCheck)
             {

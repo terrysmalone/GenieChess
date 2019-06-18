@@ -36,12 +36,9 @@ namespace ChessEngine.MoveSearching
             
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
-            PieceColour colour;
 
-            if (m_BoardPosition.WhiteToMove)
-                colour = PieceColour.White;
-            else
-                colour = PieceColour.Black;
+            var isWhite = m_BoardPosition.WhiteToMove;
+
 
             for (var i = 0; i < moveList.Count; i++)
             {
@@ -49,12 +46,8 @@ namespace ChessEngine.MoveSearching
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    var friendlyColour = PieceColour.White;
-
-                    if(m_BoardPosition.WhiteToMove == false)
-                        friendlyColour = PieceColour.Black;
-
-                    if (BoardChecking.IsKingInCheck(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove) 
+                        || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }
@@ -66,7 +59,7 @@ namespace ChessEngine.MoveSearching
 
                     if (MoveGeneration.ValidateMove(m_BoardPosition))
                     {
-                        if (colour == PieceColour.White)
+                        if (isWhite)
                             m_Score = -Calculate(depth - 1, false);
                         else
                             m_Score = -Calculate(depth - 1, true);

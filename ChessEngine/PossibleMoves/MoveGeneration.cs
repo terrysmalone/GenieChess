@@ -15,8 +15,6 @@ namespace ChessEngine.PossibleMoves
 
         private static List<PieceMoves> m_AllMoves;
 
-        private static PieceColour m_FriendlyColour = PieceColour.White; //These are swapped at the end of every turn
-
         private static int _checkCount; //Used to find if king is in double check
 
         #region Calculate moves methods
@@ -58,9 +56,7 @@ namespace ChessEngine.PossibleMoves
             m_CurrentBoard = board;
             m_CurrentBoard.CalculateUsefulBitboards();
 
-            m_FriendlyColour = m_CurrentBoard.WhiteToMove ? PieceColour.White : PieceColour.Black;
-
-            if (m_FriendlyColour == PieceColour.White)
+            if (m_CurrentBoard.WhiteToMove)
             {
                 CalculateWhiteKnightMoves(capturesOnly: false);
 
@@ -112,9 +108,7 @@ namespace ChessEngine.PossibleMoves
             m_CurrentBoard = board;
             m_CurrentBoard.CalculateUsefulBitboards();
 
-            m_FriendlyColour = m_CurrentBoard.WhiteToMove ? PieceColour.White : PieceColour.Black;
-
-            if (m_FriendlyColour == PieceColour.White)
+            if (m_CurrentBoard.WhiteToMove)
             {
                 CalculateWhiteKnightMoves(capturesOnly: true);
 
@@ -163,6 +157,8 @@ namespace ChessEngine.PossibleMoves
         /// </summary>
         private static void RemoveSelfCheckingMoves()
         {
+            var whiteToCheck = m_CurrentBoard.WhiteToMove;
+
             //Search backwards so we can remove moves and carry on
             for (var i = m_AllMoves.Count - 1; i >= 0; i--)
             {
@@ -171,7 +167,7 @@ namespace ChessEngine.PossibleMoves
                 m_CurrentBoard.MakeMove(currentMove.Position, currentMove.Moves, currentMove.Type,
                                         currentMove.SpecialMove, false);
 
-                if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_FriendlyColour))
+                if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
                 {
                     m_AllMoves.RemoveAt(i);
                 }
@@ -190,7 +186,7 @@ namespace ChessEngine.PossibleMoves
                 if (currentMove.SpecialMove == SpecialMoveType.KingCastle
                  || currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_FriendlyColour))
+                    if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
                     {
                         m_AllMoves.RemoveAt(i);
                     }
@@ -210,17 +206,8 @@ namespace ChessEngine.PossibleMoves
         public static bool ValidateMove(IBoard board)
         {
             bool valid;
-
-            PieceColour colourToCheck;
-
-            if (board.WhiteToMove)
-            {
-                colourToCheck = PieceColour.Black;
-            }
-            else
-                colourToCheck = PieceColour.White;
-
-            if (BoardChecking.IsKingInCheck(board, colourToCheck))
+            
+            if (BoardChecking.IsKingInCheck(board, !board.WhiteToMove))
                 valid = false;
             else
                 valid = true;
@@ -239,12 +226,12 @@ namespace ChessEngine.PossibleMoves
             {
                 if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, PieceColour.White))
+                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, whiteToMove: true))
                         return false;
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, PieceColour.White))
+                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, whiteToMove: true))
                         return false;
                 }
             }
@@ -252,12 +239,12 @@ namespace ChessEngine.PossibleMoves
             {
                 if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, PieceColour.Black))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, whiteToMove: false))
                         return false;
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, PieceColour.Black))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, whiteToMove: false))
                         return false;
                 }
             }
@@ -720,7 +707,7 @@ namespace ChessEngine.PossibleMoves
                 var bishopPosition = LookupTables.SquareValuesFromIndex[bishopIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, bishopIndex, m_FriendlyColour);
+                    BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, bishopIndex, m_CurrentBoard.WhiteToMove);
 
                 var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, bishopPosition, PieceType.Bishop, SpecialMoveType.Capture);
@@ -762,7 +749,7 @@ namespace ChessEngine.PossibleMoves
                 var rookPosition = LookupTables.SquareValuesFromIndex[rookIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, rookIndex, m_FriendlyColour);
+                    BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, rookIndex, m_CurrentBoard.WhiteToMove);
 
                 var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, rookPosition, PieceType.Rook, SpecialMoveType.Capture);
@@ -793,7 +780,7 @@ namespace ChessEngine.PossibleMoves
                 var piecePosition = LookupTables.SquareValuesFromIndex[pieceIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, pieceIndex, m_FriendlyColour);
+                    BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, pieceIndex, m_CurrentBoard.WhiteToMove);
 
                 var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, piecePosition, pieceType, SpecialMoveType.Capture);
@@ -982,26 +969,20 @@ namespace ChessEngine.PossibleMoves
         /// <param name="squarePositionBoard"></param>
         /// <param name="friendlyColour"></param>
         /// <returns></returns>
-        private static bool IsSquareAttacked(ulong squarePositionBoard, PieceColour friendlyColour)
+        private static bool IsSquareAttacked(ulong squarePositionBoard, bool whiteToMove)
         {
-            var squareAttacked = false;
+            bool squareAttacked = IsPawnAttackingSquare(squarePositionBoard, whiteToMove);
 
-            if (IsPawnAttackingSquare(squarePositionBoard, friendlyColour))
-            {
-                squareAttacked = true;
-                //pawnCheck = true;
-            }
-
-            if (IsKnightAttackingSquare(squarePositionBoard, friendlyColour))
+            if (IsKnightAttackingSquare(squarePositionBoard, whiteToMove))
             {
                 squareAttacked = true;
                 //knightCheck = true;
             }
 
-            if (IsSquareUnderRayAttack(squarePositionBoard, friendlyColour))
+            if (IsSquareUnderRayAttack(squarePositionBoard, whiteToMove))
                 squareAttacked = true;
 
-            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePositionBoard, friendlyColour))
+            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePositionBoard, m_CurrentBoard.WhiteToMove))
                 squareAttacked = true;
 
             if (squareAttacked)
@@ -1016,7 +997,7 @@ namespace ChessEngine.PossibleMoves
         /// <param name="squarePositionBoard"></param>
         /// <param name="friendlyColour"></param>
         /// <returns></returns>
-        private static bool IsSquareUnderRayAttack(ulong squarePositionBoard, PieceColour friendlyColour)
+        private static bool IsSquareUnderRayAttack(ulong squarePositionBoard, bool whiteToMove)
         {
             var underRayAttack = false;
 
@@ -1024,7 +1005,7 @@ namespace ChessEngine.PossibleMoves
             ulong enemyBishopSquares;
             ulong enemyRookSquares;
 
-            if (friendlyColour == PieceColour.White)
+            if (whiteToMove)
             {
                 enemyQueenSquares  = m_CurrentBoard.BlackQueen;
                 enemyBishopSquares = m_CurrentBoard.BlackBishops;
@@ -1118,12 +1099,12 @@ namespace ChessEngine.PossibleMoves
         /// Checks if pawn is attacking square. There is no need to check all pawns for double-check 
         /// since only one pawn can be attacking the king at once
         /// </summary>
-        private static bool IsPawnAttackingSquare(ulong squarePosition, PieceColour friendlyColour)
+        private static bool IsPawnAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             var squareIndex    = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
             var proximityBoard = ValidMoveArrays.KingMoves[squareIndex]; //Allows the quick masking of wrapping checks
 
-            if (friendlyColour == PieceColour.White)
+            if (whiteToMove)
             {
                 //Check up-right
                 var upRight = squarePosition << 9;
@@ -1171,11 +1152,11 @@ namespace ChessEngine.PossibleMoves
         /// Checks if a knight is attacking square. There is no need to check all knights for double-check 
         /// since only one knight can be attacking the king at once
         /// </summary>
-        private static bool IsKnightAttackingSquare(ulong squarePosition, PieceColour friendlyColour)
+        private static bool IsKnightAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             ulong knights;
 
-            if (friendlyColour == PieceColour.White)
+            if (whiteToMove)
                 knights = m_CurrentBoard.BlackKnights;
             else
                 knights = m_CurrentBoard.WhiteKnights;
@@ -1196,14 +1177,14 @@ namespace ChessEngine.PossibleMoves
 
         #region Castling attacks
 
-        private static bool IsCastlingPathAttacked(ulong path, PieceColour friendlyColour)
+        private static bool IsCastlingPathAttacked(ulong path, bool whiteToMove)
         {
             //Calculate path positions
             var pathPositions = BitboardOperations.SplitBoardToArray(path);
 
             foreach (var position in pathPositions)
             {
-                if (IsCastlingSquareAttacked(position, friendlyColour))
+                if (IsCastlingSquareAttacked(position, whiteToMove))
                     return true;
             }
 
@@ -1214,18 +1195,18 @@ namespace ChessEngine.PossibleMoves
         /// Checks if the given square is under attack on the current bitboard
         /// </summary>
         /// <param name="positionBitboard"></param>
-        private static bool IsCastlingSquareAttacked(ulong squarePosition, PieceColour friendlyColour)
+        private static bool IsCastlingSquareAttacked(ulong squarePosition, bool whiteToMove)
         {
-            if (IsKnightAttackingSquare(squarePosition, friendlyColour))
+            if (IsKnightAttackingSquare(squarePosition, whiteToMove))
                 return true;
 
-            if (IsPawnAttackingSquare(squarePosition, friendlyColour))
+            if (IsPawnAttackingSquare(squarePosition, whiteToMove))
                 return true;
 
-            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePosition, friendlyColour))
+            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePosition, whiteToMove))
                 return true;
 
-            if (friendlyColour == PieceColour.White)
+            if (whiteToMove)
             {
                 if (BoardChecking.IsSquareRayAttackedFromAbove(m_CurrentBoard, squarePosition) ||
                     BoardChecking.IsSquareRayAttackedFromTheSide(m_CurrentBoard, squarePosition)

@@ -47,12 +47,8 @@ namespace ChessEngineTests
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    var friendlyColour = PieceColour.White;
-
-                    if(boardPosition.WhiteToMove == false)
-                        friendlyColour = PieceColour.Black;
-
-                    if (BoardChecking.IsKingInCheck(boardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
+                        || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }

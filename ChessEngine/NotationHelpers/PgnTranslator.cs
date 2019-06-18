@@ -119,27 +119,12 @@ namespace ChessEngine.NotationHelpers
                 if (movedPiece != pieceToMove)
                     move += "=" + TranslationHelper.GetPieceLetter(pieceToMove, moveToBoard);
 
-                //Check for check and mate "+"
-                PieceColour movingColour;
-                PieceColour colour;
-
-                if (board.WhiteToMove)
-                {
-                    movingColour = PieceColour.White;
-                    colour = PieceColour.Black;
-                }
-                else
-                {
-                    movingColour = PieceColour.Black;                    
-                    colour = PieceColour.White;
-                }
-                
-                //Move piece to test for check                
+               //Move piece to test for check                
                 
                 //board.RemovePiece(moveFromBoard);
                 //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
                 board.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
-                if (BoardChecking.IsKingInCheck(board, colour))
+                if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
                     move += "+";
                 
                 board.UnMakeLastMove();

@@ -117,9 +117,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 1;
 
@@ -142,9 +142,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -166,9 +166,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 6;
 
@@ -261,9 +261,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 1;
 
@@ -286,9 +286,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -310,9 +310,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 6;
 
@@ -406,9 +406,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 1;
             
@@ -431,9 +431,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -456,9 +456,9 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 3, 4);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 7, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
+            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
 
             game.ThinkingDepth = 6;
             
@@ -555,17 +555,17 @@ namespace ChessEngineTests
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, PieceColour.White, 4, 0);
-            game.PlacePiece(PieceType.King, PieceColour.Black, 4, 7);
+            game.PlacePiece(PieceType.King, pieceColour: true, 4, 0);
+            game.PlacePiece(PieceType.King, pieceColour: false, 4, 7);
 
-            game.PlacePiece(PieceType.Pawn, PieceColour.White, 0, 3);
-            game.PlacePiece(PieceType.Pawn, PieceColour.White, 7, 3);
+            game.PlacePiece(PieceType.Pawn, pieceColour: true, 0, 3);
+            game.PlacePiece(PieceType.Pawn, pieceColour: true, 7, 3);
 
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 0, 5);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 7, 5);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 0, 5);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 7, 5);
 
-            game.PlacePiece(PieceType.Pawn, PieceColour.White, 3, 4);
-            game.PlacePiece(PieceType.Pawn, PieceColour.Black, 4, 5);
+            game.PlacePiece(PieceType.Pawn, pieceColour: true, 3, 4);
+            game.PlacePiece(PieceType.Pawn, pieceColour: false, 4, 5);
 
             game.AllowAllCastling(false);
 

@@ -21,6 +21,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestUpDirectionBoards()
         {
+            LookupTables.InitialiseAllTables();
+
             Assert.AreEqual((ulong)578721382704613376, LookupTables.UpBoard[3]);     //d1
             Assert.AreEqual((ulong)72340172838010880, LookupTables.UpBoard[16]);     //a3
             Assert.AreEqual((ulong)0, LookupTables.UpBoard[61]);     //f8
@@ -30,6 +32,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestRightDirectionBoards()
         {
+            LookupTables.InitialiseAllTables();
+
             Assert.AreEqual((ulong)16252928, LookupTables.RightBoard[18]);     //c3
         }
 

@@ -23,42 +23,42 @@ namespace ChessEngineTests
              }
 
              //Pawn
-             board.PlacePiece(PieceType.Pawn, PieceColour.Black, (ulong)72057594037927936);
+             board.PlacePiece(PieceType.Pawn, pieceIsWhite: false, (ulong)72057594037927936);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)72057594037927936));
 
              board.RemovePiece((ulong)72057594037927936);
              Assert.IsFalse(BoardChecking.IsPieceOnSquare(board, (ulong)72057594037927936));
 
              //Knight
-             board.PlacePiece(PieceType.Knight, PieceColour.White, (ulong)137438953472);
+             board.PlacePiece(PieceType.Knight, pieceIsWhite: true, (ulong)137438953472);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)137438953472));
 
              board.RemovePiece((ulong)137438953472);
              Assert.IsFalse(BoardChecking.IsPieceOnSquare(board, (ulong)137438953472));
 
              //Bishop
-             board.PlacePiece(PieceType.Bishop, PieceColour.White, (ulong)1);
+             board.PlacePiece(PieceType.Bishop, pieceIsWhite: true, (ulong)1);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)1));
 
              board.RemovePiece((ulong)1);
              Assert.IsFalse(BoardChecking.IsPieceOnSquare(board, (ulong)1));
 
              //Rook
-             board.PlacePiece(PieceType.Rook, PieceColour.Black, (ulong)67108864);
+             board.PlacePiece(PieceType.Rook, pieceIsWhite: false, (ulong)67108864);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)67108864));
 
              board.RemovePiece((ulong)67108864);
              Assert.IsFalse(BoardChecking.IsPieceOnSquare(board, (ulong)67108864));
 
              //Queen
-             board.PlacePiece(PieceType.Queen, PieceColour.White, (ulong)9223372036854775808);
+             board.PlacePiece(PieceType.Queen, pieceIsWhite: true, (ulong)9223372036854775808);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)9223372036854775808));
 
              board.RemovePiece((ulong)9223372036854775808);
              Assert.IsFalse(BoardChecking.IsPieceOnSquare(board, (ulong)9223372036854775808));
 
              //King
-             board.PlacePiece(PieceType.King, PieceColour.Black, (ulong)562949953421312);
+             board.PlacePiece(PieceType.King, pieceIsWhite: false, (ulong)562949953421312);
              Assert.IsTrue(BoardChecking.IsPieceOnSquare(board, (ulong)562949953421312));
 
              board.RemovePiece((ulong)562949953421312);
@@ -79,21 +79,21 @@ namespace ChessEngineTests
              }
 
              //Pawn
-             board.PlacePiece(PieceType.Pawn, PieceColour.Black, (ulong)72057594037927936);
+             board.PlacePiece(PieceType.Pawn, pieceIsWhite: false, (ulong)72057594037927936);
              Assert.IsTrue(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)72057594037927936));
 
              board.RemovePiece((ulong)72057594037927936);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)72057594037927936));
 
              //Knight
-             board.PlacePiece(PieceType.Knight, PieceColour.White, (ulong)137438953472);
+             board.PlacePiece(PieceType.Knight, pieceIsWhite: true, (ulong)137438953472);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)137438953472));
 
              board.RemovePiece((ulong)137438953472);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)137438953472));
 
              //Bishop
-             board.PlacePiece(PieceType.Bishop, PieceColour.White, (ulong)1);
+             board.PlacePiece(PieceType.Bishop, pieceIsWhite: true, (ulong)1);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)1));
 
              board.RemovePiece((ulong)1);
@@ -101,21 +101,21 @@ namespace ChessEngineTests
 
              board.SwitchSides();
              //Rook
-             board.PlacePiece(PieceType.Rook, PieceColour.Black, (ulong)67108864);
+             board.PlacePiece(PieceType.Rook, pieceIsWhite: false, (ulong)67108864);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)67108864));
 
              board.RemovePiece((ulong)67108864);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)67108864));
 
              //Queen
-             board.PlacePiece(PieceType.Queen, PieceColour.White, (ulong)9223372036854775808);
+             board.PlacePiece(PieceType.Queen, pieceIsWhite: true, (ulong)9223372036854775808);
              Assert.IsTrue(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)9223372036854775808));
 
              board.RemovePiece((ulong)9223372036854775808);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)9223372036854775808));
 
              //King
-             board.PlacePiece(PieceType.King, PieceColour.Black, (ulong)562949953421312);
+             board.PlacePiece(PieceType.King, pieceIsWhite: false, (ulong)562949953421312);
              Assert.IsFalse(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)562949953421312));
 
              board.RemovePiece((ulong)562949953421312);
@@ -332,7 +332,7 @@ namespace ChessEngineTests
 
              var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
 
-             var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.White);
+             var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: true);
 
              var expected = (ulong)3034571949281478664;
 
@@ -348,7 +348,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: true);
 
             var expected = (ulong)3034571949281478664;
 
@@ -364,7 +364,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: false);
 
             var expected = (ulong)3034571949281478664;
 
@@ -380,7 +380,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: false);
 
             var expected = (ulong)3034571949281478664;
 
@@ -396,7 +396,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: true);
 
             var expected = (ulong)163334998696951808;
 
@@ -412,7 +412,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: true);
 
             var expected = (ulong)163334998696951808;
 
@@ -428,7 +428,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: false);
 
             var expected = (ulong)1188500000215553;
 
@@ -444,7 +444,7 @@ namespace ChessEngineTests
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
 
-            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], whiteToMove: false);
 
             var expected = (ulong)1188500000215553;
 
@@ -462,7 +462,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, rookPositions.Count);
 
-            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], whiteToMove: true);
 
             var expected = (ulong)35325504126976;
 
@@ -480,7 +480,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, rookPositions.Length);
 
-            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], whiteToMove: true);
 
             var expected = (ulong)35325504126976;
 
@@ -498,7 +498,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, rookPositions.Count);
 
-            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], whiteToMove: false);
 
             var expected = (ulong)139018117120;
 
@@ -516,7 +516,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, rookPositions.Length);
 
-            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], whiteToMove: false);
 
             var expected = (ulong)139018117120;
 
@@ -535,7 +535,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, bishopPositions.Count);
 
-            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], whiteToMove: true);
 
             var expected = (ulong)585457745920;
 
@@ -553,7 +553,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, bishopPositions.Length);
 
-            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], PieceColour.White);
+            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], whiteToMove: true);
 
             var expected = (ulong)585457745920;
 
@@ -571,7 +571,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, bishopPositions.Count);
 
-            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], whiteToMove: false);
 
             var expected = (ulong)5664958784208896;
 
@@ -589,7 +589,7 @@ namespace ChessEngineTests
 
             Assert.AreEqual(1, bishopPositions.Length);
 
-            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], PieceColour.Black);
+            var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], whiteToMove: false);
 
             var expected = (ulong)5664958784208896;
 
@@ -603,8 +603,8 @@ namespace ChessEngineTests
             board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
             board.CalculateUsefulBitboards();
 
-            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, PieceColour.White);
-            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, PieceColour.Black);
+            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, whiteToMove: true);
+            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, whiteToMove: false);
 
             var whiteExpected = (ulong)34426847232;
             var blackExpected = (ulong)67108864;
@@ -622,8 +622,8 @@ namespace ChessEngineTests
             board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
             board.CalculateUsefulBitboards();
 
-            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], PieceColour.White);
-            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], PieceColour.Black);
+            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], whiteToMove: true);
+            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], whiteToMove: false);
 
             var whiteExpected = (ulong)34426847232;
             var blackExpected = (ulong)67108864;
@@ -642,7 +642,7 @@ namespace ChessEngineTests
 
             board.ClearBoard();
 
-            var upMoves =  BoardChecking.CalculateAllowedUpMoves(board, 11, PieceColour.White); //d2
+            var upMoves =  BoardChecking.CalculateAllowedUpMoves(board, 11, whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)578721382704611328, upMoves);
         }
@@ -656,7 +656,7 @@ namespace ChessEngineTests
 
             board.ClearBoard();
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], PieceColour.White); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)578721382704611328, upMoves);
         }
@@ -667,9 +667,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.White, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: true, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, PieceColour.White); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)8830587502592, upMoves);
         }
@@ -682,9 +682,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.White, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: true, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], PieceColour.White); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)8830587502592, upMoves);
         }
@@ -698,9 +698,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.Black, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: false, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, PieceColour.Black); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, whiteToMove: false); //d2
 
             Assert.AreEqual((ulong)8830587502592, upMoves);    
         }
@@ -716,9 +716,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.Black, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: false, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], PieceColour.Black); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], whiteToMove: false); //d2
 
             Assert.AreEqual((ulong)8830587502592, upMoves);
         }
@@ -732,9 +732,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.Black, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: false, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, PieceColour.White); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)2260630401187840, upMoves);
         }
@@ -750,9 +750,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.Black, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: false, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], PieceColour.White); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], whiteToMove: true); //d2
 
             Assert.AreEqual((ulong)2260630401187840, upMoves);
         }
@@ -766,9 +766,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.White, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: true, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, PieceColour.Black); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, whiteToMove: false); //d2
 
             Assert.AreEqual((ulong)2260630401187840, upMoves);
         }
@@ -783,9 +783,9 @@ namespace ChessEngineTests
             var board = new Board();
 
             board.ClearBoard();
-            board.PlacePiece(PieceType.Knight, PieceColour.White, 3, 6); //d7
+            board.PlacePiece(PieceType.Knight, pieceIsWhite: true, 3, 6); //d7
 
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], PieceColour.Black); //d2
+            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], whiteToMove: false); //d2
 
             Assert.AreEqual((ulong)2260630401187840, upMoves);
         }

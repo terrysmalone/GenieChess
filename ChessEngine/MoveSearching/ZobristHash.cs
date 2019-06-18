@@ -308,7 +308,7 @@ namespace ChessEngine.MoveSearching
 
         #endregion hash whole board methods
 
-        internal static int GetPieceValue(PieceType pieceType, PieceColour colour)
+        internal static int GetPieceValue(PieceType pieceType, bool whitePiece)
         {
             var val = 0;
 
@@ -334,8 +334,10 @@ namespace ChessEngine.MoveSearching
                     break;
             }
 
-            if (colour == PieceColour.Black)
+            if (!whitePiece)
+            {
                 val += 6;
+            }
 
             return val;
         }

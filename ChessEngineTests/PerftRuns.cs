@@ -184,6 +184,7 @@ namespace ChessEngineTests
             var perft = new PerfT();
 
             //List<Tuple<string, ulong>> divides = perft.Divides(board);
+            var divides = perft.Divide(board, 3);
 
             Assert.AreEqual((ulong)20, perft.Perft(board, 1));
             Assert.AreEqual((ulong)400, perft.Perft(board, 2));

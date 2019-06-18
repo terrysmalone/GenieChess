@@ -120,18 +120,18 @@ namespace ChessEngineTests
             Assert.AreEqual((ulong)0, board.WhiteQueen);
 
             //Check nothing else has changed
-            CheckAllPiecesArePresent(board, PieceType.Pawn, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Knight, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Rook, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.King, PieceColour.White);
+            CheckAllPiecesArePresent(board, PieceType.Pawn, true);
+            CheckAllPiecesArePresent(board, PieceType.Knight, true);
+            CheckAllPiecesArePresent(board, PieceType.Bishop, true);
+            CheckAllPiecesArePresent(board, PieceType.Rook, true);
+            CheckAllPiecesArePresent(board, PieceType.King, true);
 
-            CheckAllPiecesArePresent(board, PieceType.Pawn, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Knight, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Rook, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Queen, PieceColour.Black);            
-            CheckAllPiecesArePresent(board, PieceType.King, PieceColour.Black);
+            CheckAllPiecesArePresent(board, PieceType.Pawn, false);
+            CheckAllPiecesArePresent(board, PieceType.Knight, false);
+            CheckAllPiecesArePresent(board, PieceType.Bishop, false);
+            CheckAllPiecesArePresent(board, PieceType.Rook, false);
+            CheckAllPiecesArePresent(board, PieceType.Queen, false);            
+            CheckAllPiecesArePresent(board, PieceType.King, false);
 
             // Remove from file 4, rank 6 (black pawn)
             board.RemovePiece(4, 6);
@@ -141,20 +141,20 @@ namespace ChessEngineTests
             Assert.AreEqual((ulong)0, board.WhiteQueen);
 
             //Check nothing else has changed
-            CheckAllPiecesArePresent(board, PieceType.Pawn, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Knight, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.Rook, PieceColour.White);
-            CheckAllPiecesArePresent(board, PieceType.King, PieceColour.White);
+            CheckAllPiecesArePresent(board, PieceType.Pawn, true);
+            CheckAllPiecesArePresent(board, PieceType.Knight, true);
+            CheckAllPiecesArePresent(board, PieceType.Bishop, true);
+            CheckAllPiecesArePresent(board, PieceType.Rook, true);
+            CheckAllPiecesArePresent(board, PieceType.King, true);
 
-            CheckAllPiecesArePresent(board, PieceType.Knight, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Rook, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.Queen, PieceColour.Black);
-            CheckAllPiecesArePresent(board, PieceType.King, PieceColour.Black);
+            CheckAllPiecesArePresent(board, PieceType.Knight, false);
+            CheckAllPiecesArePresent(board, PieceType.Bishop, false);
+            CheckAllPiecesArePresent(board, PieceType.Rook, false);
+            CheckAllPiecesArePresent(board, PieceType.Queen, false);
+            CheckAllPiecesArePresent(board, PieceType.King, false);
         }
 
-        private void CheckAllPiecesArePresent(Board board, PieceType type, PieceColour colour)
+        private void CheckAllPiecesArePresent(Board board, PieceType type, bool isWhite)
         {
             var compareBoard = new Board();
             compareBoard.InitaliseStartingPosition();
@@ -162,7 +162,7 @@ namespace ChessEngineTests
             ulong comparePieceBoard = 0;
             ulong pieceBoard = 0;
 
-            if(colour == PieceColour.White)
+            if(isWhite)
             {
                 switch(type)
                 {
@@ -278,13 +278,13 @@ namespace ChessEngineTests
         {
             //Board board = new Board();
 
-            //board.PlacePiece(PieceType.Pawn, PieceColour.Black, 0, 6);
-            //board.PlacePiece(PieceType.Pawn, PieceColour.White, 1, 4);
-            //board.PlacePiece(PieceType.King, PieceColour.White, 0, 3);
-            //board.PlacePiece(PieceType.King, PieceColour.Black, 2, 3);
-            //board.PlacePiece(PieceType.Pawn, PieceColour.Black, 6, 3);
-            //board.PlacePiece(PieceType.Pawn, PieceColour.White, 6, 2);
-            //board.PlacePiece(PieceType.Pawn, PieceColour.White, 7, 1);
+            //board.PlacePiece(PieceType.Pawn, false, 0, 6);
+            //board.PlacePiece(PieceType.Pawn, true, 1, 4);
+            //board.PlacePiece(PieceType.King, true, 0, 3);
+            //board.PlacePiece(PieceType.King, false, 2, 3);
+            //board.PlacePiece(PieceType.Pawn, false, 6, 3);
+            //board.PlacePiece(PieceType.Pawn, true, 6, 2);
+            //board.PlacePiece(PieceType.Pawn, true, 7, 1);
 
             ////flags changed
             //board.BlackCanCastleKingside = false;
@@ -378,10 +378,10 @@ namespace ChessEngineTests
             var board = new Board();
             board.InitaliseStartingPosition();
 
-            Assert.AreEqual(PieceColour.White, board.MoveColour);
+            Assert.AreEqual(true, board.WhiteToMove);
 
             board.SwitchSides();
-            Assert.AreEqual(PieceColour.Black, board.MoveColour);
+            Assert.AreEqual(false, board.WhiteToMove);
 
 
         }

@@ -13,6 +13,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestTwoWayTranslate1()
         {
+            LookupTables.InitialiseAllTables();
+
             var before = "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1";
 
             var boardState = FenTranslator.ToBoardState(before);
@@ -25,6 +27,8 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestTwoWayTranslate2()
         {
+            LookupTables.InitialiseAllTables();
+
             var before = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq e3 12 10";
 
             var boardState = FenTranslator.ToBoardState(before);

@@ -74,49 +74,24 @@ namespace ChessEngine.BoardRepresentation
             return count;
         }
 
-        //public static byte GetPopCountOld(ulong boardValue)
-        //{
-        //    LookupTables.InitialiseAllTables();
-
-        //    byte popCount = 0;
-
-        //    var tempBoard = boardValue;
-
-        //    for (var i = 63; i >= 0; i--)
-        //    {
-        //        var currentSquareValue = LookupTables.SquareValuesFromIndex[i];
-
-        //        if (tempBoard >= currentSquareValue)
-        //        {
-        //            popCount++;
-        //            tempBoard -= currentSquareValue;
-        //        }
-        //    }
-
-        //    return popCount;
-        //}
+        
 
         public static ulong[] SplitBoardToArray(ulong boardToSplit)
         {
             var size = GetPopCount(boardToSplit);
             var boards = new ulong[size];
 
-            var initial = boardToSplit;
-            var reducing = initial;
+            var reducing = boardToSplit;
 
             reducing &= reducing - 1;
-
-            var count = 0;
-
-            while (initial != 0)
+            
+            for (var i = 0; i < size; i++)
             {
-                boards[count] = initial & ~reducing;
+                boards[i] = boardToSplit & ~reducing;
 
-                initial &= initial - 1;
+                boardToSplit &= boardToSplit - 1;
 
                 reducing &= reducing - 1;
-
-                count++;
             }
 
             return boards;

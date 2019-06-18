@@ -47,20 +47,16 @@ namespace ChessEngine.BoardRepresentation
         List<BoardState> History { get; }
 
         ulong Zobrist { get; }
-
-        PieceColour MoveColour { get; }
-
-        PieceColour NotMoveColour { get; }
-
+        
         void InitaliseStartingPosition();
 
         void ClearBoard();
 
         void SetPosition(BoardState state);
 
-        void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank);
+        void PlacePiece(PieceType typeToPlace, bool pieceColour, int file, int rank);
 
-        void PlacePiece(PieceType typeToPlace, PieceColour colour, ulong squareToPlace);
+        void PlacePiece(PieceType typeToPlace, bool pieceColour, ulong squareToPlace);
 
         void RemovePiece(int positionToClear);
 

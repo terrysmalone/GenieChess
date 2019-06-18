@@ -113,9 +113,9 @@ namespace ChessEngine.ScoreCalculation
         /// <returns></returns>
         public decimal CalculateScore(IBoard currentBoard)
         {
-#if Debug
+
             CountDebugger.Evaluations++;
-#endif
+
             m_CurrentBoard = currentBoard;
 
             //StaticBoardChecks.Calculate(currentBoard);
@@ -422,9 +422,9 @@ namespace ChessEngine.ScoreCalculation
         {
             decimal pawnSquareTableScore = 0;
 
-            pawnSquareTableScore += CalculateTableScores(m_CurrentBoard.WhitePawns, PawnSquareTable, PieceColour.White);
+            pawnSquareTableScore += CalculateTableScores(m_CurrentBoard.WhitePawns, PawnSquareTable, true);
 
-            pawnSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackPawns, PawnSquareTable, PieceColour.Black);
+            pawnSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackPawns, PawnSquareTable, false);
             
             return pawnSquareTableScore;
         }
@@ -433,9 +433,9 @@ namespace ChessEngine.ScoreCalculation
         {
             decimal knightSquareTableScore = 0;
 
-            knightSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKnights, KnightSquareTable, PieceColour.White);
+            knightSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKnights, KnightSquareTable, true);
 
-            knightSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKnights, KnightSquareTable, PieceColour.Black);
+            knightSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKnights, KnightSquareTable, false);
 
             return knightSquareTableScore;
         }
@@ -444,9 +444,9 @@ namespace ChessEngine.ScoreCalculation
         {
             decimal bishopSquareTableScore = 0;
 
-            bishopSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteBishops, BishopSquareTable, PieceColour.White);
+            bishopSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteBishops, BishopSquareTable, true);
 
-            bishopSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackBishops, BishopSquareTable, PieceColour.Black);
+            bishopSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackBishops, BishopSquareTable, false);
 
             return bishopSquareTableScore;
         }
@@ -455,9 +455,9 @@ namespace ChessEngine.ScoreCalculation
         {
             decimal kingSquareTableScore = 0;
 
-            kingSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingSquareTable, PieceColour.White);
+            kingSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingSquareTable, true);
 
-            kingSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingSquareTable, PieceColour.Black);
+            kingSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingSquareTable, false);
 
             return kingSquareTableScore;
         }
@@ -466,20 +466,20 @@ namespace ChessEngine.ScoreCalculation
         {
             decimal kingEndGameSquareTableScore = 0;
 
-            kingEndGameSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingEndGameSquareTable, PieceColour.White);
+            kingEndGameSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingEndGameSquareTable, true);
 
-            kingEndGameSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingEndGameSquareTable, PieceColour.Black);
+            kingEndGameSquareTableScore -= CalculateTableScores(m_CurrentBoard.BlackKing, KingEndGameSquareTable, false);
 
             return kingEndGameSquareTableScore;
         }
 
-        private decimal CalculateTableScores(ulong board, decimal[] squareTableValues, PieceColour pieceColour)
+        private decimal CalculateTableScores(ulong board, decimal[] squareTableValues, bool isWhite)
         {
             decimal pieceScore = 0;
 
             List<byte> positions;
             
-            if(pieceColour == PieceColour.White)
+            if(isWhite)
                 positions = BitboardOperations.GetSquareIndexesFromBoardValue(board);
             else
                 positions = BitboardOperations.GetSquareIndexesFromBoardValue(BitboardOperations.FlipVertical(board));
@@ -595,7 +595,7 @@ namespace ChessEngine.ScoreCalculation
 
             // White
             // Bonus for bishop 
-            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.WhiteBishops, PieceColour.White);                                       ;
+            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.WhiteBishops, whiteToMove: true);                                       ;
             
             if (whiteBishopPossibleMoves > 0)
             {
@@ -616,8 +616,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for rook coverage
             var whiteRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, 
-                                                                                 m_CurrentBoard.WhiteRooks, 
-                                                                                 PieceColour.White);
+                                                                                 m_CurrentBoard.WhiteRooks,
+                                                                                 whiteToMove: true);
 
             if (whiteRookPossibleMoves > 0)
             {
@@ -638,8 +638,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for queen coverage
             var whiteQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, 
-                                                                                   m_CurrentBoard.WhiteQueen, 
-                                                                                   PieceColour.White);
+                                                                                   m_CurrentBoard.WhiteQueen,
+                                                                                   whiteToMove: true);
             if (whiteQueenPossibleMoves > 0)
             {
                 var whiteQueenCoverageBoard = whiteQueenPossibleMoves & ~m_CurrentBoard.AllBlackOccupiedSquares;
@@ -712,8 +712,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for bishop coverage
             var blackBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, 
-                                                                                     m_CurrentBoard.BlackBishops, 
-                                                                                     PieceColour.Black);
+                                                                                     m_CurrentBoard.BlackBishops,
+                                                                                     whiteToMove: false);
 
             if (blackBishopPossibleMoves > 0)
             {
@@ -736,7 +736,7 @@ namespace ChessEngine.ScoreCalculation
             // Bonus for rook coverage
             var blackRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, 
                                                                                  m_CurrentBoard.BlackRooks, 
-                                                                                 PieceColour.Black);
+                                                                                 whiteToMove: false);
 
             if (blackRookPossibleMoves > 0)
             { 
@@ -756,8 +756,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for queen coverage
             var blackQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, 
-                                                                                   m_CurrentBoard.BlackQueen, 
-                                                                                   PieceColour.Black);
+                                                                                   m_CurrentBoard.BlackQueen,
+                                                                                   whiteToMove: false);
 
             if (blackQueenPossibleMoves > 0)
             { 
