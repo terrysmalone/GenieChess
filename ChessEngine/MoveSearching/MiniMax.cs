@@ -32,12 +32,8 @@ namespace ChessEngine.MoveSearching
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
 
-            PieceColour colour;
 
-            if (m_BoardPosition.WhiteToMove)
-                colour = PieceColour.White;
-            else
-                colour = PieceColour.Black;
+            var isWhite = m_BoardPosition.WhiteToMove;
 
             for (var i = 0; i < moveList.Count; i++)
             {
@@ -58,7 +54,7 @@ namespace ChessEngine.MoveSearching
 
                     if (MoveGeneration.ValidateMove(m_BoardPosition))
                     {
-                        if (colour == PieceColour.White)
+                        if (isWhite)
                             score = Min(depth - 1);
                         else
                             score = -Max(depth - 1);

@@ -794,11 +794,6 @@ namespace ChessEngine.BoardRepresentation
                 WhiteToMove = true;
         }
 
-        public void SetPlayerColour(PieceColour colour)
-        {
-            WhiteToMove = colour == PieceColour.White;
-        }
-
         private void SaveBoardState()
         {
             var state = new BoardState

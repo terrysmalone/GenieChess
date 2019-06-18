@@ -467,22 +467,5 @@ namespace ChessEngine.NotationHelpers
         }
 
         #endregion ToFENString methods
-
-        /// <summary>
-        /// Gets the player to move from the FEN string
-        /// </summary>
-        /// <param name="startingPosition"></param>
-        /// <returns></returns>
-        public static PieceColour GetPlayerColour(string startingPosition)
-        {
-            var parts = startingPosition.Split(null);
-
-            var colour = parts[1];
-
-            if (colour.Equals("w", StringComparison.InvariantCultureIgnoreCase))
-                return PieceColour.White;
-            else
-                return PieceColour.Black;
-        }
     }
 }
