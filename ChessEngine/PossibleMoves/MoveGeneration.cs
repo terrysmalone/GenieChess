@@ -157,6 +157,8 @@ namespace ChessEngine.PossibleMoves
         /// </summary>
         private static void RemoveSelfCheckingMoves()
         {
+            var whiteToCheck = m_CurrentBoard.WhiteToMove;
+
             //Search backwards so we can remove moves and carry on
             for (var i = m_AllMoves.Count - 1; i >= 0; i--)
             {
@@ -165,7 +167,7 @@ namespace ChessEngine.PossibleMoves
                 m_CurrentBoard.MakeMove(currentMove.Position, currentMove.Moves, currentMove.Type,
                                         currentMove.SpecialMove, false);
 
-                if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
+                if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
                 {
                     m_AllMoves.RemoveAt(i);
                 }
@@ -205,7 +207,7 @@ namespace ChessEngine.PossibleMoves
         {
             bool valid;
             
-            if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
+            if (BoardChecking.IsKingInCheck(board, !board.WhiteToMove))
                 valid = false;
             else
                 valid = true;
@@ -237,12 +239,12 @@ namespace ChessEngine.PossibleMoves
             {
                 if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, whiteToMove: true))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, whiteToMove: false))
                         return false;
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, whiteToMove: true))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, whiteToMove: false))
                         return false;
                 }
             }

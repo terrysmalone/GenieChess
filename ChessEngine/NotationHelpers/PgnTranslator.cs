@@ -124,7 +124,7 @@ namespace ChessEngine.NotationHelpers
                 //board.RemovePiece(moveFromBoard);
                 //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
                 board.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
-                if (BoardChecking.IsKingInCheck(board, !board.WhiteToMove))
+                if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
                     move += "+";
                 
                 board.UnMakeLastMove();

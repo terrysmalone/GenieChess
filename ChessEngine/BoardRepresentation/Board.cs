@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Exceptions;
@@ -454,10 +453,8 @@ namespace ChessEngine.BoardRepresentation
             UpdateZobrist(moveFromBoard, moveToBoard, pieceToMove, specialMove);    //Do before everything else so we can check for capture etc 
 
             RemovePiece(moveFromBoard);
-
-            PieceColour colourOfPiece;
-
-            var whiteToMove = WhiteToMove; //This is mostly because I worry that constantly hitting a property will be sloiw
+            
+            var whiteToMove = WhiteToMove; //This is mostly because I worry that constantly hitting a property will be slow
             
 
             RemovePiece(moveToBoard);       //Clear the square we're moving the piece to first
