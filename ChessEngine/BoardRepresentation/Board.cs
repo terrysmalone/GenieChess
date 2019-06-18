@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Exceptions;
@@ -79,10 +80,6 @@ namespace ChessEngine.BoardRepresentation
         public List<BoardState> History { get; private set; }
 
         public ulong Zobrist { get; private set; }
-
-        public PieceColour MoveColour => WhiteToMove ? PieceColour.White : PieceColour.Black;
-
-        public PieceColour NotMoveColour => WhiteToMove ? PieceColour.Black : PieceColour.White;
         
         #region constructor
 
@@ -201,18 +198,18 @@ namespace ChessEngine.BoardRepresentation
             CalculateUsefulBitboards();
         }
 
-        internal void PlacePiece(PieceType typeToPlace, PieceColour colour, int positionToPlace)
+        internal void PlacePiece(PieceType typeToPlace, bool pieceIsWhite, int positionToPlace)
         {
             var squareToPlace = LookupTables.SquareValuesFromIndex[positionToPlace];
 
-            PlacePiece(typeToPlace, colour, squareToPlace);
+            PlacePiece(typeToPlace, pieceIsWhite, squareToPlace);
         }
 
-        public void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
+        public void PlacePiece(PieceType typeToPlace, bool pieceIsWhite, int file, int rank)
         {
             var squareToPlace = LookupTables.SquareValuesFromPosition[file, rank];
 
-            PlacePiece(typeToPlace, colour, squareToPlace);
+            PlacePiece(typeToPlace, pieceIsWhite, squareToPlace);
         }
 
         /// <summary>
@@ -223,47 +220,47 @@ namespace ChessEngine.BoardRepresentation
         /// <param name="typeToPlace"></param>
         /// <param name="colour"></param>
         /// <param name="squareToPlace"></param>
-        public void PlacePiece(PieceType typeToPlace, PieceColour colour, ulong squareToPlace)
+        public void PlacePiece(PieceType typeToPlace, bool pieceIsWhite, ulong squareToPlace)
         {
             switch (typeToPlace)
             {
                 case (PieceType.Pawn):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhitePawns = WhitePawns | squareToPlace;
                     else
                         BlackPawns = BlackPawns | squareToPlace;
 
                     break;
                 case (PieceType.Knight):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhiteKnights = WhiteKnights | squareToPlace;
                     else
                         BlackKnights = BlackKnights | squareToPlace;
 
                     break;
                 case (PieceType.Bishop):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhiteBishops = WhiteBishops | squareToPlace;
                     else
                         BlackBishops = BlackBishops | squareToPlace;
 
                     break;
                 case (PieceType.Rook):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhiteRooks = WhiteRooks | squareToPlace;
                     else
                         BlackRooks = BlackRooks | squareToPlace;
 
                     break;
                 case (PieceType.Queen):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhiteQueen = WhiteQueen | squareToPlace;
                     else
                         BlackQueen = BlackQueen | squareToPlace;
 
                     break;
                 case (PieceType.King):
-                    if (colour == PieceColour.White)
+                    if (pieceIsWhite)
                         WhiteKing = WhiteKing | squareToPlace;
                     else
                         BlackKing = BlackKing | squareToPlace;
@@ -460,10 +457,8 @@ namespace ChessEngine.BoardRepresentation
 
             PieceColour colourOfPiece;
 
-            if (WhiteToMove)
-                colourOfPiece = PieceColour.White;
-            else
-                colourOfPiece = PieceColour.Black;
+            var whiteToMove = WhiteToMove; //This is mostly because I worry that constantly hitting a property will be sloiw
+            
 
             RemovePiece(moveToBoard);       //Clear the square we're moving the piece to first
 
@@ -473,34 +468,34 @@ namespace ChessEngine.BoardRepresentation
                 switch (specialMove)
                 {
                     case SpecialMoveType.KnightPromotion:
-                        PlacePiece(PieceType.Knight, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.KnightPromotionCapture:
-                        PlacePiece(PieceType.Knight, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.BishopPromotion:
-                        PlacePiece(PieceType.Bishop, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.BishopPromotionCapture:
-                        PlacePiece(PieceType.Bishop, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.RookPromotion:
-                        PlacePiece(PieceType.Rook, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.RookPromotionCapture:
-                        PlacePiece(PieceType.Rook, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.QueenPromotion:
-                        PlacePiece(PieceType.Queen, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.QueenPromotionCapture:
-                        PlacePiece(PieceType.Queen, colourOfPiece, moveToBoard);
+                        PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
                         break;
                 }                
             }
             else
             {
-                PlacePiece(pieceToMove, colourOfPiece, moveToBoard);
+                PlacePiece(pieceToMove, whiteToMove, moveToBoard);
             }
             
             CheckCastlingStatus(moveFromBoard, moveToBoard, pieceToMove);
@@ -591,7 +586,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.H1);
-                            PlacePiece(PieceType.Rook, PieceColour.White, LookupTables.F1);
+                            PlacePiece(PieceType.Rook, pieceIsWhite: true, LookupTables.F1);
 
                             //whiteCanCastleKingside = false;
                         }
@@ -619,7 +614,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.A1);
-                            PlacePiece(PieceType.Rook, PieceColour.White, LookupTables.D1);
+                            PlacePiece(PieceType.Rook, pieceIsWhite: true, LookupTables.D1);
 
                             WhiteCanCastleQueenside = false;
                             //whiteCanCastleKingside = false;  
@@ -667,7 +662,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.H8);
-                            PlacePiece(PieceType.Rook, PieceColour.Black, LookupTables.F8);
+                            PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.F8);
 
                             //blackCanCastleQueenside = false;
                             //blackCanCastleKingside = false;
@@ -697,7 +692,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.A8);
-                            PlacePiece(PieceType.Rook, PieceColour.Black, LookupTables.D8);
+                            PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.D8);
 
                             //blackCanCastleQueenside = false;
                         }
@@ -1111,32 +1106,32 @@ namespace ChessEngine.BoardRepresentation
         private void UpdateZobristForMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove)
         {
             //Remove old piece
-            Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)];
+            Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)];
             
             if (IsMovePromotionCapture(specialMove))
             {
                 //remove captured piece
                 var capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, !WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add promoted piece
                 var promotedPiece = PromotedPiece(specialMove);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if(IsMovePromotionNonCapture(specialMove))
             {
                 //Add promoted piece
                 var promotedPiece = PromotedPiece(specialMove);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(promotedPiece, WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];           
             }
             else if (specialMove == SpecialMoveType.Capture)
             {
                 //remove captured piece
                 var capturedPiece = BoardChecking.GetPieceTypeOnSquare(this, moveToBoard);
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, NotMoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, !WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];     
                 
                 //Add moved piece
-                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, MoveColour), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                       
+                Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(pieceToMove, WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                       
             }
             else if (IsMoveCastling(specialMove))
             {
@@ -1196,7 +1191,7 @@ namespace ChessEngine.BoardRepresentation
             }
             else
             {
-                var movedPieceNumber = ZobristHash.GetPieceValue(pieceToMove, MoveColour);
+                var movedPieceNumber = ZobristHash.GetPieceValue(pieceToMove, WhiteToMove);
 
                 Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];              
             }

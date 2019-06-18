@@ -186,9 +186,9 @@ namespace ChessEngine
             TranspositionTable.Restart();
         }
 
-        public void PlacePiece(PieceType typeToPlace, PieceColour colour, int file, int rank)
+        public void PlacePiece(PieceType typeToPlace, bool pieceColour, int file, int rank)
         {
-            m_CurrentBoard.PlacePiece(typeToPlace, colour, file, rank);
+            m_CurrentBoard.PlacePiece(typeToPlace, pieceColour, file, rank);
         }
 
         public void AllowAllCastling(bool allow)

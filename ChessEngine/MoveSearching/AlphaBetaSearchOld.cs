@@ -814,12 +814,12 @@ namespace ChessEngine.MoveSearching
 
             if(m_BoardPosition.WhiteToMove)
             {
-                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, PieceColour.White);
+                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, whitePieces: true);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.White); 
             }
             else
             {
-                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, PieceColour.Black);
+                isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, whitePieces: false);
                 //canMove = BoardChecking.CanKingMove(boardPosition, PieceColour.Black); 
             }                        
         }

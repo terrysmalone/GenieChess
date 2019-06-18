@@ -49,12 +49,8 @@ namespace ChessEngine.MoveSearching
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    var friendlyColour = PieceColour.White;
-
-                    if(m_BoardPosition.WhiteToMove == false)
-                        friendlyColour = PieceColour.Black;
-
-                    if (BoardChecking.IsKingInCheck(m_BoardPosition, friendlyColour) || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove) 
+                        || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }

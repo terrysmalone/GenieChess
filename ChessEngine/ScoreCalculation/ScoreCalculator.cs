@@ -595,7 +595,7 @@ namespace ChessEngine.ScoreCalculation
 
             // White
             // Bonus for bishop 
-            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.WhiteBishops, PieceColour.White);                                       ;
+            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, m_CurrentBoard.WhiteBishops, whiteToMove: true);                                       ;
             
             if (whiteBishopPossibleMoves > 0)
             {
@@ -616,8 +616,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for rook coverage
             var whiteRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, 
-                                                                                 m_CurrentBoard.WhiteRooks, 
-                                                                                 PieceColour.White);
+                                                                                 m_CurrentBoard.WhiteRooks,
+                                                                                 whiteToMove: true);
 
             if (whiteRookPossibleMoves > 0)
             {
@@ -638,8 +638,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for queen coverage
             var whiteQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, 
-                                                                                   m_CurrentBoard.WhiteQueen, 
-                                                                                   PieceColour.White);
+                                                                                   m_CurrentBoard.WhiteQueen,
+                                                                                   whiteToMove: true);
             if (whiteQueenPossibleMoves > 0)
             {
                 var whiteQueenCoverageBoard = whiteQueenPossibleMoves & ~m_CurrentBoard.AllBlackOccupiedSquares;
@@ -712,8 +712,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for bishop coverage
             var blackBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, 
-                                                                                     m_CurrentBoard.BlackBishops, 
-                                                                                     PieceColour.Black);
+                                                                                     m_CurrentBoard.BlackBishops,
+                                                                                     whiteToMove: false);
 
             if (blackBishopPossibleMoves > 0)
             {
@@ -736,7 +736,7 @@ namespace ChessEngine.ScoreCalculation
             // Bonus for rook coverage
             var blackRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, 
                                                                                  m_CurrentBoard.BlackRooks, 
-                                                                                 PieceColour.Black);
+                                                                                 whiteToMove: false);
 
             if (blackRookPossibleMoves > 0)
             { 
@@ -756,8 +756,8 @@ namespace ChessEngine.ScoreCalculation
 
             // Bonus for queen coverage
             var blackQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, 
-                                                                                   m_CurrentBoard.BlackQueen, 
-                                                                                   PieceColour.Black);
+                                                                                   m_CurrentBoard.BlackQueen,
+                                                                                   whiteToMove: false);
 
             if (blackQueenPossibleMoves > 0)
             { 

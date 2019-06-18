@@ -378,10 +378,10 @@ namespace ChessEngineTests
             var board = new Board();
             board.InitaliseStartingPosition();
 
-            Assert.AreEqual(PieceColour.White, board.MoveColour);
+            Assert.AreEqual(true, board.WhiteToMove);
 
             board.SwitchSides();
-            Assert.AreEqual(PieceColour.Black, board.MoveColour);
+            Assert.AreEqual(false, board.WhiteToMove);
 
 
         }
