@@ -124,8 +124,7 @@ namespace ChessEngine.MoveSearching
 
                     NodesVisited = CountDebugger.Evaluations
                 };
-#if Debug
-#endif
+
                 idMoves.Add(pvInfo);
 
                 log.Info($"Depth {i}: {UciMoveTranslator.ToUciMove(pvInfo.Move)} - " +
