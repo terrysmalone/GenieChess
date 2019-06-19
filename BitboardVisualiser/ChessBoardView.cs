@@ -47,21 +47,21 @@ namespace BitboardVisualiser
             }
         }
 
-        internal void AddPiece(PieceType pieceType, PieceColour pieceColour, byte location)
+        internal void AddPiece(PieceType pieceType, bool isWhite, byte location)
         {
             //0 is bottom left travelling right and up 
                         
             var row = (int)location / 8;
             var col = (int)location % 8;
 
-            var image = GetImage(pieceType, pieceColour);
+            var image = GetImage(pieceType, isWhite);
             chessSquare[col, row].Image = image;
 
         }
 
-        private Image GetImage(PieceType pieceType, PieceColour pieceColour)
+        private Image GetImage(PieceType pieceType, bool isWhite)
         {
-            if (pieceColour == PieceColour.White)
+            if (isWhite)
             {
                 switch (pieceType)
                 {
