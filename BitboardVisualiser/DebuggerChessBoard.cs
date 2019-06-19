@@ -77,13 +77,13 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhitePawns);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Pawn, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.Pawn, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackPawns);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Pawn, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.Pawn, false, location);
             }
         }
 
@@ -92,13 +92,13 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKnights);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Knight, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.Knight, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackKnights);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Knight, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.Knight, false, location);
             }
         }
 
@@ -107,13 +107,13 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteBishops);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Bishop, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.Bishop, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackBishops);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Bishop, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.Bishop, false, location);
             }  
         }
 
@@ -122,13 +122,13 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteRooks);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Rook, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.Rook, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackRooks);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Rook, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.Rook, false, location);
             }
         }
 
@@ -137,13 +137,13 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteQueen);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.Queen, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.Queen, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackQueen);
             foreach (var location in locations)
             {                
-                chessBoardView.AddPiece(PieceType.Queen, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.Queen, false, location);
             }
         }
 
@@ -152,21 +152,19 @@ namespace BitboardVisualiser
             var locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.WhiteKing);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.King, PieceColour.White, location);
+                chessBoardView.AddPiece(PieceType.King, true, location);
             }
 
             locations = BitboardOperations.GetSquareIndexesFromBoardValue(chessBoard.BlackKing);
             foreach (var location in locations)
             {
-                chessBoardView.AddPiece(PieceType.King, PieceColour.Black, location);
+                chessBoardView.AddPiece(PieceType.King, false, location);
             }
         }
 
         public string BoardToString(Board chessBoard)
         {
             var board = "";
-
-            var piece = "_";
 
             var squares = new char[64];
 
