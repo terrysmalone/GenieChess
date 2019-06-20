@@ -19,7 +19,7 @@ namespace ChessEngine
 
         private bool m_GameIsActive = true;
         
-        private IBoard m_CurrentBoard;
+        private Board m_CurrentBoard;
 
         private readonly IScoreCalculator m_ScoreCalculator;
         
@@ -31,7 +31,7 @@ namespace ChessEngine
         
         public int ThinkingDepth { get; set; }
         
-        public Game(IScoreCalculator scoreCalculator, IBoard board, IOpeningBook openingBook)
+        public Game(IScoreCalculator scoreCalculator, Board board, IOpeningBook openingBook)
         {
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 

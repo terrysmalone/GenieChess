@@ -15,7 +15,7 @@ namespace ChessEngine.BoardRepresentation
     /// including all 12 bitboards who is to move and flags for moves like en-passant and castling
     /// </summary>
     [Serializable]
-    public class Board : IBoard
+    public class Board
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection
                                                                       .MethodBase
@@ -28,57 +28,57 @@ namespace ChessEngine.BoardRepresentation
         
         private const ulong FullBoard = ulong.MaxValue;
         
-        public ulong WhitePawns { get; private set; }
-        public ulong WhiteKnights { get; private set; }
-        public ulong WhiteBishops  { get; private set; }
-        public ulong WhiteRooks { get; private set; }
-        public ulong WhiteQueen { get; private set; }
-        public ulong WhiteKing { get; private set; }
-        
-        public ulong BlackPawns { get; private set; }
-        public ulong BlackKnights { get; private set; }
-        public ulong BlackBishops { get; private set; }
-        public ulong BlackRooks { get; private set; }
-        public ulong BlackQueen { get; private set; }
-        public ulong BlackKing { get; private set; }
+        public ulong WhitePawns;
+        public ulong WhiteKnights;
+        public ulong WhiteBishops;
+        public ulong WhiteRooks;
+        public ulong WhiteQueen;
+        public ulong WhiteKing;
+
+        public ulong BlackPawns;
+        public ulong BlackKnights;
+        public ulong BlackBishops;
+        public ulong BlackRooks;
+        public ulong BlackQueen;
+        public ulong BlackKing;
         
         #endregion piece bitboard properties
 
         #region useful bitboard properties
 
-        public ulong AllWhiteOccupiedSquares { get; private set; }
-        public ulong AllBlackOccupiedSquares { get; private set; }
+        public ulong AllWhiteOccupiedSquares;
+        public ulong AllBlackOccupiedSquares;
 
-        public ulong AllOccupiedSquares { get; private set; }
+        public ulong AllOccupiedSquares;
 
-        public ulong EmptySquares { get; private set; }
+        public ulong EmptySquares;
 
-        public ulong WhiteOrEmpty { get; private set; }
-        public ulong BlackOrEmpty { get; private set; }
+        public ulong WhiteOrEmpty;
+        public ulong BlackOrEmpty;
 
         #endregion useful bitboard properties
 
         #region Castling check properties
 
-        public bool WhiteCanCastleQueenside { get; set; } = true;
-        public bool WhiteCanCastleKingside { get; set; } = true;
+        public bool WhiteCanCastleQueenside = true;
+        public bool WhiteCanCastleKingside = true;
 
-        public bool BlackCanCastleQueenside { get; set; } = true;
-        public bool BlackCanCastleKingside { get; set; } = true;
+        public bool BlackCanCastleQueenside = true;
+        public bool BlackCanCastleKingside = true;
 
         #endregion Castling check properties
-        
-        public ulong EnPassantPosition { get; private set; }
 
-        public bool WhiteToMove { get; private set; } = true;
+        public ulong EnPassantPosition;
 
-        public int HalfMoveClock { get; private set; }
+        public bool WhiteToMove = true;
 
-        public int FullMoveClock { get; private set; } = 1;
+        public int HalfMoveClock;
+
+        public int FullMoveClock = 1;
 
         private Stack<BoardState> m_History;
 
-        public ulong Zobrist { get; private set; }
+        public ulong Zobrist;
         
         #region constructor
 

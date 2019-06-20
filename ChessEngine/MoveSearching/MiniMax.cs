@@ -10,12 +10,12 @@ namespace ChessEngine.MoveSearching
 {
     public class MiniMax
     {
-        private IBoard m_BoardPosition;
+        private Board m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalc;
 
         private decimal score;
 
-        public MiniMax(IBoard boardPosition, IScoreCalculator scoreCalc)
+        public MiniMax(Board boardPosition, IScoreCalculator scoreCalc)
         {
             m_BoardPosition = boardPosition;
             m_ScoreCalc = scoreCalc;
@@ -137,7 +137,7 @@ namespace ChessEngine.MoveSearching
             return min;
         }
 
-        private decimal Evaluate(IBoard boardPosition)
+        private decimal Evaluate(Board boardPosition)
         {
             return m_ScoreCalc.CalculateScore(boardPosition);
         }

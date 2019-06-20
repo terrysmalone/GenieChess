@@ -13,7 +13,7 @@ namespace ChessEngineTests.MoveSearching
     {
         private static IEnumerable Constructors_with_null_parameters()
         {
-            var stubBoardPosition = GenerateStub<IBoard>();
+            var stubBoardPosition = GenerateStub<Board>();
             var stubScoreCalculator = GenerateStub<IScoreCalculator>();
 
             // ReSharper disable ObjectCreationAsStatement
