@@ -74,7 +74,7 @@ namespace ChessEngineTests
             return nodes;
         }
 
-        private static void RecordHash(IBoard boardPosition, int depth, decimal score, HashNodeType hashNodeType)
+        private static void RecordHash(Board boardPosition, int depth, decimal score, HashNodeType hashNodeType)
         {
             var hash = new Hash {Key = boardPosition.Zobrist, Depth = depth, NodeType = hashNodeType, Score = score};
             

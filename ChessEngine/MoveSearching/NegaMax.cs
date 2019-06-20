@@ -14,12 +14,12 @@ namespace ChessEngine.MoveSearching
     /// </summary>
     public class NegaMax
     {
-        private readonly IBoard m_BoardPosition;
+        private readonly Board m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalc;
 
         private decimal m_Score;
 
-        public NegaMax(IBoard boardPosition, IScoreCalculator scoreCalc)
+        public NegaMax(Board boardPosition, IScoreCalculator scoreCalc)
         {
             m_BoardPosition = boardPosition;
             m_ScoreCalc = scoreCalc;
@@ -105,7 +105,7 @@ namespace ChessEngine.MoveSearching
             return max;
         }
 
-        private decimal Evaluate(IBoard boardPosition, bool maximisingPlayer)
+        private decimal Evaluate(Board boardPosition, bool maximisingPlayer)
         {
             if (maximisingPlayer)
                 return m_ScoreCalc.CalculateScore(boardPosition);

@@ -209,7 +209,6 @@
   <ItemGroup>
     <Compile Include="BoardRepresentation\BitboardOperations.cs" />
     <Compile Include="BoardRepresentation\Board.cs" />
-    <Compile Include="BoardRepresentation\IBoard.cs" />
     <Compile Include="BoardSearching\BoardChecking.cs" />
     <Compile Include="BoardRepresentation\BoardState.cs" />
     <Compile Include="BoardSearching\StaticBoardChecks.cs" />

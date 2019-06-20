@@ -13,7 +13,7 @@ namespace ChessEngine.ScoreCalculation
     /// </summary>
     public class ScoreCalculator : IScoreCalculator
     {
-        private IBoard m_CurrentBoard;
+        private Board m_CurrentBoard;
 
         private readonly byte endGameCount = 3;
 
@@ -111,7 +111,7 @@ namespace ChessEngine.ScoreCalculation
         /// </summary>
         /// <param name="currentBoard"></param>
         /// <returns></returns>
-        public decimal CalculateScore(IBoard currentBoard)
+        public decimal CalculateScore(Board currentBoard)
         {
 
             CountDebugger.Evaluations++;

@@ -24,7 +24,7 @@ namespace ChessEngine.MoveSearching
     {
         private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private IBoard m_BoardPosition;
+        private Board m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalc;
 
         private int startDepth; 
@@ -57,7 +57,7 @@ namespace ChessEngine.MoveSearching
 
         #endregion properties
 
-        public AlphaBetaSearchOld(IBoard boardPosition, IScoreCalculator scoreCalc)
+        public AlphaBetaSearchOld(Board boardPosition, IScoreCalculator scoreCalc)
         {
             m_BoardPosition = boardPosition;
             m_ScoreCalc = scoreCalc;
@@ -856,7 +856,7 @@ namespace ChessEngine.MoveSearching
         /// </summary>
         /// <param name="boardPosition"></param>
         /// <returns></returns>
-        private decimal Evaluate(IBoard boardPosition)
+        private decimal Evaluate(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
                 return m_ScoreCalc.CalculateScore(boardPosition);

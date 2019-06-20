@@ -22,7 +22,7 @@ namespace ChessEngine.MoveSearching
         private static readonly ILog s_Log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly IBoard m_BoardPosition;
+        private readonly Board m_BoardPosition;
         private readonly IScoreCalculator m_ScoreCalculator;
  
         private List<MoveValueInfo> m_InitialMoves;
@@ -37,7 +37,7 @@ namespace ChessEngine.MoveSearching
 
         private int m_NullMoveR = 2;
 
-        public AlphaBetaSearch(IBoard boardPosition, IScoreCalculator scoreCalculator)
+        public AlphaBetaSearch(Board boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
 
@@ -454,7 +454,7 @@ namespace ChessEngine.MoveSearching
 
         /// Evaluates the score relative to the current player
         /// i.e. A high score means the position is better for the current player
-        private decimal Evaluate(IBoard boardPosition)
+        private decimal Evaluate(Board boardPosition)
         {
             decimal score = 0;
             

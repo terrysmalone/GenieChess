@@ -11,7 +11,7 @@ namespace ChessEngine.PossibleMoves
     /// </summary>
     public static class MoveGeneration
     {
-        private static IBoard m_CurrentBoard;
+        private static Board m_CurrentBoard;
 
         private static List<PieceMoves> m_AllMoves;
 
@@ -23,7 +23,7 @@ namespace ChessEngine.PossibleMoves
         /// Returns all truly legal moves
         /// </summary>
         /// <returns></returns>
-        public static List<PieceMoves> CalculateAllMoves(IBoard board)
+        public static List<PieceMoves> CalculateAllMoves(Board board)
         {
             m_AllMoves = new List<PieceMoves>();
 
@@ -45,7 +45,7 @@ namespace ChessEngine.PossibleMoves
         /// those that put the king in check)
         /// </summary>
         /// <param name="board"></param>
-        public static List<PieceMoves> CalculateAllPseudoLegalMoves(IBoard board)
+        public static List<PieceMoves> CalculateAllPseudoLegalMoves(Board board)
         {
             m_AllMoves = new List<PieceMoves>();
 
@@ -99,7 +99,7 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Calculates all capturing moves
-        public static List<PieceMoves> CalculateAllCapturingMoves(IBoard board)
+        public static List<PieceMoves> CalculateAllCapturingMoves(Board board)
         {
             m_AllMoves = new List<PieceMoves>();
 
@@ -203,7 +203,7 @@ namespace ChessEngine.PossibleMoves
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        public static bool ValidateMove(IBoard board)
+        public static bool ValidateMove(Board board)
         {
             bool valid;
             
@@ -220,7 +220,7 @@ namespace ChessEngine.PossibleMoves
         /// </summary>
         /// <param name="boardPosition"></param>
         /// <param name="currentMove"></param>
-        internal static bool ValidateCastlingMove(IBoard boardPosition, PieceMoves currentMove)
+        internal static bool ValidateCastlingMove(Board boardPosition, PieceMoves currentMove)
         {
             if (boardPosition.WhiteToMove)
             {
