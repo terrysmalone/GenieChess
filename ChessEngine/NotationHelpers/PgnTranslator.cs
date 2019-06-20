@@ -25,42 +25,42 @@ namespace ChessEngine.NotationHelpers
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        public static string ToPgnMovesList(Board board)
-        {
-            var pgnString = string.Empty;
+        //public static string ToPgnMovesList(Board board)
+        //{
+        //    var pgnString = string.Empty;
                         
-            if (!DidGameStartFromInitialPosition(board))
-            {
-                var fenNotation = FenTranslator.ToFENString(board.History[0]);
+        //    if (!DidGameStartFromInitialPosition(board))
+        //    {
+        //        var fenNotation = FenTranslator.ToFENString(board.History[0]);
 
-                pgnString += "[FEN \"" + fenNotation + "\"]\n";
-            }
+        //        pgnString += "[FEN \"" + fenNotation + "\"]\n";
+        //    }
 
-            pgnString += "\n";
+        //    pgnString += "\n";
 
-            var boardStates = board.History;
+        //    var boardStates = board.History;
 
-            var whiteStarted = true;
+        //    var whiteStarted = true;
 
-            if (boardStates[0].HalfMoveClock % 2 != 0)
-                whiteStarted = false;
+        //    if (boardStates[0].HalfMoveClock % 2 != 0)
+        //        whiteStarted = false;
 
-            return pgnString;
-        }
+        //    return pgnString;
+        //}
 
-        private static bool DidGameStartFromInitialPosition(Board board)
-        {
-            var initialPosition = board.History[0];
+        //private static bool DidGameStartFromInitialPosition(Board board)
+        //{
+        //    var initialPosition = board.History[0];
 
-            var startBoard = new Board();
-            startBoard.InitaliseStartingPosition();
-            var startState = startBoard.History[0];
+        //    var startBoard = new Board();
+        //    startBoard.InitaliseStartingPosition();
+        //    var startState = startBoard.History[0];
 
-            if (initialPosition.Equals(startState))
-                return true;
-            else
-                return false;
-        }
+        //    if (initialPosition.Equals(startState))
+        //        return true;
+        //    else
+        //        return false;
+        //}
 
         /// <summary>
         /// Creates a PGN move string from a board move

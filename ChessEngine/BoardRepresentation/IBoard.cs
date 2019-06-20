@@ -44,8 +44,6 @@ namespace ChessEngine.BoardRepresentation
 
         int FullMoveClock { get; }
 
-        List<BoardState> History { get; }
-
         ulong Zobrist { get; }
         
         void InitaliseStartingPosition();
