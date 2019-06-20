@@ -76,7 +76,7 @@ namespace ChessEngine.BoardRepresentation
 
         public int FullMoveClock { get; private set; } = 1;
 
-        public List<BoardState> History { get; private set; }
+        private Stack<BoardState> m_History;
 
         public ulong Zobrist { get; private set; }
         
@@ -89,7 +89,7 @@ namespace ChessEngine.BoardRepresentation
             TranspositionTable.InitialiseTable();
             ZobristHash.Initialise();
 
-            History = new List<BoardState>();
+            m_History = new Stack<BoardState>();
         }
 
         #endregion constructor
@@ -124,7 +124,7 @@ namespace ChessEngine.BoardRepresentation
             HalfMoveClock = 0;
             FullMoveClock = 1;
 
-            History.Clear();
+            m_History.Clear();
 
             CalculateUsefulBitboards();
 
@@ -155,7 +155,7 @@ namespace ChessEngine.BoardRepresentation
             HalfMoveClock = 0;
             FullMoveClock = 1;
 
-            History.Clear();
+            m_History.Clear();
 
             CalculateUsefulBitboards();
 
@@ -824,7 +824,7 @@ namespace ChessEngine.BoardRepresentation
                 ZobristKey = Zobrist
             };
 
-            History.Add(state);
+            m_History.Push(state);
         }
 
         public void UnMakeLastMove()
@@ -834,9 +834,7 @@ namespace ChessEngine.BoardRepresentation
 
         public void UnMakeLastMove(bool verbose)
         {
-            m_MoveCount--;
-
-            var state = History[m_MoveCount];
+            var state = m_History.Pop();
             
             WhiteToMove = state.WhiteToMove;
 
@@ -870,9 +868,7 @@ namespace ChessEngine.BoardRepresentation
             //m_PgnMove = state.PgnMove;
 
             Zobrist = state.ZobristKey;
-
-            History.RemoveAt(History.Count-1);
-
+            
             CalculateUsefulBitboards();
         } 
         
@@ -1004,51 +1000,6 @@ namespace ChessEngine.BoardRepresentation
         }
 
         #endregion WriteWriteBoardToConsole methods
-
-        /// <summary>
-        /// Checks that the board satisies it end move criteria.
-        /// Used only for debugging as will slow the algorithm down too much.
-        /// </summary>
-        public void FullAssert()
-        {
-            if (BlackKing == 0)
-            {
-                var moveList = GetMovesList();
-
-                throw new ChessBoardException(string.Format("There is no black king: {0}", moveList));
-            }
-
-            if (BlackKing == 0)
-            {
-                throw new ChessBoardException("There is no black king.");
-            }
-
-            //Check all occupied squares
-            if (AllWhiteOccupiedSquares != (WhitePawns | WhiteKnights | WhiteBishops | WhiteRooks | WhiteQueen | WhiteKing))
-                throw new ChessBoardException("The white pieces don't match the allwhiteOccupiedSquares board.");
-
-            if (AllBlackOccupiedSquares != (BlackPawns | BlackKnights | BlackBishops | BlackRooks | BlackQueen | BlackKing))
-                throw new ChessBoardException("The black pieces don't match the allBlackOccupiedSquares board.");
-
-            if (AllOccupiedSquares != (AllWhiteOccupiedSquares | AllBlackOccupiedSquares))
-                throw new ChessBoardException("The occupied squares board does not match the allWhiteOccupiedSquares | allBlackOccupiedSquares board.");
-        }
-
-        /// <summary>
-        /// Gets the moveslist from the boardstate history
-        /// </summary>
-        /// <returns></returns>
-        private string GetMovesList()
-        {
-            var movesList = string.Empty;
-
-            foreach (var state in History)
-            {
-                movesList += FenTranslator.ToFENString(state) + " || ";
-            }
-
-            return movesList;
-        }
 
         #endregion slower debug methods
         
@@ -1191,10 +1142,12 @@ namespace ChessEngine.BoardRepresentation
 
         private void UpdateEnPassantZobrist(SpecialMoveType specialMove, ulong moveToBoard)
         {
+            var enPassantPosition = m_History.Peek().EnPassantPosition;
+
             // Previous position
-            if (History[History.Count - 1].EnPassantPosition > 0)
+            if (enPassantPosition > 0)
             {
-                Zobrist ^= ZobristHash.HashEnPassantSquare(History[History.Count - 1].EnPassantPosition);
+                Zobrist ^= ZobristHash.HashEnPassantSquare(enPassantPosition);
             }
 
             //Current Postion
@@ -1217,7 +1170,7 @@ namespace ChessEngine.BoardRepresentation
 
         public void ResetFlags()
         {
-            History = new List<BoardState>();
+            m_History = new Stack<BoardState>();
 
             AllowAllCastling(true);
             //m_PgnMove = string.Empty;

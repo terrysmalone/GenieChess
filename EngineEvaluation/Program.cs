@@ -8,8 +8,8 @@
 
             var performanceEvaluatorFactory = new PerformanceEvaluatorFactory();
 
-            var engineEvaluation = performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     false, 
-                                                                                          evaluateTestSuitePositions: true,
+            var engineEvaluation = performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     true, 
+                                                                                          evaluateTestSuitePositions: false,
                                                                                           runFullTestSuiteEvaluation: false);
             
             engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
