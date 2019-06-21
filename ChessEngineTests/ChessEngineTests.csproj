@@ -213,7 +213,7 @@
     <Compile Include="MoveGenerationTests.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearchTests.cs" />
     <Compile Include="PerfT.cs" />
-    <Compile Include="PerftRuns.cs" />
+    <Compile Include="PerftVerificationTests.cs" />
     <Compile Include="PieceValidMovesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameTests.cs" />

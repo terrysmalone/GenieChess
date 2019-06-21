@@ -10,168 +10,8 @@ namespace ChessEngineTests
 {
     //[Ignore]
     [TestClass]
-    public class PerftRuns
+    public class PerftVerificationTests
     {
-        #region Perft logging methods
-
-        public void LogPerftRun()
-        {
-            using (var writer = new StreamWriter("PerftLog.txt"))
-            {
-                LogPerft("PerftInitial", writer, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", new List<ulong>() { 20, 400, 8902, 197281, 4865609, 119060324 });
-                LogPerft("Perft2", writer, "8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -", new List<ulong>() { 5, 39, 237, 2002, 14062, 120995, 966152, 8103790 });
-                LogPerft("Perft3", writer, "r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -", new List<ulong>() { 17, 341, 6666, 150072, 3186478, 77054993 });
-                LogPerft("Perft4", writer, "8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -", new List<ulong>() { 9, 85, 795, 7658, 72120, 703851, 6627106 });
-                LogPerft("Perft5", writer, "r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -", new List<ulong>() { 30, 986, 29777, 967198, 29345534, 943244129 });
-                LogPerft("Perft6", writer, "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -", new List<ulong>() { 48, 2039, 97862, 4085603, 193690690 });
-                LogPerft("Perft7", writer, "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1", new List<ulong>() { 24, 496, 9483, 182838, 3605103, 71179139 });
-                LogPerft("Perft8", writer, "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1", new List<ulong>() { 14, 191, 2812, 43238, 674624, 11030083 });
-                LogPerft("Perft9", writer, "q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1", new List<ulong>() { 37, 1109, 35507, 1064191, 33673031 });
-                LogPerft("Perft10", writer, "3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1", new List<ulong>() { 18, 92, 1670, 10138, 185429, 1134888 });
-                LogPerft("Perft11", writer, "8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1", new List<ulong>() { 13, 102, 1266, 10276, 135655, 1015133 });
-                LogPerft("Perft12", writer, "8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1", new List<ulong>() { 15, 126, 1928, 13931, 206379, 1440467 });
-                LogPerft("Perft13", writer, "5k2/8/8/8/8/8/8/4K2R w K - 0 1", new List<ulong>() { 15, 66, 1198, 6399, 120330, 661072 });
-                LogPerft("Perft14", writer, "3k4/8/8/8/8/8/8/R3K3 w Q - 0 1", new List<ulong>() { 16, 71, 1286, 7418, 141077, 803711 });
-                LogPerft("Perft15", writer, "r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1", new List<ulong>() { 26, 1141, 27826, 1274206, 31912360, 1509218880 });
-                LogPerft("Perft16", writer, "r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1", new List<ulong>() { 44, 1494, 50509, 1720476, 58773923, 2010267707 });
-                LogPerft("Perft17", writer, "2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1", new List<ulong>() { 11, 133, 1442, 19174, 266199, 3821001 });
-                LogPerft("Perft18", writer, "8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1", new List<ulong>() { 29, 165, 5160, 31961, 1004658, 6334638 });
-                LogPerft("Perft19", writer, "4k3/1P6/8/8/8/8/K7/8 w - - 0 1", new List<ulong>() { 9, 40, 472, 2661, 38983, 217342 });
-                LogPerft("Perft20", writer, "8/P1k5/K7/8/8/8/8/8 w - - 0", new List<ulong>() { 6, 27, 273, 1329, 18135, 92683, 1555980, 8110830 });
-            }
-        }
-
-        public void LogEndPerftRunQuick()
-        {
-            using (var writer = new StreamWriter("PerftLogQuick.txt"))
-            {
-                LogPerft("PerftInitial", writer, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 4, 197281);
-                LogPerft("Perft2", writer, "8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -", 7, 966152);
-                LogPerft("Perft3", writer, "r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -", 4, 150072);
-                LogPerft("Perft4", writer, "8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -", 6, 703851);
-                LogPerft("Perft5", writer, "r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -", 4, 967198);
-                LogPerft("Perft6", writer, "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -", 3, 97862);
-                LogPerft("Perft7", writer, "n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1", 4, 182838);
-                LogPerft("Perft8", writer, "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1", 5 , 674624);
-                LogPerft("Perft9", writer, "q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1", 4, 1064191);
-                LogPerft("Perft10", writer, "3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1",6, 1134888);
-                LogPerft("Perft11", writer, "8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1", 6, 1015133);
-                LogPerft("Perft12", writer, "8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1", 6, 1440467);
-                LogPerft("Perft13", writer, "5k2/8/8/8/8/8/8/4K2R w K - 0 1", 6, 661072);
-                LogPerft("Perft14", writer, "3k4/8/8/8/8/8/8/R3K3 w Q - 0 1", 6, 803711);
-                LogPerft("Perft15", writer, "r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1", 4, 1274206);
-                LogPerft("Perft16", writer, "r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1", 3, 50509);
-                LogPerft("Perft17", writer, "2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1", 6, 3821001);
-                LogPerft("Perft18", writer, "8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1", 5, 1004658);
-                LogPerft("Perft19", writer, "4k3/1P6/8/8/8/8/K7/8 w - - 0 1", 6, 217342);
-                LogPerft("Perft20", writer, "8/P1k5/K7/8/8/8/8/8 w - - 0", 6 , 92683);
-            }
-        }
-        
-        private void LogPerft(string title, StreamWriter writer, string fenNotation, IReadOnlyList<ulong> runs)
-        {
-            var passed = true;
-            ulong results;
-
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(fenNotation));
-
-            var perft = new PerfT();
-
-            writer.WriteLine();
-            writer.WriteLine(title + " - " + fenNotation);
-            
-            for (var i=0; i<runs.Count; i++)
-            {
-                Console.WriteLine($"Checking {title} at depth {i + 1}");
-
-                if ((results = perft.Perft(board, i+1)) != runs[i])
-                {                    
-                    writer.Write("FAIL! - ");
-                    writer.WriteLine($"Depth {i + 1} should have {runs[i]} nodes but has {results}");
-                    passed = false;
-                }
-                
-                if (passed == false)
-                    break;
-            }            
-
-            if (passed)
-                writer.WriteLine($"Passed to depth {runs.Count}");
-        }
-
-        private void LogPerft(string title, StreamWriter writer, string fenNotation, int depth, ulong expectedResult)
-        {
-            var startTime = DateTime.Now;
-
-            var passed = true;
-            ulong results;
-
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(fenNotation));
-
-            var perft = new PerfT();
-
-            writer.WriteLine();
-            writer.WriteLine(title + " - " + fenNotation);
-
-            Console.WriteLine($"Checking {title} at depth {depth}");
-
-            if ((results = perft.Perft(board, depth)) != expectedResult)
-            {
-                writer.Write("FAIL! - ");
-                writer.WriteLine($"Depth {depth} should have {expectedResult} nodes but has {results}");
-                passed = false;
-                Console.WriteLine("FAILED!");
-            }
-
-            if (passed)
-            {
-                writer.Write($"Passed to depth {depth}");
-                Console.WriteLine("passed");
-            }
-
-            var endTime = DateTime.Now;
-
-            var runningTime = endTime - startTime;
-            writer.WriteLine($" - Running time:{runningTime.TotalSeconds}");
-
-        }
-
-        #endregion Perft logging methods
-
-        //[TestMethod]
-        //public void TestMultiPerfT()
-        //{
-        //    List<PerfTPosition> positions = ResourceLoader.LoadPerfTPositions();
-
-        //    foreach (PerfTPosition position in positions)
-        //    {
-        //           TestPerft(position);
-        //    }
-
-        //}
-
-        //private static void TestPerft(PerfTPosition position)
-        //{
-        //    ulong maxNodes = 10000000; //Dont test depths that go above this number of nodes
-
-        //    Board board = new Board();
-        //    board.SetPosition(FenTranslator.ToBoardState(position.FenPosition);
-
-        //    PerfT perft = new PerfT();
-
-        //    for (int i = 0; i < position.Results.Count; i++)
-        //    {
-        //        if (position.Results[i] <= maxNodes)
-        //        {
-        //            ulong result = perft.Perft(board, i+1);
-        //            Assert.AreEqual(position.Results[i], result, string.Format("Failed on pos:{0}, depth:{1}. Nodes should be {2}, but were {3}", position.Name, i+1, position.Results[i], result));
-        //        }
-        //    }           
-        //}
-
-
         /// <summary>
         /// https://sites.google.com/site/numptychess/perft/position-1
         /// </summary>
@@ -316,7 +156,7 @@ namespace ChessEngineTests
             Assert.AreEqual((ulong)2039, perft.Perft(board, 2));
             Assert.AreEqual((ulong)97862, perft.Perft(board, 3));
             Assert.AreEqual((ulong)4085603, perft.Perft(board, 4));
-            //Assert.AreEqual((ulong)193690690, perft.Perft(board, 5));
+            Assert.AreEqual((ulong)193690690, perft.Perft(board, 5));
         }
 
         /// <summary>
@@ -625,7 +465,7 @@ namespace ChessEngineTests
              Assert.AreEqual((ulong)92683, perft.Perft(board, 6), "Failed at 6");
              Assert.AreEqual((ulong)1555980, perft.Perft(board, 7), "Failed at 7");
              //Assert.AreEqual((ulong)8110830, perft.Perft(board, 8));
-        }
+         }
 
         #region Perft simple test
 
@@ -764,7 +604,7 @@ namespace ChessEngineTests
 
         #endregion Individual tests
 
-        #region previously fialed tests
+        #region previously failed tests
 
         /// <summary>
         /// The first time I encountered this position in Arena the engine came up with an illegal move
@@ -795,16 +635,14 @@ namespace ChessEngineTests
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR1Q2K1 b - - 1 23"));
 
             var perft = new PerfT();
-
-            var divides = perft.Divides(board);
-
+            
             Assert.AreEqual((ulong)28, perft.Perft(board, 1));
             Assert.AreEqual((ulong)1356, perft.Perft(board, 2));
             Assert.AreEqual((ulong)35758, perft.Perft(board, 3));
             Assert.AreEqual((ulong)1695866, perft.Perft(board, 4));
         }
 
-        #endregion previously fialed tests
+        #endregion previously failed tests
 
     }
 }
