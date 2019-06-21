@@ -1150,7 +1150,7 @@ namespace ChessEngine.BoardRepresentation
                 Zobrist ^= ZobristHash.HashEnPassantSquare(enPassantPosition);
             }
 
-            //Current Postion
+            //Current Position
             if (specialMove == SpecialMoveType.DoublePawnPush)
             {
                 Zobrist ^= ZobristHash.HashEnPassantSquare(moveToBoard);
