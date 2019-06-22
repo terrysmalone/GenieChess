@@ -13,57 +13,6 @@ namespace ChessEngineTests
     public class ZobristHashTests
     {
         [TestMethod]
-        public void TestInitialises()
-        {
-            ZobristHash.Reset();
-
-            Assert.AreEqual((ulong)0, ZobristKey.BlackCastleKingside);
-            Assert.AreEqual((ulong)0, ZobristKey.BlackCastleQueenside);
-
-            Assert.AreEqual((ulong)0, ZobristKey.BlackToMove);
-
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantA);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantB);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantC);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantD);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantE);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantF);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantG);
-            Assert.AreEqual((ulong)0, ZobristKey.EnPassantH);
-            
-            Assert.AreEqual((ulong)0, ZobristKey.WhiteCastleKingside);
-            Assert.AreEqual((ulong)0, ZobristKey.WhiteCastleQueenside);
-
-            
-            ZobristHash.Initialise();
-
-            Assert.AreNotEqual((ulong)0, ZobristKey.BlackCastleKingside);
-            Assert.AreNotEqual((ulong)0, ZobristKey.BlackCastleQueenside);
-
-            Assert.AreNotEqual((ulong)0, ZobristKey.BlackToMove);
-
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantA);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantB);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantC);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantD);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantE);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantF);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantG);
-            Assert.AreNotEqual((ulong)0, ZobristKey.EnPassantH);
-
-            for (var i = 0; i < 12; i++)
-            {
-                for (var j = 0; j < 64; j++)
-                {
-                    Assert.AreNotEqual((ulong)0, ZobristKey.PiecePositions[i, j]);
-                }
-            }
-
-            Assert.AreNotEqual((ulong)0, ZobristKey.WhiteCastleKingside);
-            Assert.AreNotEqual((ulong)0, ZobristKey.WhiteCastleQueenside);
-        }
-
-        [TestMethod]
         public void TestInitialises_OnlyOnce()
         {
             ZobristHash.Reset();

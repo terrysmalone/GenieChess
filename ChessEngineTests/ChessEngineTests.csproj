@@ -212,6 +212,7 @@
     <Compile Include="LookupTablesTests.cs" />
     <Compile Include="MoveGenerationTests.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearchTests.cs" />
+    <Compile Include="MoveSearching\ZobristHashTests.cs" />
     <Compile Include="PerfT.cs" />
     <Compile Include="PerftVerificationTests.cs" />
     <Compile Include="PieceValidMovesTests.cs" />
