@@ -447,9 +447,6 @@ namespace ChessEngine.BoardRepresentation
         {
             SaveBoardState();            
 
-            //if(confirmedMove)
-            //    AddPgnValue(moveFromBoard, moveToBoard, pieceToMove);   //Do before everything else so we can check for capture etc //We can't trust pieceToMove since promotions ar already dealt with
-
             UpdateZobrist(moveFromBoard, moveToBoard, pieceToMove, specialMove);    //Do before everything else so we can check for capture etc 
 
             RemovePiece(moveFromBoard);
@@ -511,7 +508,14 @@ namespace ChessEngine.BoardRepresentation
 
             SwitchSides();
 
-            //UpdateIsKingInCheck(); 
+            //var fullZobrist = ZobristHash.HashBoard(GetCurrentBoardState());
+
+            //if(fullZobrist != Zobrist)
+            //{
+            //    Console.WriteLine("This should never happen!!!!");
+
+            //    var board = this;
+            //}
         }
 
         #region special move type methods
@@ -789,9 +793,13 @@ namespace ChessEngine.BoardRepresentation
             Zobrist ^= ZobristKey.BlackToMove;
 
             if (WhiteToMove)
+            {
                 WhiteToMove = false;
+            }
             else
+            {
                 WhiteToMove = true;
+            }
         }
 
         private void SaveBoardState()
@@ -1091,23 +1099,23 @@ namespace ChessEngine.BoardRepresentation
                 //Add rook
                 if ((moveToBoard & LookupTables.C1) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A1)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, 0];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, 3];
                 }
                 else if ((moveToBoard & LookupTables.G1) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H1)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F1)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, 7];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.WHITE_ROOK, 5];
                 }
                 else if ((moveToBoard & LookupTables.C8) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.A8)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.D8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, 56];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, 59];
                 }
                 else if ((moveToBoard & LookupTables.G8) > 0)
                 {
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.H8)];
-                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, BitboardOperations.GetSquareIndexFromBoardValue(LookupTables.F8)];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, 63];
+                    Zobrist ^= ZobristKey.PiecePositions[ZobristHash.BLACK_ROOK, 61];
                 }
             }
             else if(specialMove == SpecialMoveType.ENPassantCapture)
@@ -1115,19 +1123,23 @@ namespace ChessEngine.BoardRepresentation
                 int capturedPieceNumber;
                 int movedPieceNumber;
 
+                ulong capturedPawnBitboard;
+
                 if (WhiteToMove)
                 {
                     movedPieceNumber = ZobristHash.WHITE_PAWN;
                     capturedPieceNumber = ZobristHash.BLACK_PAWN;
+                    capturedPawnBitboard = EnPassantPosition << 8;
                 }
                 else
                 {
                     movedPieceNumber = ZobristHash.BLACK_PAWN;                    
-                    capturedPieceNumber = ZobristHash.WHITE_PAWN;                    
+                    capturedPieceNumber = ZobristHash.WHITE_PAWN;
+                    capturedPawnBitboard = EnPassantPosition >> 8;
                 }
 
                 //Remove captured pawn
-                Zobrist ^= ZobristKey.PiecePositions[capturedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(EnPassantPosition)];
+                Zobrist ^= ZobristKey.PiecePositions[capturedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(capturedPawnBitboard)];
                 
                 //Add moved pawn
                 Zobrist ^= ZobristKey.PiecePositions[movedPieceNumber, BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];                
@@ -1147,13 +1159,13 @@ namespace ChessEngine.BoardRepresentation
             // Previous position
             if (enPassantPosition > 0)
             {
-                Zobrist ^= ZobristHash.HashEnPassantSquare(enPassantPosition);
+                Zobrist ^= ZobristHash.HashEnPassantColumn(enPassantPosition);
             }
 
             //Current Position
             if (specialMove == SpecialMoveType.DoublePawnPush)
             {
-                Zobrist ^= ZobristHash.HashEnPassantSquare(moveToBoard);
+                Zobrist ^= ZobristHash.HashEnPassantColumn(moveToBoard);
 #warning May have to change this to only add enpassant hash if there is a pawn which can capture
             }            
         }
@@ -1163,7 +1175,7 @@ namespace ChessEngine.BoardRepresentation
         /// </summary>
         private void CalculateZobristKey()
         {
-            Zobrist = ZobristHash.HashBoard(this);
+            Zobrist = ZobristHash.HashBoard(GetCurrentBoardState());
         }
 
         #endregion Zobrist functions

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using ChessEngine.BoardRepresentation;
+﻿using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ResourceLoading;
 
 namespace ChessEngineTests
 {
-    //[Ignore]
     [TestClass]
     public class PerftVerificationTests
     {
@@ -22,10 +17,7 @@ namespace ChessEngineTests
             board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
             var perft = new PerfT();
-
-            //List<Tuple<string, ulong>> divides = perft.Divides(board);
-            var divides = perft.Divide(board, 3);
-
+            
             Assert.AreEqual((ulong)20, perft.Perft(board, 1));
             Assert.AreEqual((ulong)400, perft.Perft(board, 2));
             Assert.AreEqual((ulong)8902, perft.Perft(board, 3));
@@ -156,7 +148,30 @@ namespace ChessEngineTests
             Assert.AreEqual((ulong)2039, perft.Perft(board, 2));
             Assert.AreEqual((ulong)97862, perft.Perft(board, 3));
             Assert.AreEqual((ulong)4085603, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)193690690, perft.Perft(board, 5));
+            //Assert.AreEqual((ulong)193690690, perft.Perft(board, 5));
+        }
+
+        /// <summary>
+        /// "kiwipete" (above) failed at higher depth than I do in unit tests. This test plays 3 moves
+        /// in from that, closer to the failed position to make sure it doesn't go unnoticed again
+        /// It failed because of a bug in the en-passant zobrist hashing
+        /// </summary>
+        [TestMethod]
+        public void TestPerft6Fail()
+        {
+            var board = new Board();
+
+            board.SetPosition(FenTranslator.ToBoardState("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2"));
+
+            //board.MakeMove(UciMoveTranslator.ToGameMove("d5c6", board), false);
+            var perft = new PerfT();
+
+            //var perftScore = perft.Perft(board, 3);
+
+            Assert.AreEqual((ulong)50,        perft.Perft(board, 1));
+            Assert.AreEqual((ulong)2028,      perft.Perft(board, 2));
+            Assert.AreEqual((ulong)98109,     perft.Perft(board, 3));
+            Assert.AreEqual((ulong)3901513,   perft.Perft(board, 4));
         }
 
         /// <summary>
@@ -293,8 +308,6 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             var divides = perft.Divides(board);
-
              Assert.AreEqual((ulong)15, perft.Perft(board, 1));
              Assert.AreEqual((ulong)66, perft.Perft(board, 2));
              Assert.AreEqual((ulong)1198, perft.Perft(board, 3));
@@ -315,8 +328,6 @@ namespace ChessEngineTests
              board.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/8/8/R3K3 w Q - 0 1"));
 
              var perft = new PerfT();
-
-             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)16, perft.Perft(board, 1));
              Assert.AreEqual((ulong)71, perft.Perft(board, 2));
@@ -363,8 +374,6 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             var divides = perft.Divides(board);
-
              Assert.AreEqual((ulong)44, perft.Perft(board, 1));
              Assert.AreEqual((ulong)1494, perft.Perft(board, 2));
              Assert.AreEqual((ulong)50509, perft.Perft(board, 3));
@@ -385,8 +394,6 @@ namespace ChessEngineTests
              board.SetPosition(FenTranslator.ToBoardState("2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1"));
 
              var perft = new PerfT();
-
-             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)11, perft.Perft(board, 1));
              Assert.AreEqual((ulong)133, perft.Perft(board, 2));
@@ -409,8 +416,6 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             var divides = perft.Divides(board);
-
              Assert.AreEqual((ulong)29, perft.Perft(board, 1));
              Assert.AreEqual((ulong)165, perft.Perft(board, 2));
              Assert.AreEqual((ulong)5160, perft.Perft(board, 3));
@@ -432,8 +437,6 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             var divides = perft.Divides(board);
-
              Assert.AreEqual((ulong)9, perft.Perft(board, 1));
              Assert.AreEqual((ulong)40, perft.Perft(board, 2));
              Assert.AreEqual((ulong)472, perft.Perft(board, 3));
@@ -454,8 +457,6 @@ namespace ChessEngineTests
              board.SetPosition(FenTranslator.ToBoardState("8/P1k5/K7/8/8/8/8/8 w - - 0 1"));
 
              var perft = new PerfT();
-
-             var divides = perft.Divides(board);
 
              Assert.AreEqual((ulong)6, perft.Perft(board, 1), "Failed at 1");
              Assert.AreEqual((ulong)27, perft.Perft(board, 2), "Failed at 2");
@@ -593,8 +594,6 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            var divides = perft.Divides(board);
-
             Assert.AreEqual((ulong)26, perft.Perft(board, 1));
             Assert.AreEqual((ulong)512, perft.Perft(board, 2));
             Assert.AreEqual((ulong)11318, perft.Perft(board, 3));
@@ -618,8 +617,6 @@ namespace ChessEngineTests
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR4K1 w - - 1 22"));
 
             var perft = new PerfT();
-
-            var divides = perft.Divides(board);
 
             Assert.AreEqual((ulong)39, perft.Perft(board, 1));
             Assert.AreEqual((ulong)1020, perft.Perft(board, 2));

@@ -28,7 +28,7 @@ namespace ChessEngine.MoveSearching
 
         #endregion constants
 
-        static bool initialised = false;
+        static bool initialised;
 
         /// <summary>
         /// Clears and reinitialises the zobrist hashing
@@ -76,13 +76,7 @@ namespace ChessEngine.MoveSearching
         }
 
         #region hash whole board methods
-
-        internal static ulong HashBoard(Board board)
-        {
-            return HashBoard(board.GetCurrentBoardState());
-
-        }
-
+        
         internal static ulong HashBoard(BoardState boardState)
         {
             ulong hash = 0;
@@ -101,7 +95,7 @@ namespace ChessEngine.MoveSearching
             hash ^= HashBlackQueens(boardState);
             hash ^= HashBlackKing(boardState);
 
-            hash ^= HashEnPassantSquare(boardState.EnPassantPosition);
+            hash ^= HashEnPassantColumn(boardState.EnPassantPosition);
 
             hash ^= HashCastlingRights(boardState);
 
@@ -261,26 +255,26 @@ namespace ChessEngine.MoveSearching
 
         #endregion Hash piece positions
 
-        internal static ulong HashEnPassantSquare(ulong enPassantPosition)
+        internal static ulong HashEnPassantColumn(ulong enPassantPosition)
         {
 
             if (enPassantPosition > 0)
             {
                 if ((enPassantPosition & LookupTables.FileMaskA) > 0)
                     return ZobristKey.EnPassantA;
-                else if ((enPassantPosition & LookupTables.FileMaskB) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskB) > 0)
                     return ZobristKey.EnPassantB;
-                else if ((enPassantPosition & LookupTables.FileMaskC) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskC) > 0)
                     return ZobristKey.EnPassantC;
-                else if ((enPassantPosition & LookupTables.FileMaskD) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskD) > 0)
                     return ZobristKey.EnPassantD;
-                else if ((enPassantPosition & LookupTables.FileMaskE) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskE) > 0)
                     return ZobristKey.EnPassantE;
-                else if ((enPassantPosition & LookupTables.FileMaskF) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskF) > 0)
                     return ZobristKey.EnPassantF;
-                else if ((enPassantPosition & LookupTables.FileMaskG) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskG) > 0)
                     return ZobristKey.EnPassantG;
-                else if ((enPassantPosition & LookupTables.FileMaskH) > 0)
+                if ((enPassantPosition & LookupTables.FileMaskH) > 0)
                     return ZobristKey.EnPassantH;
             }
 
