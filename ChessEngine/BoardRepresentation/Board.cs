@@ -225,51 +225,73 @@ namespace ChessEngine.BoardRepresentation
             {
                 case (PieceType.Pawn):
                     if (pieceIsWhite)
-                        WhitePawns = WhitePawns | squareToPlace;
+                    {
+                        WhitePawns |= squareToPlace;
+                    }
                     else
-                        BlackPawns = BlackPawns | squareToPlace;
+                    {
+                        BlackPawns |= squareToPlace;
+                    }
 
                     break;
                 case (PieceType.Knight):
                     if (pieceIsWhite)
-                        WhiteKnights = WhiteKnights | squareToPlace;
+                    {
+                        WhiteKnights |= squareToPlace;
+                    }
                     else
-                        BlackKnights = BlackKnights | squareToPlace;
+                    {
+                        BlackKnights |= squareToPlace;
+                    }
 
                     break;
                 case (PieceType.Bishop):
                     if (pieceIsWhite)
-                        WhiteBishops = WhiteBishops | squareToPlace;
+                    {
+                        WhiteBishops |= squareToPlace;
+                    }
                     else
-                        BlackBishops = BlackBishops | squareToPlace;
+                    {
+                        BlackBishops |= squareToPlace;
+                    }
 
                     break;
                 case (PieceType.Rook):
                     if (pieceIsWhite)
-                        WhiteRooks = WhiteRooks | squareToPlace;
+                    {
+                        WhiteRooks |= squareToPlace;
+                    }
                     else
-                        BlackRooks = BlackRooks | squareToPlace;
+                    {
+                        BlackRooks |= squareToPlace;
+                    }
 
                     break;
                 case (PieceType.Queen):
                     if (pieceIsWhite)
-                        WhiteQueen = WhiteQueen | squareToPlace;
+                    {
+                        WhiteQueen |= squareToPlace;
+                    }
                     else
-                        BlackQueen = BlackQueen | squareToPlace;
+                    {
+                        BlackQueen |= squareToPlace;
+                    }
 
                     break;
                 case (PieceType.King):
                     if (pieceIsWhite)
-                        WhiteKing = WhiteKing | squareToPlace;
+                    {
+                        WhiteKing |= squareToPlace;
+                    }
                     else
-                        BlackKing = BlackKing | squareToPlace;
-                    break;
-                case (PieceType.None):                   
-                        RemovePiece(squareToPlace); 
+                    {
+                        BlackKing |= squareToPlace;
+                    }
+
                     break;
             }
 
-            CalculateUsefulBitboards();
+            //UpdateUsefulBitboardsForAddition(squareToPlace, pieceIsWhite);
         }
 
         /// <summary>
@@ -286,7 +308,7 @@ namespace ChessEngine.BoardRepresentation
         /// <summary>
         ///Removes the piece at the given file and rank
         /// </summary>
-        public void RemovePiece(int file, int rank)
+        internal void RemovePiece(int file, int rank)
         {
             var squareToClear = LookupTables.SquareValuesFromPosition[file, rank];
 
@@ -297,114 +319,100 @@ namespace ChessEngine.BoardRepresentation
         ///Removes the piece at the given square value
         ///Note: No checks are done on squareToRemove. An actual value must be given or multiple pieces will be removed
         /// </summary>
-        public void RemovePiece(ulong squareToClear)
+        internal void RemovePiece(ulong squareToClear)
         {
             var notSquareToClear = ~squareToClear;
 
             var pieceBefore = WhitePawns;
 
-            WhitePawns = WhitePawns & notSquareToClear;
+            WhitePawns &= notSquareToClear;
 
             if (pieceBefore != WhitePawns)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = BlackPawns;            
-            BlackPawns = BlackPawns & notSquareToClear;
+            BlackPawns &= notSquareToClear;
 
             if (pieceBefore != BlackPawns)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = WhiteKnights;
-            WhiteKnights = WhiteKnights & notSquareToClear;
+            WhiteKnights &= notSquareToClear;
 
             if (pieceBefore != WhiteKnights)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = BlackKnights;
-            BlackKnights = BlackKnights & notSquareToClear;
+            BlackKnights &= notSquareToClear;
 
             if (pieceBefore != BlackKnights)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = WhiteBishops;            
-            WhiteBishops = WhiteBishops & notSquareToClear;
+            WhiteBishops &= notSquareToClear;
 
             if (pieceBefore != WhiteBishops)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = BlackBishops;
-            BlackBishops = BlackBishops & notSquareToClear;
+            BlackBishops &= notSquareToClear;
 
             if (pieceBefore != BlackBishops)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
-
             pieceBefore = WhiteRooks;
-            WhiteRooks = WhiteRooks & notSquareToClear;
+            WhiteRooks &= notSquareToClear;
 
             if (pieceBefore != WhiteRooks)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = BlackRooks;
-            BlackRooks = BlackRooks & notSquareToClear;
+            BlackRooks &= notSquareToClear;
 
             if (pieceBefore != BlackRooks)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = WhiteQueen;
-            WhiteQueen = WhiteQueen & notSquareToClear;
+            WhiteQueen &= notSquareToClear;
 
             if (pieceBefore != WhiteQueen)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = BlackQueen;
-            BlackQueen = BlackQueen & notSquareToClear;
+            BlackQueen &= notSquareToClear;
 
             if (pieceBefore != BlackQueen)
             {
-                CalculateUsefulBitboards();
                 return;
             }
 
             pieceBefore = WhiteKing;
-            WhiteKing = WhiteKing & notSquareToClear;
+            WhiteKing &= notSquareToClear;
 
             if (pieceBefore != WhiteKing)
             {
-                CalculateUsefulBitboards();
                 return;
             }
             
-            BlackKing = BlackKing & notSquareToClear;
-
-            CalculateUsefulBitboards();
+            BlackKing &= notSquareToClear;
         }
 
         public void AllowAllCastling(bool value)
@@ -453,8 +461,9 @@ namespace ChessEngine.BoardRepresentation
             
             var whiteToMove = WhiteToMove; //This is mostly because I worry that constantly hitting a property will be slow
             
-
             RemovePiece(moveToBoard);       //Clear the square we're moving the piece to first
+
+            //UpdateUsefulBitboardsForRemoval(moveFromBoard | moveToBoard);
 
             if (IsMovePromotion(specialMove))
             {
@@ -494,28 +503,19 @@ namespace ChessEngine.BoardRepresentation
             
             CheckCastlingStatus(moveFromBoard, moveToBoard, pieceToMove);
             CheckEnPassantStatus(moveFromBoard, moveToBoard, pieceToMove);
-            //CheckForPawnPromotion(moveFromBoard, moveToBoard, pieceToMove);  
                         
             m_MoveCount++;
 
             HalfMoveClock ++;
 
             if (!WhiteToMove)
+            {
                 FullMoveClock++;
-
-            //if (confirmedMove)
-                CalculateUsefulBitboards();
-
+            }
+            
             SwitchSides();
 
-            //var fullZobrist = ZobristHash.HashBoard(GetCurrentBoardState());
-
-            //if(fullZobrist != Zobrist)
-            //{
-            //    Console.WriteLine("This should never happen!!!!");
-
-            //    var board = this;
-            //}
+            CalculateUsefulBitboards();
         }
 
         #region special move type methods
@@ -588,16 +588,10 @@ namespace ChessEngine.BoardRepresentation
                             //Move rook too
                             RemovePiece(LookupTables.H1);
                             PlacePiece(PieceType.Rook, pieceIsWhite: true, LookupTables.F1);
-
-                            //whiteCanCastleKingside = false;
                         }
 
                         Zobrist ^= ZobristKey.WhiteCastleKingside;
-                        //zobrist ^= ZobristKey.WhiteCastleQueenside;
                         WhiteCanCastleKingside = false;     //Any king move means we can no longer castle
-                        //whiteCanCastleQueenside = false;
-                        //else if (moveFromBoard == BitboardSquare.H1)     //Moved Rook
-                        //    whiteCanCastleKingside = false;
                     }
 
                     if (moveFromBoard == LookupTables.H1)     //Moved Rook
@@ -658,25 +652,18 @@ namespace ChessEngine.BoardRepresentation
                 if (BlackCanCastleKingside)
                 {
                    if (pieceToMove == PieceType.King)
-                    {
+                   {
                         if (moveToBoard == LookupTables.G8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
                             RemovePiece(LookupTables.H8);
                             PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.F8);
-
-                            //blackCanCastleQueenside = false;
-                            //blackCanCastleKingside = false;
                         }
 
                         BlackCanCastleKingside = false; //Any king move means we can no longer castle
-                        //blackCanCastleQueenside = false;
 
                         Zobrist ^= ZobristKey.BlackCastleKingside;
-                       
-                        //else if (moveFromBoard == BitboardSquare.H8)     //Moved Rook
-                        //    blackCanCastleKingside = false;
-                    }
+                   }
 
                    if (moveFromBoard == LookupTables.H8)     //Moved Rook
                    {
@@ -694,15 +681,10 @@ namespace ChessEngine.BoardRepresentation
                             //Move rook too
                             RemovePiece(LookupTables.A8);
                             PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.D8);
-
-                            //blackCanCastleQueenside = false;
                         }
 
                         BlackCanCastleQueenside = false;
-                        //blackCanCastleKingside = false;
                         Zobrist ^= ZobristKey.BlackCastleQueenside;
-                        //else if (moveFromBoard == BitboardSquare.A8)     //Moved Rook
-                        //    blackCanCastleQueenside = false;
                     }
 
                     if (moveFromBoard == LookupTables.A8)     //Moved Rook
@@ -745,11 +727,14 @@ namespace ChessEngine.BoardRepresentation
             {
                 if (WhiteToMove)
                 {
-                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
-                    if ((moveToBoard & EnPassantPosition) != 0)      //Move is an en-passant capture
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) 
+                                              - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
+                    
+                    if ((moveToBoard & EnPassantPosition) != 0) //Move is an en-passant capture  
                     {
                         //Remove captured piece
                         RemovePiece(EnPassantPosition >> 8);
+                        //UpdateUsefulBitboardsForRemoval(EnPassantPosition >> 8);
                         EnPassantPosition = 0;
                     }
                     else if(differenceInMoveIndex == 16)
@@ -766,6 +751,7 @@ namespace ChessEngine.BoardRepresentation
                     {
                         //Remove captured piece
                         RemovePiece(EnPassantPosition << 8);
+                        //UpdateUsefulBitboardsForRemoval(EnPassantPosition << 8);
                         EnPassantPosition = 0;
                     }
                     else if (differenceInMoveIndex == 16)
@@ -779,14 +765,6 @@ namespace ChessEngine.BoardRepresentation
             else
                 EnPassantPosition = 0;
         }
-
-        //private void AddPgnValue(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
-        //{
-        //    string move = PgnTranslator.ToPgnMove(this, moveFromBoard, moveToBoard, pieceToMove);
-
-        //    pgnMove = String.Copy(move);
-        //}
-            
 
         public void SwitchSides()
         {
@@ -887,10 +865,10 @@ namespace ChessEngine.BoardRepresentation
         {
             AllWhiteOccupiedSquares = WhitePawns | WhiteKnights | WhiteBishops | WhiteRooks | WhiteQueen | WhiteKing;
             AllBlackOccupiedSquares = BlackPawns | BlackKnights | BlackBishops | BlackRooks | BlackQueen | BlackKing;
-            AllOccupiedSquares = AllWhiteOccupiedSquares | AllBlackOccupiedSquares;
-            EmptySquares = AllOccupiedSquares ^ FullBoard;
-            WhiteOrEmpty = AllWhiteOccupiedSquares | EmptySquares;
-            BlackOrEmpty = AllBlackOccupiedSquares | EmptySquares;
+            AllOccupiedSquares      = AllWhiteOccupiedSquares | AllBlackOccupiedSquares;
+            EmptySquares            = AllOccupiedSquares ^ FullBoard;
+            WhiteOrEmpty            = AllWhiteOccupiedSquares | EmptySquares;
+            BlackOrEmpty            = AllBlackOccupiedSquares | EmptySquares;
         }
 
         #region slower debug get methods
