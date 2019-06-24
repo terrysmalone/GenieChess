@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Security.Authentication.ExtendedProtection;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -155,12 +156,10 @@ namespace ChessEngine.MoveSearching
                 OrderMovesInPlace(moveList, depth);
             }
 
-#if Debug
             s_Log.Info("---------------------------------------------------------");
             s_Log.Info($"Moves to Check: {moveList.Count}");
             s_Log.Info("Shown in order checked");
-#endif
-            
+
             foreach (var move in moveList)
             {
 #if UCI
@@ -172,7 +171,7 @@ namespace ChessEngine.MoveSearching
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, movePath);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, movePath, extended: false);
 
                 if (score > bestScore)
                 {
@@ -183,20 +182,17 @@ namespace ChessEngine.MoveSearching
                 m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, move));
 
                 m_BoardPosition.UnMakeLastMove();
-
-#if Debug
                 
                 //Print move path
                 s_Log.Info($"Move: {UciMoveTranslator.ToUciMove(move)} - " +
                            $"Score: {GetScoreString(score, m_BoardPosition.WhiteToMove)} - " +
                            $"Best path: { string.Join(", ", movePath.Select(UciMoveTranslator.ToUciMove)) }");
-#endif
             }
 
             return bestMove;
         }
 
-        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, List<PieceMoves> pvPath)
+        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, List<PieceMoves> pvPath, bool extended)
         {
             var pvPosition = pvPath.Count;
             
@@ -219,13 +215,6 @@ namespace ChessEngine.MoveSearching
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
-                        //if (bestHashMove != null)
-                        //{
-                        //    pvPath.RemoveAt(pvPosition);
-                        //    pvPath.Insert(pvPosition, (PieceMoves) bestHashMove);
-                       
-                        //}
-
                         return transpositionScore;
                     case HashNodeType.LowerBound:
                         alpha = Math.Max(alpha, transpositionScore);
@@ -239,20 +228,21 @@ namespace ChessEngine.MoveSearching
 
                 if (alpha >= beta)
                 {
-                    //if (bestHashMove != null)
-                    //{
-                    //    pvPath.RemoveAt(pvPosition);
-                    //    pvPath.Insert(pvPosition, (PieceMoves) bestHashMove);
-                    //}
-
                     return transpositionScore;
                 }
             }
 
             if (depthLeft == 0)
             {
-                //return Evaluate(m_BoardPosition);
-                return QuiescenceEvaluate(alpha, beta, pvPath);
+                if (!extended && BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
+                {
+                    depthLeft++;
+                    extended = true;
+                }
+                else
+                {
+                    return QuiescenceEvaluate(alpha, beta, pvPath);
+                }
             }
 
             // Null move check 
@@ -260,7 +250,8 @@ namespace ChessEngine.MoveSearching
             {
                 m_BoardPosition.SwitchSides();
                 //We don't care about the PV path. Maybe we should implement this differently
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR - 1, allowNull: false, new List<PieceMoves>());
+                // Set extended to true because we don't want it to get extended after the null move check
+                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR - 1, allowNull: false, new List<PieceMoves>(), extended: true); 
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -286,9 +277,10 @@ namespace ChessEngine.MoveSearching
             {
                 m_BestMoveSoFar = null;
 
-                //Call this just to get the best move
-                //We don't care about the PV path. Maybe we should implement this differently
-                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: false, new List<PieceMoves>()); 
+                // Call this just to get the best move
+                // We don't care about the PV path. Maybe we should implement this differently
+                // Set extended to true because we don't want any further deepening
+                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: false, new List<PieceMoves>(), extended: true); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -357,7 +349,7 @@ namespace ChessEngine.MoveSearching
 
                 var bestPath = new List<PieceMoves>();
 
-                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath);
+                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
 
                 noMovesAnalysed = false;
 

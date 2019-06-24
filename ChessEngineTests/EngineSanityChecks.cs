@@ -230,7 +230,7 @@ namespace ChessEngineTests
             game.ClearBoard();
             game.SetFENPosition("q2k2q1/2nqn2b/1n1P1n1b/2rnr2Q/1NQ1QN1Q/3Q3B/2RQR2B/Q2K2Q1 w - -");
 
-            game.ThinkingDepth = 5;
+            game.ThinkingDepth = 1;
             game.FindAndMakeBestMove();
         }
 
