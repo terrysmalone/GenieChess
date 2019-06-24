@@ -124,8 +124,6 @@ namespace ChessEngine.PossibleMoves
                 CalculateWhitePawnMoves(capturesOnly: true);
 
                 CalculateWhiteKingMoves(capturesOnly: true);
-
-                CheckForWhiteCastlingMoves();
             }
             else
             {
@@ -143,8 +141,6 @@ namespace ChessEngine.PossibleMoves
                 CalculateBlackPawnMoves(capturesOnly: true);
 
                 CalculateBlackKingMoves(capturesOnly: true);
-
-                CheckForBlackCastlingMoves();
             }
 
             RemoveSelfCheckingMoves();
@@ -164,8 +160,11 @@ namespace ChessEngine.PossibleMoves
             {
                 var currentMove = m_AllMoves[i];
 
-                m_CurrentBoard.MakeMove(currentMove.Position, currentMove.Moves, currentMove.Type,
-                                        currentMove.SpecialMove, false);
+                m_CurrentBoard.MakeMove(currentMove.Position, 
+                                        currentMove.Moves, 
+                                        currentMove.Type,
+                                        currentMove.SpecialMove, 
+                                        false);
 
                 if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
                 {

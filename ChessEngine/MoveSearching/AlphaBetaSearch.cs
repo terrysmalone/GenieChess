@@ -363,17 +363,10 @@ namespace ChessEngine.MoveSearching
 
                     m_BestMoveSoFar = move;
 
-                    if (depthLeft == 1)
-                    {
-                        pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
-                        pvPath.Add(move);
-                    }
-                    else
-                    {
-                        pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
-                        pvPath.Add(move);
-                        pvPath.AddRange(bestPath);
-                    }
+                    pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
+                    pvPath.Add(move);
+                    pvPath.AddRange(bestPath);
+                    
                 }
 
                 positionValue = Math.Max(alpha, score);
