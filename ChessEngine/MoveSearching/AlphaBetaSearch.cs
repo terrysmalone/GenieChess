@@ -256,8 +256,6 @@ namespace ChessEngine.MoveSearching
 
                 if (eval >= beta)
                 {
-                    //CountDebugger.NullMovesPruned++;
-
                     return beta; // Cutoff
                 }
             }
@@ -497,7 +495,7 @@ namespace ChessEngine.MoveSearching
                 return beta;
             }
 
-            if (evaluationScore > alpha)
+            if (evaluationScore >= alpha)
             {
                 alpha = evaluationScore;
             }
@@ -514,13 +512,11 @@ namespace ChessEngine.MoveSearching
 
             foreach (var move in moves)
             {
-                pvPath.Add(move);
+                var currentPath = new List<PieceMoves> { move };
 
                 m_BoardPosition.MakeMove(move, false);
-
-                var bestPath = new List<PieceMoves>();
-
-                evaluationScore = -QuiescenceEvaluate(-beta, -alpha, bestPath);
+                
+                evaluationScore = -QuiescenceEvaluate(-beta, -alpha, currentPath);
 
                 m_BoardPosition.UnMakeLastMove();
 
@@ -531,14 +527,12 @@ namespace ChessEngine.MoveSearching
                     return beta;
                 }
 
-                // This should actually be evaluationScore > alpha but we want this there to show the best path
-                if (evaluationScore >= alpha)
+                if (evaluationScore > alpha)
                 {
                     alpha = evaluationScore;
-                    
+
                     pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
-                    pvPath.Add(move);
-                    pvPath.AddRange(bestPath);
+                    pvPath.AddRange(currentPath);
                 }
             }
 
