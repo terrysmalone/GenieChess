@@ -146,6 +146,9 @@ namespace EngineEvaluation
             var sts15 = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("STS15.epd"));
             testSuites.Add(new Tuple<string, List<TestPosition>>("STS15.epd", sts15));
 
+            //var winAtChess = m_ResourceLoader.LoadTestPositions(m_ResourceLoader.GetTestResourcePath("WinAtChessTestSuite.epd"));
+            //testSuites.Add(new Tuple<string, List<TestPosition>>("WinAtChessTestSuite.epd", winAtChess));
+
             if (!runFullTestSuiteEvaluation)
             {
                 var keepFromEachSet = 6;
