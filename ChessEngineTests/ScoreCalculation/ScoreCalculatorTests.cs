@@ -13,22 +13,7 @@ namespace ChessEngineTests.ScoreCalculation
     public class ScoreCalculatorTests
     {
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
-
-        [Test]
-        public void TestPosition()
-        {
-            var board = new Board();
-
-            board.SetPosition(
-                FenTranslator.ToBoardState("r1bqk2r/pppp1ppp/4pn2/8/3N1N2/8/PPP1PPPP/R2QKB1R b KQkq - 0 7"));
-
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
-
-            var score = scoreCalculator.CalculateScore(board);
-
-            Assert.That(score, Is.EqualTo(0));
-        }
-
+        
         [Test]
         public void TestInitialPositionIsEven()
         {

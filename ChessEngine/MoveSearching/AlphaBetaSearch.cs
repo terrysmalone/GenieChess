@@ -304,6 +304,8 @@ namespace ChessEngine.MoveSearching
             var colourToMove = m_BoardPosition.WhiteToMove;
 
             var noMovesAnalysed = true;
+
+            var pvMove = true;
             
             foreach (var move in moveList)
             {
@@ -344,10 +346,28 @@ namespace ChessEngine.MoveSearching
                     m_BoardPosition.UnMakeLastMove();
                     continue;
                 }
-
+                
                 var bestPath = new List<PieceMoves>();
 
-                var score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
+                decimal score;
+
+                // if this is the first (pv move) then do a full search
+                if (pvMove)
+                {
+                    score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
+                    pvMove = false;
+                }
+                else
+                {
+                    // Do a search with a narrow aspiration window
+                    score = -AlphaBeta(-alpha-0.01m, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
+
+                    // If it fails high do a full search
+                    if (score > alpha && score < beta)
+                    {
+                        score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, new List<PieceMoves>(), extended);
+                    }
+                }
 
                 noMovesAnalysed = false;
 
