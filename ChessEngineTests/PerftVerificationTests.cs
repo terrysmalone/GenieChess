@@ -18,12 +18,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
             
-            Assert.AreEqual((ulong)20, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)400, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)8902, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)197281, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)4865609, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)119060324, perft.Perft(board, 6));
+            Assert.AreEqual(20, perft.Perft(board, 1));
+            Assert.AreEqual(400, perft.Perft(board, 2));
+            Assert.AreEqual(8902, perft.Perft(board, 3));
+            Assert.AreEqual(197281, perft.Perft(board, 4));
+            Assert.AreEqual(4865609, perft.Perft(board, 5));
+            //Assert.AreEqual(119060324, perft.Perft(board, 6));
         }
 
         /// <summary>
@@ -40,12 +40,12 @@ namespace ChessEngineTests
 
             //List<Tuple<string, ulong>> divides = perft.Divides(board);
 
-            Assert.AreEqual((ulong)20, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)400, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)8902, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)197281, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)4865609, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)119060324, perft.Perft(board, 6));
+            Assert.AreEqual(20, perft.Perft(board, 1));
+            Assert.AreEqual(400, perft.Perft(board, 2));
+            Assert.AreEqual(8902, perft.Perft(board, 3));
+            Assert.AreEqual(197281, perft.Perft(board, 4));
+            Assert.AreEqual(4865609, perft.Perft(board, 5));
+            //Assert.AreEqual(119060324, perft.Perft(board, 6));
         }
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace ChessEngineTests
 
             board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
 
-            Assert.AreEqual((ulong)5, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)39, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)237, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)2002, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)14062, perft.Perft(board, 5));
-            Assert.AreEqual((ulong)120995, perft.Perft(board, 6));
-            Assert.AreEqual((ulong)966152, perft.Perft(board, 7));
-            Assert.AreEqual((ulong)8103790, perft.Perft(board, 8));
+            Assert.AreEqual(5, perft.Perft(board, 1));
+            Assert.AreEqual(39, perft.Perft(board, 2));
+            Assert.AreEqual(237, perft.Perft(board, 3));
+            Assert.AreEqual(2002, perft.Perft(board, 4));
+            Assert.AreEqual(14062, perft.Perft(board, 5));
+            Assert.AreEqual(120995, perft.Perft(board, 6));
+            Assert.AreEqual(966152, perft.Perft(board, 7));
+            Assert.AreEqual(8103790, perft.Perft(board, 8));
         }
         
         /// <summary>
@@ -83,12 +83,12 @@ namespace ChessEngineTests
 
             //var divides = perft.Divides(board);
 
-            Assert.AreEqual((ulong)17, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual((ulong)341, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual((ulong)6666, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual((ulong)150072, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual((ulong)3186478, perft.Perft(board, 5), "Failed at 5");
-            //Assert.AreEqual((ulong)77054993, perft.Perft(board, 6));
+            Assert.AreEqual(17, perft.Perft(board, 1), "Failed at 1");
+            Assert.AreEqual(341, perft.Perft(board, 2), "Failed at 2");
+            Assert.AreEqual(6666, perft.Perft(board, 3), "Failed at 3");
+            Assert.AreEqual(150072, perft.Perft(board, 4), "Failed at 4");
+            Assert.AreEqual(3186478, perft.Perft(board, 5), "Failed at 5");
+            //Assert.AreEqual(77054993, perft.Perft(board, 6));
         }
 
         [TestMethod]
@@ -102,13 +102,13 @@ namespace ChessEngineTests
 
             //var divides = perft.Divides(board);
 
-            Assert.AreEqual((ulong)9, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual((ulong)85, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual((ulong)795, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual((ulong)7658, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual((ulong)72120, perft.Perft(board, 5), "Failed at 5");
-            Assert.AreEqual((ulong)703851, perft.Perft(board, 6), "Failed at 6");
-            //Assert.AreEqual((ulong)6627106, perft.Perft(board, 7));
+            Assert.AreEqual(9, perft.Perft(board, 1), "Failed at 1");
+            Assert.AreEqual(85, perft.Perft(board, 2), "Failed at 2");
+            Assert.AreEqual(795, perft.Perft(board, 3), "Failed at 3");
+            Assert.AreEqual(7658, perft.Perft(board, 4), "Failed at 4");
+            Assert.AreEqual(72120, perft.Perft(board, 5), "Failed at 5");
+            Assert.AreEqual(703851, perft.Perft(board, 6), "Failed at 6");
+            //Assert.AreEqual(6627106, perft.Perft(board, 7));
         }
 
         /// <summary>
@@ -123,12 +123,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)30, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)986, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)29777, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)967198, perft.Perft(board, 4));
-            //Assert.AreEqual((ulong)29345534, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)943244129, perft.Perft(board, 6));
+            Assert.AreEqual(30, perft.Perft(board, 1));
+            Assert.AreEqual(986, perft.Perft(board, 2));
+            Assert.AreEqual(29777, perft.Perft(board, 3));
+            Assert.AreEqual(967198, perft.Perft(board, 4));
+            //Assert.AreEqual(29345534, perft.Perft(board, 5));
+            //Assert.AreEqual(943244129, perft.Perft(board, 6));
         }
 
         /// <summary>
@@ -144,11 +144,11 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)48, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)2039, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)97862, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)4085603, perft.Perft(board, 4));
-            //Assert.AreEqual((ulong)193690690, perft.Perft(board, 5));
+            Assert.AreEqual(48, perft.Perft(board, 1));
+            Assert.AreEqual(2039, perft.Perft(board, 2));
+            Assert.AreEqual(97862, perft.Perft(board, 3));
+            Assert.AreEqual(4085603, perft.Perft(board, 4));
+            //Assert.AreEqual(193690690, perft.Perft(board, 5));
         }
 
         /// <summary>
@@ -168,10 +168,10 @@ namespace ChessEngineTests
 
             //var perftScore = perft.Perft(board, 3);
 
-            Assert.AreEqual((ulong)50,        perft.Perft(board, 1));
-            Assert.AreEqual((ulong)2028,      perft.Perft(board, 2));
-            Assert.AreEqual((ulong)98109,     perft.Perft(board, 3));
-            Assert.AreEqual((ulong)3901513,   perft.Perft(board, 4));
+            Assert.AreEqual(50,        perft.Perft(board, 1));
+            Assert.AreEqual(2028,      perft.Perft(board, 2));
+            Assert.AreEqual(98109,     perft.Perft(board, 3));
+            Assert.AreEqual(3901513,   perft.Perft(board, 4));
         }
 
         /// <summary>
@@ -187,12 +187,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)24, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual((ulong)496, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual((ulong)9483, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual((ulong)182838, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual((ulong)3605103, perft.Perft(board, 5), "Failed at 5");
-            //Assert.AreEqual((ulong)71179139, perft.Perft(board, 6));
+            Assert.AreEqual(24, perft.Perft(board, 1), "Failed at 1");
+            Assert.AreEqual(496, perft.Perft(board, 2), "Failed at 2");
+            Assert.AreEqual(9483, perft.Perft(board, 3), "Failed at 3");
+            Assert.AreEqual(182838, perft.Perft(board, 4), "Failed at 4");
+            Assert.AreEqual(3605103, perft.Perft(board, 5), "Failed at 5");
+            //Assert.AreEqual(71179139, perft.Perft(board, 6));
         }
 
         [TestMethod]
@@ -205,12 +205,12 @@ namespace ChessEngineTests
                         
             var perft = new PerfT();
             
-            Assert.AreEqual((ulong)14, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)191, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)2812, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)43238, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)674624, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)11030083, perft.Perft(board, 6));
+            Assert.AreEqual(14, perft.Perft(board, 1));
+            Assert.AreEqual(191, perft.Perft(board, 2));
+            Assert.AreEqual(2812, perft.Perft(board, 3));
+            Assert.AreEqual(43238, perft.Perft(board, 4));
+            Assert.AreEqual(674624, perft.Perft(board, 5));
+            //Assert.AreEqual(11030083, perft.Perft(board, 6));
         }
 
         /// <summary>
@@ -225,11 +225,11 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)37, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)1109, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)35507, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)1064191, perft.Perft(board, 4));
-            //Assert.AreEqual((ulong)33673031, perft.Perft(board, 5));       //116.87 seconds - 08/02/2014
+            Assert.AreEqual(37, perft.Perft(board, 1));
+            Assert.AreEqual(1109, perft.Perft(board, 2));
+            Assert.AreEqual(35507, perft.Perft(board, 3));
+            Assert.AreEqual(1064191, perft.Perft(board, 4));
+            //Assert.AreEqual(33673031, perft.Perft(board, 5));       //116.87 seconds - 08/02/2014
         }
 
         /// <summary>
@@ -245,12 +245,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)18, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)92, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)1670, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)10138, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)185429, perft.Perft(board, 5));
-            Assert.AreEqual((ulong)1134888, perft.Perft(board, 6));
+            Assert.AreEqual(18, perft.Perft(board, 1));
+            Assert.AreEqual(92, perft.Perft(board, 2));
+            Assert.AreEqual(1670, perft.Perft(board, 3));
+            Assert.AreEqual(10138, perft.Perft(board, 4));
+            Assert.AreEqual(185429, perft.Perft(board, 5));
+            Assert.AreEqual(1134888, perft.Perft(board, 6));
         }
 
          /// <summary>
@@ -266,12 +266,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)13, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)102, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)1266, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)10276, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)135655, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)1015133, perft.Perft(board, 6));
+             Assert.AreEqual(13, perft.Perft(board, 1));
+             Assert.AreEqual(102, perft.Perft(board, 2));
+             Assert.AreEqual(1266, perft.Perft(board, 3));
+             Assert.AreEqual(10276, perft.Perft(board, 4));
+             Assert.AreEqual(135655, perft.Perft(board, 5));
+             Assert.AreEqual(1015133, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -287,12 +287,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)15, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)126, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)1928, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)13931, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)206379, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)1440467, perft.Perft(board, 6));
+             Assert.AreEqual(15, perft.Perft(board, 1));
+             Assert.AreEqual(126, perft.Perft(board, 2));
+             Assert.AreEqual(1928, perft.Perft(board, 3));
+             Assert.AreEqual(13931, perft.Perft(board, 4));
+             Assert.AreEqual(206379, perft.Perft(board, 5));
+             Assert.AreEqual(1440467, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -308,12 +308,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)15, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)66, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)1198, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)6399, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)120330, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)661072, perft.Perft(board, 6));
+             Assert.AreEqual(15, perft.Perft(board, 1));
+             Assert.AreEqual(66, perft.Perft(board, 2));
+             Assert.AreEqual(1198, perft.Perft(board, 3));
+             Assert.AreEqual(6399, perft.Perft(board, 4));
+             Assert.AreEqual(120330, perft.Perft(board, 5));
+             Assert.AreEqual(661072, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -329,12 +329,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)16, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)71, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)1286, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)7418, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)141077, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)803711, perft.Perft(board, 6));
+             Assert.AreEqual(16, perft.Perft(board, 1));
+             Assert.AreEqual(71, perft.Perft(board, 2));
+             Assert.AreEqual(1286, perft.Perft(board, 3));
+             Assert.AreEqual(7418, perft.Perft(board, 4));
+             Assert.AreEqual(141077, perft.Perft(board, 5));
+             Assert.AreEqual(803711, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -353,12 +353,12 @@ namespace ChessEngineTests
 
              //List<Tuple<string, ulong>> divides = perft.Divides(board);
 
-             Assert.AreEqual((ulong)26, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)1141, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)27826, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)1274206, perft.Perft(board, 4));
-             //Assert.AreEqual((ulong)31912360, perft.Perft(board, 5));
-             //Assert.AreEqual((ulong)1509218880, perft.Perft(board, 6));            
+             Assert.AreEqual(26, perft.Perft(board, 1));
+             Assert.AreEqual(1141, perft.Perft(board, 2));
+             Assert.AreEqual(27826, perft.Perft(board, 3));
+             Assert.AreEqual(1274206, perft.Perft(board, 4));
+             //Assert.AreEqual(31912360, perft.Perft(board, 5));
+             //Assert.AreEqual(1509218880, perft.Perft(board, 6));            
          }
 
          /// <summary>
@@ -374,12 +374,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)44, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)1494, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)50509, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)1720476, perft.Perft(board, 4));
-             //Assert.AreEqual((ulong)58773923, perft.Perft(board, 5));
-             //Assert.AreEqual((ulong)2010267707, perft.Perft(board, 6));             
+             Assert.AreEqual(44, perft.Perft(board, 1));
+             Assert.AreEqual(1494, perft.Perft(board, 2));
+             Assert.AreEqual(50509, perft.Perft(board, 3));
+             Assert.AreEqual(1720476, perft.Perft(board, 4));
+             //Assert.AreEqual(58773923, perft.Perft(board, 5));
+             //Assert.AreEqual(2010267707, perft.Perft(board, 6));             
          }
 
          /// <summary>
@@ -395,12 +395,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)11, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)133, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)1442, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)19174, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)266199, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)3821001, perft.Perft(board, 6));             
+             Assert.AreEqual(11, perft.Perft(board, 1));
+             Assert.AreEqual(133, perft.Perft(board, 2));
+             Assert.AreEqual(1442, perft.Perft(board, 3));
+             Assert.AreEqual(19174, perft.Perft(board, 4));
+             Assert.AreEqual(266199, perft.Perft(board, 5));
+             Assert.AreEqual(3821001, perft.Perft(board, 6));             
          }
 
          /// <summary>
@@ -416,12 +416,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)29, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)165, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)5160, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)31961, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)1004658, perft.Perft(board, 5));
-            // Assert.AreEqual((ulong)6334638, perft.Perft(board, 6));
+             Assert.AreEqual(29, perft.Perft(board, 1));
+             Assert.AreEqual(165, perft.Perft(board, 2));
+             Assert.AreEqual(5160, perft.Perft(board, 3));
+             Assert.AreEqual(31961, perft.Perft(board, 4));
+             Assert.AreEqual(1004658, perft.Perft(board, 5));
+            // Assert.AreEqual(6334638, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -437,12 +437,12 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)9, perft.Perft(board, 1));
-             Assert.AreEqual((ulong)40, perft.Perft(board, 2));
-             Assert.AreEqual((ulong)472, perft.Perft(board, 3));
-             Assert.AreEqual((ulong)2661, perft.Perft(board, 4));
-             Assert.AreEqual((ulong)38983, perft.Perft(board, 5));
-             Assert.AreEqual((ulong)217342, perft.Perft(board, 6));
+             Assert.AreEqual(9, perft.Perft(board, 1));
+             Assert.AreEqual(40, perft.Perft(board, 2));
+             Assert.AreEqual(472, perft.Perft(board, 3));
+             Assert.AreEqual(2661, perft.Perft(board, 4));
+             Assert.AreEqual(38983, perft.Perft(board, 5));
+             Assert.AreEqual(217342, perft.Perft(board, 6));
          }
 
          /// <summary>
@@ -458,14 +458,14 @@ namespace ChessEngineTests
 
              var perft = new PerfT();
 
-             Assert.AreEqual((ulong)6, perft.Perft(board, 1), "Failed at 1");
-             Assert.AreEqual((ulong)27, perft.Perft(board, 2), "Failed at 2");
-             Assert.AreEqual((ulong)273, perft.Perft(board, 3), "Failed at 3");
-             Assert.AreEqual((ulong)1329, perft.Perft(board, 4), "Failed at 4");
-             Assert.AreEqual((ulong)18135, perft.Perft(board, 5), "Failed at 5");
-             Assert.AreEqual((ulong)92683, perft.Perft(board, 6), "Failed at 6");
-             Assert.AreEqual((ulong)1555980, perft.Perft(board, 7), "Failed at 7");
-             //Assert.AreEqual((ulong)8110830, perft.Perft(board, 8));
+             Assert.AreEqual(6, perft.Perft(board, 1), "Failed at 1");
+             Assert.AreEqual(27, perft.Perft(board, 2), "Failed at 2");
+             Assert.AreEqual(273, perft.Perft(board, 3), "Failed at 3");
+             Assert.AreEqual(1329, perft.Perft(board, 4), "Failed at 4");
+             Assert.AreEqual(18135, perft.Perft(board, 5), "Failed at 5");
+             Assert.AreEqual(92683, perft.Perft(board, 6), "Failed at 6");
+             Assert.AreEqual(1555980, perft.Perft(board, 7), "Failed at 7");
+             //Assert.AreEqual(8110830, perft.Perft(board, 8));
          }
 
         #region Perft simple test
@@ -479,8 +479,8 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)0, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)0, perft.Perft(board, 2));
+            Assert.AreEqual(0, perft.Perft(board, 1));
+            Assert.AreEqual(0, perft.Perft(board, 2));
         }
 
         [TestMethod]
@@ -492,8 +492,8 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)0, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)0, perft.Perft(board, 2));
+            Assert.AreEqual(0, perft.Perft(board, 1));
+            Assert.AreEqual(0, perft.Perft(board, 2));
         }
           
         #endregion Perft simple test
@@ -509,12 +509,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)3, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)13, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)77, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)484, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)2630, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)16680, perft.Perft(board, 6));
+            Assert.AreEqual(3, perft.Perft(board, 1));
+            Assert.AreEqual(13, perft.Perft(board, 2));
+            Assert.AreEqual(77, perft.Perft(board, 3));
+            Assert.AreEqual(484, perft.Perft(board, 4));
+            Assert.AreEqual(2630, perft.Perft(board, 5));
+            //Assert.AreEqual(16680, perft.Perft(board, 6));
         }
 
 
@@ -527,12 +527,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)10, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)99, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)1162, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)13614, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)166917, perft.Perft(board, 5));
-            //Assert.AreEqual((ulong)2038592, perft.Perft(board, 6));
+            Assert.AreEqual(10, perft.Perft(board, 1));
+            Assert.AreEqual(99, perft.Perft(board, 2));
+            Assert.AreEqual(1162, perft.Perft(board, 3));
+            Assert.AreEqual(13614, perft.Perft(board, 4));
+            Assert.AreEqual(166917, perft.Perft(board, 5));
+            //Assert.AreEqual(2038592, perft.Perft(board, 6));
         }
 
         [TestMethod]
@@ -544,12 +544,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)6, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual((ulong)36, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual((ulong)253, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual((ulong)1777, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual((ulong)13516, perft.Perft(board, 5), "Failed at 5");
-            Assert.AreEqual((ulong)98271, perft.Perft(board, 6), "Failed at 6");
+            Assert.AreEqual(6, perft.Perft(board, 1), "Failed at 1");
+            Assert.AreEqual(36, perft.Perft(board, 2), "Failed at 2");
+            Assert.AreEqual(253, perft.Perft(board, 3), "Failed at 3");
+            Assert.AreEqual(1777, perft.Perft(board, 4), "Failed at 4");
+            Assert.AreEqual(13516, perft.Perft(board, 5), "Failed at 5");
+            Assert.AreEqual(98271, perft.Perft(board, 6), "Failed at 6");
         }
 
         [TestMethod]
@@ -561,12 +561,12 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)9, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)77, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)789, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)8001, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)85768, perft.Perft(board, 5));
-            Assert.AreEqual((ulong)910419, perft.Perft(board, 6));
+            Assert.AreEqual(9, perft.Perft(board, 1));
+            Assert.AreEqual(77, perft.Perft(board, 2));
+            Assert.AreEqual(789, perft.Perft(board, 3));
+            Assert.AreEqual(8001, perft.Perft(board, 4));
+            Assert.AreEqual(85768, perft.Perft(board, 5));
+            Assert.AreEqual(910419, perft.Perft(board, 6));
         }
 
         [TestMethod]
@@ -578,11 +578,11 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)16, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)219, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)3352, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)50146, perft.Perft(board, 4));
-            Assert.AreEqual((ulong)783632, perft.Perft(board, 5));
+            Assert.AreEqual(16, perft.Perft(board, 1));
+            Assert.AreEqual(219, perft.Perft(board, 2));
+            Assert.AreEqual(3352, perft.Perft(board, 3));
+            Assert.AreEqual(50146, perft.Perft(board, 4));
+            Assert.AreEqual(783632, perft.Perft(board, 5));
         }
 
         [TestMethod]
@@ -594,11 +594,11 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)26, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)512, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)11318, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)235936, perft.Perft(board, 4));
-            //Assert.AreEqual((ulong)4991335, perft.Perft(board, 5));
+            Assert.AreEqual(26, perft.Perft(board, 1));
+            Assert.AreEqual(512, perft.Perft(board, 2));
+            Assert.AreEqual(11318, perft.Perft(board, 3));
+            Assert.AreEqual(235936, perft.Perft(board, 4));
+            //Assert.AreEqual(4991335, perft.Perft(board, 5));
         }
 
         #endregion Individual tests
@@ -618,10 +618,10 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
 
-            Assert.AreEqual((ulong)39, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)1020, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)37572, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)1005030, perft.Perft(board, 4));
+            Assert.AreEqual(39, perft.Perft(board, 1));
+            Assert.AreEqual(1020, perft.Perft(board, 2));
+            Assert.AreEqual(37572, perft.Perft(board, 3));
+            Assert.AreEqual(1005030, perft.Perft(board, 4));
         }
 
         [TestMethod]
@@ -633,10 +633,10 @@ namespace ChessEngineTests
 
             var perft = new PerfT();
             
-            Assert.AreEqual((ulong)28, perft.Perft(board, 1));
-            Assert.AreEqual((ulong)1356, perft.Perft(board, 2));
-            Assert.AreEqual((ulong)35758, perft.Perft(board, 3));
-            Assert.AreEqual((ulong)1695866, perft.Perft(board, 4));
+            Assert.AreEqual(28, perft.Perft(board, 1));
+            Assert.AreEqual(1356, perft.Perft(board, 2));
+            Assert.AreEqual(35758, perft.Perft(board, 3));
+            Assert.AreEqual(1695866, perft.Perft(board, 4));
         }
 
         #endregion previously failed tests

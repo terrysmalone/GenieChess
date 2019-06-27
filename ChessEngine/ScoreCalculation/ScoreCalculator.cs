@@ -23,81 +23,81 @@ namespace ChessEngine.ScoreCalculation
 
         #region Piece values
 
-        public decimal PawnPieceValue { get; set; }
+        public int PawnPieceValue { get; set; }
 
-        public decimal KnightPieceValue { get; set; }
+        public int KnightPieceValue { get; set; }
 
-        public decimal BishopPieceValue { get; set; }
+        public int BishopPieceValue { get; set; }
 
-        public decimal RookPieceValue { get; set; }
+        public int RookPieceValue { get; set; }
 
-        public decimal QueenPieceValue { get; set; }
+        public int QueenPieceValue { get; set; }
 
         #endregion Piece values
 
         #region pawn position score properties
 
 
-        public decimal InnerCentralPawnScore { get; set; }
-        public decimal OuterCentralPawnScore { get; set; }
+        public int InnerCentralPawnScore { get; set; }
+        public int OuterCentralPawnScore { get; set; }
 
 
-        public decimal InnerCentralKnightScore { get; set; }
-        public decimal OuterCentralKnightScore { get; set; }
+        public int InnerCentralKnightScore { get; set; }
+        public int OuterCentralKnightScore { get; set; }
 
-        public decimal InnerCentralBishopScore { get; set; }
-        public decimal OuterCentralBishopScore { get; set; }
+        public int InnerCentralBishopScore { get; set; }
+        public int OuterCentralBishopScore { get; set; }
         
-        public decimal InnerCentralRookScore { get; set; }
-        public decimal OuterCentralRookScore { get; set; }
+        public int InnerCentralRookScore { get; set; }
+        public int OuterCentralRookScore { get; set; }
         
-        public decimal InnerCentralQueenScore { get; set; }
-        public decimal OuterCentralQueenScore { get; set; }
+        public int InnerCentralQueenScore { get; set; }
+        public int OuterCentralQueenScore { get; set; }
 
         #endregion pawn position score properties
         
         #region king safety bonuses
 
-        public decimal CastlingKingSideScore { get; set; }
-        public decimal CastlingQueenSideScore { get; set; }
-        public decimal CanCastleKingsideScore { get; set; }
-        public decimal CanCastleQueensideScore { get; set; }
+        public int CastlingKingSideScore { get; set; }
+        public int CastlingQueenSideScore { get; set; }
+        public int CanCastleKingsideScore { get; set; }
+        public int CanCastleQueensideScore { get; set; }
 
         #endregion king safety bonuses
 
         #region square table values
 
-        public decimal[] PawnSquareTable { get; } = new decimal[64];
+        public int[] PawnSquareTable { get; } = new int[64];
 
-        public decimal[] KnightSquareTable { get; } = new decimal[64];
+        public int[] KnightSquareTable { get; } = new int[64];
 
-        public decimal[] BishopSquareTable { get; } = new decimal[64];
+        public int[] BishopSquareTable { get; } = new int[64];
 
-        public decimal[] KingSquareTable { get; } = new decimal[64];
+        public int[] KingSquareTable { get; } = new int[64];
 
-        public decimal[] KingEndGameSquareTable { get; } = new decimal[64];
+        public int[] KingEndGameSquareTable { get; } = new int[64];
 
         #endregion square table values
 
-        public decimal DevelopedPieceScore { get; set; }
+        public int DevelopedPieceScore { get; set; }
 
-        public decimal DoubleBishopScore { get; set; }
+        public int DoubleBishopScore { get; set; }
 
-        public decimal DoubledPawnPenalty { get; set; }
-        public decimal PawnChainScore { get; set; }
+        public int DoubledPawnPenalty { get; set; }
+        public int PawnChainScore { get; set; }
 
-        public decimal PassedPawnBonus { get; set; }
+        public int PassedPawnBonus { get; set; }
 
-        public decimal PassedPawnAdvancementBonus { get; set; }
+        public int PassedPawnAdvancementBonus { get; set; }
 
-        public decimal ConnectedRookBonus { get; set; }
+        public int ConnectedRookBonus { get; set; }
 
-        public decimal BoardCoverageBonus { get; set; }
-        public decimal QueenCoverageBonus { get; set; }
-        public decimal RookCoverageBonus { get; set; }
-        public decimal BishopCoverageBonus { get; set; }
-        public decimal AttackBonus { get; set; }
-        public decimal MoreValuablePieceAttackBonus { get; set; }
+        public int BoardCoverageBonus { get; set; }
+        public int QueenCoverageBonus { get; set; }
+        public int RookCoverageBonus { get; set; }
+        public int BishopCoverageBonus { get; set; }
+        public int AttackBonus { get; set; }
+        public int MoreValuablePieceAttackBonus { get; set; }
 
         #endregion Properties
 
@@ -115,7 +115,7 @@ namespace ChessEngine.ScoreCalculation
         /// </summary>
         /// <param name="currentBoard"></param>
         /// <returns></returns>
-        public decimal CalculateScore(Board currentBoard)
+        public int CalculateScore(Board currentBoard)
         {
 
             CountDebugger.Evaluations++;
@@ -126,7 +126,7 @@ namespace ChessEngine.ScoreCalculation
 
             DetectEndGame();
 
-            decimal score = 0;
+            int score = 0;
 
             score += CalculatePieceValues();
                        
@@ -163,11 +163,11 @@ namespace ChessEngine.ScoreCalculation
         /// Calculates points for the pieces each player has on the board
         /// </summary>
         /// <returns></returns>
-        private decimal CalculatePieceValues()
+        private int CalculatePieceValues()
         {
-            var kingScore = (decimal.MaxValue/6);
+            var kingScore = (int.MaxValue/6);
 
-            decimal pieceScore = 0;
+            int pieceScore = 0;
 
             //Calculate white piece values
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhitePawns) * PawnPieceValue;
@@ -224,9 +224,9 @@ namespace ChessEngine.ScoreCalculation
         /// Note: Counts only position. No other factor
         /// </summary>
         /// <returns></returns>
-        private decimal CalculatePositionValues()
+        private int CalculatePositionValues()
         {
-            decimal positionScores = 0;
+            int positionScores = 0;
 
             positionScores += CalculatePawnStructureScores();
             positionScores += CalculateCentralPieceScores();
@@ -239,9 +239,9 @@ namespace ChessEngine.ScoreCalculation
         /// PawnChainBonus
         /// </summary>
         /// <returns></returns>
-        private decimal CalculatePawnStructureScores()
+        private int CalculatePawnStructureScores()
         {
-            decimal pawnStructureScore = 0;
+            int pawnStructureScore = 0;
             
             //Doubled pawns
             var whiteDoubleCount = 0;
@@ -333,12 +333,12 @@ namespace ChessEngine.ScoreCalculation
         /// Points for placing pieces near to the centre
         /// </summary>
         /// <returns></returns>
-        private decimal CalculateCentralPieceScores()
+        private int CalculateCentralPieceScores()
         {
             var innerCentralSquares = UsefulBitboards.InnerCentralSquares;
             var outerCentralSquares = UsefulBitboards.OuterCentralSquares;
             
-            decimal piecePositionScore = 0;
+            int piecePositionScore = 0;
 
             //Pawns
             var whitePawnBoard = m_CurrentBoard.WhitePawns;
@@ -398,7 +398,7 @@ namespace ChessEngine.ScoreCalculation
             return piecePositionScore;
         }
         
-        private decimal CalculatePositionScores(ulong pieces, ulong positions)
+        private int CalculatePositionScores(ulong pieces, ulong positions)
         {
             var inPosition = pieces & positions;
 
@@ -412,9 +412,9 @@ namespace ChessEngine.ScoreCalculation
 
         #region King safety scores
 
-        private decimal CalculateKingSafetyScores()
+        private int CalculateKingSafetyScores()
         {
-            decimal kingSafetyScore = 0;
+            int kingSafetyScore = 0;
 
             kingSafetyScore += CalculateKingCastlingScores();
             kingSafetyScore += CalculateCanCastleScores();
@@ -425,9 +425,9 @@ namespace ChessEngine.ScoreCalculation
             return kingSafetyScore;
         }
 
-        private decimal CalculateKingCastlingScores()
+        private int CalculateKingCastlingScores()
         {            
-            decimal castlingScore = 0;
+            int castlingScore = 0;
 
             if (!IsEndGame)
             {
@@ -445,17 +445,17 @@ namespace ChessEngine.ScoreCalculation
             return castlingScore;
         }
 
-        private decimal CalculateCanCastleScores()
+        private int CalculateCanCastleScores()
         {
-            decimal canCastleScore = 0;
+            int canCastleScore = 0;
 
             var state = m_CurrentBoard.GetCurrentBoardState();
 
-            canCastleScore += Convert.ToDecimal(state.WhiteCanCastleKingside) * CanCastleKingsideScore;
-            canCastleScore += Convert.ToDecimal(state.WhiteCanCastleQueenside) * CanCastleQueensideScore;
+            canCastleScore += Convert.ToInt32(state.WhiteCanCastleKingside) * CanCastleKingsideScore;
+            canCastleScore += Convert.ToInt32(state.WhiteCanCastleQueenside) * CanCastleQueensideScore;
 
-            canCastleScore -= Convert.ToDecimal(state.BlackCanCastleKingside) * CanCastleKingsideScore;
-            canCastleScore -= Convert.ToDecimal(state.BlackCanCastleQueenside) * CanCastleQueensideScore;
+            canCastleScore -= Convert.ToInt32(state.BlackCanCastleKingside) * CanCastleKingsideScore;
+            canCastleScore -= Convert.ToInt32(state.BlackCanCastleQueenside) * CanCastleQueensideScore;
 
             return canCastleScore;
         }
@@ -464,9 +464,9 @@ namespace ChessEngine.ScoreCalculation
 
         #region square table scores
 
-        private decimal CalculateSquareTableScores()
+        private int CalculateSquareTableScores()
         {
-            decimal squareTableScores = 0;
+            int squareTableScores = 0;
 
             squareTableScores += CalculatePawnSquareTableScores();
             squareTableScores += CalculateKnightSquareTableScores();
@@ -480,9 +480,9 @@ namespace ChessEngine.ScoreCalculation
             return squareTableScores;
         }
         
-        private decimal CalculatePawnSquareTableScores()
+        private int CalculatePawnSquareTableScores()
         {
-            decimal pawnSquareTableScore = 0;
+            int pawnSquareTableScore = 0;
 
             pawnSquareTableScore += CalculateTableScores(m_CurrentBoard.WhitePawns, PawnSquareTable, true);
 
@@ -491,9 +491,9 @@ namespace ChessEngine.ScoreCalculation
             return pawnSquareTableScore;
         }
 
-        private decimal CalculateKnightSquareTableScores()
+        private int CalculateKnightSquareTableScores()
         {
-            decimal knightSquareTableScore = 0;
+            int knightSquareTableScore = 0;
 
             knightSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKnights, KnightSquareTable, true);
 
@@ -502,9 +502,9 @@ namespace ChessEngine.ScoreCalculation
             return knightSquareTableScore;
         }
 
-        private decimal CalculateBishopSquareTableScores()
+        private int CalculateBishopSquareTableScores()
         {
-            decimal bishopSquareTableScore = 0;
+            int bishopSquareTableScore = 0;
 
             bishopSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteBishops, BishopSquareTable, true);
 
@@ -513,9 +513,9 @@ namespace ChessEngine.ScoreCalculation
             return bishopSquareTableScore;
         }
 
-        private decimal CalculateKingSquareTableScores()
+        private int CalculateKingSquareTableScores()
         {
-            decimal kingSquareTableScore = 0;
+            int kingSquareTableScore = 0;
 
             kingSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingSquareTable, true);
 
@@ -524,9 +524,9 @@ namespace ChessEngine.ScoreCalculation
             return kingSquareTableScore;
         }
 
-        private decimal CalculateKingEndGameSquareTableScores()
+        private int CalculateKingEndGameSquareTableScores()
         {
-            decimal kingEndGameSquareTableScore = 0;
+            int kingEndGameSquareTableScore = 0;
 
             kingEndGameSquareTableScore += CalculateTableScores(m_CurrentBoard.WhiteKing, KingEndGameSquareTable, true);
 
@@ -535,9 +535,9 @@ namespace ChessEngine.ScoreCalculation
             return kingEndGameSquareTableScore;
         }
 
-        private decimal CalculateTableScores(ulong board, decimal[] squareTableValues, bool isWhite)
+        private int CalculateTableScores(ulong board, int[] squareTableValues, bool isWhite)
         {
-            decimal pieceScore = 0;
+            int pieceScore = 0;
 
             List<byte> positions;
             
@@ -562,9 +562,9 @@ namespace ChessEngine.ScoreCalculation
 
         #region development score
          
-        private decimal CalculateDevelopmentBonus()
+        private int CalculateDevelopmentBonus()
         {
-            decimal developedPieceBonus = 0;
+            int developedPieceBonus = 0;
 
             developedPieceBonus += CalculateDevelopedPieceBonus();
             developedPieceBonus += CalculateConnectedRookBonus();
@@ -576,9 +576,9 @@ namespace ChessEngine.ScoreCalculation
         /// Points for all pieces not on the back rank (not including pawns)
         /// </summary>
         /// <returns></returns>
-        private decimal CalculateDevelopedPieceBonus()
+        private int CalculateDevelopedPieceBonus()
         {
-            decimal developedPiecesScore = 0;
+            int developedPiecesScore = 0;
 
             ulong whiteBack = 255;
             var blackBack = 18374686479671623680;
@@ -592,9 +592,9 @@ namespace ChessEngine.ScoreCalculation
             return developedPiecesScore;
         }
 
-        private decimal CalculateConnectedRookBonus()
+        private int CalculateConnectedRookBonus()
         {
-            decimal connectedRookScore = 0;
+            int connectedRookScore = 0;
 
             if (BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks) > 1)
             {
@@ -655,9 +655,9 @@ namespace ChessEngine.ScoreCalculation
         /// AttackBonus
         /// </summary>
         /// <returns></returns>
-        private decimal CalculateCoverageAndAttackScores()
+        private int CalculateCoverageAndAttackScores()
         {
-            decimal attackScore = 0;
+            int attackScore = 0;
 
             ulong whiteCoverageBoard = 0;   // All the empty squares white can move to next turn
 

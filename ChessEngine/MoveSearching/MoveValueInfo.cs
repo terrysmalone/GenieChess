@@ -9,7 +9,7 @@ namespace ChessEngine.MoveSearching
     public struct MoveValueInfo
     {
         public PieceMoves Move;
-        public decimal Score;
+        public int Score;
         public TimeSpan DepthTime;
         public TimeSpan AccumulatedTime;
 
