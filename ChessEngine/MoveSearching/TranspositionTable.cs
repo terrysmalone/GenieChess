@@ -123,8 +123,8 @@
                     CountDebugger.Transposition_MatchCount++;
 #endif
 
-                    if (hash.Depth >= depth)
-                    {
+                    //if (hash.Depth >= depth)
+                    //{
 #if FullNodeCountDebug
                         CountDebugger.Transposition_MatchAndUsed++;
 #endif
@@ -133,7 +133,7 @@
                         hash.Ancient = false;
 
                         return hash;                         
-                    }
+                   // }
                 }
                 else
                 {

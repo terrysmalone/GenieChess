@@ -36,6 +36,8 @@ namespace ChessEngine.MoveSearching
 
         private int m_NullMoveR = 2;
 
+        private int m_MaxCheckExtension = 10;
+
         public AlphaBetaSearch(Board boardPosition, IScoreCalculator scoreCalculator)
         {
             m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
@@ -169,7 +171,7 @@ namespace ChessEngine.MoveSearching
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, movePath, extended: false);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
 
                 if (score > bestScore)
                 {
@@ -190,7 +192,16 @@ namespace ChessEngine.MoveSearching
             return bestMove;
         }
 
-        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, List<PieceMoves> pvPath, bool extended)
+        // Breakdown of steps
+        // 1. Check the transposition table for the same position
+        // 2. If we are at depth 0 move to a quiescence search, or if in check, extend the depth
+        // 3. Decide whether to do a null move check or not
+        // 4. Generate moves
+        // 5. If we think it's suitable, do an internal iterative deepening search for a best move, 
+        //    otherwise order moves by best hash move, killer moves and MVV/LVA
+        // 6. Loop through the moves recursively calling AlphaBeta
+        // 7. Record alpha, beta or evaluation to the transposition table
+        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, bool isNullSearch, List<PieceMoves> pvPath, int extensionDepth)
         {
             var pvPosition = pvPath.Count;
             
@@ -210,32 +221,38 @@ namespace ChessEngine.MoveSearching
                     bestHashMove = hash.BestMove;
                 }
 
-                switch (hash.NodeType)
+                // We use the best move even if the depth is shallower.
+                // We only want the 
+                if (hash.Depth >= depthLeft)
                 {
-                    case HashNodeType.Exact:
-                        return transpositionScore;
-                    case HashNodeType.LowerBound:
-                        alpha = Math.Max(alpha, transpositionScore);
-                        break;
-                    case HashNodeType.UpperBound:
-                        beta = Math.Min(beta, transpositionScore);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                    switch (hash.NodeType)
+                    {
+                        case HashNodeType.Exact:
+                            return transpositionScore;
+                        case HashNodeType.LowerBound:
+                            alpha = Math.Max(alpha, transpositionScore);
+                            break;
+                        case HashNodeType.UpperBound:
+                            beta = Math.Min(beta, transpositionScore);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
 
-                if (alpha >= beta)
-                {
-                    return transpositionScore;
+                    if (alpha >= beta)
+                    {
+                        return transpositionScore;
+                    }
                 }
             }
 
+            // If in check do a check extension otherwise perform quiescence search
             if (depthLeft == 0)
             {
-                if (!extended && BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
+                if (extensionDepth < m_MaxCheckExtension && BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
                 {
                     depthLeft++;
-                    extended = true;
+                    extensionDepth++;
                 }
                 else
                 {
@@ -248,8 +265,16 @@ namespace ChessEngine.MoveSearching
             {
                 m_BoardPosition.SwitchSides();
                 //We don't care about the PV path. Maybe we should implement this differently
-                // Set extended to true because we don't want it to get extended after the null move check
-                var eval = -AlphaBeta(-beta, -beta + 1, depthLeft - m_NullMoveR - 1, allowNull: false, new List<PieceMoves>(), extended: true); 
+                // Set extensionDepth to m_MaxCheckExtension because we don't want it to get
+                // extended after the null move check
+                var eval = -AlphaBeta(-beta, 
+                                      -beta + 1, 
+                                      depthLeft - m_NullMoveR - 1, 
+                                      allowNull: false, 
+                                      isNullSearch: true, 
+                                      new List<PieceMoves>(), 
+                                      extensionDepth: m_MaxCheckExtension); 
+
                 m_BoardPosition.SwitchSides();
 
                 if (eval >= beta)
@@ -269,14 +294,20 @@ namespace ChessEngine.MoveSearching
             // Internal iterative deepening
             // If we're near the last node of this search and we have no best move from
             // the transposition table perform a limited iterative deepening search
-            if (bestHashMove == null && depthLeft > 3)
+            if (!isNullSearch && bestHashMove == null && depthLeft > 3)
             {
                 m_BestMoveSoFar = null;
 
                 // Call this just to get the best move
                 // We don't care about the PV path. Maybe we should implement this differently
-                // Set extended to true because we don't want any further deepening
-                AlphaBeta(alpha, beta, depthLeft - 1, allowNull: false, new List<PieceMoves>(), extended: true); 
+                // Set extensionDepth to m_MaxCheckExtension because we don't want any further deepening
+                AlphaBeta(alpha, 
+                          beta, 
+                          depthLeft - 1, 
+                          allowNull: false, 
+                          isNullSearch: false, 
+                          new List<PieceMoves>(), 
+                          extensionDepth: m_MaxCheckExtension); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -352,18 +383,36 @@ namespace ChessEngine.MoveSearching
                 // if this is the first (pv move) then do a full search
                 if (pvMove)
                 {
-                    score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
+                    score = -AlphaBeta(-beta, 
+                                       -alpha, 
+                                       depthLeft - 1, 
+                                       allowNull: true, 
+                                       isNullSearch: false, 
+                                       bestPath, 
+                                       extensionDepth);
                     pvMove = false;
                 }
                 else
                 {
-                    // Do a search with a narrow aspiration window
-                    score = -AlphaBeta(-alpha-0.01m, -alpha, depthLeft - 1, allowNull: true, bestPath, extended);
+                    // Principal variation search - Do a search with a narrow aspiration window
+                    score = -AlphaBeta(-alpha-0.01m, 
+                                       -alpha, 
+                                       depthLeft - 1, 
+                                       allowNull: true, 
+                                       isNullSearch: false, 
+                                       bestPath, 
+                                       extensionDepth);
 
                     // If it fails high do a full search
                     if (score > alpha && score < beta)
                     {
-                        score = -AlphaBeta(-beta, -alpha, depthLeft - 1, allowNull: true, new List<PieceMoves>(), extended);
+                        score = -AlphaBeta(-beta, 
+                                           -alpha, 
+                                           depthLeft - 1, 
+                                           allowNull: true, 
+                                           isNullSearch: false, 
+                                           new List<PieceMoves>(), 
+                                           extensionDepth);
                     }
                 }
 
@@ -391,7 +440,7 @@ namespace ChessEngine.MoveSearching
 
                 if (alpha >= beta)
                 {
-                    RecordHash(depthLeft, score, HashNodeType.LowerBound);
+                    RecordHash(depthLeft, score, HashNodeType.LowerBound, bestMoveSoFar);
 
                     // Check if the current move is already in the killer move list
                     var duplicate = false;
@@ -479,7 +528,7 @@ namespace ChessEngine.MoveSearching
 
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
-
+            
             if (hash.Key != 0)
             {
                 var transpositionScore = hash.Score;
@@ -527,6 +576,8 @@ namespace ChessEngine.MoveSearching
             }
             
             OrderMovesByMvvVla(moves);
+            
+            PieceMoves? bestMoveSoFar = null;
 
             foreach (var move in moves)
             {
@@ -549,6 +600,8 @@ namespace ChessEngine.MoveSearching
                 {
                     alpha = evaluationScore;
 
+                    bestMoveSoFar = move;
+
                     pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
                     pvPath.AddRange(currentPath);
                 }
@@ -566,11 +619,11 @@ namespace ChessEngine.MoveSearching
         private void RecordQuiescenceHash(decimal evaluationScore, HashNodeType hashNodeType)
         {
             var hash = new Hash
-                       {
-                           Key      = m_BoardPosition.Zobrist,
-                           NodeType = hashNodeType,
-                           Score    = evaluationScore
-                       };
+            {
+                Key      = m_BoardPosition.Zobrist,
+                NodeType = hashNodeType,
+                Score    = evaluationScore
+            };
 
             TranspositionTable.AddQuiescenceHash(hash);
         }
