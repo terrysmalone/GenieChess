@@ -1,4 +1,5 @@
 ﻿using System;
+using ChessEngine.BoardRepresentation;
 
 namespace ChessEngine.BoardSearching
 {
@@ -159,6 +160,9 @@ namespace ChessEngine.BoardSearching
         public static ulong BlackCastlingKingsideAttackPath;
 
         #endregion properties
+
+        public static ulong[] WhitePawnFrontSpan = new ulong[64];
+        public static ulong[] BlackPawnFrontSpan = new ulong[64];
                 
         public static void InitialiseAllTables()
         {
@@ -170,6 +174,8 @@ namespace ChessEngine.BoardSearching
             CalculateDirectionBoards();
 
             CalculateRanksAndFileMasks();
+
+            CalculatePawnFrontSpans();
 
             InitialiseSquareValues();
 
@@ -605,6 +611,43 @@ namespace ChessEngine.BoardSearching
                         throw new Exception("Bad column given: " + column);
                 }
 
+            }
+        }
+        
+        private static void CalculatePawnFrontSpans()
+        {
+            var   notA = 18374403900871474942;
+            ulong notH = 9187201950435737471;
+
+            ulong bitboardValue = 1;
+
+            // We calculate it from 0 to 63 even though we will never need the 1st and last rank
+            // This is just for ease of calculation and understanding
+            for (var i = 0; i < 64; i++)
+            {
+                // White
+                var whiteFrontSpan = (bitboardValue << 9 & notA) | bitboardValue << 8 | (bitboardValue << 7 & notH);
+
+                whiteFrontSpan = whiteFrontSpan 
+                               | (whiteFrontSpan << 8) 
+                               | (whiteFrontSpan << 16) 
+                               | (whiteFrontSpan << 24) 
+                               | (whiteFrontSpan << 32);
+
+                WhitePawnFrontSpan[i] = whiteFrontSpan;
+
+                // Black
+                var blackFrontSpan = (bitboardValue >> 9 & notA) | bitboardValue >> 8 | (bitboardValue >> 7 & notH);
+
+                blackFrontSpan = blackFrontSpan
+                               | (blackFrontSpan >> 8)
+                               | (blackFrontSpan >> 16)
+                               | (blackFrontSpan >> 24)
+                               | (blackFrontSpan >> 32);
+
+                BlackPawnFrontSpan[i] = blackFrontSpan;
+
+                bitboardValue *= 2;
             }
         }
 

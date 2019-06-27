@@ -86,6 +86,10 @@ namespace ChessEngine.ScoreCalculation
         public decimal DoubledPawnPenalty { get; set; }
         public decimal PawnChainScore { get; set; }
 
+        public decimal PassedPawnBonus { get; set; }
+
+        public decimal PassedPawnAdvancementBonus { get; set; }
+
         public decimal ConnectedRookBonus { get; set; }
 
         public decimal BoardCoverageBonus { get; set; }
@@ -170,8 +174,13 @@ namespace ChessEngine.ScoreCalculation
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteKnights) * KnightPieceValue;
 
             var whiteBishopCount = BitboardOperations.GetPopCount(m_CurrentBoard.WhiteBishops);
-
             pieceScore += whiteBishopCount * BishopPieceValue;
+
+            if (whiteBishopCount == 2)
+            {
+                pieceScore += DoubleBishopScore;
+            }
+
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks) * RookPieceValue;
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteQueen) * QueenPieceValue;
 
@@ -182,8 +191,13 @@ namespace ChessEngine.ScoreCalculation
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKnights) * KnightPieceValue;
 
             var blackBishopCount = BitboardOperations.GetPopCount(m_CurrentBoard.BlackBishops);
-
             pieceScore -= blackBishopCount * BishopPieceValue;
+
+            if (blackBishopCount == 2)
+            {
+                pieceScore -= DoubleBishopScore;
+            }
+
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks) * RookPieceValue;
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen) * QueenPieceValue;
 
@@ -236,12 +250,17 @@ namespace ChessEngine.ScoreCalculation
             for (var i = 0; i < 8; i++)
 			{
                 var mask = LookupTables.FileMaskByColumn[i];
+
                 if (BitboardOperations.GetPopCount(mask & m_CurrentBoard.WhitePawns) > 1)
+                {
                     whiteDoubleCount++;
+                }
 
                 if (BitboardOperations.GetPopCount(mask & m_CurrentBoard.BlackPawns) > 1)
+                {
                     blackDoubleCount++;
-			}
+                }
+            }
 
             pawnStructureScore += whiteDoubleCount * DoubledPawnPenalty;
             pawnStructureScore -= blackDoubleCount * DoubledPawnPenalty;
@@ -256,12 +275,56 @@ namespace ChessEngine.ScoreCalculation
 
             pawnStructureScore += BitboardOperations.GetPopCount(wProtectedPawns) * PawnChainScore;
 
-            //Black pawns 
-            var hg = (m_CurrentBoard.BlackPawns >> 9) & notH;
+            //Black pawns
             var bPawnAttackSquares = ((m_CurrentBoard.BlackPawns >> 9) & notH) | (m_CurrentBoard.BlackPawns >> 7) & notA;
             var bProtectedPawns = bPawnAttackSquares & m_CurrentBoard.BlackPawns;
 
             pawnStructureScore -= BitboardOperations.GetPopCount(bProtectedPawns) * PawnChainScore;
+
+            // Passed pawn bonus
+
+            foreach (var whitePawnBoard in BitboardOperations.SplitBoardToArray(m_CurrentBoard.WhitePawns))
+            {
+                //Pawn is on 7th rank so it can promote
+                if ((whitePawnBoard & LookupTables.RankMask7) != 0)
+                {
+                    pawnStructureScore += PassedPawnBonus;
+                    pawnStructureScore += PassedPawnAdvancementBonus * 5;
+
+                    continue;
+                }
+
+                var pawnIndex = BitboardOperations.GetSquareIndexFromBoardValue(whitePawnBoard);
+
+                var pawnFrontSpan = LookupTables.WhitePawnFrontSpan[pawnIndex];
+
+                if ((pawnFrontSpan & m_CurrentBoard.BlackPawns) == 0)
+                {
+                    pawnStructureScore += PassedPawnBonus;
+                    pawnStructureScore += PassedPawnAdvancementBonus * ((pawnIndex / 8) - 1);
+                }
+            }
+
+            foreach (var blackPawnBoard in BitboardOperations.SplitBoardToArray(m_CurrentBoard.BlackPawns))
+            {
+                //Pawn is on 2nd rank so it can promote
+                if ((blackPawnBoard & LookupTables.RankMask2) != 0)
+                {
+                    pawnStructureScore -= PassedPawnBonus;
+                    pawnStructureScore -= PassedPawnAdvancementBonus * 5;
+                    continue;
+                }
+
+                var pawnIndex = BitboardOperations.GetSquareIndexFromBoardValue(blackPawnBoard);
+
+                var pawnFrontSpan = LookupTables.BlackPawnFrontSpan[pawnIndex];
+
+                if ((pawnFrontSpan & m_CurrentBoard.WhitePawns) == 0)
+                {
+                    pawnStructureScore -= PassedPawnBonus;
+                    pawnStructureScore -= PassedPawnAdvancementBonus * (8 - (pawnIndex / 8) - 2);
+                }
+            }
 
             return pawnStructureScore;
         }
@@ -272,7 +335,6 @@ namespace ChessEngine.ScoreCalculation
         /// <returns></returns>
         private decimal CalculateCentralPieceScores()
         {
-            var centralSquares = UsefulBitboards.CentralSquares;
             var innerCentralSquares = UsefulBitboards.InnerCentralSquares;
             var outerCentralSquares = UsefulBitboards.OuterCentralSquares;
             
@@ -369,14 +431,14 @@ namespace ChessEngine.ScoreCalculation
 
             if (!IsEndGame)
             {
-                if (m_CurrentBoard.WhiteKing == LookupTables.G1 && (m_CurrentBoard.WhiteRooks & LookupTables.F1) != (ulong)0)
+                if (m_CurrentBoard.WhiteKing == LookupTables.G1 && (m_CurrentBoard.WhiteRooks & LookupTables.F1) != 0)
                     castlingScore += CastlingKingSideScore;
-                else if (m_CurrentBoard.WhiteKing == LookupTables.C1 && (m_CurrentBoard.WhiteRooks & LookupTables.D1) != (ulong)0)
+                else if (m_CurrentBoard.WhiteKing == LookupTables.C1 && (m_CurrentBoard.WhiteRooks & LookupTables.D1) != 0)
                     castlingScore += CastlingQueenSideScore;
 
-                if (m_CurrentBoard.BlackKing == LookupTables.G8 && (m_CurrentBoard.BlackRooks & LookupTables.F8) != (ulong)0)
+                if (m_CurrentBoard.BlackKing == LookupTables.G8 && (m_CurrentBoard.BlackRooks & LookupTables.F8) != 0)
                     castlingScore -= CastlingKingSideScore;
-                else if (m_CurrentBoard.BlackKing == LookupTables.C8 && (m_CurrentBoard.BlackRooks & LookupTables.D8) != (ulong)0)
+                else if (m_CurrentBoard.BlackKing == LookupTables.C8 && (m_CurrentBoard.BlackRooks & LookupTables.D8) != 0)
                     castlingScore -= CastlingQueenSideScore;
 
             }
@@ -540,15 +602,23 @@ namespace ChessEngine.ScoreCalculation
 
                 var firstRook = rooks[0];
                 var secondRook = rooks[1];
-                
-                if((BoardChecking.FindRightBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+
+                if ((BoardChecking.FindRightBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                {
                     connectedRookScore += ConnectedRookBonus;
-                else if((BoardChecking.FindLeftBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                }
+                else if ((BoardChecking.FindLeftBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                {
                     connectedRookScore += ConnectedRookBonus;
-                 else if((BoardChecking.FindUpBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                }
+                else if ((BoardChecking.FindUpBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                {
                     connectedRookScore += ConnectedRookBonus;
-                 else if((BoardChecking.FindDownBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                }
+                else if ((BoardChecking.FindDownBlockingPosition(m_CurrentBoard, firstRook) & secondRook) > 0)
+                {
                     connectedRookScore += ConnectedRookBonus;
+                }
             }
 
             if (BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks) > 1)

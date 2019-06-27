@@ -42,10 +42,12 @@
 
   <DevelopedPieceScore>0.3</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
 
-  <DoubleBishopScore>0.3</DoubleBishopScore> <!-- Score for having two bishops on the board-->
+  <DoubleBishopScore>0.1</DoubleBishopScore> <!-- Score for having two bishops on the board-->
   
   <DoubledPawnPenalty>-0.15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns-->
-  <PawnChainScore>0.2</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
+  <PawnChainScore>0.15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
+  <PassedPawnBonus>0.2</PassedPawnBonus><!-- Bonus for every passed pawn -->
+  <PassedPawnAdvancementBonus>0.05</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
 
   <ConnectedRookBonus>0.1</ConnectedRookBonus> <!-- bonus for having connected rooks -->
 
