@@ -32,10 +32,10 @@ namespace Genie_CommandLine
 
             m_Game.ThinkingDepth = 6;
 
-            m_Game.SetFENPosition("rnbqkb1r/pppp1ppp/4pn2/8/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 1 3");   //It seems to play a weird move
+            //m_Game.SetFENPosition("rnbqkb1r/pppp1ppp/4pn2/8/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 1 3");   //It seems to play a weird move
             //m_Game.SetFENPosition("r1bqk2r/ppNp1ppp/2nbp3/8/3PnB2/7N/PPP1PPPP/R2QKB1R b KQkq - 0 6");
 
-            //m_Game.InitaliseStartingPosition();
+            m_Game.InitaliseStartingPosition();
 
             CountDebugger.ClearAll();
             
