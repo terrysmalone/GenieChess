@@ -202,18 +202,7 @@ namespace ChessEngine.ScoreCalculation
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen) * QueenPieceValue;
 
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKing) * kingScore;
-
-            //Calculate double bishop bonus
-            if (whiteBishopCount == 2)
-            {
-                pieceScore += 1;
-            }
-
-            if (blackBishopCount == 2)
-            {
-                pieceScore -= 1;
-            }
-
+            
             return pieceScore;
         }
 

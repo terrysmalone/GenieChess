@@ -34,7 +34,7 @@ namespace ChessEngine.MoveSearching
 
         private PieceMoves? m_BestMoveSoFar;
 
-        private int m_NullMoveR = 2;
+        private int m_NullMoveR = 1;
 
         private int m_MaxCheckExtension = 10;
 
@@ -279,7 +279,7 @@ namespace ChessEngine.MoveSearching
 
                 if (eval >= beta)
                 {
-                    return beta; // Cutoff
+                    return eval; // Cutoff
                 }
             }
 
