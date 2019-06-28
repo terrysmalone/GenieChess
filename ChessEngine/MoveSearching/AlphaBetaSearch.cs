@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -45,6 +47,37 @@ namespace ChessEngine.MoveSearching
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
         }
 
+        static bool m_SearchCompleted = false;
+        private static PieceMoves m_ReturnedMove;
+
+        public PieceMoves CalculateBestMoveTimed(int maxDepth, int maxThinkingSeconds)
+        {
+
+            var backgroundWorker = new BackgroundWorker();
+
+            backgroundWorker.RunWorkerAsync(maxDepth);
+            backgroundWorker.DoWork += BackgroundWorkerDoWork;
+            backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+            backgroundWorker.RunWorkerAsync();
+
+            //while (m_SearchCompleted == false)
+            //{
+            //    Thread.Sleep(10);
+            //}
+
+            return m_ReturnedMove;
+        }
+
+        private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        {
+            CalculateBestMove(Convert.ToInt32(e.Argument));
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            m_SearchCompleted = true;
+        }
+
         public PieceMoves CalculateBestMove(int maxDepth)
         {
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
@@ -82,6 +115,8 @@ namespace ChessEngine.MoveSearching
 
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
+
+                m_ReturnedMove = bestMove;
 
                 timer.Stop();
 
