@@ -12,7 +12,7 @@ namespace ChessEngineTests
     {
         public bool UseHashing { get; set; } = true;
 
-        public ulong Perft(Board boardPosition, int depth)
+        public int Perft(Board boardPosition, int depth)
         {
             if (UseHashing)
             {
@@ -25,14 +25,14 @@ namespace ChessEngineTests
                 {
                     if (hash.NodeType == HashNodeType.Exact)
                     {
-                        var nds = Convert.ToUInt64(hash.Score);
+                        var nds = hash.Score;
 
                         return nds;
                     }
                 }
             }
 
-            ulong nodes = 0;
+            var nodes = 0;
 
             if (depth == 0)
             {
@@ -74,20 +74,20 @@ namespace ChessEngineTests
             return nodes;
         }
 
-        private static void RecordHash(Board boardPosition, int depth, decimal score, HashNodeType hashNodeType)
+        private static void RecordHash(Board boardPosition, int depth, int score, HashNodeType hashNodeType)
         {
             var hash = new Hash {Key = boardPosition.Zobrist, Depth = depth, NodeType = hashNodeType, Score = score};
             
             TranspositionTable.Add(hash);
         }
 
-        public List<Tuple<string, ulong>> Divide(Board boardPosition, int depth)
+        public List<Tuple<string, int>> Divide(Board boardPosition, int depth)
         {
-            var divides = new List<Tuple<string, ulong>>();
+            var divides = new List<Tuple<string, int>>();
             
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(boardPosition));
 
-            ulong totalNodes = 0;
+            int totalNodes = 0;
             
             Console.WriteLine($"Moves: {moveList.Count}");
             Console.WriteLine("");
@@ -106,15 +106,15 @@ namespace ChessEngineTests
 
                 totalNodes += numberOfNodes;
 
-                divides.Add(new Tuple<string, ulong>(rootMoveString, numberOfNodes));
+                divides.Add(new Tuple<string, int>(rootMoveString, numberOfNodes));
             }
 
             return divides;
         }
 
-        public List<Tuple<string, ulong>> Divides(Board boardPosition)
+        public List<Tuple<string, int>> Divides(Board boardPosition)
         {
-            var divides = new List<Tuple<string, ulong>>();
+            var divides = new List<Tuple<string, int>>();
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(boardPosition));
 
@@ -124,7 +124,7 @@ namespace ChessEngineTests
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
                 
-                divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
+                divides.Add(new Tuple<string, int>(GetPieceMoveAsString(move), branchMoves.Count));
 
                 boardPosition.UnMakeLastMove(false);
             }

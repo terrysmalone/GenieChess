@@ -70,11 +70,11 @@ namespace ResourceLoading
 
                 var perfTPos = new PerfTPosition { Name = parts[0], FenPosition = parts[1] };
 
-                var results = new List<ulong>();
+                var results = new List<int>();
 
                 for (var i = 2; i < parts.Length; i++)
                 {
-                    results.Add(Convert.ToUInt64(parts[i]));
+                    results.Add(Convert.ToInt32(parts[i]));
                 }
 
                 perfTPos.Results = results;

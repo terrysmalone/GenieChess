@@ -25,7 +25,7 @@ namespace ChessEngine.MoveSearching
         private readonly IScoreCalculator m_ScoreCalculator;
  
         private List<MoveValueInfo> m_InitialMoves;
-        private List<Tuple<decimal, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
+        private List<Tuple<int, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
 
         private int m_KillerMovesToStore = 2;
         private PieceMoves[,] m_KillerMoves;
@@ -54,7 +54,7 @@ namespace ChessEngine.MoveSearching
             m_KillerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
             m_InitialMoves = new List<MoveValueInfo>();
-            m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<decimal, PieceMoves>>();
+            m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMoves>>();
 
             TranspositionTable.ResetAncients();
 
@@ -131,10 +131,10 @@ namespace ChessEngine.MoveSearching
             return bestMove;
         }
 
-        private PieceMoves CalculateBestMove(int depth, out decimal bestScore)
+        private PieceMoves CalculateBestMove(int depth, out int bestScore)
         {
-            var alpha = decimal.MinValue / 2 - 1;
-            var beta = decimal.MaxValue / 2 + 1;
+            var alpha = int.MinValue / 2 - 1;
+            var beta = int.MaxValue / 2 + 1;
 
             bestScore = alpha;
 
@@ -179,7 +179,7 @@ namespace ChessEngine.MoveSearching
                     bestScore = score;
                 }
 
-                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<decimal, PieceMoves>(score, move));
+                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
 
                 m_BoardPosition.UnMakeLastMove();
                 
@@ -201,11 +201,11 @@ namespace ChessEngine.MoveSearching
         //    otherwise order moves by best hash move, killer moves and MVV/LVA
         // 6. Loop through the moves recursively calling AlphaBeta
         // 7. Record alpha, beta or evaluation to the transposition table
-        private decimal AlphaBeta(decimal alpha, decimal beta, int depthLeft, bool allowNull, bool isNullSearch, List<PieceMoves> pvPath, int extensionDepth)
+        private int AlphaBeta(int alpha, int beta, int depthLeft, bool allowNull, bool isNullSearch, List<PieceMoves> pvPath, int extensionDepth)
         {
             var pvPosition = pvPath.Count;
             
-            var positionValue = decimal.MinValue / 2 + 1;
+            var positionValue = int.MinValue / 2 + 1;
 
             PieceMoves? bestHashMove = null;
 
@@ -378,7 +378,7 @@ namespace ChessEngine.MoveSearching
                 
                 var bestPath = new List<PieceMoves>();
 
-                decimal score;
+                int score;
 
                 // if this is the first (pv move) then do a full search
                 if (pvMove)
@@ -395,7 +395,7 @@ namespace ChessEngine.MoveSearching
                 else
                 {
                     // Principal variation search - Do a search with a narrow aspiration window
-                    score = -AlphaBeta(-alpha-0.01m, 
+                    score = -AlphaBeta(-alpha - 1, 
                                        -alpha, 
                                        depthLeft - 1, 
                                        allowNull: true, 
@@ -484,7 +484,7 @@ namespace ChessEngine.MoveSearching
             return positionValue;
         }
 
-        private void RecordHash(int depth, decimal score, HashNodeType hashNodeType, PieceMoves? bestMove = null)
+        private void RecordHash(int depth, int score, HashNodeType hashNodeType, PieceMoves? bestMove = null)
         {
             var hash = new Hash
                        {
@@ -504,9 +504,9 @@ namespace ChessEngine.MoveSearching
 
         /// Evaluates the score relative to the current player
         /// i.e. A high score means the position is better for the current player
-        private decimal Evaluate(Board boardPosition)
+        private int Evaluate(Board boardPosition)
         {
-            decimal score = 0;
+            int score;
             
             if (m_BoardPosition.WhiteToMove)
             {
@@ -522,7 +522,7 @@ namespace ChessEngine.MoveSearching
 
         // Keep examining down the tree until all moves are quiet.
         // Quiet moves are ones without captures
-        private decimal QuiescenceEvaluate(decimal alpha, decimal beta, List<PieceMoves> pvPath)
+        private int QuiescenceEvaluate(int alpha, int beta, List<PieceMoves> pvPath)
         {
             var pvPosition = pvPath.Count;
 
@@ -616,7 +616,7 @@ namespace ChessEngine.MoveSearching
             return alpha;
         }
 
-        private void RecordQuiescenceHash(decimal evaluationScore, HashNodeType hashNodeType)
+        private void RecordQuiescenceHash(int evaluationScore, HashNodeType hashNodeType)
         {
             var hash = new Hash
             {
@@ -821,17 +821,15 @@ namespace ChessEngine.MoveSearching
 
         // Evaluates the end game relative to the current player
         // (i.e. A low score if the current player loses)
-        private decimal EvaluateEndGame(int depth)
+        private int EvaluateEndGame(int depth)
         {
             var movesToEnd = (m_EvaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
 
-            bool isInCheck;
-
-            isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove);
+            var isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove);
 
             if (isInCheck)
             {
-                return decimal.MinValue / 2 + movesToEnd; // Player is in checkmate
+                return int.MinValue / 2 + movesToEnd; // Player is in checkmate
             }
             else
             {
@@ -881,7 +879,7 @@ namespace ChessEngine.MoveSearching
             s_Log.Info("----------------------------------------------------------------------------------");
         }
 
-        private static string GetScoreString(decimal score, bool whiteToMove)
+        private static string GetScoreString(int score, bool whiteToMove)
         {
             //We try to maximise the scores so for display purposes negate them for black
             if (!whiteToMove)
@@ -891,15 +889,15 @@ namespace ChessEngine.MoveSearching
 
             var scoreString = score.ToString(CultureInfo.InvariantCulture);
 
-            if (score > decimal.MaxValue / 3)
+            if (score > int.MaxValue / 3)
             {
-                var movesToMate = ((decimal.MaxValue / 2) - score) / 2;
+                var movesToMate = ((int.MaxValue / 2) - score) / 2;
 
                 scoreString = $"+M{movesToMate}";
             }
-            else if (score < decimal.MinValue / 3)
+            else if (score < int.MinValue / 3)
             {
-                var movesToMate = Math.Abs((decimal.MinValue / 2 - score) / 2);
+                var movesToMate = Math.Abs((int.MinValue / 2 - score) / 2);
 
                 scoreString = $"-M{movesToMate}";
             }

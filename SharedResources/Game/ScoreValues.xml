@@ -2,61 +2,61 @@
 <!-- Penalties should be added as negative values -->
 <ScoreSet Name="ScoreValues">
   <!-- Piece scores - scores for simply having the pieces-->
-  <PawnPieceValue>1</PawnPieceValue>
-  <KnightPieceValue>3</KnightPieceValue>
-  <BishopPieceValue>3.2</BishopPieceValue>
-  <RookPieceValue>5</RookPieceValue>
-  <QueenPieceValue>9</QueenPieceValue>
+  <PawnPieceValue>100</PawnPieceValue>
+  <KnightPieceValue>300</KnightPieceValue>
+  <BishopPieceValue>320</BishopPieceValue>
+  <RookPieceValue>500</RookPieceValue>
+  <QueenPieceValue>900</QueenPieceValue>
 
   <!-- Scores for having each piece near to the middle of the board -->
-  <InnerCentralPawnScore>0.1</InnerCentralPawnScore> <!-- Score for having the piece in the middle 4 squares of the board -->
-  <OuterCentralPawnScore>0.05</OuterCentralPawnScore> <!-- Score for having the piece in the outer ring (12 squars) of the middle 16 squares of the board -->
+  <InnerCentralPawnScore>10</InnerCentralPawnScore> <!-- Score for having the piece in the middle 4 squares of the board -->
+  <OuterCentralPawnScore>5</OuterCentralPawnScore> <!-- Score for having the piece in the outer ring (12 squars) of the middle 16 squares of the board -->
 
-  <InnerCentralBishopScore>0.05</InnerCentralBishopScore>
-  <OuterCentralBishopScore>0.05</OuterCentralBishopScore> 
+  <InnerCentralBishopScore>5</InnerCentralBishopScore>
+  <OuterCentralBishopScore>5</OuterCentralBishopScore> 
 
-  <InnerCentralKnightScore>0.1</InnerCentralKnightScore> 
-  <OuterCentralKnightScore>0.05</OuterCentralKnightScore> 
+  <InnerCentralKnightScore>10</InnerCentralKnightScore> 
+  <OuterCentralKnightScore>5</OuterCentralKnightScore> 
 
-  <InnerCentralRookScore>0.00</InnerCentralRookScore> 
-  <OuterCentralRookScore>0.00</OuterCentralRookScore> 
+  <InnerCentralRookScore>0</InnerCentralRookScore> 
+  <OuterCentralRookScore>0</OuterCentralRookScore> 
 
-  <InnerCentralQueenScore>0.05</InnerCentralQueenScore>
-  <OuterCentralQueenScore>0.05</OuterCentralQueenScore>
+  <InnerCentralQueenScore>5</InnerCentralQueenScore>
+  <OuterCentralQueenScore>5</OuterCentralQueenScore>
   
   <!-- Castling scores -->
 
-  <CastlingKingSideScore>0.25</CastlingKingSideScore> <!-- Score for castling kingside -->
-  <CastlingQueenSideScore>0.15</CastlingQueenSideScore> <!-- Score for castling queenside -->
+  <CastlingKingSideScore>25</CastlingKingSideScore> <!-- Score for castling kingside -->
+  <CastlingQueenSideScore>15</CastlingQueenSideScore> <!-- Score for castling queenside -->
 
-  <CanCastleQueensideScore>0.05</CanCastleQueensideScore> <!-- Score for still being able to castle kingside -->
-  <CanCastleKingsideScore>0.06</CanCastleKingsideScore>  <!-- Score for still being able to castle queenside -->
+  <CanCastleQueensideScore>5</CanCastleQueensideScore> <!-- Score for still being able to castle kingside -->
+  <CanCastleKingsideScore>6</CanCastleKingsideScore>  <!-- Score for still being able to castle queenside -->
 
   <!-- Square tables - These give the piece points (or penalties) for every piece they have on the respective square in the table -->
   <!-- Counting starts at A1 and increase from left to right by row and then column, ending at H8 -->
-  <PawnSquareTable>0 0 0 0 0 0 0 0 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.1 0.1 0.2 0.4 0.4 0.2 0.1 0.1 0.05 0.05 0.2 0.5 0.5 0.2 0.05 0.05 0 0 0 0.3 0.3 0 0 0 -0.05 -0.05 -0.1 0 0 -0.1 -0.05 -0.05 -0.05 -0.05 -0.05 -0.05 -0.05 -0.05 -0.05 -0.05 0 0 0 0 0 0 0 0</PawnSquareTable> 
-  <KnightSquareTable>-0.5 -0.4 -0.3 -0.3 -0.3 -0.3 -0.4 -0.5 -0.4 -0.2 0 0 0 0 -0.2 -0.4 -0.3 0 0.1 0.15 0.15 0.1 0 -0.3 -0.3 0.2 0.15 0.2 0.2 0.15 0.2 -0.3 -0.3 0.2 0.15 0.2 0.2 0.15 0.2 -0.3 -0.3 0 0.1 0.15 0.15 0.1 0 -0.3 -0.4 -0.2 0 0 0 0 -0.2 -0.4 -0.5 -0.4 -0.3 -0.3 -0.3 -0.3 -0.4 -0.5</KnightSquareTable>
-  <BishopSquareTable>-0.2 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.2 -0.1 0 0 0 0 0 0 -0.1 -0.1 0 0.05 0.1 0.1 0.05 0 -0.1 -0.1 0.05 0.05 0.1 0.1 0.05 0.05 0.1 -0.1 0.05 0.05 0.1 0.1 0.05 0.05 0.1 -0.1 0 0.05 0.1 0.1 0.05 0 -0.1 -0.1 0 0 0 0 0 0 -0.1 -0.2 -0.1 -0.1 -0.1 -0.1 -0.1 -0.1 -0.2</BishopSquareTable> 
-  <KingSquareTable>0.2 0.3 0.2 0 0 0.2 0.3 0.2 0.2 0.2 0 0 0 0 0.2 0.2 -0.1 -0.2 -0.2 -0.2 -0.2 -0.2 -0.2 -0.1 -0.2 -0.3 -0.3 -0.4 -0.4 -0.3 -0.3 -0.2 -0.3 -0.4 -0.4 -0.5 -0.5 -0.4 -0.4 -0.3 -0.3 -0.4 -0.4 -0.5 -0.5 -0.4 -0.4 -0.3 -0.3 -0.4 -0.4 -0.5 -0.5 -0.4 -0.4 -0.3 -0.3 -0.4 -0.4 -0.5 -0.5 -0.4 -0.4 -0.3</KingSquareTable>
-  <KingEndGameSquareTable>-0.5 -0.4 -0.3 -0.3 -0.3 -0.3 -0.4 -0.5 -0.4 -0.2 0 0 0 0 -0.2 -0.4 -0.3 0 0.1 0.15 0.15 0.1 0 -0.3 -0.3 0.5 0.15 0.2 0.2 0.15 0.5 -0.3 -0.3 0.5 0.15 0.2 0.2 0.15 0.5 -0.3 -0.3 0 0.1 0.15 0.15 0.1 0 -0.3 -0.4 -0.2 0 0 0 0 -0.2 -0.4 -0.5 -0.4 -0.3 -0.3 -0.3 -0.3 -0.4 -0.5</KingEndGameSquareTable>
+  <PawnSquareTable>0 0 0 0 0 0 0 0 50 50 50 50 50 50 50 50 10 10 20 40 40 20 10 10 5 5 20 50 50 20 5 5 0 0 0 30 30 0 0 0 -5 -5 -10 0 0 -10 -5 -5 -5 -5 -5 -5 -5 -5 -5 -5 0 0 0 0 0 0 0 0</PawnSquareTable> 
+  <KnightSquareTable>-50 -40 -30 -30 -30 -30 -40 -50 -40 -20 0 0 0 0 -20 -40 -30 0 10 15 15 10 0 -30 -30 20 15 20 20 15 20 -30 -30 20 15 20 20 15 20 -30 -30 0 10 15 15 10 0 -30 -40 -20 0 0 0 0 -20 -40 -50 -40 -30 -30 -30 -30 -40 -50</KnightSquareTable>
+  <BishopSquareTable>-20 -10 -10 -10 -10 -10 -10 -20 -10 0 0 0 0 0 0 -10 -10 0 5 10 10 5 0 -10 -10 5 5 10 10 5 5 10 -10 5 5 10 10 5 5 10 -10 0 5 10 10 5 0 -10 -10 0 0 0 0 0 0 -10 -20 -10 -10 -10 -10 -10 -10 -20</BishopSquareTable> 
+  <KingSquareTable>20 30 20 0 0 20 30 20 20 20 0 0 0 0 20 20 -10 -20 -20 -20 -20 -20 -20 -10 -20 -30 -30 -40 -40 -30 -30 -20 -30 -40 -40 -50 -50 -40 -40 -30 -30 -40 -40 -50 -50 -40 -40 -30 -30 -40 -40 -50 -50 -40 -40 -30 -30 -40 -40 -50 -50 -40 -40 -30</KingSquareTable>
+  <KingEndGameSquareTable>-50 -40 -30 -30 -30 -30 -40 -50 -40 -20 0 0 0 0 -20 -40 -30 0 10 15 15 10 0 -30 -30 50 15 20 20 15 50 -30 -30 50 15 20 20 15 50 -30 -30 0 10 15 15 10 0 -30 -40 -20 0 0 0 0 -20 -40 -50 -40 -30 -30 -30 -30 -40 -50</KingEndGameSquareTable>
 
-  <DevelopedPieceScore>0.3</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
+  <DevelopedPieceScore>30</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
 
-  <DoubleBishopScore>0.1</DoubleBishopScore> <!-- Score for having two bishops on the board-->
+  <DoubleBishopScore>10</DoubleBishopScore> <!-- Score for having two bishops on the board-->
   
-  <DoubledPawnPenalty>-0.15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns-->
-  <PawnChainScore>0.15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
-  <PassedPawnBonus>0.2</PassedPawnBonus><!-- Bonus for every passed pawn -->
-  <PassedPawnAdvancementBonus>0.05</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
+  <DoubledPawnPenalty>-15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns-->
+  <PawnChainScore>15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
+  <PassedPawnBonus>20</PassedPawnBonus><!-- Bonus for every passed pawn -->
+  <PassedPawnAdvancementBonus>5</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
 
-  <ConnectedRookBonus>0.1</ConnectedRookBonus> <!-- bonus for having connected rooks -->
+  <ConnectedRookBonus>10</ConnectedRookBonus> <!-- bonus for having connected rooks -->
 
-  <BoardCoverageBonus>0.05</BoardCoverageBonus> <!-- Bonus for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
+  <BoardCoverageBonus>5</BoardCoverageBonus> <!-- Bonus for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
   
-  <QueenCoverageBonus>0.05</QueenCoverageBonus> <!-- Bonus for every unoccupied square the queen can move to on next turn-->
-  <RookCoverageBonus>0.05</RookCoverageBonus> <!-- Bonus for every unoccupied square the rooks can move to on next turn-->
-  <BishopCoverageBonus>0.05</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
+  <QueenCoverageBonus>5</QueenCoverageBonus> <!-- Bonus for every unoccupied square the queen can move to on next turn-->
+  <RookCoverageBonus>5</RookCoverageBonus> <!-- Bonus for every unoccupied square the rooks can move to on next turn-->
+  <BishopCoverageBonus>5</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
 
-  <AttackBonus>0.1</AttackBonus> <!-- Bonus for every attack on an enemy piece-->
-  <MoreValuablePieceAttackBonus>0.2</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece--> 
+  <AttackBonus>10</AttackBonus> <!-- Bonus for every attack on an enemy piece-->
+  <MoreValuablePieceAttackBonus>20</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece--> 
 </ScoreSet>

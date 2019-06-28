@@ -96,7 +96,7 @@ namespace EngineEvaluation
             }
         }
 
-        private void LogPerfTResults(int depth, ulong result, ulong expectedResult, TimeSpan elapsedTime)
+        private void LogPerfTResults(int depth, int result, int expectedResult, TimeSpan elapsedTime)
         {
             var passed = "FAILED";
 

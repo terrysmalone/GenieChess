@@ -13,7 +13,7 @@ namespace ChessEngine.MoveSearching
     {
         internal ulong Key;
         internal int Depth;
-        internal decimal Score;
+        internal int Score;
         internal HashNodeType NodeType;
         internal PieceMoves BestMove;
         internal bool Ancient;

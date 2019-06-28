@@ -36,29 +36,27 @@ namespace ChessEngine.ScoreCalculation
                         {
                             var squareTable = scoreCalc.GetType().GetProperty(name).GetValue(scoreCalc, null);
 
-                            if (squareTable is Array)
+                            if (squareTable is Array array)
                             {
-                                var arr = (Array) squareTable;
-
-                                GetSquareTable(scoreVal.Value).CopyTo((Array) squareTable, 0);
-                                //squareTable = squareValues;
+                                GetSquareTable(scoreVal.Value).CopyTo(array, 0);
                             }
                             else
                             {
-                                log.Error(string.Format("Error writing square table: {0}", name));
+                                log.Error($"Error writing square table: {name}");
                             }
 
                             //scoreCalc.GetType().GetProperty(name).SetValue(scoreCalc, squareTable, null);
                         }
                         else
                         {
-                            var val = Convert.ToDecimal(scoreVal.Value);
-                            scoreCalc.GetType().GetProperty(name).SetValue(scoreCalc, val, null);
+                            var val = Convert.ToInt32(scoreVal.Value);
+
+                            scoreCalc.GetType().GetProperty(name)?.SetValue(scoreCalc, val, null);
                         }
                     }
                     catch (Exception exc)
                     {
-                        log.Error(string.Format("Error writing score value for {0}", name), exc);
+                        log.Error($"Error writing score value for {name}", exc);
 
                         throw;
                     }
@@ -66,30 +64,30 @@ namespace ChessEngine.ScoreCalculation
             }
             catch (FileNotFoundException fnfe)
             {
-                log.Error(string.Format("File {0} not found", xmlFileName), fnfe);
+                log.Error($"File {xmlFileName} not found", fnfe);
 
                 throw;
             }
             catch (Exception exc)
             {
-                log.Error(string.Format("Error reading xml file:{0}", xmlFileName), exc);
+                log.Error($"Error reading xml file:{xmlFileName}", exc);
 
                 throw;
             }
         }
 
-        private static decimal GetScore(List<XElement> scoreValues, string scoreName)
+        private static int GetScore(IEnumerable<XElement> scoreValues, string scoreName)
         {
             var element = scoreValues.Descendants(scoreName).SingleOrDefault();
 
-            return (decimal)element;
+            return (int)element;
         }
 
-        private static decimal[] GetSquareTable(string valueString)
+        private static int[] GetSquareTable(string valueString)
         {
             //string match = scoreValues.FirstOrDefault(stringToCheck => stringToCheck.Contains(valueString));
 
-            var values = new decimal[64];
+            var values = new int[64];
                        
             var scoreParts = valueString.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
 
@@ -97,12 +95,12 @@ namespace ChessEngine.ScoreCalculation
             {
                 for (var i = 0; i < 64; i++)
                 {
-                    values[i] = Decimal.Parse(scoreParts[i]);
+                    values[i] = int.Parse(scoreParts[i]);
                 }
             }
             else
             {
-                log.Error(string.Format("Error reading square table. Wrong number of values: {0}", valueString));
+                log.Error($"Error reading square table. Wrong number of values: {valueString}");
             }
             
             return values;
