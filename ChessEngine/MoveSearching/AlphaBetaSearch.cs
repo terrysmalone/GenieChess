@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -26,6 +27,14 @@ namespace ChessEngine.MoveSearching
  
         private List<MoveValueInfo> m_InitialMoves;
         private List<Tuple<int, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
+
+        // Static exchange Evaluation values
+        const int m_PawnScore   = 1;
+        const int m_KnightScore = 3;
+        const int m_BishopScore = 3;
+        const int m_RookScore   = 5;
+        const int m_QueenScore  = 9;
+        const int m_KingScore   = 10; // We want the king to attack last so that it can't be taken
 
         private int m_KillerMovesToStore = 2;
         private PieceMoves[,] m_KillerMoves;
@@ -575,7 +584,8 @@ namespace ChessEngine.MoveSearching
                 return alpha;
             }
             
-            OrderMovesByMvvVla(moves);
+            //OrderMovesByMvvVla(moves);
+            OrderMovesByStaticExchangeEvaluation(moves);
             
             PieceMoves? bestMoveSoFar = null;
 
@@ -657,6 +667,8 @@ namespace ChessEngine.MoveSearching
         {
             OrderMovesByMvvVla(moveList);
 
+            OrderMovesByStaticExchangeEvaluation(moveList);
+
             BringKillerMovesToTheFront(moveList, depth);
 
             if (bestHashMove != null)
@@ -665,46 +677,282 @@ namespace ChessEngine.MoveSearching
             }
         }
 
-        private void OrderMovesByMvvVlaNew(IList<PieceMoves> moveList)
+        private void OrderMovesByStaticExchangeEvaluation(IList<PieceMoves> moveList)
         {
-            // move list position, victim score, attacker score
-            var ordering = new List<Tuple<PieceMoves, int, int>>();
+            // position, swap score
+            var ordering = new List<Tuple<int, int>>();
 
-            var toRemove = new List<int>();
-
-            //Move capture
-            for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
+            for (var i = 0; i < moveList.Count; i++)
             {
-                if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
-                 || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
-                 || IsPromotionCapture(moveList[moveNum].SpecialMove))
+                var move = moveList[i];
+
+                if (move.SpecialMove == SpecialMoveType.Capture 
+                    || move.SpecialMove == SpecialMoveType.ENPassantCapture 
+                    || IsPromotionCapture(move.SpecialMove))
                 {
-                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
+                    var friendlyPieces = GetAttackingPieceScores(move.Moves, m_BoardPosition.WhiteToMove);
+                    var enemyPieces = GetAttackingPieceScores(move.Moves, !m_BoardPosition.WhiteToMove);
 
-                    ordering.Add(new Tuple<PieceMoves, int, int>(
-                                     moveList[moveNum],
-                                     GetPieceScore(victimType),
-                                     GetPieceScore(moveList[moveNum].Type)));
+                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move.Type);
 
-                    //toRemove.Add(moveNum);
+                    ordering.Add(new Tuple<int, int>( i, swapScore));
                 }
             }
 
-            //Order by victim and then attacker. We do it in reverse
-            ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
 
-            foreach (var order in ordering)
+            // for each move
+                // If it's a capture
+                    // do SEE
+
+            // Order moves
+        }
+
+        private int StaticExchangeEvaluation(ulong attackPositionBoard, bool whiteToPlay)
+        {
+            var enemyPieces = GetAttackingPieceScores(attackPositionBoard, whiteToPlay);
+            var friendlyPieces = GetAttackingPieceScores(attackPositionBoard, !whiteToPlay);
+
+            // Swap off from least to most valuable
+            // Beware king captures
+            // Beware checks
+
+            return 0;
+        }
+
+        private List<int> GetAttackingPieceScores(ulong attackPositionBoard, bool whiteToMove)
+        {
+            const int pawnScore   = 1;
+            const int knightScore = 3;
+            const int bishopScore = 3;
+            const int rookScore   = 5;
+            const int queenScore  = 9;
+            const int kingScore   = 10; // We want the king to attack last so that it can't be taken
+
+            var attackingPieceScores = new List<int>();
+
+            // Get all pieces attacking attackPositionBoard 
+            // Pawn attacks
+            var enemyPawnAttacks = BoardChecking.PawnCountAttackingSquare(m_BoardPosition,
+                                                                          attackPositionBoard,
+                                                                          whiteToMove);
+
+            for (var i = 0; i < enemyPawnAttacks; i++)
             {
-                if (moveList.Remove(order.Item1))
-                {
+                attackingPieceScores.Add(pawnScore);
+            }
 
-                    moveList.Add(order.Item1);
+            // Knight attacks
+            var knightAttacks = BoardChecking.KnightCountAttackingSquare(m_BoardPosition,
+                                                                         attackPositionBoard,
+                                                                         m_BoardPosition.WhiteToMove);
+
+            for (var i = 0; i < knightAttacks; i++)
+            {
+                attackingPieceScores.Add(knightScore);
+            }
+
+            ulong friendlyBishops;
+            ulong friendlyRooks;
+            ulong friendlyQueen;
+
+
+            if (whiteToMove)
+            {
+                friendlyBishops = m_BoardPosition.WhiteBishops;
+                friendlyRooks = m_BoardPosition.WhiteRooks;
+                friendlyQueen = m_BoardPosition.WhiteQueen;
+            }
+            else
+            {
+                friendlyBishops = m_BoardPosition.BlackBishops;
+                friendlyRooks = m_BoardPosition.BlackRooks;
+                friendlyQueen = m_BoardPosition.BlackQueen;
+            }
+
+            // Bishop attacks
+            var diagonalBoard = BoardChecking.CalculateAllowedBishopMoves(m_BoardPosition, 
+                                                                          attackPositionBoard, 
+                                                                          whiteToMove,
+                                                                          removeFriendlyBlocker: false);
+
+            var attackingBishops = diagonalBoard & friendlyBishops;
+
+            if (attackingBishops != 0)
+            {
+                 var bishopCount = BitboardOperations.GetPopCount(attackingBishops);
+
+                 for (var i = 0; i < bishopCount; i++)
+                 {
+                    attackingPieceScores.Add(bishopScore);
+                 }
+            }
+
+            // Rook attacks
+            var straightBoard = BoardChecking.CalculateAllowedRookMoves(m_BoardPosition, 
+                                                                        attackPositionBoard, 
+                                                                        whiteToMove,
+                                                                        removeFriendlyBlocker: false);
+
+            var attackingRooks = straightBoard & friendlyRooks;
+
+            if (attackingRooks != 0)
+            {
+                var rookCount = BitboardOperations.GetPopCount(attackingRooks);
+
+                for (var i = 0; i < rookCount; i++)
+                {
+                    attackingPieceScores.Add(rookScore);
+                }
+            }
+
+            // Queen attacks
+            var attackingQueens = (straightBoard | diagonalBoard) & friendlyQueen;
+
+            if (attackingQueens != 0)
+            {
+                var queenCount = BitboardOperations.GetPopCount(attackingQueens);
+
+                for (var i = 0; i < queenCount; i++)
+                {
+                    attackingPieceScores.Add(queenScore);
+                }
+            }
+
+            // King attacks
+            if (BoardChecking.IsSquareAttackedByKing(m_BoardPosition, attackPositionBoard, !whiteToMove))
+            {
+                attackingPieceScores.Add(kingScore);
+            }
+
+            // Enemy x-ray attacks
+
+            attackingPieceScores.Sort();
+
+            return attackingPieceScores;
+        }
+
+        private static int CalculateSwapScore(IList<int> friendlyPieces, IList<int> enemyPieces, PieceType moveType)
+        {
+            // NOTE This is wrong. I treat the attacking piece as the first, when it's actually the 
+            // piece on the square. After that it's the value of the piece that captured
+
+            var swapValue = 0;
+
+            var firstPieceScore = 0;
+
+            //Start with the moveType piece
+            switch (moveType)
+            {
+                case PieceType.Pawn:
+                    firstPieceScore = m_PawnScore;
+                    break;
+
+                case PieceType.Knight:
+                    firstPieceScore = m_KnightScore;
+                    break;
+
+                case PieceType.Bishop:
+                    firstPieceScore = m_BishopScore;
+                    break;
+
+                case PieceType.Rook:
+                    firstPieceScore = m_RookScore;
+                    break;
+
+                case PieceType.Queen:
+                    firstPieceScore = m_QueenScore;
+                    break;
+
+                case PieceType.King:
+                    firstPieceScore = m_KingScore;
+                    break;
+            }
+
+            swapValue -= firstPieceScore;
+
+            friendlyPieces.Remove(firstPieceScore);
+
+            //Then work up, swapping sides
+            var friendlyPiece = false;
+
+            var friendlyPiecesLeft = true;
+            var enemyPiecesLeft = true;
+            var piecesLeft = true;
+
+            while (piecesLeft)
+            {
+                if(friendlyPiece)
+                {
+                    if (friendlyPieces.Count > 0)
+                    {
+                        var lowestLeft = friendlyPieces.First();
+
+                        if (lowestLeft == m_KingScore)
+                        {
+                            // Only do a king capture if nothing else can attack it
+                            if(enemyPieces.Count == 0)
+                            {
+                                swapValue -= m_KingScore;
+                            }
+
+                            friendlyPiecesLeft = false;
+                            enemyPiecesLeft    = false;
+                            piecesLeft         = false;
+                        }
+                        else
+                        {
+                            swapValue -= lowestLeft;
+                        }
+
+                        friendlyPieces.Remove(lowestLeft);
+                    }
+                    else
+                    {
+                        friendlyPiecesLeft = false;
+
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("This shouldn't happen");
+                    if (enemyPieces.Count > 0)
+                    {
+                        var lowestLeft = enemyPieces.First();
+
+                        if (lowestLeft == m_KingScore)
+                        {
+                            // Only do a king capture if nothing else can attack it
+                            if (friendlyPieces.Count == 0)
+                            {
+                                swapValue += m_KingScore;
+                            }
+
+                            friendlyPiecesLeft = false;
+                            enemyPiecesLeft    = false;
+                            piecesLeft         = false;
+                        }
+                        else
+                        {
+                            swapValue += lowestLeft;
+                        }
+
+                        enemyPieces.Remove(lowestLeft);
+                    }
+                    else
+                    {
+                        enemyPiecesLeft = false;
+                    }
                 }
+
+                if (!friendlyPiecesLeft && !enemyPiecesLeft)
+                {
+                    piecesLeft = false;
+                }
+
+                friendlyPiece = !friendlyPiece;
             }
+
+            return swapValue;
+
         }
 
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
