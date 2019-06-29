@@ -698,8 +698,8 @@ namespace ChessEngine.MoveSearching
 
         private void OrderMovesByStaticExchangeEvaluation(IList<PieceMoves> moveList)
         {
-            // position, swap score
-            var ordering = new List<Tuple<int, int>>();
+            // swap score, move
+            var ordering = new List<Tuple<int, PieceMoves>>();
 
             for (var i = 0; i < moveList.Count; i++)
             {
@@ -712,16 +712,46 @@ namespace ChessEngine.MoveSearching
                     var friendlyPieces = GetAttackingPieceScores(move.Moves, m_BoardPosition.WhiteToMove);
                     var enemyPieces = GetAttackingPieceScores(move.Moves, !m_BoardPosition.WhiteToMove);
 
-                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move.Type, move.Moves);
+                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move);
 
-                    ordering.Add(new Tuple<int, int>( i, swapScore));
+                    ordering.Add(new Tuple<int, PieceMoves>(swapScore, move));
+                }
+            }
+
+            ordering.OrderBy(o => o.Item1);
+
+            foreach (var order in ordering)
+            {
+                if (order.Item1 >= 0)
+                {
+                    if (moveList.Remove(order.Item2))
+                    {
+
+                        moveList.Insert(0, order.Item2);
+                    }
+                    else
+                    {
+                        throw new ChessBoardException("Tried to remove a non-existent move in SEE ordering");
+                    }
+                }
+                else
+                {
+                    // Move them to the back. This moves them out of order but we don't really care for now
+                    if (moveList.Remove(order.Item2))
+                    {
+                        moveList.Insert(moveList.Count, order.Item2);
+                    }
+                    else
+                    {
+                        throw new ChessBoardException("Tried to remove a non-existent move in SEE ordering");
+                    }
                 }
             }
 
 
             // for each move
-                // If it's a capture
-                    // do SEE
+            // If it's a capture
+            // do SEE
 
             // Order moves
         }
@@ -850,26 +880,24 @@ namespace ChessEngine.MoveSearching
             return attackingPieceScores;
         }
 
-        private int CalculateSwapScore(IList<int> friendlyPieces, IList<int> enemyPieces, PieceType moveType, ulong attackedBoard)
+        private int CalculateSwapScore(IList<int> friendlyPieces, IList<int> enemyPieces, PieceMoves move)
         {
-            var pieceScore = GetValueOfPieceOnBoard(attackedBoard);
-            // NOTE This is wrong. I treat the attacking piece as the first, when it's actually the 
-            // piece on the square. After that it's the value of the piece that captured
+            var pieceScore = 
+                move.SpecialMove == SpecialMoveType.ENPassantCapture ? 1 
+                                                                     : GetValueOfPieceOnBoard(move.Moves);
 
             var swapValue = 0;
             
-            swapValue -= pieceScore;
-
-            friendlyPieces.Remove(pieceScore);
-
+            swapValue += pieceScore;
+            
             //Then work up, swapping sides
-            var friendlyPiece = false;
+            var friendlyPiece = true;
 
             var friendlyPiecesLeft = true;
             var enemyPiecesLeft = true;
             var piecesLeft = true;
 
-            while (piecesLeft)
+            while (friendlyPieces.Count > 0 && enemyPieces.Count > 0)
             {
                 if(friendlyPiece)
                 {
@@ -882,8 +910,7 @@ namespace ChessEngine.MoveSearching
                             // Only do a king capture if nothing else can attack it
                             if(enemyPieces.Count == 0)
                             {
-                                swapValue -= pieceScore;
-                                pieceScore = m_KingScore;
+                                swapValue -= m_KingScore;
 
                             }
 
@@ -893,8 +920,7 @@ namespace ChessEngine.MoveSearching
                         }
                         else
                         {
-                            swapValue -= pieceScore;
-                            pieceScore = lowestLeft;
+                            swapValue -= lowestLeft;
                         }
 
                         friendlyPieces.Remove(lowestLeft);
@@ -902,7 +928,6 @@ namespace ChessEngine.MoveSearching
                     else
                     {
                         friendlyPiecesLeft = false;
-
                     }
                 }
                 else
@@ -916,8 +941,7 @@ namespace ChessEngine.MoveSearching
                             // Only do a king capture if nothing else can attack it
                             if (friendlyPieces.Count == 0)
                             {
-                                swapValue += pieceScore;
-                                pieceScore = m_KingScore;
+                                swapValue += m_KingScore;
                             }
 
                             friendlyPiecesLeft = false;
@@ -926,8 +950,7 @@ namespace ChessEngine.MoveSearching
                         }
                         else
                         {
-                            swapValue += pieceScore;
-                            pieceScore = lowestLeft;
+                            swapValue += lowestLeft;
                         }
 
                         enemyPieces.Remove(lowestLeft);

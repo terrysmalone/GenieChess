@@ -516,6 +516,23 @@ namespace ChessEngine.BoardRepresentation
             SwitchSides();
 
             CalculateUsefulBitboards();
+
+            if (WhiteToMove)
+            {
+                if ((EnPassantPosition & LookupTables.RankMask3) > 0)
+                {
+                    Console.WriteLine("This shouldn't happen");
+                }
+            }
+            else
+            {
+                if ((EnPassantPosition & LookupTables.RankMask6) > 0)
+                {
+                    Console.WriteLine("This shouldn't happen");
+                }
+            }
+
+
         }
 
         #region special move type methods
@@ -770,14 +787,7 @@ namespace ChessEngine.BoardRepresentation
         {
             Zobrist ^= ZobristKey.BlackToMove;
 
-            if (WhiteToMove)
-            {
-                WhiteToMove = false;
-            }
-            else
-            {
-                WhiteToMove = true;
-            }
+            WhiteToMove = !WhiteToMove;
         }
 
         private void SaveBoardState()

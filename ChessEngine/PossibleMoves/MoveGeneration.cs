@@ -361,7 +361,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.WhitePawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & m_CurrentBoard.EnPassantPosition;
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask6);
 
                 if (pawnEnPassantCaptures > 0)
                 {
@@ -521,7 +521,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.BlackPawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & m_CurrentBoard.EnPassantPosition;
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask3);
 
                 if (pawnEnPassantCaptures > 0)
                     m_AllMoves.Add(new PieceMoves
