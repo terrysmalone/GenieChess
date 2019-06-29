@@ -528,11 +528,18 @@ namespace ChessEngine.MoveSearching
 
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
-            
+
+            PieceMoves? bestHashMove = null;
+
             if (hash.Key != 0)
             {
                 var transpositionScore = hash.Score;
-                
+
+                if (hash.BestMove.Type != PieceType.None)
+                {
+                    bestHashMove = hash.BestMove;
+                }
+
                 switch (hash.NodeType)
                 {
                     case HashNodeType.Exact:
@@ -576,7 +583,12 @@ namespace ChessEngine.MoveSearching
             }
             
             OrderMovesByMvvVla(moves);
-            
+
+            if (bestHashMove != null)
+            {
+                BringBestHashMoveToTheFront(moves, (PieceMoves)bestHashMove);
+            }
+
             PieceMoves? bestMoveSoFar = null;
 
             foreach (var move in moves)
@@ -611,12 +623,12 @@ namespace ChessEngine.MoveSearching
             var hashNodeType = evaluationScore <= alpha ? HashNodeType.UpperBound
                                                         : HashNodeType.Exact;
 
-            RecordQuiescenceHash(alpha, hashNodeType);
+            RecordQuiescenceHash(alpha, hashNodeType, bestMoveSoFar);
 
             return alpha;
         }
 
-        private void RecordQuiescenceHash(int evaluationScore, HashNodeType hashNodeType)
+        private void RecordQuiescenceHash(int evaluationScore, HashNodeType hashNodeType, PieceMoves? bestMove = null)
         {
             var hash = new Hash
             {
@@ -624,6 +636,11 @@ namespace ChessEngine.MoveSearching
                 NodeType = hashNodeType,
                 Score    = evaluationScore
             };
+
+            if (bestMove != null)
+            {
+                hash.BestMove = (PieceMoves)bestMove;
+            }
 
             TranspositionTable.AddQuiescenceHash(hash);
         }
