@@ -10,7 +10,7 @@
 
             var engineEvaluation = performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     false, 
                                                                                           evaluateTestSuitePositions: true,
-                                                                                          runFullTestSuiteEvaluation: true);
+                                                                                          runFullTestSuiteEvaluation: false);
             
             engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
         }

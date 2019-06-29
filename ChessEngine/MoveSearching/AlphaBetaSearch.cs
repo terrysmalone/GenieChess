@@ -8,6 +8,7 @@ using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Debugging;
+using ChessEngine.Exceptions;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
@@ -711,7 +712,7 @@ namespace ChessEngine.MoveSearching
                     var friendlyPieces = GetAttackingPieceScores(move.Moves, m_BoardPosition.WhiteToMove);
                     var enemyPieces = GetAttackingPieceScores(move.Moves, !m_BoardPosition.WhiteToMove);
 
-                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move.Type);
+                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move.Type, move.Moves);
 
                     ordering.Add(new Tuple<int, int>( i, swapScore));
                 }
@@ -849,46 +850,17 @@ namespace ChessEngine.MoveSearching
             return attackingPieceScores;
         }
 
-        private static int CalculateSwapScore(IList<int> friendlyPieces, IList<int> enemyPieces, PieceType moveType)
+        private int CalculateSwapScore(IList<int> friendlyPieces, IList<int> enemyPieces, PieceType moveType, ulong attackedBoard)
         {
+            var pieceScore = GetValueOfPieceOnBoard(attackedBoard);
             // NOTE This is wrong. I treat the attacking piece as the first, when it's actually the 
             // piece on the square. After that it's the value of the piece that captured
 
             var swapValue = 0;
+            
+            swapValue -= pieceScore;
 
-            var firstPieceScore = 0;
-
-            //Start with the moveType piece
-            switch (moveType)
-            {
-                case PieceType.Pawn:
-                    firstPieceScore = m_PawnScore;
-                    break;
-
-                case PieceType.Knight:
-                    firstPieceScore = m_KnightScore;
-                    break;
-
-                case PieceType.Bishop:
-                    firstPieceScore = m_BishopScore;
-                    break;
-
-                case PieceType.Rook:
-                    firstPieceScore = m_RookScore;
-                    break;
-
-                case PieceType.Queen:
-                    firstPieceScore = m_QueenScore;
-                    break;
-
-                case PieceType.King:
-                    firstPieceScore = m_KingScore;
-                    break;
-            }
-
-            swapValue -= firstPieceScore;
-
-            friendlyPieces.Remove(firstPieceScore);
+            friendlyPieces.Remove(pieceScore);
 
             //Then work up, swapping sides
             var friendlyPiece = false;
@@ -910,7 +882,9 @@ namespace ChessEngine.MoveSearching
                             // Only do a king capture if nothing else can attack it
                             if(enemyPieces.Count == 0)
                             {
-                                swapValue -= m_KingScore;
+                                swapValue -= pieceScore;
+                                pieceScore = m_KingScore;
+
                             }
 
                             friendlyPiecesLeft = false;
@@ -919,7 +893,8 @@ namespace ChessEngine.MoveSearching
                         }
                         else
                         {
-                            swapValue -= lowestLeft;
+                            swapValue -= pieceScore;
+                            pieceScore = lowestLeft;
                         }
 
                         friendlyPieces.Remove(lowestLeft);
@@ -941,7 +916,8 @@ namespace ChessEngine.MoveSearching
                             // Only do a king capture if nothing else can attack it
                             if (friendlyPieces.Count == 0)
                             {
-                                swapValue += m_KingScore;
+                                swapValue += pieceScore;
+                                pieceScore = m_KingScore;
                             }
 
                             friendlyPiecesLeft = false;
@@ -950,7 +926,8 @@ namespace ChessEngine.MoveSearching
                         }
                         else
                         {
-                            swapValue += lowestLeft;
+                            swapValue += pieceScore;
+                            pieceScore = lowestLeft;
                         }
 
                         enemyPieces.Remove(lowestLeft);
@@ -971,6 +948,47 @@ namespace ChessEngine.MoveSearching
 
             return swapValue;
 
+        }
+
+        private int GetValueOfPieceOnBoard(ulong squareToCheck)
+        {
+            if ((m_BoardPosition.WhitePawns & squareToCheck) > 0
+                ||(m_BoardPosition.BlackPawns & squareToCheck) > 0)
+            {
+                return m_PawnScore;
+            }
+
+            if ((m_BoardPosition.WhiteKnights & squareToCheck) > 0
+                || (m_BoardPosition.BlackKnights & squareToCheck) > 0)
+            {
+                return m_KnightScore;
+            }
+
+            if ((m_BoardPosition.WhiteBishops & squareToCheck) > 0
+                || (m_BoardPosition.BlackBishops & squareToCheck) > 0)
+            {
+                return m_BishopScore;
+            }
+
+            if ((m_BoardPosition.WhiteRooks & squareToCheck) > 0
+                || (m_BoardPosition.BlackRooks & squareToCheck) > 0)
+            {
+                return m_RookScore;
+            }
+
+            if ((m_BoardPosition.WhiteQueen & squareToCheck) > 0
+                || (m_BoardPosition.BlackQueen & squareToCheck) > 0)
+            {
+                return m_QueenScore;
+            }
+
+            if ((m_BoardPosition.WhiteKing & squareToCheck) > 0
+                || (m_BoardPosition.BlackKing & squareToCheck) > 0)
+            {
+                return m_KingScore;
+            }
+
+            throw new ChessBoardException($"Board {squareToCheck} should have 1 piece on it");
         }
 
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
