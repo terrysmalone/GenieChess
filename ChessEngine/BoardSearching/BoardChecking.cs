@@ -564,15 +564,77 @@ namespace ChessEngine.BoardSearching
                 }
 
                 //Check down-left
-                var upLeft = squarePosition >> 9;
+                var downLeft = squarePosition >> 9;
 
-                if ((upLeft & board.WhitePawns & proximityBoard) != 0)
+                if ((downLeft & board.WhitePawns & proximityBoard) != 0)
                 {
                     attackingPawns++;
                 }
             }
 
             return attackingPawns;
+        }
+
+        /// <summary>
+        /// Returns a bitboard showing all pawn attacks on the given bitboard, squarePosition
+        /// </summary>
+        internal static ulong PawnAttackBoard(Board board, ulong squarePosition, bool whitePieces)
+        {
+            ulong attackBoard = 0;
+
+            var squareIndex    = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+            var proximityBoard = ValidMoveArrays.KingMoves[squareIndex]; //Allows the quick masking of wrapping checks
+
+            var attackingPawns = 0;
+
+            if (whitePieces)
+            {
+                if (board.BlackPawns == 0)
+                {
+                    return 0;
+                }
+
+                //Check up-right    
+                var upRight = squarePosition << 9;
+
+                if ((upRight & board.BlackPawns & proximityBoard) != 0)
+                {
+                    attackBoard |= upRight;
+                }
+
+                //Check up-left
+                var upLeft = squarePosition << 7;
+
+                if ((upLeft & board.BlackPawns & proximityBoard) != 0)
+                {
+                    attackBoard |= upLeft;
+                }
+            }
+            else
+            {
+                if (board.WhitePawns == 0)
+                {
+                    return 0;
+                }
+
+                //Check down-right
+                var downRight = squarePosition >> 7;
+
+                if ((downRight & board.WhitePawns & proximityBoard) != 0)
+                {
+                    attackBoard |= downRight;
+                }
+
+                //Check down-left
+                var downLeft = squarePosition >> 9;
+
+                if ((downLeft & board.WhitePawns & proximityBoard) != 0)
+                {
+                    attackBoard |= downRight;
+                }
+            }
+
+            return attackBoard;
         }
 
         /// <summary>
@@ -631,6 +693,25 @@ namespace ChessEngine.BoardSearching
 
         }
 
+        /// <summary>
+        /// Returns a bitboard of all knight attacks to the given square, squarePosition
+        /// </summary>
+        internal static ulong KnightAttackBoard(Board board, ulong squarePosition, bool whitePieces)
+        {
+            var knights = whitePieces ? board.BlackKnights : board.WhiteKnights;
+
+            if (knights == 0) //If there are no knights we do not have to check
+            {
+                return 0;
+            }
+
+            var currentPosition = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+
+            var possibleKnightMoves = ValidMoveArrays.KnightMoves[currentPosition];
+
+            return possibleKnightMoves & knights;
+        }
+
         internal static bool IsSquareAttackedByKing(Board board, ulong squarePosition, bool whitePieces)
         {
             ulong enemyKing;
@@ -647,6 +728,16 @@ namespace ChessEngine.BoardSearching
                 return true;
             else
                 return false;
+        }
+
+        internal static ulong KingAttackBoard(Board board, ulong squarePosition, bool whitePieces)
+        {
+            var enemyKing = whitePieces ? board.BlackKing : board.WhiteKing;
+
+            var checkSquare   = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
+            var surroundBoard = ValidMoveArrays.KingMoves[checkSquare];
+
+            return enemyKing & surroundBoard;
         }
 
         internal static bool IsSquareUnderRayAttackSuperFast(Board board, ulong squarePositionBoard, ulong emptyOrEnemySpaces, bool whitePieces)
