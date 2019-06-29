@@ -450,11 +450,8 @@ namespace ChessEngine.PossibleMoves
                     var promotionsBoard =
                         (pawnSingleMove & LookupTables.RankMask1) & ~m_CurrentBoard.AllOccupiedSquares;
 
-                    if (promotionsBoard > 0) //There are promortions. Split moves
+                    if (promotionsBoard > 0) //There are promotions. Split moves
                     {
-                        // Remove promotions from pawn moves
-                        // pawnSingleMove = pawnSingleMove & ~promotionsBoard;
-
                         // Add promotions to a new move
                         m_AllMoves.Add(new PieceMoves
                                           {
