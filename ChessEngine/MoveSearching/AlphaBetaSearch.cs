@@ -112,18 +112,24 @@ namespace ChessEngine.MoveSearching
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
                            $"Accumulated move time: {moveValueInfo.AccumulatedTime:mm\':\'ss\':\'ffff}");
+                
+#if UCI
+                var foundMove = UciMoveTranslator.ToUciMove(bestMove);
+                Console.WriteLine($"Best move at depth {depth}: {foundMove}");
 
+                Console.WriteLine($"info currmove {bestMove} " +
+                                  $"depth {depth} " +
+                                  $"nodes {moveValueInfo.NodesVisited} ");
 
+                Console.WriteLine($"info score cp 0 {bestMove} " +
+                                  $"depth {depth} " +
+                                  $"nodes {moveValueInfo.NodesVisited} " +
+                                  $"time {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff}");
 
-//#if UCI
-//                var bestMove = UciMoveTranslator.ToUciMove();
-//                //Console.WriteLine(string.Format("Best move at depth {0}: {1}", i, bestMove));
-//                //Console.WriteLine(String.Format("info currmove {0} depth {1} nodes {2} ", bestMove, i, pvInfo.NodesVisited));
-//                //Console.WriteLine(String.Format("info score cp 0 {0} depth {1} nodes {2} time {3} ", bestMove, i, pvInfo.NodesVisited, pvInfo.DepthTime));
-//                Console.WriteLine($"info score cp {pvInfo.Score} depth {i} nodes {pvInfo.NodesVisited} pv {bestMove} ");
-
-                // //Console.WriteLine(string.Format("info Best move at depth {0}: {1}", i, UciMoveTranslator.ToUciMove(bestIDMove)));
-                //#endif
+                Console.WriteLine($"info score cp {moveValueInfo.Score} " +
+                                  $"depth {depth} " +
+                                  $"nodes {moveValueInfo.NodesVisited} pv {bestMove} ");
+#endif
             }
 
             s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
@@ -160,10 +166,11 @@ namespace ChessEngine.MoveSearching
             s_Log.Info($"Moves to Check: {moveList.Count}");
             s_Log.Info("Shown in order checked");
 
-            foreach (var move in moveList)
+            for (var i = 0; i < moveList.Count; i++)
             {
+                var move = moveList[i];
 #if UCI
-                Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(moveList[i])} currmovenumber {i + 1}");
+                Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(move)} currmovenumber {i + 1}");
 #endif
 
                 var movePath = new List<PieceMoves>();
