@@ -115,7 +115,7 @@ namespace EngineEvaluation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    var currentMove = alphaBeta.CalculateBestMoveTimed(evaluationDepth, maxThinkingSeconds: 300);
+                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds: 10);
 
                     timer.Stop();
 

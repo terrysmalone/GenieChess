@@ -49,17 +49,22 @@ namespace ChessEngine.MoveSearching
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
         }
 
-        private static PieceMoves m_CompletedSearchBestMove;
-        private static PieceMoves m_LatestDepthBestMove;
-        private static PieceMoves m_InDepthBestMove;
-
-
-
-        public PieceMoves CalculateBestMoveTimed(int maxDepth, int maxThinkingSeconds)
+        private static PieceMoves s_CompletedSearchBestMove;
+        private static PieceMoves s_LatestDepthBestMove;
+        private static PieceMoves s_InDepthBestMove;
+        
+        public PieceMoves CalculateBestMove(int maxDepth, int maxThinkingSeconds)
         {
+            s_CompletedSearchBestMove = new PieceMoves();
+            s_LatestDepthBestMove = new PieceMoves();
+            s_InDepthBestMove = new PieceMoves();
+
             var threadTimeout = new TimeSpan(0, 0, maxThinkingSeconds);
 
             var moveThread = new Thread(() => CalculateBestMove(maxDepth));
+
+            var moveTimer = new Stopwatch();
+            moveTimer.Start();
 
             moveThread.Start();
 
@@ -68,33 +73,46 @@ namespace ChessEngine.MoveSearching
             if (!finished)
             {
                 moveThread.Abort();
-
-                s_Log.Info("Search timed out");
+                
+                s_Log.Info("Maximum time limit reached");
             }
 
-            s_Log.Info($"m_CompletedSearchBestMove: {UciMoveTranslator.ToUciMove(m_CompletedSearchBestMove)}");
-            s_Log.Info($"m_LatestDepthBestMove: {UciMoveTranslator.ToUciMove(m_LatestDepthBestMove)}");
-            s_Log.Info($"m_InDepthBestMove: {UciMoveTranslator.ToUciMove(m_InDepthBestMove)}");
+            s_Log.Info($"Move Time: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
-            if (m_CompletedSearchBestMove.Type != PieceType.None)
+            // Temporary
+            s_Log.Info(s_CompletedSearchBestMove.Type == PieceType.None
+                           ? "Completed search best move: -"
+                           : $"Completed search best move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
+
+            s_Log.Info(s_LatestDepthBestMove.Type == PieceType.None
+                           ? "Highest depth best move: -"
+                            :$"Highest depth best move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
+
+            s_Log.Info(s_InDepthBestMove.Type == PieceType.None
+                           ? "In latest depth best move: -"
+                           : $"In latest depth best move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
+
+            // Temporary end
+
+            if (s_CompletedSearchBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(m_CompletedSearchBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
 
-                return m_CompletedSearchBestMove;
+                return s_CompletedSearchBestMove;
             }
 
-            if (m_LatestDepthBestMove.Type != PieceType.None)
+            if (s_LatestDepthBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(m_LatestDepthBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
 
-                return m_LatestDepthBestMove;
+                return s_LatestDepthBestMove;
             }
 
-            if (m_InDepthBestMove.Type != PieceType.None)
+            if (s_InDepthBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(m_InDepthBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
 
-                return m_InDepthBestMove;
+                return s_InDepthBestMove;
             }
 
             throw new ChessBoardException("No move was found in given time");
@@ -138,10 +156,10 @@ namespace ChessEngine.MoveSearching
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
                 
-                m_LatestDepthBestMove = bestMove;
+                s_LatestDepthBestMove = bestMove;
 
                 // Reset this after each depth to make sure any move is from the current depth
-                m_InDepthBestMove = new PieceMoves();
+                s_InDepthBestMove = new PieceMoves();
 
                 timer.Stop();
 
@@ -194,7 +212,7 @@ namespace ChessEngine.MoveSearching
 
             s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
 
-            m_CompletedSearchBestMove = bestMove;
+            s_CompletedSearchBestMove = bestMove;
 
             return bestMove;
         }
@@ -247,7 +265,7 @@ namespace ChessEngine.MoveSearching
                     bestMove = move;
                     bestScore = score;
 
-                    m_InDepthBestMove = bestMove;
+                    s_InDepthBestMove = bestMove;
                 }
 
                 m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
