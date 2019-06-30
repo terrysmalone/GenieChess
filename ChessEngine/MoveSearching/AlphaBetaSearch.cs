@@ -168,7 +168,6 @@ namespace ChessEngine.MoveSearching
             {
                 moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
                 
-                //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList, depth);
             }
 
@@ -717,10 +716,7 @@ namespace ChessEngine.MoveSearching
                     || move.SpecialMove == SpecialMoveType.ENPassantCapture 
                     || IsPromotionCapture(move.SpecialMove))
                 {
-                    var friendlyPieces = GetInitialAttackingPieceMoves(move.Moves, m_BoardPosition.WhiteToMove);
-                    var enemyPieces = GetInitialAttackingPieceMoves(move.Moves, !m_BoardPosition.WhiteToMove);
-
-                    var swapScore = CalculateSwapScore(friendlyPieces, enemyPieces, move);
+                    var swapScore = CalculateSwapScore(move);
 
                     ordering.Add(new Tuple<int, PieceMoves>(swapScore, move));
                 }
@@ -899,10 +895,11 @@ namespace ChessEngine.MoveSearching
 
         // Starting with the lowest value attacking piece calculate the swap score for the move.
         // After each relevant attack check for pieces that were behind it
-        private int CalculateSwapScore(List<Tuple<int, PieceMoves>> friendlyPieces, 
-                                       List<Tuple<int, PieceMoves>> enemyPieces, 
-                                       PieceMoves move)
+        private int CalculateSwapScore(PieceMoves move)
         {
+            var friendlyPieces = GetInitialAttackingPieceMoves(move.Moves, m_BoardPosition.WhiteToMove);
+            var enemyPieces    = GetInitialAttackingPieceMoves(move.Moves, !m_BoardPosition.WhiteToMove);
+
             var valueOfPieceOnSquare = 
                 move.SpecialMove == SpecialMoveType.ENPassantCapture ? m_PawnScore 
                                                                      : GetValueOfPieceOnBoard(move.Moves);
