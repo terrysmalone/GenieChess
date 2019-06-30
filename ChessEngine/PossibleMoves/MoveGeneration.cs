@@ -361,7 +361,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.WhitePawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & m_CurrentBoard.EnPassantPosition;
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask6);
 
                 if (pawnEnPassantCaptures > 0)
                 {
@@ -450,11 +450,8 @@ namespace ChessEngine.PossibleMoves
                     var promotionsBoard =
                         (pawnSingleMove & LookupTables.RankMask1) & ~m_CurrentBoard.AllOccupiedSquares;
 
-                    if (promotionsBoard > 0) //There are promortions. Split moves
+                    if (promotionsBoard > 0) //There are promotions. Split moves
                     {
-                        // Remove promotions from pawn moves
-                        // pawnSingleMove = pawnSingleMove & ~promotionsBoard;
-
                         // Add promotions to a new move
                         m_AllMoves.Add(new PieceMoves
                                           {
@@ -521,7 +518,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.BlackPawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & m_CurrentBoard.EnPassantPosition;
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask3);
 
                 if (pawnEnPassantCaptures > 0)
                     m_AllMoves.Add(new PieceMoves

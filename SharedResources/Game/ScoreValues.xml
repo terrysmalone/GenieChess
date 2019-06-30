@@ -4,7 +4,7 @@
   <!-- Piece scores - scores for simply having the pieces-->
   <PawnPieceValue>100</PawnPieceValue>
   <KnightPieceValue>300</KnightPieceValue>
-  <BishopPieceValue>320</BishopPieceValue>
+  <BishopPieceValue>310</BishopPieceValue>
   <RookPieceValue>500</RookPieceValue>
   <QueenPieceValue>900</QueenPieceValue>
 
