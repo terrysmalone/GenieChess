@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Exceptions;
@@ -15,7 +18,7 @@ namespace ChessEngine.BoardRepresentation
     /// including all 12 bitboards who is to move and flags for moves like en-passant and castling
     /// </summary>
     [Serializable]
-    public class Board
+    public class Board 
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection
                                                                       .MethodBase

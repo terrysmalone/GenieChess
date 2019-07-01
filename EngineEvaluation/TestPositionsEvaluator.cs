@@ -5,6 +5,8 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
@@ -110,7 +112,20 @@ namespace EngineEvaluation
 
                     TranspositionTable.Restart();
 
-                    var alphaBeta = new AlphaBetaSearch(board, scoreCalculator);
+                    // Serialise the board since the search might leave it in a bad state
+                    IFormatter formatter = new BinaryFormatter();
+                    Board boardCopy;
+
+                    // Make a copy of the board since the search might mess up it's state
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        formatter.Serialize(memStream, board);
+
+                        memStream.Position = 0;
+                        boardCopy = (Board)formatter.Deserialize(memStream);
+                    }
+
+                    var alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
 
                     var timer = new Stopwatch();
                     timer.Start();
