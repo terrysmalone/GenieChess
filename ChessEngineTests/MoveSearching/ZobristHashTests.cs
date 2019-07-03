@@ -258,5 +258,48 @@ namespace ChessEngineTests.MoveSearching
 
             Assert.That(zobrist1, Is.EqualTo(zobrist2));
         }
+
+        [Test]
+        public void CalculateZobristReachesSameConclusionAsUpdateZobrist_SimplePawnMove()
+        {
+            ZobristHash.Reset();
+
+            ZobristHash.Initialise();
+
+            var board1 = new Board();
+            board1.SetPosition(FenTranslator.ToBoardState(
+                                   "rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1"));   // After e2e3
+
+            var zobrist1 = board1.Zobrist;
+
+            var board2 = new Board();
+            board2.InitaliseStartingPosition();
+            board2.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
+            var zobrist2 = board2.Zobrist;
+
+            Assert.That(zobrist1, Is.EqualTo(zobrist2));
+        }
+
+        [Test]
+        public void CalculateZobristReachesSameConclusionAsUpdateZobrist_TwoSimplePawnMoves()
+        {
+            ZobristHash.Reset();
+
+            ZobristHash.Initialise();
+
+            var board1 = new Board();
+            board1.SetPosition(FenTranslator.ToBoardState(
+                                   "rnbqkbnr/pp1ppppp/2p5/8/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2")); // After 1.e2e3 c7c6
+
+            var zobrist1 = board1.Zobrist;
+
+            var board2 = new Board();
+            board2.InitaliseStartingPosition();
+            board2.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
+            board2.MakeMove(UciMoveTranslator.ToGameMove("c7c6", board2), false);
+            var zobrist2 = board2.Zobrist;
+
+            Assert.That(zobrist1, Is.EqualTo(zobrist2));
+        }
     }
 }
