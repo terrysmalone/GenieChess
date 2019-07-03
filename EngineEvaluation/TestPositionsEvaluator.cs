@@ -76,10 +76,11 @@ namespace EngineEvaluation
             LogLine("Test positions evaluator");
         }
 
-        public void Evaluate(int evaluationDepth)
+        public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
         {
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
-            LogLineAsDetailed($"Logging Test positions with a search depth of {evaluationDepth}");
+            LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
+                              $"and a max thinking time of {maxThinkingSeconds} seconds");
 
             var overallTestPositions = 0;
             var overallPassedTestPositions = 0;
@@ -130,13 +131,13 @@ namespace EngineEvaluation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds: 10);
+                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
 
                     timer.Stop();
 
                     totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
 
-                    var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (float)n.NodesVisited);
+                    var totalNodes = alphaBeta.TotalSearchNodes;
                     totalTestSuiteNodeCount += totalNodes;
 
                     var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);

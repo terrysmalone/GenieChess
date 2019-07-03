@@ -52,29 +52,44 @@ namespace ChessEngine.MoveSearching
         private static PieceMoves s_CompletedSearchBestMove;
         private static PieceMoves s_LatestDepthBestMove;
         private static PieceMoves s_InDepthBestMove;
-        
+        public ulong TotalSearchNodes;
+
+        // See: https://stackoverflow.com/questions/2265412/set-timeout-to-an-operation
+        // Task might be better
         public PieceMoves CalculateBestMove(int maxDepth, int maxThinkingSeconds)
         {
             s_CompletedSearchBestMove = new PieceMoves();
             s_LatestDepthBestMove = new PieceMoves();
             s_InDepthBestMove = new PieceMoves();
 
+            TotalSearchNodes = 0;
+
             var threadTimeout = new TimeSpan(0, 0, maxThinkingSeconds);
 
             var moveThread = new Thread(() => CalculateBestMove(maxDepth));
-
+           
             var moveTimer = new Stopwatch();
             moveTimer.Start();
 
             moveThread.Start();
 
+            s_Log.Info($"1:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
+
             var finished = moveThread.Join(threadTimeout);
+
+            s_Log.Info($"2:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
 
             if (!finished)
             {
+                s_Log.Info($"3:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
+
                 moveThread.Abort();
-                
+
+                s_Log.Info($"4:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
+
                 s_Log.Info("Maximum time limit reached");
+
+                TotalSearchNodes += CountDebugger.Evaluations;
             }
 
             s_Log.Info($"Move Time: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
@@ -155,7 +170,7 @@ namespace ChessEngine.MoveSearching
 
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
-                
+
                 s_LatestDepthBestMove = bestMove;
 
                 // Reset this after each depth to make sure any move is from the current depth
@@ -190,7 +205,7 @@ namespace ChessEngine.MoveSearching
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
                            $"Accumulated move time: {moveValueInfo.AccumulatedTime:mm\':\'ss\':\'ffff}");
-                
+
 #if UCI
                 var foundMove = UciMoveTranslator.ToUciMove(bestMove);
                 Console.WriteLine($"Best move at depth {depth}: {foundMove}");
@@ -208,6 +223,8 @@ namespace ChessEngine.MoveSearching
                                   $"depth {depth} " +
                                   $"nodes {moveValueInfo.NodesVisited} pv {bestMove} ");
 #endif
+
+                TotalSearchNodes += CountDebugger.Evaluations;
             }
 
             s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
