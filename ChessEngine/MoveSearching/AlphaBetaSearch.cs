@@ -66,31 +66,32 @@ namespace ChessEngine.MoveSearching
 
             var threadTimeout = new TimeSpan(0, 0, maxThinkingSeconds);
 
-            var moveThread = new Thread(() => CalculateBestMove(maxDepth));
-           
             var moveTimer = new Stopwatch();
             moveTimer.Start();
 
+            var moveThread = new Thread(() => CalculateBestMove(maxDepth, moveTimer));  
+
+            s_Log.Info($"Thread Starting: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
             moveThread.Start();
+            s_Log.Info($"Thread Started: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
-            s_Log.Info($"1:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
-
+            s_Log.Info($"Thread joining: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
             var finished = moveThread.Join(threadTimeout);
+            s_Log.Info($"Thread joined: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
-            s_Log.Info($"2:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
 
             if (!finished)
             {
-                s_Log.Info($"3:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
-
+                s_Log.Info($"Thread aborting: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
                 moveThread.Abort();
-
-                s_Log.Info($"4:{DateTime.Now:yyyy-MM-dd_HH:mm:ss:FFF}");
+                s_Log.Info($"Thread aborted: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
                 s_Log.Info("Maximum time limit reached");
 
                 TotalSearchNodes += CountDebugger.Evaluations;
             }
+
+            moveTimer.Stop();
 
             s_Log.Info($"Move Time: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
@@ -133,8 +134,10 @@ namespace ChessEngine.MoveSearching
             throw new ChessBoardException("No move was found in given time");
         }
 
-        public PieceMoves CalculateBestMove(int maxDepth)
+        public PieceMoves CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
         {
+            s_Log.Info($"CalculateBestMove: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
             s_Log.Info(FenTranslator.ToFENString(m_BoardPosition.GetCurrentBoardState()));
@@ -149,7 +152,7 @@ namespace ChessEngine.MoveSearching
             var bestMove = new PieceMoves();
 
             CountDebugger.ClearTranspositionValues();
-
+            
             // Calculate scores for each move, starting at a
             // depth of one and working to max
             for (var depth = 1; depth <= maxDepth; depth++)
@@ -190,6 +193,9 @@ namespace ChessEngine.MoveSearching
                         : speed,
                     NodesVisited = CountDebugger.Evaluations
                 };
+
+                s_Log.Info($"Depth {depth} found: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
 
                 m_InitialMoves.Add(moveValueInfo);
 
