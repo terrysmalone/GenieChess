@@ -251,12 +251,13 @@ namespace ChessEngine.MoveSearching
             var bestMove = new PieceMoves();
 
             List<PieceMoves> moveList;
+            var previousScores = new List<int>();
 
             // Order the initial moves by their scores from the last depth, if any.
             // Otherwise order them based on....
             if (m_InitialMovesIterativeDeepeningShuffleOrder.Count > 0)
             {
-                moveList = OrderFromIterativeDeepeningMoves();
+                moveList = OrderFromIterativeDeepeningMoves(previousScores);
             }
             else
             {
@@ -281,8 +282,29 @@ namespace ChessEngine.MoveSearching
 
                 m_BoardPosition.MakeMove(move, false);
 
-                // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
+                int score = 0;
+
+                //Aspiration window 
+                if (previousScores.Count > 0)
+                {
+                    var previousScore = previousScores[i];
+
+                    var window = 1;
+
+                    do
+                    {
+                        score = -AlphaBeta(previousScore - window, previousScore + window, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
+                        window++;
+                    }
+                    while (score < previousScore - window || score > previousScore + window);
+                    
+                }
+                else
+                {
+
+                    // Since we're swapping colours at the next depth invert alpha and beta
+                    score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
+                }
 
                 if (score > bestScore)
                 {
@@ -758,7 +780,7 @@ namespace ChessEngine.MoveSearching
             TranspositionTable.AddQuiescenceHash(hash);
         }
 
-        private List<PieceMoves> OrderFromIterativeDeepeningMoves()
+        private List<PieceMoves> OrderFromIterativeDeepeningMoves(ICollection<int> previousScores)
         {
             var moveList = new List<PieceMoves>();
 
@@ -768,6 +790,7 @@ namespace ChessEngine.MoveSearching
             foreach (var move in m_InitialMovesIterativeDeepeningShuffleOrder)
             {
                 moveList.Add(move.Item2);
+                previousScores.Add(move.Item1);
             }
 
             m_InitialMovesIterativeDeepeningShuffleOrder.Clear();
