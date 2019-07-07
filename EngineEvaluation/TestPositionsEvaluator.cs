@@ -5,6 +5,8 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
@@ -74,10 +76,11 @@ namespace EngineEvaluation
             LogLine("Test positions evaluator");
         }
 
-        public void Evaluate(int evaluationDepth)
+        public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
         {
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
-            LogLineAsDetailed($"Logging Test positions with a search depth of {evaluationDepth}");
+            LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
+                              $"and a max thinking time of {maxThinkingSeconds} seconds");
 
             var overallTestPositions = 0;
             var overallPassedTestPositions = 0;
@@ -110,18 +113,31 @@ namespace EngineEvaluation
 
                     TranspositionTable.Restart();
 
-                    var alphaBeta = new AlphaBetaSearch(board, scoreCalculator);
+                    // Serialise the board since the search might leave it in a bad state
+                    IFormatter formatter = new BinaryFormatter();
+                    Board boardCopy;
+
+                    // Make a copy of the board since the search might mess up it's state
+                    using (MemoryStream memStream = new MemoryStream())
+                    {
+                        formatter.Serialize(memStream, board);
+
+                        memStream.Position = 0;
+                        boardCopy = (Board)formatter.Deserialize(memStream);
+                    }
+
+                    var alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
 
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
+                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
 
                     timer.Stop();
 
                     totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
 
-                    var totalNodes = alphaBeta.GetMoveValueInfo().Sum(n => (float)n.NodesVisited);
+                    var totalNodes = alphaBeta.TotalSearchNodes;
                     totalTestSuiteNodeCount += totalNodes;
 
                     var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);

@@ -32,11 +32,11 @@ namespace EngineEvaluation
             m_Evaluators = evaluators;
         }
 
-        public void RunFullPerformanceEvaluation(int maxDepth)
+        public void RunFullPerformanceEvaluation(int maxDepth, int maxThinkingSeconds)
         {
             foreach (var evaluator in m_Evaluators)
             {
-                evaluator.Evaluate(maxDepth);
+                evaluator.Evaluate(maxDepth, maxThinkingSeconds);
             }
         }
     }
