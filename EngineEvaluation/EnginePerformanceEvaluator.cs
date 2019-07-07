@@ -39,5 +39,13 @@ namespace EngineEvaluation
                 evaluator.Evaluate(maxDepth, maxThinkingSeconds);
             }
         }
+
+        public void RunFullPerformanceEvaluation(int maxDepth)
+        {
+            foreach (var evaluator in m_Evaluators)
+            {
+                evaluator.Evaluate(maxDepth);
+            }
+        }
     }
 }

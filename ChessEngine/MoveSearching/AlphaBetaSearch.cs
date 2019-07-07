@@ -136,8 +136,6 @@ namespace ChessEngine.MoveSearching
 
         public PieceMoves CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
         {
-            s_Log.Info($"CalculateBestMove: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
-
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
             s_Log.Info(FenTranslator.ToFENString(m_BoardPosition.GetCurrentBoardState()));
@@ -194,7 +192,10 @@ namespace ChessEngine.MoveSearching
                     NodesVisited = CountDebugger.Evaluations
                 };
 
-                s_Log.Info($"Depth {depth} found: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+                if (moveTimer != null)
+                {
+                    s_Log.Info($"Depth {depth} found: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+                }
 
 
                 m_InitialMoves.Add(moveValueInfo);
