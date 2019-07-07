@@ -10,6 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using log4net;
 using ResourceLoading;
@@ -76,11 +77,24 @@ namespace EngineEvaluation
             LogLine("Test positions evaluator");
         }
 
+        public void Evaluate(int evaluationDepth)
+        {
+            Evaluate(evaluationDepth, 0);
+        }
+
         public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
         {
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
-            LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
-                              $"and a max thinking time of {maxThinkingSeconds} seconds");
+
+            if (maxThinkingSeconds > 0)
+            {
+                LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
+                                  $"and a max thinking time of {maxThinkingSeconds} seconds");
+            }
+            else
+            {
+                LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth}");
+            }
 
             var overallTestPositions = 0;
             var overallPassedTestPositions = 0;
@@ -116,7 +130,7 @@ namespace EngineEvaluation
                     // Serialise the board since the search might leave it in a bad state
                     IFormatter formatter = new BinaryFormatter();
                     Board boardCopy;
-
+                    
                     // Make a copy of the board since the search might mess up it's state
                     using (MemoryStream memStream = new MemoryStream())
                     {
@@ -131,7 +145,16 @@ namespace EngineEvaluation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    var currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
+                    PieceMoves currentMove = new PieceMoves();
+
+                    if (maxThinkingSeconds > 0)
+                    {
+                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
+                    }
+                    else
+                    {
+                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
+                    }
 
                     timer.Stop();
 

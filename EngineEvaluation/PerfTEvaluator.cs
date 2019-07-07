@@ -52,6 +52,11 @@ namespace EngineEvaluation
 
         public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
         {
+            Evaluate(evaluationDepth);
+        }
+
+        public void Evaluate(int evaluationDepth)
+        {
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
             LogLineAsDetailed($"Logging PerfT scores with a max search of  {evaluationDepth}");
             
