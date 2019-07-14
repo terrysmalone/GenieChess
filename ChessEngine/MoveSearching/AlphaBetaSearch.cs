@@ -289,12 +289,12 @@ namespace ChessEngine.MoveSearching
                 {
                     var previousScore = previousScores[i];
 
-                    var window = 1;
+                    var window = 100;
 
                     do
                     {
                         score = -AlphaBeta(previousScore - window, previousScore + window, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
-                        window++;
+                        window += 100;
                     }
                     while (score < previousScore - window || score > previousScore + window);
                     
@@ -1035,10 +1035,10 @@ namespace ChessEngine.MoveSearching
         private static string GetScoreString(int score, bool whiteToMove)
         {
             //We try to maximise the scores so for display purposes negate them for black
-            if (!whiteToMove)
-            {
-                score = -score;
-            }
+            //if (!whiteToMove)
+            //{
+            //    score = -score;
+            //}
 
             var scoreString = score.ToString(CultureInfo.InvariantCulture);
 
