@@ -579,7 +579,7 @@ namespace ChessEngine.ScoreCalculation
 
             // Calculate early queen penalty since we've already done the preliminary work
             // If we have 3 or less developed pieces and the queen is not on D1
-            if (developedWhitePieceCount <= 3 && (m_CurrentBoard.WhiteQueen & ~(ulong)8) != 0) 
+            if (developedWhitePieceCount <= 3 && (m_CurrentBoard.WhiteQueen & ~8UL) != 0) 
             {
                 developedPiecesScore -= EarlyQueenMovePenalty;
             }
@@ -590,7 +590,7 @@ namespace ChessEngine.ScoreCalculation
 
             //Calculate early queen penalty since we've already done the preliminary work
             // If we have 3 or less developed pieces and the queen is not on D8
-            if (developedBlackPieceCount <= 3 && (m_CurrentBoard.BlackQueen & ~(ulong)576460752303423488) != 0)
+            if (developedBlackPieceCount <= 3 && (m_CurrentBoard.BlackQueen & ~576460752303423488UL) != 0)
             {
                 developedPiecesScore += EarlyQueenMovePenalty;
             }
