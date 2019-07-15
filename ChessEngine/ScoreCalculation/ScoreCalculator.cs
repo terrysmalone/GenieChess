@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
-using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Debugging;
 using ChessEngine.PossibleMoves;
@@ -80,6 +79,8 @@ namespace ChessEngine.ScoreCalculation
         #endregion square table values
 
         public int DevelopedPieceScore { get; set; }
+
+        public int EarlyQueenMovePenalty { get; set; }
 
         public int DoubleBishopScore { get; set; }
 
@@ -562,21 +563,37 @@ namespace ChessEngine.ScoreCalculation
         }
 
         /// <summary>
-        /// Points for all pieces not on the back rank (not including pawns)
+        /// Points for pieces not on the back rank (bishops & knights)
         /// </summary>
         /// <returns></returns>
         private int CalculateDevelopedPieceBonus()
         {
-            int developedPiecesScore = 0;
+            var developedPiecesScore = 0;
 
             ulong whiteBack = 255;
             var blackBack = 18374686479671623680;
 
             var whiteDevelopedPieces = (m_CurrentBoard.WhiteBishops ^ m_CurrentBoard.WhiteKnights ^ m_CurrentBoard.WhiteQueen) & ~whiteBack;
-            developedPiecesScore += BitboardOperations.GetPopCount(whiteDevelopedPieces) * DevelopedPieceScore;
+            var developedWhitePieceCount = BitboardOperations.GetPopCount(whiteDevelopedPieces);
+            developedPiecesScore += developedWhitePieceCount * DevelopedPieceScore;
+
+            // Calculate early queen penalty since we've already done the preliminary work
+            // If we have 3 or less developed pieces and the queen is not on D1
+            if (developedWhitePieceCount <= 3 && (m_CurrentBoard.WhiteQueen & ~(ulong)8) != 0) 
+            {
+                developedPiecesScore -= EarlyQueenMovePenalty;
+            }
 
             var blackDevelopedPieces = (m_CurrentBoard.BlackBishops ^ m_CurrentBoard.BlackKnights ^ m_CurrentBoard.BlackQueen) & ~blackBack;
-            developedPiecesScore -= BitboardOperations.GetPopCount(blackDevelopedPieces) * DevelopedPieceScore;
+            var developedBlackPieceCount = BitboardOperations.GetPopCount(blackDevelopedPieces);
+            developedPiecesScore -= developedBlackPieceCount * DevelopedPieceScore;
+
+            //Calculate early queen penalty since we've already done the preliminary work
+            // If we have 3 or less developed pieces and the queen is not on D8
+            if (developedBlackPieceCount <= 3 && (m_CurrentBoard.BlackQueen & ~(ulong)576460752303423488) != 0)
+            {
+                developedPiecesScore += EarlyQueenMovePenalty;
+            }
 
             return developedPiecesScore;
         }
