@@ -84,6 +84,8 @@ namespace ChessEngine.ScoreCalculation
 
         public int DoubleBishopScore { get; set; }
 
+        public int  SoloQueenScore { get; set; }
+
         public int DoubledPawnPenalty { get; set; }
         public int PawnChainScore { get; set; }
 
@@ -183,7 +185,11 @@ namespace ChessEngine.ScoreCalculation
             }
 
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteRooks) * RookPieceValue;
-            pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteQueen) * QueenPieceValue;
+
+            var whiteQueenCount = BitboardOperations.GetPopCount(m_CurrentBoard.WhiteQueen);
+
+            pieceScore += whiteQueenCount * QueenPieceValue;
+            pieceScore += whiteQueenCount * SoloQueenScore;
 
             pieceScore += BitboardOperations.GetPopCount(m_CurrentBoard.WhiteKing) * kingScore;
 
@@ -200,7 +206,11 @@ namespace ChessEngine.ScoreCalculation
             }
 
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackRooks) * RookPieceValue;
-            pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen) * QueenPieceValue;
+
+            var blackQueenCount = BitboardOperations.GetPopCount(m_CurrentBoard.BlackQueen);
+
+            pieceScore -= blackQueenCount * QueenPieceValue;
+            pieceScore -= blackQueenCount * SoloQueenScore;
 
             pieceScore -= BitboardOperations.GetPopCount(m_CurrentBoard.BlackKing) * kingScore;
             
@@ -559,6 +569,8 @@ namespace ChessEngine.ScoreCalculation
             developedPieceBonus += CalculateDevelopedPieceBonus();
             developedPieceBonus += CalculateConnectedRookBonus();
 
+            developedPieceBonus += CalculateEarlyQueenPenalty();
+
             return developedPieceBonus;
         }
 
@@ -576,24 +588,10 @@ namespace ChessEngine.ScoreCalculation
             var whiteDevelopedPieces = (m_CurrentBoard.WhiteBishops ^ m_CurrentBoard.WhiteKnights ^ m_CurrentBoard.WhiteQueen) & ~whiteBack;
             var developedWhitePieceCount = BitboardOperations.GetPopCount(whiteDevelopedPieces);
             developedPiecesScore += developedWhitePieceCount * DevelopedPieceScore;
-
-            // Calculate early queen penalty since we've already done the preliminary work
-            // If we have 3 or less developed pieces and the queen is not on D1
-            if (developedWhitePieceCount <= 3 && (m_CurrentBoard.WhiteQueen & ~8UL) != 0) 
-            {
-                developedPiecesScore -= EarlyQueenMovePenalty;
-            }
-
+            
             var blackDevelopedPieces = (m_CurrentBoard.BlackBishops ^ m_CurrentBoard.BlackKnights ^ m_CurrentBoard.BlackQueen) & ~blackBack;
             var developedBlackPieceCount = BitboardOperations.GetPopCount(blackDevelopedPieces);
             developedPiecesScore -= developedBlackPieceCount * DevelopedPieceScore;
-
-            //Calculate early queen penalty since we've already done the preliminary work
-            // If we have 3 or less developed pieces and the queen is not on D8
-            if (developedBlackPieceCount <= 3 && (m_CurrentBoard.BlackQueen & ~576460752303423488UL) != 0)
-            {
-                developedPiecesScore += EarlyQueenMovePenalty;
-            }
 
             return developedPiecesScore;
         }
@@ -645,6 +643,41 @@ namespace ChessEngine.ScoreCalculation
             }
 
             return connectedRookScore;
+        }
+
+        private int CalculateEarlyQueenPenalty()
+        {
+            var earlyQueenPenaltyScore = 0; 
+
+            ulong whiteUndevelopedPieceBoard = 0;
+
+            whiteUndevelopedPieceBoard |= m_CurrentBoard.WhiteBishops & 36;  //Any white bishops on C1 or F1
+            whiteUndevelopedPieceBoard |= m_CurrentBoard.WhiteKnights & 66;  //Any white knights on B1 orG1
+
+            var whiteUndevelopedPieceCount = BitboardOperations.GetPopCount(whiteUndevelopedPieceBoard);
+
+            // If we have at least 2 undeveloped pieces (bishops and knights) and the queen has moved
+            if (whiteUndevelopedPieceCount >= 2 && (m_CurrentBoard.WhiteQueen & ~8UL) != 0)
+            {
+                earlyQueenPenaltyScore -= EarlyQueenMovePenalty;
+            }
+
+            ulong blackUndevelopedPieceBoard = 0;
+
+            //Any black bishops on C8 or F8
+            blackUndevelopedPieceBoard |= m_CurrentBoard.BlackBishops & 2594073385365405696;
+            //Any black knights on B8 or G8
+            blackUndevelopedPieceBoard |= m_CurrentBoard.BlackKnights & 66;  
+
+            int blackUndevelopedPieceCount = BitboardOperations.GetPopCount(blackUndevelopedPieceBoard);
+
+            // If we have at least 2 undeveloped pieces (bishops and knights) and the queen has moved
+            if (blackUndevelopedPieceCount <= 3 && (m_CurrentBoard.BlackQueen & ~576460752303423488UL) != 0)
+            {
+                earlyQueenPenaltyScore += EarlyQueenMovePenalty;
+            }
+
+            return earlyQueenPenaltyScore;
         }
 
         #endregion development score

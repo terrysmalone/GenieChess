@@ -43,10 +43,11 @@
   <DevelopedPieceScore>30</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
   <EarlyQueenMovePenalty>30</EarlyQueenMovePenalty> <!-- Penalty if the queen is moved before developing at least 3 other pieces (bishops/knights) -->
   
-  <DoubleBishopScore>10</DoubleBishopScore> <!-- Score for having two bishops on the board-->
+  <DoubleBishopScore>10</DoubleBishopScore> <!-- Score for having two bishops on the board -->
+  <SoloQueenScore>15</SoloQueenScore> <!--Score for having a queen (If only one side has a queen this will give a bonus) -->
   
-  <DoubledPawnPenalty>-15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns-->
-  <PawnChainScore>15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn-->
+  <DoubledPawnPenalty>-15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns -->
+  <PawnChainScore>15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn -->
   <PassedPawnBonus>20</PassedPawnBonus><!-- Bonus for every passed pawn -->
   <PassedPawnAdvancementBonus>5</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
 
