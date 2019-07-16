@@ -41,7 +41,7 @@ namespace ChessEngine.MoveSearching
 
         internal static void Initialise()
         {
-            var rand = new Random();
+            var rand = new Random(1);
 
             if (initialised == false)
             {
@@ -247,7 +247,7 @@ namespace ChessEngine.MoveSearching
 
             foreach (var index in indexes)
             {
-                hash ^= ZobristKey.PiecePositions[WHITE_PAWN, index];
+                hash ^= ZobristKey.PiecePositions[piece, index];
             }
 
             return hash;

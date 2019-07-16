@@ -1027,9 +1027,9 @@ namespace ChessEngine.BoardRepresentation
             UpdateEnPassantZobrist(specialMove, moveToBoard);
             
             UpdateZobristForMove(moveFromBoard, moveToBoard, pieceToMove, specialMove);
-            
+
             //Update for side
-            //zobrist ^= ZobristKey.BlackToMove;
+            //Zobrist ^= ZobristKey.BlackToMove;
         }
 
         private void UpdateZobristForMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove)
