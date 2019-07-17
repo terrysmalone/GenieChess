@@ -793,48 +793,6 @@ namespace ChessEngine.MoveSearching
             }
         }
 
-        private void OrderMovesByMvvVlaNew(IList<PieceMoves> moveList)
-        {
-            // move list position, victim score, attacker score
-            var ordering = new List<Tuple<PieceMoves, int, int>>();
-
-            var toRemove = new List<int>();
-
-            //Move capture
-            for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
-            {
-                if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
-                 || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
-                 || IsPromotionCapture(moveList[moveNum].SpecialMove))
-                {
-                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
-
-                    ordering.Add(new Tuple<PieceMoves, int, int>(
-                                     moveList[moveNum],
-                                     GetPieceScore(victimType),
-                                     GetPieceScore(moveList[moveNum].Type)));
-
-                    //toRemove.Add(moveNum);
-                }
-            }
-
-            //Order by victim and then attacker. We do it in reverse
-            ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
-
-            foreach (var order in ordering)
-            {
-                if (moveList.Remove(order.Item1))
-                {
-
-                    moveList.Add(order.Item1);
-                }
-                else
-                {
-                    Console.WriteLine("This shouldn't happen");
-                }
-            }
-        }
-
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
         {
             // move list position, victim score, attacker score
