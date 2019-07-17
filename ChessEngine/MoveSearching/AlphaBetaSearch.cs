@@ -734,7 +734,7 @@ namespace ChessEngine.MoveSearching
                     }
                     else
                     {
-                        throw new ChessBoardException("Tried to remove a non-existent move in SEE ordering");
+                        throw new ChessBoardException("Tried to remove a non-existent positive move in SEE ordering");
                     }
                 }
                 else
@@ -746,29 +746,10 @@ namespace ChessEngine.MoveSearching
                     }
                     else
                     {
-                        throw new ChessBoardException("Tried to remove a non-existent move in SEE ordering");
+                        throw new ChessBoardException("Tried to remove a non-existent negative move in SEE ordering");
                     }
                 }
             }
-
-
-            // for each move
-            // If it's a capture
-            // do SEE
-
-            // Order moves
-        }
-
-        private int StaticExchangeEvaluation(ulong attackPositionBoard, bool whiteToPlay)
-        {
-            var enemyPieces = GetInitialAttackingPieceMoves(attackPositionBoard, whiteToPlay);
-            var friendlyPieces = GetInitialAttackingPieceMoves(attackPositionBoard, !whiteToPlay);
-
-            // Swap off from least to most valuable
-            // Beware king captures
-            // Beware checks
-
-            return 0;
         }
 
         private List<Tuple<int,PieceMoves>> GetInitialAttackingPieceMoves(ulong attackPositionBoard, bool whiteToMove)
@@ -776,11 +757,11 @@ namespace ChessEngine.MoveSearching
             var attackingPieceMoves = new List<Tuple<int, PieceMoves>>();
 
             // Pawn attacks
-            var enemyPawnAttacks = BoardChecking.PawnAttackBoard(m_BoardPosition,
+            var pawnAttacks = BoardChecking.PawnAttackBoard(m_BoardPosition,
                                                                  attackPositionBoard,
                                                                  whiteToMove);
 
-            foreach(var attackFromBoard in BitboardOperations.SplitBoardToArray(enemyPawnAttacks))
+            foreach(var attackFromBoard in BitboardOperations.SplitBoardToArray(pawnAttacks))
             {
                 attackingPieceMoves.Add(
                     new Tuple<int, PieceMoves>(m_PawnScore, 
