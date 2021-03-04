@@ -5,19 +5,11 @@ using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.BoardSearching
 {
-    /// <summary>
-    /// Checks carried out on the chess board regarding various moves and attacks
-    /// </summary>
+    // Checks carried out on the chess board regarding various moves and attacks
     internal static class BoardChecking
     {
         #region piece on square checks
 
-        /// <summary>
-        /// Checks if there is a piece on the given square
-        /// </summary>
-        /// <param name="board">The board to check</param>
-        /// <param name="square">The bitboard to check</param>
-        /// <returns></returns>
         internal static bool IsPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
@@ -31,20 +23,18 @@ namespace ChessEngine.BoardSearching
 
             return false;
         }
-
-        /// <summary>
-        /// Checks if there is an enemy piece on the given square
-        /// </summary>
-        /// <param name="board">The board to check</param>
-        /// <param name="square">The bitboard to check</param>
-        /// <returns></returns>
+        
         internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
-                var enemySquares = board.WhiteToMove ? board.AllBlackOccupiedSquares : board.AllWhiteOccupiedSquares;
+                var enemySquares = 
+                    board.WhiteToMove ? board.AllBlackOccupiedSquares : board.AllWhiteOccupiedSquares;
 
-                if ((enemySquares & square) != 0) return true;
+                if ((enemySquares & square) != 0)
+                {
+                    return true;
+                }
             }
             else
             {
@@ -54,22 +44,17 @@ namespace ChessEngine.BoardSearching
             return false;
         }
 
-        /// <summary>
-        /// Checks if there is a friendly piece on the given square
-        /// </summary>
-        /// <param name="board">The board to check</param>
-        /// <param name="square">The bitboard to check</param>
-        /// <returns></returns>
         internal static bool IsFriendlyPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
-                var friendlySquares = board.WhiteToMove ? board.AllWhiteOccupiedSquares : board.AllBlackOccupiedSquares;
+                var friendlySquares = 
+                    board.WhiteToMove ? board.AllWhiteOccupiedSquares : board.AllBlackOccupiedSquares;
 
-                //ulong fullBoard = ulong.MaxValue;
-                //ulong emptySquares = friendlySquares ^ fullBoard;
-
-                if ((friendlySquares & square) != 0) return true;
+                if ((friendlySquares & square) != 0)
+                {
+                    return true;
+                }
             }
             else
             {
@@ -87,7 +72,6 @@ namespace ChessEngine.BoardSearching
             }
 
             if (((board.WhitePawns | board.BlackPawns) & square) != 0) return PieceType.Pawn;
-            
 
             if (((board.WhiteKnights | board.BlackKnights) & square) != 0) return PieceType.Knight;
             
@@ -104,37 +88,27 @@ namespace ChessEngine.BoardSearching
 
         #endregion Piece on square methods
 
-        /// <summary>
-        /// Gets the Special move type of a move
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="moveFrom"></param>
-        /// <param name="moveTo"></param>
-        /// <param name="pieceType"></param>
-        /// <param name="uciMove"></param>
-        /// <returns></returns>
-        internal static SpecialMoveType GetSpecialMoveType(Board board, ulong moveFrom, ulong moveTo, PieceType pieceType, string uciMove)
+        internal static SpecialMoveType GetSpecialMoveType(Board board, 
+                                                           ulong moveFrom,
+                                                           ulong moveTo, 
+                                                           string uciMove)
         {
             var captureFlag = false;
             var promotionFlag = false;
             
             if (IsEnemyPieceOnSquare(board, moveTo))
+            {
                 captureFlag = true;
+            }
 
             if (uciMove.Length > 4)
+            {
                 promotionFlag = true;
+            }
 
             if (captureFlag)
             {
-                if (promotionFlag)
-                {
-                    return GetPromotionCaptureForType(uciMove[4]);
-                }
-                else
-                {
-                    //A standard capture
-                    return SpecialMoveType.Capture;
-                }
+                return promotionFlag ? GetPromotionCaptureForType(uciMove[4]) : SpecialMoveType.Capture;
             }
             else
             {
@@ -151,16 +125,26 @@ namespace ChessEngine.BoardSearching
                 if (moveFrom == LookupTables.E1)
                 {
                     if (moveTo == LookupTables.G1)
+                    {
                         return SpecialMoveType.KingCastle;
-                    else if (moveTo == LookupTables.C1)
+                    }
+                    
+                    if (moveTo == LookupTables.C1)
+                    {
                         return SpecialMoveType.QueenCastle;
+                    }
                 }
                 else if (moveFrom == LookupTables.E8)
                 {
                     if (moveTo == LookupTables.G8)
+                    {
                         return SpecialMoveType.KingCastle;
-                    else if (moveTo == LookupTables.C8)
+                    }
+                    
+                    if (moveTo == LookupTables.C8)
+                    {
                         return SpecialMoveType.QueenCastle;
+                    }
                 }                
             }
             
@@ -183,16 +167,10 @@ namespace ChessEngine.BoardSearching
                     }
                 }
             }
-            
 
             return SpecialMoveType.Normal;
         }
 
-        /// <summary>
-        /// Returns the given char letter as a promotion type
-        /// </summary>
-        /// <param name="pieceType"></param>
-        /// <returns></returns>
         private static SpecialMoveType GetPromotionCaptureForType(char pieceType)
         {
             switch (pieceType)
@@ -238,41 +216,35 @@ namespace ChessEngine.BoardSearching
         }
 
         #region is square attacked methods
-
-        /// <summary>
-        /// Checks if the square is attacked from a ray attack above. Used to find if white king will be in check when castling
-        /// Ray attacks are from bishops, rooks and queens
-        /// </summary>
-        /// <param name="square"></param>
-        /// <returns></returns>
+        
+        // Checks if the square is attacked from a ray attack above.
+        // Used to find if white king will be in check when castling
+        // Ray attacks are from bishops, rooks and queens
+        //
         internal static bool IsSquareRayAttackedFromAbove(Board board, ulong square)
         {
-            //Up
+            // Up
             var nearestUpPiece = FindUpBlockingPosition(board, square);
 
             if ((nearestUpPiece & board.BlackRooks) > 0 || (nearestUpPiece & board.BlackQueen) > 0)
                 return true;
 
-            //Up-right
+            // Up-right
             var nearestUpRightPiece = FindUpRightBlockingPosition(board, square);
 
             if ((nearestUpRightPiece & board.BlackBishops) > 0 || (nearestUpRightPiece & board.BlackQueen) > 0)
                 return true;
 
-            //Up Left
+            // Up Left
             var nearestUpLeftPiece = FindUpLeftBlockingPosition(board, square);
 
             return (nearestUpLeftPiece & board.BlackBishops) > 0
                    || (nearestUpLeftPiece & board.BlackQueen) > 0;
         }
-
-        /// <summary>
-        /// Checks if the square is attacked from a ray attack below. Used to find if black king will be in check when castling
-        /// Ray attacks are from bishops, rooks and queens
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="square"></param>
-        /// <returns></returns>
+        
+        // Checks if the square is attacked from a ray attack below. Used to find if black king will be in check when castling
+        // Ray attacks are from bishops, rooks and queens
+        //
         internal static bool IsSquareRayAttackedFromBelow(Board board, ulong square)
         {
             //Down
@@ -285,14 +257,18 @@ namespace ChessEngine.BoardSearching
             var nearestDownRightPiece = FindDownRightBlockingPosition(board, square);
 
             if ((nearestDownRightPiece & board.WhiteBishops) > 0 || (nearestDownRightPiece & board.WhiteQueen) > 0)
+            {
                 return true;
+            }
 
             //Up Left
             var nearestDownLeftPiece = FindDownLeftBlockingPosition(board, square);
 
             if ((nearestDownLeftPiece & board.WhiteBishops) > 0 || (nearestDownLeftPiece & board.WhiteQueen) > 0)
+            {
                 return true;
-
+            }
+            
             return false;
         }
 
@@ -303,24 +279,32 @@ namespace ChessEngine.BoardSearching
                 var nearestLeftPiece = FindLeftBlockingPosition(board, square);
 
                 if ((nearestLeftPiece & board.BlackRooks) > 0 || (nearestLeftPiece & board.BlackQueen) > 0)
+                {
                     return true;
+                }
 
                 var nearestRightPiece = FindRightBlockingPosition(board, square);
 
                 if ((nearestRightPiece & board.BlackRooks) > 0 || (nearestRightPiece & board.BlackQueen) > 0)
+                {
                     return true;
+                }
             }
             else
             {
                 var nearestLeftPiece = FindLeftBlockingPosition(board, square);
 
                 if ((nearestLeftPiece & board.WhiteRooks) > 0 || (nearestLeftPiece & board.WhiteQueen) > 0)
+                {
                     return true;
+                }
 
                 var nearestRightPiece = FindRightBlockingPosition(board, square);
 
                 if ((nearestRightPiece & board.WhiteRooks) > 0 || (nearestRightPiece & board.WhiteQueen) > 0)
+                {
                     return true;
+                }
             }
 
             return false;
@@ -328,33 +312,27 @@ namespace ChessEngine.BoardSearching
 
         #region fast attack methods
 
-        /// <summary>
-        /// Returns true or false whether king is in check. If we do not need to know the number of checks or who/where is
-        /// checking king use this over IsKingInCheck since it returns true as soon as it knows
-        /// </summary>
-        /// <returns></returns>
+        // Returns true or false whether king is in check. If we do not need to know the number
+        // of checks or who/where is checking king use this over IsKingInCheck since it returns
+        // true as soon as it knows
+        //
         internal static bool IsKingInCheck(Board board, bool whitePieces)
         {
             ulong friendlyKing;
 
             if (whitePieces)
+            {
                 friendlyKing = board.WhiteKing;
+            }
             else
+            {
                 friendlyKing = board.BlackKing;
-
-            //if (IsSquareAttackedFast(board, friendlyKing, friendlyColour))  
-            if (IsSquareAttackedSuperFast(board, friendlyKing, whitePieces))            
-                return true;
-            else
-                return false;
+            }
+            
+            return IsSquareAttackedSuperFast(board, friendlyKing, whitePieces);
         }
 
-        /// <summary>
-        /// Checks if the king has any flight squares
-        /// </summary>
-        /// <param name="boardPosition"></param>
-        /// <param name="pieceColour"></param>
-        /// <returns></returns>
+        // Checks if the king has any flight squares
         internal static bool CanKingMove(Board boardPosition, bool whitePieces)
         {
             var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(boardPosition.WhiteKing);
@@ -362,62 +340,66 @@ namespace ChessEngine.BoardSearching
 
             if(whitePieces)
             {
-                var possibleMoves = ValidMoveArrays.KingMoves[whiteKingPosition] & ~ValidMoveArrays.KingMoves[blackKingPosition];
+                var possibleMoves = 
+                    ValidMoveArrays.KingMoves[whiteKingPosition] & ~ValidMoveArrays.KingMoves[blackKingPosition];
 
-                var freeSquares = possibleMoves & ~boardPosition.AllWhiteOccupiedSquares; //Even if a black piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
-
+                // Even if a black piece is on the square the king can go there if the square is not
+                // under attack (i.e. the piece is not protected)
+                var freeSquares = possibleMoves & ~boardPosition.AllWhiteOccupiedSquares; 
+                
                 if (freeSquares > 0)
                 {
                     var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
-                    for (var i = 0; i < possMoves.Length; i++)
-			        {
-			            if(!IsSquareAttackedSuperFast(boardPosition, possMoves[i], whitePieces))
+                    foreach (var possMove in possMoves)
+                    {
+                        if(!IsSquareAttackedSuperFast(boardPosition, possMove, whitePieces))
                             return true;
-			        }
+                    }
                 }
                 
                 return false;
             }
             else
             {
-                var possibleMoves = ValidMoveArrays.KingMoves[blackKingPosition] & ~ValidMoveArrays.KingMoves[whiteKingPosition];
-
-                var freeSquares = possibleMoves & ~boardPosition.AllBlackOccupiedSquares; //Even if a white piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
-
+                var possibleMoves = 
+                    ValidMoveArrays.KingMoves[blackKingPosition] & ~ValidMoveArrays.KingMoves[whiteKingPosition];
+                
+                // Even if a white piece is on the square the king can go there if the square is not under attack (i.e. the piece is not protected)
+                //
+                var freeSquares = 
+                    possibleMoves & ~boardPosition.AllBlackOccupiedSquares; 
+                    
                 if (freeSquares > 0)
                 {
                     var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
-                    for (var i = 0; i < possMoves.Length; i++)
+                    foreach (var t in possMoves)
                     {
-                        if (!IsSquareAttackedSuperFast(boardPosition, possMoves[i], whitePieces))
+                        if (!IsSquareAttackedSuperFast(boardPosition, t, whitePieces))
+                        {
                             return true;
+                        }
                     }
                 }
 
                 return false;
             }
         }
-
-
-        /// <summary>
-        /// Checks all points from this piece to see if it is being attacked
-        /// If it is it returns true straight away (i.e. We don't know how many pieces it is being attacked by)
-        /// 
-        /// NOTE: To save time it is assumed that the pieceBoard has exactly 1 piece on it. If not, it may not behave as expecte
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="pieceBoard">The occupying square we want to check</param>
-        /// <param name="friendlyColour"></param>
-        /// /// <param name="checkKing">If we are checking if the king is being attacked we do not need to worry about the enemy king</param>
-        /// <returns></returns>
+        
+        // Checks all points from this piece to see if it is being attacked
+        // If it is it returns true straight away (i.e. We don't know how many pieces it is being attacked by)
+        // 
+        // NOTE: To save time it is assumed that the pieceBoard has exactly 1 piece on it. If not, it may not behave as expecte
+        //
         private static bool IsSquareAttackedSuperFast(Board board, ulong pieceBoard, bool whitePieces)
         {
              if (IsKnightAttackingSquare(board, pieceBoard, whitePieces))
+             {
                 return true;
+             }
 
-            //Check if piece is surrounded by friends. If so, we only need to worry about 
+            // Check if piece is surrounded by friends. If so, we only need to worry about 
             // knights so we can assume false
              var surroundingSpace = GetSurroundingSpace(pieceBoard);
 
@@ -427,23 +409,35 @@ namespace ChessEngine.BoardSearching
              {
                  emptyOrEnemyNeighbours = ((pieceBoard | surroundingSpace) & ~board.AllWhiteOccupiedSquares);
 
-                 if (emptyOrEnemyNeighbours == 0) return false;
+                 if (emptyOrEnemyNeighbours == 0)
+                 {
+                     return false;
+                 }
              }
              else
              {
                  emptyOrEnemyNeighbours = ((pieceBoard | surroundingSpace) & ~board.AllBlackOccupiedSquares);
 
-                 if (emptyOrEnemyNeighbours == 0) return false;
+                 if (emptyOrEnemyNeighbours == 0)
+                 {
+                     return false;
+                 }
              }
 
              if (IsPawnAttackingSquareFast(board, pieceBoard, whitePieces))
+             {
                  return true;
+             }
             
-            if (IsSquareAttackedByKing(board, pieceBoard, whitePieces))
-                return true;             
+             if (IsSquareAttackedByKing(board, pieceBoard, whitePieces))
+             {
+                 return true;
+             }             
             
-            if (IsSquareUnderRayAttackSuperFast(board, pieceBoard, emptyOrEnemyNeighbours, whitePieces))
-                return true;
+             if (IsSquareUnderRayAttackSuperFast(board, pieceBoard, emptyOrEnemyNeighbours, whitePieces))
+             {
+                 return true;
+             }
 
 
              return false;
@@ -467,49 +461,62 @@ namespace ChessEngine.BoardSearching
 
         //    return false;
         //}
-
-        /// <summary>
-        /// Checks if pawn is attacking square. There is no need to check all pawns for double-check 
-        /// since only one pawn can be attacking the king at once
-        /// </summary>
+        
+        // Checks if pawn is attacking square. There is no need to check all pawns for double-check 
+        // since only one pawn can be attacking the king at once
         internal static bool IsPawnAttackingSquareFast(Board board, ulong squarePosition, bool whitePieces)
         {
             var squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
-            var proximityBoard = ValidMoveArrays.KingMoves[squareIndex];      //Allows the quick masking of wrapping checks
+            
+            // Allows the quick masking of wrapping checks
+            //
+            var proximityBoard = ValidMoveArrays.KingMoves[squareIndex];      
 
             if (whitePieces)
             {
                 if(board.BlackPawns == 0)
+                {
                     return false;
+                }
                 
-                //Check up-right    
+                // heck up-right    
                 var upRight = squarePosition << 9;
 
                 if ((upRight & board.BlackPawns & proximityBoard) != 0)
+                {
                     return true;
+                }
 
                 //Check up-left
                 var upLeft = squarePosition << 7;
 
-                if ((upLeft & board.BlackPawns & proximityBoard) != 0)                
+                if ((upLeft & board.BlackPawns & proximityBoard) != 0)
+                {
                     return true;
+                }
             }
             else
             {
                 if (board.WhitePawns == 0)
+                {
                     return false;
+                }
 
                 //Check down-right
                 var downRight = squarePosition >> 7;
 
                 if ((downRight & board.WhitePawns & proximityBoard) != 0)
+                {
                     return true;
+                }
 
                 //Check down-left
                 var upLeft = squarePosition >> 9;
 
                 if ((upLeft & board.WhitePawns & proximityBoard) != 0)
+                {
                     return true;
+                }
             }
 
             return false;
@@ -523,24 +530,29 @@ namespace ChessEngine.BoardSearching
         {
             ulong knights;
 
-            if (whitePieces)
-                knights = board.BlackKnights;
-            else
-                knights = board.WhiteKnights;
-                
-            if (knights == 0)   //If there are no kinghts we do not have to check
+            knights = whitePieces ? board.BlackKnights : board.WhiteKnights;
+              
+            // If there are no knights we do not have to check  
+            //
+            if (knights == 0)   
+            {
                 return false;
+            }
 
             var currentPosition = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
 
             var possibleKnightMoves = ValidMoveArrays.KnightMoves[currentPosition];
 
             var knightAttacks = possibleKnightMoves & knights;
+            
             if (knightAttacks != 0)
+            {
                 return true;
+            }
             else
+            {
                 return false;
-
+            }
         }
 
         internal static bool IsSquareAttackedByKing(Board board, ulong squarePosition, bool whitePieces)
@@ -548,20 +560,28 @@ namespace ChessEngine.BoardSearching
             ulong enemyKing;
 
             if (whitePieces)
+            {
                 enemyKing = board.BlackKing;
+            }
             else
+            {
                 enemyKing = board.WhiteKing;
+            }
 
             var checkSquare = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
             var surroundBoard = ValidMoveArrays.KingMoves[checkSquare];
 
             if ((enemyKing & surroundBoard) != 0)
+            {
                 return true;
+            }
             else
+            {
                 return false;
+            }
         }
 
-        internal static bool IsSquareUnderRayAttackSuperFast(Board board, ulong squarePositionBoard, ulong emptyOrEnemySpaces, bool whitePieces)
+        private static bool IsSquareUnderRayAttackSuperFast(Board board, ulong squarePositionBoard, ulong emptyOrEnemySpaces, bool whitePieces)
         {
             ulong enemyQueenSquares;
             ulong enemyBishopSquares;
@@ -590,7 +610,9 @@ namespace ChessEngine.BoardSearching
                     var nearestLeftPiece = FindLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestLeftPiece & enemyRookSquares) > 0 || (nearestLeftPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var rightBoard = squarePositionBoard << 1;
@@ -601,7 +623,9 @@ namespace ChessEngine.BoardSearching
                     var nearestRightPiece = FindRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestRightPiece & enemyRookSquares) > 0 || (nearestRightPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var upBoard = squarePositionBoard << 8;
@@ -612,7 +636,9 @@ namespace ChessEngine.BoardSearching
                     var nearestUpPiece = FindUpBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpPiece & enemyRookSquares) > 0 || (nearestUpPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var downBoard = squarePositionBoard >> 8;
@@ -623,7 +649,9 @@ namespace ChessEngine.BoardSearching
                     var nearestDownPiece = FindDownBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownPiece & enemyRookSquares) > 0 || (nearestDownPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
             }            
 
@@ -637,7 +665,9 @@ namespace ChessEngine.BoardSearching
                     var nearestUpRightPiece = FindUpRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpRightPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var upLeftBoard = squarePositionBoard << 7;
@@ -648,7 +678,9 @@ namespace ChessEngine.BoardSearching
                     var nearestUpLeftPiece = FindUpLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestUpLeftPiece & enemyBishopSquares) > 0 || (nearestUpLeftPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var downRightBoard = squarePositionBoard >> 7;
@@ -659,7 +691,9 @@ namespace ChessEngine.BoardSearching
                     var nearestDownRightPiece = FindDownRightBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownRightPiece & enemyBishopSquares) > 0 || (nearestDownRightPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
 
                 var downLeftBoard = squarePositionBoard >> 9;
@@ -670,7 +704,9 @@ namespace ChessEngine.BoardSearching
                     var nearestDownLeftPiece = FindDownLeftBlockingPosition(board, squarePositionBoard);
 
                     if ((nearestDownLeftPiece & enemyBishopSquares) > 0 || (nearestDownLeftPiece & enemyQueenSquares) > 0)
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -730,13 +766,13 @@ namespace ChessEngine.BoardSearching
         internal static ulong CalculateAllowedQueenMoves(Board board, ulong pieceIndex, bool whiteToMove)
         {
             return (CalculateAllowedUpMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedRightMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedDownMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedLeftMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedUpRightMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedDownRightMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedDownLeftMoves(board, pieceIndex, whiteToMove) |
-                     CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
+                    CalculateAllowedRightMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedDownMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedLeftMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedUpRightMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedDownRightMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedDownLeftMoves(board, pieceIndex, whiteToMove) |
+                    CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
         }
 
         #region Calculate up moves
