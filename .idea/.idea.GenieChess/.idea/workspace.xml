@@ -11,11 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngine/NotationHelpers/UCIMoveTranslator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/NotationHelpers/UCIMoveTranslator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EngineEvaluation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GenieChess.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/GenieChess.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +36,9 @@
       <option value="$PROJECT_DIR$/EngineEvaluation/Program.cs" />
       <option value="$PROJECT_DIR$/README.md" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
@@ -46,7 +47,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34995976" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34991798" />
     <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -136,7 +137,8 @@
       <option name="presentableId" value="Default" />
       <updated>1614863680440</updated>
       <workItem from="1614863689916" duration="933000" />
-      <workItem from="1614864648098" duration="2464000" />
+      <workItem from="1614864648098" duration="3300000" />
+      <workItem from="1615818657595" duration="3398000" />
     </task>
     <servers />
   </component>
@@ -145,6 +147,17 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
@@ -163,6 +176,45 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreValueXmlReader.cs</url>
+          <line>72</line>
+          <properties documentPath="C:\Development\Personal\GenieChess\ChessEngine\ScoreCalculation\ScoreValueXmlReader.cs" initialLine="72" containingFunctionPresentation="method 'ReadScores'">
+            <startOffsets>
+              <option value="2461" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2517" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreValueXmlReader.cs</url>
+          <line>31</line>
+          <properties documentPath="C:\Development\Personal\GenieChess\ChessEngine\ScoreCalculation\ScoreValueXmlReader.cs" initialLine="31" containingFunctionPresentation="method 'ReadScores'">
+            <startOffsets>
+              <option value="960" />
+            </startOffsets>
+            <endOffsets>
+              <option value="961" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreValueXmlReader.cs</url>
+          <line>20</line>
+          <properties documentPath="C:\Development\Personal\GenieChess\ChessEngine\ScoreCalculation\ScoreValueXmlReader.cs" initialLine="20" containingFunctionPresentation="method 'ReadScores'">
+            <startOffsets>
+              <option value="544" />
+            </startOffsets>
+            <endOffsets>
+              <option value="608" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -243,7 +243,6 @@
     <Compile Include="BoardSearching\BoardChecking.cs" />
     <Compile Include="BoardRepresentation\BoardState.cs" />
     <Compile Include="BoardSearching\StaticBoardChecks.cs" />
-    <Compile Include="BoardSearching\UsefulBitboards.cs" />
     <Compile Include="BoardRepresentation\Enums\PieceType.cs" />
     <Compile Include="GameFactory.cs" />
     <Compile Include="Exceptions\BitboardException.cs" />
