@@ -144,15 +144,10 @@ namespace ChessEngine.ScoreCalculation
 
         private void DetectEndGame()
         {
-            if(BitboardOperations.GetPopCount(_CurrentBoard.WhiteKnights) 
-               + BitboardOperations.GetPopCount(_CurrentBoard.WhiteBishops)
-               + BitboardOperations.GetPopCount(_CurrentBoard.WhiteRooks)
-               + BitboardOperations.GetPopCount(_CurrentBoard.WhiteQueen) <= _endGameCount
-                &&
-               BitboardOperations.GetPopCount(_CurrentBoard.BlackKnights)
-                + BitboardOperations.GetPopCount(_CurrentBoard.BlackBishops)
-                + BitboardOperations.GetPopCount(_CurrentBoard.BlackRooks)
-                + BitboardOperations.GetPopCount(_CurrentBoard.BlackQueen) <= _endGameCount)
+            
+            if(BitboardOperations.GetPopCount(_CurrentBoard.WhiteNonEndGamePieces) <= _endGameCount
+               &&
+               BitboardOperations.GetPopCount(_CurrentBoard.BlackNonEndGamePieces) <= _endGameCount)
             {
                 _isEndGame = true;
             }
@@ -169,7 +164,7 @@ namespace ChessEngine.ScoreCalculation
         /// <returns></returns>
         private int CalculatePieceValues()
         {
-            var kingScore = (int.MaxValue/6);
+            var kingScore = 357913941;  // int.MaxValue / 6
 
             var pieceScore = 0;
 

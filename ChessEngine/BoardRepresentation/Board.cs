@@ -51,6 +51,9 @@ namespace ChessEngine.BoardRepresentation
 
         public ulong AllWhiteOccupiedSquares;
         public ulong AllBlackOccupiedSquares;
+        
+        public ulong WhiteNonEndGamePieces;
+        public ulong BlackNonEndGamePieces;
 
         public ulong AllOccupiedSquares;
 
@@ -866,8 +869,11 @@ namespace ChessEngine.BoardRepresentation
         //Gets called every time a move is made to update all useful boards
         public void CalculateUsefulBitboards()
         {
-            AllWhiteOccupiedSquares = WhitePawns | WhiteKnights | WhiteBishops | WhiteRooks | WhiteQueen | WhiteKing;
-            AllBlackOccupiedSquares = BlackPawns | BlackKnights | BlackBishops | BlackRooks | BlackQueen | BlackKing;
+            WhiteNonEndGamePieces = WhiteKnights | WhiteBishops | WhiteRooks | WhiteQueen;
+            BlackNonEndGamePieces = BlackKnights | BlackBishops | BlackRooks | BlackQueen;
+
+            AllWhiteOccupiedSquares = WhitePawns | WhiteNonEndGamePieces | WhiteKing;
+            AllBlackOccupiedSquares = BlackPawns | BlackNonEndGamePieces | BlackKing;
             AllOccupiedSquares      = AllWhiteOccupiedSquares | AllBlackOccupiedSquares;
             EmptySquares            = AllOccupiedSquares ^ FullBoard;
             WhiteOrEmpty            = AllWhiteOccupiedSquares | EmptySquares;

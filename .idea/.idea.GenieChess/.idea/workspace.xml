@@ -12,7 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,6 +37,7 @@
       <option value="$PROJECT_DIR$/README.md" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
     </changedPaths>
   </component>
@@ -137,7 +138,7 @@
       <updated>1614863680440</updated>
       <workItem from="1614863689916" duration="933000" />
       <workItem from="1614864648098" duration="3300000" />
-      <workItem from="1615818657595" duration="2681000" />
+      <workItem from="1615818657595" duration="3398000" />
     </task>
     <servers />
   </component>
