@@ -335,8 +335,8 @@ namespace ChessEngine.ScoreCalculation
         /// <returns></returns>
         private int CalculateCentralPieceScores()
         {
-            var innerCentralSquares = UsefulBitboards.InnerCentralSquares;
-            var outerCentralSquares = UsefulBitboards.OuterCentralSquares;
+            var innerCentralSquares = (ulong)103481868288;
+            var outerCentralSquares = (ulong)66125924401152;
             
             int piecePositionScore = 0;
 

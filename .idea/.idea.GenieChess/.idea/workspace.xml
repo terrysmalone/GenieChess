@@ -11,11 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngine/NotationHelpers/UCIMoveTranslator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/NotationHelpers/UCIMoveTranslator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EngineEvaluation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GenieChess.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/GenieChess.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +36,7 @@
       <option value="$PROJECT_DIR$/EngineEvaluation/Program.cs" />
       <option value="$PROJECT_DIR$/README.md" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
@@ -136,7 +135,8 @@
       <option name="presentableId" value="Default" />
       <updated>1614863680440</updated>
       <workItem from="1614863689916" duration="933000" />
-      <workItem from="1614864648098" duration="2464000" />
+      <workItem from="1614864648098" duration="3300000" />
+      <workItem from="1615818657595" duration="389000" />
     </task>
     <servers />
   </component>

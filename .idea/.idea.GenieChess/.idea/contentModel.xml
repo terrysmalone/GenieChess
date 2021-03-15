@@ -57,7 +57,6 @@
           <e p="BoardChecking.cs" t="Include" />
           <e p="LookupTables.cs" t="Include" />
           <e p="StaticBoardChecks.cs" t="Include" />
-          <e p="UsefulBitboards.cs" t="Include" />
         </e>
         <e p="ChessEngine.csproj" t="IncludeRecursive" />
         <e p="Debugging" t="Include">
