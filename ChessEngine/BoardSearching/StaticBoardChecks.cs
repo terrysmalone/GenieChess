@@ -8,30 +8,13 @@ namespace ChessEngine.BoardSearching
     /// </summary>
     public static class StaticBoardChecks
     {
-        private static ulong whiteRangeBoard;     //All non-white squares withing range of white pieces        
-        private static ulong blackRangeBoard;     //All non-black squares withing range of black pieces
-        private static ulong whiteAttackBoard;    //All black pieces within range of white pieces
-        private static ulong blackAttackBoard;    //All white pieces within range of black pieces
+        public static ulong WhiteRangeBoard { get; private set; } // All non-white squares withing range of white pieces        
 
-        public static ulong WhiteRangeBoard
-        {
-            get { return StaticBoardChecks.whiteRangeBoard; }
-        }
+        public static ulong BlackRangeBoard { get; private set; } // All non-black squares withing range of black pieces      
 
-        public static ulong BlackRangeBoard
-        {
-            get { return StaticBoardChecks.blackRangeBoard; }
-        }
+        public static ulong WhiteAttackBoard{ get; private set; } // All black pieces within range of white pieces
 
-        public static ulong WhiteAttackBoard
-        {
-            get { return StaticBoardChecks.whiteAttackBoard; }
-        }
-
-        public static ulong BlackAttackBoard
-        {
-            get { return StaticBoardChecks.blackAttackBoard; }
-        }
+        public static ulong BlackAttackBoard{ get; private set; } // All white pieces within range of black pieces
 
         public static void Calculate(Board board)
         {
@@ -48,9 +31,9 @@ namespace ChessEngine.BoardSearching
 
         private static void CalculateWhiteRangedBoard(Board board)
         {
-            whiteRangeBoard = 0;
+            WhiteRangeBoard = 0;
 
-            whiteRangeBoard = whiteRangeBoard  | board.AllWhiteOccupiedSquares;
+            WhiteRangeBoard |= board.AllWhiteOccupiedSquares;
 
             throw new NotImplementedException();
         }
@@ -75,7 +58,5 @@ namespace ChessEngine.BoardSearching
         {
             throw new NotImplementedException();
         }
-
-
     }
 }

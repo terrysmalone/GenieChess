@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -55,7 +56,92 @@ namespace ChessEngine.MoveSearching
             m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
         }
 
-        public PieceMoves CalculateBestMove(int maxDepth)
+        private static PieceMoves s_CompletedSearchBestMove;
+        private static PieceMoves s_LatestDepthBestMove;
+        private static PieceMoves s_InDepthBestMove;
+        public ulong TotalSearchNodes;
+
+        // See: https://stackoverflow.com/questions/2265412/set-timeout-to-an-operation
+        // Task might be better
+        public PieceMoves CalculateBestMove(int maxDepth, int maxThinkingSeconds)
+        {
+            s_CompletedSearchBestMove = new PieceMoves();
+            s_LatestDepthBestMove = new PieceMoves();
+            s_InDepthBestMove = new PieceMoves();
+
+            TotalSearchNodes = 0;
+
+            var threadTimeout = new TimeSpan(0, 0, maxThinkingSeconds);
+
+            var moveTimer = new Stopwatch();
+            moveTimer.Start();
+
+            var moveThread = new Thread(() => CalculateBestMove(maxDepth, moveTimer));  
+
+            s_Log.Info($"Thread Starting: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+            moveThread.Start();
+            s_Log.Info($"Thread Started: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
+            s_Log.Info($"Thread joining: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+            var finished = moveThread.Join(threadTimeout);
+            s_Log.Info($"Thread joined: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
+
+            if (!finished)
+            {
+                s_Log.Info($"Thread aborting: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+                moveThread.Abort();
+                s_Log.Info($"Thread aborted: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
+                s_Log.Info("Maximum time limit reached");
+
+                TotalSearchNodes += CountDebugger.Evaluations;
+            }
+
+            moveTimer.Stop();
+
+            s_Log.Info($"Move Time: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+
+            // Temporary
+            s_Log.Info(s_CompletedSearchBestMove.Type == PieceType.None
+                           ? "Completed search best move: -"
+                           : $"Completed search best move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
+
+            s_Log.Info(s_LatestDepthBestMove.Type == PieceType.None
+                           ? "Highest depth best move: -"
+                            :$"Highest depth best move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
+
+            s_Log.Info(s_InDepthBestMove.Type == PieceType.None
+                           ? "In latest depth best move: -"
+                           : $"In latest depth best move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
+
+            // Temporary end
+
+            if (s_CompletedSearchBestMove.Type != PieceType.None)
+            {
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
+
+                return s_CompletedSearchBestMove;
+            }
+
+            if (s_LatestDepthBestMove.Type != PieceType.None)
+            {
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
+
+                return s_LatestDepthBestMove;
+            }
+
+            if (s_InDepthBestMove.Type != PieceType.None)
+            {
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
+
+                return s_InDepthBestMove;
+            }
+
+            throw new ChessBoardException("No move was found in given time");
+        }
+
+        public PieceMoves CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
         {
             var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
@@ -71,7 +157,7 @@ namespace ChessEngine.MoveSearching
             var bestMove = new PieceMoves();
 
             CountDebugger.ClearTranspositionValues();
-
+            
             // Calculate scores for each move, starting at a
             // depth of one and working to max
             for (var depth = 1; depth <= maxDepth; depth++)
@@ -93,6 +179,11 @@ namespace ChessEngine.MoveSearching
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
 
+                s_LatestDepthBestMove = bestMove;
+
+                // Reset this after each depth to make sure any move is from the current depth
+                s_InDepthBestMove = new PieceMoves();
+
                 timer.Stop();
 
                 var speed = new TimeSpan(timer.Elapsed.Ticks);
@@ -108,6 +199,12 @@ namespace ChessEngine.MoveSearching
                     NodesVisited = CountDebugger.Evaluations
                 };
 
+                if (moveTimer != null)
+                {
+                    s_Log.Info($"Depth {depth} found: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
+                }
+
+
                 m_InitialMoves.Add(moveValueInfo);
 
 #if FullNodeCountDebug
@@ -122,7 +219,7 @@ namespace ChessEngine.MoveSearching
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
                            $"Accumulated move time: {moveValueInfo.AccumulatedTime:mm\':\'ss\':\'ffff}");
-                
+
 #if UCI
                 var foundMove = UciMoveTranslator.ToUciMove(bestMove);
                 Console.WriteLine($"Best move at depth {depth}: {foundMove}");
@@ -140,9 +237,13 @@ namespace ChessEngine.MoveSearching
                                   $"depth {depth} " +
                                   $"nodes {moveValueInfo.NodesVisited} pv {bestMove} ");
 #endif
+
+                TotalSearchNodes += CountDebugger.Evaluations;
             }
 
             s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
+
+            s_CompletedSearchBestMove = bestMove;
 
             return bestMove;
         }
@@ -193,6 +294,8 @@ namespace ChessEngine.MoveSearching
                 {
                     bestMove = move;
                     bestScore = score;
+
+                    s_InDepthBestMove = bestMove;
                 }
 
                 m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
@@ -702,7 +805,7 @@ namespace ChessEngine.MoveSearching
                 BringBestHashMoveToTheFront(moveList, (PieceMoves)bestHashMove);
             }
         }
-
+        
         private void OrderMovesByStaticExchangeEvaluation(IList<PieceMoves> moveList)
         {
             // swap score, move
@@ -1008,7 +1111,7 @@ namespace ChessEngine.MoveSearching
 
             throw new ChessBoardException($"Board {squareToCheck} should have 1 piece on it");
         }
-
+        
         private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
         {
             // move list position, victim score, attacker score

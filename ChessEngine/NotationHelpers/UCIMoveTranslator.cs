@@ -75,7 +75,7 @@ namespace ChessEngine.NotationHelpers
 
             pieceMove.Type = BoardChecking.GetPieceTypeOnSquare(board, MoveFromPosition);
 
-            pieceMove.SpecialMove = BoardChecking.GetSpecialMoveType(board, MoveFromPosition, MoveToPosition, pieceMove.Type, move);
+            pieceMove.SpecialMove = BoardChecking.GetSpecialMoveType(board, MoveFromPosition, MoveToPosition, move);
 
             return pieceMove;
         }

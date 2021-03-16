@@ -63,6 +63,15 @@ Iterative deepening starts by searching for the best move at a depth of one, whi
 * Killer moves
 * Zobrist hashing
 
+## Code ##
 
+### Evaluating the Engine ###
 
+To test the speed of the engine, go to EngineEvaluation > Program. Set the things to be tested
+
+* evaluatePerfTPositions
+* evaluateTestSuitePositions
+* runFullTestSuiteEvaluation
+
+and the max thinking depth (maxDepth)
 

@@ -7,11 +7,13 @@
             log4net.Config.XmlConfigurator.Configure();
 
             var performanceEvaluatorFactory = new PerformanceEvaluatorFactory();
-
-            var engineEvaluation = performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     false, 
-                                                                                          evaluateTestSuitePositions: true,
-                                                                                          runFullTestSuiteEvaluation: false);
             
+            var engineEvaluation = 
+                performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     false, 
+                                                                       evaluateTestSuitePositions: true,
+                                                                       runFullTestSuiteEvaluation: false);
+
+            //engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6, maxThinkingSeconds: 10);
             engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
         }
     }
