@@ -663,7 +663,7 @@ namespace ChessEngine.ScoreCalculation
             int blackUndevelopedPieceCount = BitboardOperations.GetPopCount(blackUndevelopedPieceBoard);
 
             // If we have at least 2 undeveloped pieces (bishops and knights) and the queen has moved
-            if (blackUndevelopedPieceCount <= 3 && (_CurrentBoard.BlackQueen & ~576460752303423488UL) != 0)
+            if (blackUndevelopedPieceCount >= 2 && (_CurrentBoard.BlackQueen & ~576460752303423488UL) != 0)
             {
                 earlyQueenPenaltyScore += EarlyQueenMovePenalty;
             }

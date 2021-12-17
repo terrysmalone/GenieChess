@@ -224,5 +224,25 @@ namespace ChessEngineTests.ScoreCalculation
 
             Assert.That(score, Is.EqualTo(-score2));
         }
+
+        [Test]
+        public void FlippedBoard_JustQueenCheckingKing()
+        {
+            var board = new Board();
+
+            board.SetPosition(FenTranslator.ToBoardState("4k3/8/4q3/8/8/8/8/4K3 w - - 0 1"));
+
+            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var score = scoreCalculator.CalculateScore(board);
+
+            var board2 = new Board();
+
+            board2.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/3Q4/8/3K4 w - - 0 1"));
+
+            var score2 = scoreCalculator.CalculateScore(board2);
+
+            Assert.That(score, Is.EqualTo(-score2));
+        }
     }
 }
