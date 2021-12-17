@@ -46,13 +46,16 @@ namespace ChessEngine.BoardRepresentation
 
             var mys = (BoardState)obj;
 
+            if (mys.ZobristKey != ZobristKey)
+                return false;
+
             if (mys.WhiteToMove != WhiteToMove)
                 return false;
 
             if(mys.WhitePawns != WhitePawns)
                 return false;
 
-              if(mys.WhiteKnights != WhiteKnights)
+            if(mys.WhiteKnights != WhiteKnights)
                 return false;
 
             if(mys.WhiteBishops != WhiteBishops)
@@ -66,53 +69,45 @@ namespace ChessEngine.BoardRepresentation
 
             if(mys.WhiteKing != WhiteKing)
                 return false;
+
             if(mys.BlackPawns != BlackPawns)
                 return false;
+
             if(mys.BlackKnights != BlackKnights)
                 return false;
+
             if(mys.BlackBishops != BlackBishops)
                 return false;
+
             if(mys.BlackRooks != BlackRooks)
                 return false;
+
             if(mys.BlackQueen != BlackQueen)
                 return false;
+
             if(mys.BlackKing != BlackKing)
                 return false;
+
             if(mys.EnPassantPosition != EnPassantPosition)
                 return false;
-             if(mys.WhiteCanCastleQueenside != WhiteCanCastleQueenside)
-                return false;
-             if(mys.WhiteCanCastleKingside != WhiteCanCastleKingside)
-                return false;
-             if(mys.BlackCanCastleQueenside != BlackCanCastleQueenside)
-                return false;
-             if(mys.BlackCanCastleKingside != BlackCanCastleKingside)
-                return false;
-             if(mys.HalfMoveClock != HalfMoveClock)
-                return false;
-             if(mys.FullMoveClock != FullMoveClock)
+
+            if(mys.WhiteCanCastleQueenside != WhiteCanCastleQueenside)
                 return false;
 
-             if (mys.ZobristKey != ZobristKey)
-                 return false;
+            if(mys.WhiteCanCastleKingside != WhiteCanCastleKingside)
+                return false;
 
-            //if (PgnMove != null && mys.PgnMove == null)
-            //{
-            //    return false;
-            //}
+            if(mys.BlackCanCastleQueenside != BlackCanCastleQueenside)
+                return false;
 
-            //if (PgnMove == null && mys.PgnMove != null)
-            //{
-            //    return false;
-            //}
+            if(mys.BlackCanCastleKingside != BlackCanCastleKingside)
+                return false;
 
-            //if(PgnMove != null && mys.PgnMove != null)
-            //{
-            //    if (!mys.PgnMove.Equals(PgnMove))
-            //    {
-            //        return false;
-            //    }
-            //}
+            if(mys.HalfMoveClock != HalfMoveClock)
+                return false;
+
+            if(mys.FullMoveClock != FullMoveClock)
+                return false;
 
             return true;
         }
