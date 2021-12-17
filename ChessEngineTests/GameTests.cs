@@ -113,13 +113,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 1;
 
@@ -138,13 +138,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -162,13 +162,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_MiniMax_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 6;
 
@@ -187,7 +187,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -209,7 +209,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -231,7 +231,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_MiniMax_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -257,13 +257,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 1;
 
@@ -282,13 +282,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -306,13 +306,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_NegaMax_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 6;
 
@@ -331,7 +331,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -353,7 +353,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -374,7 +374,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_NegaMax_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -402,13 +402,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 1;
             
@@ -427,13 +427,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 2;
 
@@ -452,13 +452,13 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White_AlphaBeta_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 3, 4);
-            game.PlacePiece(PieceType.King, pieceColour: false, 7, 7);
+            game.PlacePiece(PieceType.King, true, 4, 4);
+            game.PlacePiece(PieceType.Pawn, false, 3, 4);
+            game.PlacePiece(PieceType.King, false, 7, 7);
 
             game.ThinkingDepth = 6;
             
@@ -479,7 +479,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_1()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -502,7 +502,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_3()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -523,7 +523,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black_AlphaBeta_6()
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
@@ -551,21 +551,21 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 
-            game.PlacePiece(PieceType.King, pieceColour: true, 4, 0);
-            game.PlacePiece(PieceType.King, pieceColour: false, 4, 7);
+            game.PlacePiece(PieceType.King, true, 4, 0);
+            game.PlacePiece(PieceType.King, false, 4, 7);
 
-            game.PlacePiece(PieceType.Pawn, pieceColour: true, 0, 3);
-            game.PlacePiece(PieceType.Pawn, pieceColour: true, 7, 3);
+            game.PlacePiece(PieceType.Pawn, true, 0, 3);
+            game.PlacePiece(PieceType.Pawn, true, 7, 3);
 
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 0, 5);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 7, 5);
+            game.PlacePiece(PieceType.Pawn, false, 0, 5);
+            game.PlacePiece(PieceType.Pawn, false, 7, 5);
 
-            game.PlacePiece(PieceType.Pawn, pieceColour: true, 3, 4);
-            game.PlacePiece(PieceType.Pawn, pieceColour: false, 4, 5);
+            game.PlacePiece(PieceType.Pawn, true, 3, 4);
+            game.PlacePiece(PieceType.Pawn, false, 4, 5);
 
             game.AllowAllCastling(false);
 

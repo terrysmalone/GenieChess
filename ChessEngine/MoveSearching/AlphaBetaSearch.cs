@@ -280,7 +280,7 @@ namespace ChessEngine.MoveSearching
                 m_BoardPosition.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
-                var score = -AlphaBeta(-beta, -alpha, depth - 1, allowNull: true, isNullSearch: false, movePath, extensionDepth: 0);
+                var score = -AlphaBeta(-beta, -alpha, depth - 1, true, false, movePath, 0);
 
                 if (score > bestScore)
                 {
@@ -381,10 +381,10 @@ namespace ChessEngine.MoveSearching
                 var eval = -AlphaBeta(-beta, 
                                       -beta + 1, 
                                       depthLeft - m_NullMoveR - 1, 
-                                      allowNull: false, 
-                                      isNullSearch: true, 
+                                      false, 
+                                      true, 
                                       new List<PieceMoves>(), 
-                                      extensionDepth: m_MaxCheckExtension); 
+                                      m_MaxCheckExtension); 
 
                 m_BoardPosition.SwitchSides();
 
@@ -415,10 +415,10 @@ namespace ChessEngine.MoveSearching
                 AlphaBeta(alpha, 
                           beta, 
                           depthLeft - 1, 
-                          allowNull: false, 
-                          isNullSearch: false, 
+                          false, 
+                          false, 
                           new List<PieceMoves>(), 
-                          extensionDepth: m_MaxCheckExtension); 
+                          m_MaxCheckExtension); 
 
                 if (m_BestMoveSoFar != null)
                 {
@@ -497,8 +497,8 @@ namespace ChessEngine.MoveSearching
                     score = -AlphaBeta(-beta, 
                                        -alpha, 
                                        depthLeft - 1, 
-                                       allowNull: true, 
-                                       isNullSearch: false, 
+                                       true, 
+                                       false, 
                                        bestPath, 
                                        extensionDepth);
                     pvMove = false;
@@ -509,8 +509,8 @@ namespace ChessEngine.MoveSearching
                     score = -AlphaBeta(-alpha - 1, 
                                        -alpha, 
                                        depthLeft - 1, 
-                                       allowNull: true, 
-                                       isNullSearch: false, 
+                                       true, 
+                                       false, 
                                        bestPath, 
                                        extensionDepth);
 
@@ -520,8 +520,8 @@ namespace ChessEngine.MoveSearching
                         score = -AlphaBeta(-beta, 
                                            -alpha, 
                                            depthLeft - 1, 
-                                           allowNull: true, 
-                                           isNullSearch: false, 
+                                           true, 
+                                           false, 
                                            new List<PieceMoves>(), 
                                            extensionDepth);
                     }

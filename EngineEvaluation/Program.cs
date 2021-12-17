@@ -9,12 +9,12 @@
             var performanceEvaluatorFactory = new PerformanceEvaluatorFactory();
 
             var engineEvaluation = 
-                performanceEvaluatorFactory.CreatePerformanceEvaluator(evaluatePerfTPositions:     false, 
-                                                                       evaluateTestSuitePositions: true,
-                                                                       runFullTestSuiteEvaluation: false);
+                performanceEvaluatorFactory.CreatePerformanceEvaluator(true,
+                                                                       true,
+                                                                       false);
             
             //engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6, maxThinkingSeconds: 10);
-            engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6);
+            engineEvaluation.RunFullPerformanceEvaluation(5);
         }
     }
 }

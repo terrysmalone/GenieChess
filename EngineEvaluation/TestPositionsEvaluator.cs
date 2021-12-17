@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Dynamic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation;
@@ -14,8 +12,6 @@ using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using log4net;
 using ResourceLoading;
-
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EngineEvaluation
 {

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
-using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
 namespace ChessEngineTests.MoveSearching

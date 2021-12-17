@@ -20,11 +20,11 @@ namespace ChessEngineTests
         public void TestPawnMoves()
         {
             var board = new Board();
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: true, 1, 1);
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: false, 1, 2);
+            board.PlacePiece(PieceType.Pawn, true, 1, 1);
+            board.PlacePiece(PieceType.Pawn, false, 1, 2);
 
-            board.PlacePiece(PieceType.King,pieceIsWhite: true, 1, 6);
-            board.PlacePiece(PieceType.King, pieceIsWhite: false, 5, 6);
+            board.PlacePiece(PieceType.King,true, 1, 6);
+            board.PlacePiece(PieceType.King, false, 5, 6);
             
             board.WhiteCanCastleKingside = false;
             board.WhiteCanCastleQueenside = false;
@@ -72,11 +72,11 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            board.PlacePiece(PieceType.King, pieceIsWhite: true, 0, 0);
-            board.PlacePiece(PieceType.King, pieceIsWhite: false, 0, 7);
+            board.PlacePiece(PieceType.King, true, 0, 0);
+            board.PlacePiece(PieceType.King, false, 0, 7);
 
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: true, 7, 1);
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: false, 6, 3);
+            board.PlacePiece(PieceType.Pawn, true, 7, 1);
+            board.PlacePiece(PieceType.Pawn, false, 6, 3);
 
             //flags changed
             board.BlackCanCastleKingside = false;
@@ -96,11 +96,11 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            board.PlacePiece(PieceType.King, pieceIsWhite: true, 4, 3); 
-            board.PlacePiece(PieceType.King, pieceIsWhite: false, 0, 7);
+            board.PlacePiece(PieceType.King, true, 4, 3); 
+            board.PlacePiece(PieceType.King, false, 0, 7);
 
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: true, 6, 4);
-            board.PlacePiece(PieceType.Pawn, pieceIsWhite: false, 5, 6);
+            board.PlacePiece(PieceType.Pawn, true, 6, 4);
+            board.PlacePiece(PieceType.Pawn, false, 5, 6);
 
             //flags changed
             board.BlackCanCastleKingside = false;

@@ -1,12 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using ChessEngine.BoardRepresentation;
-using ChessEngine.Debugging;
-using ChessEngine.MoveSearching;
-using ChessEngine.NotationHelpers;
-using ChessEngine.ScoreCalculation;
 using log4net;
 using ResourceLoading;
 

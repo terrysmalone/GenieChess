@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
-using ChessEngine.Exceptions;
 using ChessEngine.MoveSearching;
-using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using log4net;
 
@@ -593,7 +588,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.H1);
-                            PlacePiece(PieceType.Rook, pieceIsWhite: true, LookupTables.F1);
+                            PlacePiece(PieceType.Rook, true, LookupTables.F1);
                         }
 
                         Zobrist ^= ZobristKey.WhiteCastleKingside;
@@ -615,7 +610,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.A1);
-                            PlacePiece(PieceType.Rook, pieceIsWhite: true, LookupTables.D1);
+                            PlacePiece(PieceType.Rook, true, LookupTables.D1);
 
                             WhiteCanCastleQueenside = false;
                             //whiteCanCastleKingside = false;  
@@ -663,7 +658,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.H8);
-                            PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.F8);
+                            PlacePiece(PieceType.Rook, false, LookupTables.F8);
                         }
 
                         BlackCanCastleKingside = false; //Any king move means we can no longer castle
@@ -686,7 +681,7 @@ namespace ChessEngine.BoardRepresentation
                         {
                             //Move rook too
                             RemovePiece(LookupTables.A8);
-                            PlacePiece(PieceType.Rook, pieceIsWhite: false, LookupTables.D8);
+                            PlacePiece(PieceType.Rook, false, LookupTables.D8);
                         }
 
                         BlackCanCastleQueenside = false;

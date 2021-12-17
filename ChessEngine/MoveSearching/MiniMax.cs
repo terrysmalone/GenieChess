@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
-using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;

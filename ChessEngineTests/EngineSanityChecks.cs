@@ -22,7 +22,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
@@ -39,7 +39,7 @@ namespace ChessEngineTests
             ;
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
@@ -55,7 +55,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
@@ -71,7 +71,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
@@ -87,7 +87,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
@@ -103,7 +103,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -119,7 +119,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -135,7 +135,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -151,7 +151,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -167,7 +167,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
@@ -198,7 +198,7 @@ namespace ChessEngineTests
 
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("8/1p1P4/k1p5/8/8/3PPPPP/r7/7K b - - 0 1");
         }
@@ -210,7 +210,7 @@ namespace ChessEngineTests
 
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");
 
@@ -226,7 +226,7 @@ namespace ChessEngineTests
 
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("q2k2q1/2nqn2b/1n1P1n1b/2rnr2Q/1NQ1QN1Q/3Q3B/2RQR2B/Q2K2Q1 w - -");
 
@@ -256,7 +256,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("r3k2r/p2b1ppp/2p2n2/b2p4/5B2/3B4/PPP1NPPP/R3K2R w KQkq - 0 1");
 
@@ -274,7 +274,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("3k4/3r4/3r4/8/3Q4/3R4/8/3K4 w - - 0 1");
 
@@ -292,7 +292,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("8/8/3k4/3r4/3P4/8/3n1Q2/3K4 w - - 0 1");
 
@@ -311,7 +311,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("7k/6bp/5q2/8/3R4/8/1Q6/K7 b - - 0 1");
 
@@ -329,7 +329,7 @@ namespace ChessEngineTests
         {
             var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
-            var game = new Game(scoreCalculator, new Board(), openingBook: null);
+            var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
             game.SetFENPosition("5n2/4k3/5q2/4N3/4p3/1QN5/3KR3/8 b - - 0 1");
 

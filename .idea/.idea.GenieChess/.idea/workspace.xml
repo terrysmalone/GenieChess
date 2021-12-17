@@ -11,10 +11,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardSearching/LookupTables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardSearching/LookupTables.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/MoveSearching/AlphaBetaSearch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/MoveSearching/AlphaBetaSearch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/MoveSearching/MiniMax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/MoveSearching/MiniMax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/MoveSearching/NegaMax.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/MoveSearching/NegaMax.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/NotationHelpers/FenTranslator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/NotationHelpers/FenTranslator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngine/PossibleMoves/MoveGeneration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/PossibleMoves/MoveGeneration.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngineTests/EngineSanityChecks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/EngineSanityChecks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessEngineTests/MoveSearching/ZobristHashTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngineTests/MoveSearching/ZobristHashTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/EngineEvaluation.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/EngineEvaluation.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/EnginePerformanceEvaluator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/EnginePerformanceEvaluator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/ExcelHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/ExcelHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/PerfTEvaluator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/PerfTEvaluator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/PerformanceEvaluatorFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/PerformanceEvaluatorFactory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EngineEvaluation/TestPositionsEvaluator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/TestPositionsEvaluator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GenieChess.sln" beforeDir="false" afterPath="$PROJECT_DIR$/GenieChess.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResourceLoading/PerfTPosition.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResourceLoading/PerfTPosition.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResourceLoading/ResourceLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResourceLoading/ResourceLoader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Useful.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,11 +56,13 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBitboard.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FD824CFB-5500-4855-B9E6-D51B008C90E4/2c/858e65e0/Number.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Development/GenieChess/ResourceLoading/ResourceLoader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBoardState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Development/GenieChess/ResourceLoading/ResourceLoader.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/EngineEvaluation/Program.cs" />
       <option value="$PROJECT_DIR$/README.md" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" />
@@ -46,6 +70,13 @@
       <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/PerfT.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/Hash.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/AlphaBetaSearch.cs" />
+      <option value="$PROJECT_DIR$/ResourceLoading/PerfTPosition.cs" />
+      <option value="$PROJECT_DIR$/EngineEvaluation/PerfTEvaluator.cs" />
+      <option value="$PROJECT_DIR$/ResourceLoading/ResourceLoader.cs" />
+      <option value="$PROJECT_DIR$/EngineEvaluation/Program.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
@@ -199,39 +230,39 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
-          <line>130</line>
+          <line>129</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="130" containingFunctionPresentation="method 'CalculateScore'">
             <startOffsets>
-              <option value="3711" />
+              <option value="3677" />
             </startOffsets>
             <endOffsets>
-              <option value="3743" />
+              <option value="3709" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
-          <line>557</line>
+          <line>556</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="557" containingFunctionPresentation="method 'CalculateDevelopmentBonus'">
             <startOffsets>
-              <option value="20036" />
+              <option value="20002" />
             </startOffsets>
             <endOffsets>
-              <option value="20064" />
+              <option value="20030" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
-          <line>135</line>
+          <line>134</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="135" containingFunctionPresentation="method 'CalculateScore'">
             <startOffsets>
-              <option value="3879" />
+              <option value="3845" />
             </startOffsets>
             <endOffsets>
-              <option value="3916" />
+              <option value="3882" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="13" />
@@ -261,6 +292,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ChessEngineTests/PerfT.cs</url>
+          <line>18</line>
+          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\PerfT.cs" initialLine="18" containingFunctionPresentation="method 'Perft'">
+            <startOffsets>
+              <option value="470" />
+            </startOffsets>
+            <endOffsets>
+              <option value="751" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -58,39 +57,39 @@ namespace ChessEngine.PossibleMoves
 
             if (m_CurrentBoard.WhiteToMove)
             {
-                CalculateWhiteKnightMoves(capturesOnly: false);
+                CalculateWhiteKnightMoves(false);
 
                 CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteBishops),
-                                     capturesOnly: false);
+                                     false);
 
                 CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteRooks),
-                                   capturesOnly: false);
+                                   false);
 
                 CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteQueen),
-                                    capturesOnly: false);
+                                    false);
 
-                CalculateWhitePawnMoves(capturesOnly: false);
+                CalculateWhitePawnMoves(false);
 
-                CalculateWhiteKingMoves(capturesOnly: false);
+                CalculateWhiteKingMoves(false);
 
                 CheckForWhiteCastlingMoves();
             }
             else
             {
-                CalculateBlackKnightMoves(capturesOnly: false);
+                CalculateBlackKnightMoves(false);
 
                 CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackBishops),
-                                     capturesOnly: false);
+                                     false);
 
                 CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackRooks),
-                                   capturesOnly: false);
+                                   false);
 
                 CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackQueen),
-                                    capturesOnly: false);
+                                    false);
 
-                CalculateBlackPawnMoves(capturesOnly: false);
+                CalculateBlackPawnMoves(false);
 
-                CalculateBlackKingMoves(capturesOnly: false);
+                CalculateBlackKingMoves(false);
 
                 CheckForBlackCastlingMoves();
             }
@@ -110,37 +109,37 @@ namespace ChessEngine.PossibleMoves
 
             if (m_CurrentBoard.WhiteToMove)
             {
-                CalculateWhiteKnightMoves(capturesOnly: true);
+                CalculateWhiteKnightMoves(true);
 
                 CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteBishops),
-                                     capturesOnly: true);
+                                     true);
 
                 CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteRooks),
-                                   capturesOnly: true);
+                                   true);
 
                 CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteQueen),
-                                    capturesOnly: true);
+                                    true);
 
-                CalculateWhitePawnMoves(capturesOnly: true);
+                CalculateWhitePawnMoves(true);
 
-                CalculateWhiteKingMoves(capturesOnly: true);
+                CalculateWhiteKingMoves(true);
             }
             else
             {
-                CalculateBlackKnightMoves(capturesOnly: true);
+                CalculateBlackKnightMoves(true);
 
                 CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackBishops),
-                                     capturesOnly: true);
+                                     true);
 
                 CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackRooks),
-                                   capturesOnly: true);
+                                   true);
 
                 CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackQueen),
-                                    capturesOnly: true);
+                                    true);
 
-                CalculateBlackPawnMoves(capturesOnly: true);
+                CalculateBlackPawnMoves(true);
 
-                CalculateBlackKingMoves(capturesOnly: true);
+                CalculateBlackKingMoves(true);
             }
 
             RemoveSelfCheckingMoves();
@@ -225,12 +224,12 @@ namespace ChessEngine.PossibleMoves
             {
                 if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, whiteToMove: true))
+                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, true))
                         return false;
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, whiteToMove: true))
+                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, true))
                         return false;
                 }
             }
@@ -238,12 +237,12 @@ namespace ChessEngine.PossibleMoves
             {
                 if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, whiteToMove: false))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, false))
                         return false;
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, whiteToMove: false))
+                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, false))
                         return false;
                 }
             }

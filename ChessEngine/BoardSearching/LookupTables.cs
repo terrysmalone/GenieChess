@@ -1,5 +1,4 @@
 ﻿using System;
-using ChessEngine.BoardRepresentation;
 
 namespace ChessEngine.BoardSearching
 {

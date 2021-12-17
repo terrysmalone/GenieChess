@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
-using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using log4net;
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Reflection;
 
 namespace ResourceLoading
@@ -70,11 +69,11 @@ namespace ResourceLoading
 
                 var perfTPos = new PerfTPosition { Name = parts[0], FenPosition = parts[1] };
 
-                var results = new List<int>();
+                var results = new List<long>();
 
                 for (var i = 2; i < parts.Length; i++)
                 {
-                    results.Add(Convert.ToInt32(parts[i]));
+                    results.Add(Convert.ToInt64(parts[i]));
                 }
 
                 perfTPos.Results = results;

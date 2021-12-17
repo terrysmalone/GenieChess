@@ -10,6 +10,6 @@ namespace ResourceLoading
         public string Name;
         public string FenPosition;
 
-        public List<int> Results;
+        public List<long> Results;
     }
 }
