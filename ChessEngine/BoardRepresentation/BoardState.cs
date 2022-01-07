@@ -2,8 +2,7 @@
 
 namespace ChessEngine.BoardRepresentation
 {
-    //Keeps track of the state of a board before any moves are made. Allows for the easy undoing of moves
-    [Serializable]
+    // Keeps track of the state of a board before any moves are made. Allows for the easy undoing of moves
     public struct BoardState
     {
         public bool WhiteToMove;

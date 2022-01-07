@@ -121,7 +121,7 @@ namespace ChessEngine.ScoreCalculation
 
             _CurrentBoard = currentBoard;
 
-            StaticBoardChecks.Calculate(currentBoard);
+            //StaticBoardChecks.Calculate(currentBoard);
 
             DetectEndGame();
 

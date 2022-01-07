@@ -8,11 +8,8 @@ using log4net;
 
 namespace ChessEngine.BoardRepresentation
 {
-    /// <summary>
-    /// Represents a game board state needed for a full game
-    /// including all 12 bitboards who is to move and flags for moves like en-passant and castling
-    /// </summary>
-    [Serializable]
+    // Represents a game board state needed for a full game
+    // including all 12 bitboards who is to move and flags for moves like en-passant and castling
     public class Board 
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection
