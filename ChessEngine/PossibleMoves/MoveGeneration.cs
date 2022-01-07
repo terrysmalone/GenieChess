@@ -152,6 +152,8 @@ namespace ChessEngine.PossibleMoves
         /// </summary>
         private static void RemoveSelfCheckingMoves()
         {
+            var pieceMover = new PieceMover(m_CurrentBoard);
+            
             var whiteToCheck = m_CurrentBoard.WhiteToMove;
 
             //Search backwards so we can remove moves and carry on
@@ -159,7 +161,7 @@ namespace ChessEngine.PossibleMoves
             {
                 var currentMove = m_AllMoves[i];
 
-                m_CurrentBoard.MakeMove(currentMove.Position, 
+                pieceMover.MakeMove(currentMove.Position, 
                                         currentMove.Moves, 
                                         currentMove.Type,
                                         currentMove.SpecialMove, 
@@ -170,7 +172,7 @@ namespace ChessEngine.PossibleMoves
                     m_AllMoves.RemoveAt(i);
                 }
 
-                m_CurrentBoard.UnMakeLastMove();
+                pieceMover.UnMakeLastMove();
             }
         }
 

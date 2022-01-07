@@ -23,28 +23,32 @@ namespace ChessEngine.MoveSearching
         private static readonly ILog s_Log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Board m_BoardPosition;
-        private readonly IScoreCalculator m_ScoreCalculator;
+        private readonly Board _boardPosition;
+        private readonly IScoreCalculator _scoreCalculator;
+
+        private PieceMover _pieceMover;
  
-        private List<MoveValueInfo> m_InitialMoves;
-        private List<Tuple<int, PieceMoves>> m_InitialMovesIterativeDeepeningShuffleOrder;
+        private List<MoveValueInfo> _initialMoves;
+        private List<Tuple<int, PieceMoves>> _initialMovesIterativeDeepeningShuffleOrder;
 
         private int m_KillerMovesToStore = 2;
-        private PieceMoves[,] m_KillerMoves;
+        private PieceMoves[,] _killerMoves;
 
-        private int m_EvaluationDepth;
+        private int _evaluationDepth;
 
-        private PieceMoves? m_BestMoveSoFar;
+        private PieceMoves? _bestMoveSoFar;
 
-        private int m_NullMoveR = 1;
+        private int _nullMoveR = 1;
 
-        private int m_MaxCheckExtension = 10;
+        private int _maxCheckExtension = 10;
 
         public AlphaBetaSearch(Board boardPosition, IScoreCalculator scoreCalculator)
         {
-            m_BoardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
+            _boardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
 
-            m_ScoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
+            _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
+
+            _pieceMover = new PieceMover(_boardPosition);
         }
 
         private static PieceMoves s_CompletedSearchBestMove;
@@ -134,14 +138,14 @@ namespace ChessEngine.MoveSearching
 
         public PieceMoves CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
         {
-            var toMove = m_BoardPosition.WhiteToMove ? "white" : "black";
+            var toMove = _boardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
-            s_Log.Info(FenTranslator.ToFENString(m_BoardPosition.GetCurrentBoardState()));
+            s_Log.Info(FenTranslator.ToFENString(_boardPosition.GetCurrentBoardState()));
 
-            m_KillerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
+            _killerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
-            m_InitialMoves = new List<MoveValueInfo>();
-            m_InitialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMoves>>();
+            _initialMoves = new List<MoveValueInfo>();
+            _initialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMoves>>();
 
             TranspositionTable.ResetAncients();
 
@@ -165,7 +169,7 @@ namespace ChessEngine.MoveSearching
 
                 timer.Start();
 
-                m_EvaluationDepth = depth;
+                _evaluationDepth = depth;
 
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
@@ -184,8 +188,8 @@ namespace ChessEngine.MoveSearching
                     Move = bestMove,
                     Score = bestScore,
                     DepthTime = speed,
-                    AccumulatedTime = m_InitialMoves.Count > 0
-                        ? m_InitialMoves[m_InitialMoves.Count - 1].AccumulatedTime.Add(speed)
+                    AccumulatedTime = _initialMoves.Count > 0
+                        ? _initialMoves[_initialMoves.Count - 1].AccumulatedTime.Add(speed)
                         : speed,
                     NodesVisited = CountDebugger.Evaluations
                 };
@@ -196,7 +200,7 @@ namespace ChessEngine.MoveSearching
                 }
 
 
-                m_InitialMoves.Add(moveValueInfo);
+                _initialMoves.Add(moveValueInfo);
 
 #if FullNodeCountDebug
                 LogTranspositionCounts();
@@ -206,7 +210,7 @@ namespace ChessEngine.MoveSearching
                 //LogKillerMoves(m_KillerMoves);
 #endif
                 s_Log.Info($"Move info: {UciMoveTranslator.ToUciMove(moveValueInfo.Move)} - " +
-                           $"score: {GetScoreString(moveValueInfo.Score, m_BoardPosition.WhiteToMove)} - " +
+                           $"score: {GetScoreString(moveValueInfo.Score, _boardPosition.WhiteToMove)} - " +
                            $"nodes: {moveValueInfo.NodesVisited} - " +
                            $"time at depth: {moveValueInfo.DepthTime:mm\':\'ss\':\'ffff} - " +
                            $"Accumulated move time: {moveValueInfo.AccumulatedTime:mm\':\'ss\':\'ffff}");
@@ -252,13 +256,13 @@ namespace ChessEngine.MoveSearching
 
             // Order the initial moves by their scores from the last depth, if any.
             // Otherwise order them based on....
-            if (m_InitialMovesIterativeDeepeningShuffleOrder.Count > 0)
+            if (_initialMovesIterativeDeepeningShuffleOrder.Count > 0)
             {
                 moveList = OrderFromIterativeDeepeningMoves();
             }
             else
             {
-                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(m_BoardPosition));
+                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(_boardPosition));
                 
                 //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList, depth);
@@ -277,7 +281,7 @@ namespace ChessEngine.MoveSearching
 
                 var movePath = new List<PieceMoves>();
 
-                m_BoardPosition.MakeMove(move, false);
+                _pieceMover.MakeMove(move, false);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
                 var score = -AlphaBeta(-beta, -alpha, depth - 1, true, false, movePath, 0);
@@ -290,13 +294,13 @@ namespace ChessEngine.MoveSearching
                     s_InDepthBestMove = bestMove;
                 }
 
-                m_InitialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
+                _initialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
 
-                m_BoardPosition.UnMakeLastMove();
+                _pieceMover.UnMakeLastMove();
                 
                 //Print move path
                 s_Log.Info($"Move: {UciMoveTranslator.ToUciMove(move)} - " +
-                           $"Score: {GetScoreString(score, m_BoardPosition.WhiteToMove)} - " +
+                           $"Score: {GetScoreString(score, _boardPosition.WhiteToMove)} - " +
                            $"Best path: { string.Join(", ", movePath.Select(UciMoveTranslator.ToUciMove)) }");
             }
 
@@ -321,7 +325,7 @@ namespace ChessEngine.MoveSearching
             PieceMoves? bestHashMove = null;
 
             // Check transposition table
-            var hash = TranspositionTable.ProbeTable(m_BoardPosition.Zobrist, depthLeft, alpha, beta);
+            var hash = TranspositionTable.ProbeTable(_boardPosition.Zobrist, depthLeft, alpha, beta);
             
             if (hash.Key !=0)
             {
@@ -360,7 +364,7 @@ namespace ChessEngine.MoveSearching
             // If in check do a check extension otherwise perform quiescence search
             if (depthLeft == 0)
             {
-                if (extensionDepth < m_MaxCheckExtension && BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
+                if (extensionDepth < _maxCheckExtension && BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
                 {
                     depthLeft++;
                     extensionDepth++;
@@ -372,21 +376,21 @@ namespace ChessEngine.MoveSearching
             }
 
             // Null move check 
-            if (allowNull && depthLeft > m_NullMoveR && !BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove))
+            if (allowNull && depthLeft > _nullMoveR && !BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
             {
-                m_BoardPosition.SwitchSides();
+                _boardPosition.SwitchSides();
                 //We don't care about the PV path. Maybe we should implement this differently
                 // Set extensionDepth to m_MaxCheckExtension because we don't want it to get
                 // extended after the null move check
                 var eval = -AlphaBeta(-beta, 
                                       -beta + 1, 
-                                      depthLeft - m_NullMoveR - 1, 
+                                      depthLeft - _nullMoveR - 1, 
                                       false, 
                                       true, 
                                       new List<PieceMoves>(), 
-                                      m_MaxCheckExtension); 
+                                      _maxCheckExtension); 
 
-                m_BoardPosition.SwitchSides();
+                _boardPosition.SwitchSides();
 
                 if (eval >= beta)
                 {
@@ -394,7 +398,7 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
-            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
             
             // There are no possible moves. It's either check mate or stale mate
             if (moveList.Count == 0)
@@ -407,7 +411,7 @@ namespace ChessEngine.MoveSearching
             // the transposition table perform a limited iterative deepening search
             if (!isNullSearch && bestHashMove == null && depthLeft > 3)
             {
-                m_BestMoveSoFar = null;
+                _bestMoveSoFar = null;
 
                 // Call this just to get the best move
                 // We don't care about the PV path. Maybe we should implement this differently
@@ -418,11 +422,11 @@ namespace ChessEngine.MoveSearching
                           false, 
                           false, 
                           new List<PieceMoves>(), 
-                          m_MaxCheckExtension); 
+                          _maxCheckExtension); 
 
-                if (m_BestMoveSoFar != null)
+                if (_bestMoveSoFar != null)
                 {
-                    OrderMovesInPlace(moveList, depthLeft, m_BestMoveSoFar);
+                    OrderMovesInPlace(moveList, depthLeft, _bestMoveSoFar);
                 }
                 else
                 {
@@ -441,7 +445,7 @@ namespace ChessEngine.MoveSearching
             // Check the colour before moving since it's this colour king we have to check for 
             // legal move generation.
             // Plus, we only have to do it once for all moves.
-            var colourToMove = m_BoardPosition.WhiteToMove;
+            var colourToMove = _boardPosition.WhiteToMove;
 
             var noMovesAnalysed = true;
 
@@ -454,18 +458,18 @@ namespace ChessEngine.MoveSearching
                 if (move.SpecialMove == SpecialMoveType.KingCastle || move.SpecialMove == SpecialMoveType.QueenCastle)
                 {
                     // If king is in check he can't move
-                    if (BoardChecking.IsKingInCheck(m_BoardPosition, colourToMove))
+                    if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
                     {
                         continue;
                     }
 
-                    if (!MoveGeneration.ValidateCastlingMove(m_BoardPosition, move))
+                    if (!MoveGeneration.ValidateCastlingMove(_boardPosition, move))
                     {
                         continue;
                     }
                 }
 
-                m_BoardPosition.MakeMove(move, false);
+                _pieceMover.MakeMove(move, false);
 
                 // Futility pruning
                 //if (depthLeft == 1 &&
@@ -481,9 +485,9 @@ namespace ChessEngine.MoveSearching
 
                 // Since we do pseudo legal move generation we need to check if this move is legal
                 // otherwise skip to the next iteration of the loop
-                if (BoardChecking.IsKingInCheck(m_BoardPosition, colourToMove))
+                if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
                 {
-                    m_BoardPosition.UnMakeLastMove();
+                    _pieceMover.UnMakeLastMove();
                     continue;
                 }
                 
@@ -529,7 +533,7 @@ namespace ChessEngine.MoveSearching
 
                 noMovesAnalysed = false;
 
-                m_BoardPosition.UnMakeLastMove();
+                _pieceMover.UnMakeLastMove();
 
                 // Save the best move so far for the transposition table
                 if (score > bestScoreSoFar)
@@ -537,7 +541,7 @@ namespace ChessEngine.MoveSearching
                     bestMoveSoFar = move;
                     bestScoreSoFar = score;
 
-                    m_BestMoveSoFar = move;
+                    _bestMoveSoFar = move;
 
                     pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
                     pvPath.Add(move);
@@ -558,7 +562,7 @@ namespace ChessEngine.MoveSearching
 
                     for (var i = 0; i < m_KillerMovesToStore; i++)
                     {
-                        if (move == m_KillerMoves[depthLeft-1,i])
+                        if (move == _killerMoves[depthLeft-1,i])
                         {
                             duplicate = true;
                             break;
@@ -570,11 +574,11 @@ namespace ChessEngine.MoveSearching
                         //Shift killer moves to the right
                         for (var i = m_KillerMovesToStore - 2; i >= 0; i--)
                         {
-                            m_KillerMoves[depthLeft - 1, i + 1] = m_KillerMoves[depthLeft - 1, i];
+                            _killerMoves[depthLeft - 1, i + 1] = _killerMoves[depthLeft - 1, i];
                         }
 
                         //Insert killer move at index 0
-                        m_KillerMoves[depthLeft - 1, 0] = move;
+                        _killerMoves[depthLeft - 1, 0] = move;
                     }
 
                     return score;
@@ -599,7 +603,7 @@ namespace ChessEngine.MoveSearching
         {
             var hash = new Hash
                        {
-                           Key      = m_BoardPosition.Zobrist,
+                           Key      = _boardPosition.Zobrist,
                            Depth    = depth,
                            NodeType = hashNodeType,
                            Score    = score
@@ -619,13 +623,13 @@ namespace ChessEngine.MoveSearching
         {
             int score;
             
-            if (m_BoardPosition.WhiteToMove)
+            if (_boardPosition.WhiteToMove)
             {
-                score = m_ScoreCalculator.CalculateScore(boardPosition);
+                score = _scoreCalculator.CalculateScore(boardPosition);
             }
             else
             {
-                score = -m_ScoreCalculator.CalculateScore(boardPosition);
+                score = -_scoreCalculator.CalculateScore(boardPosition);
             }
 
             return score;
@@ -638,7 +642,7 @@ namespace ChessEngine.MoveSearching
             var pvPosition = pvPath.Count;
 
             // Check transposition table
-            var hash = TranspositionTable.ProbeQuiescenceTable(m_BoardPosition.Zobrist, alpha, beta);
+            var hash = TranspositionTable.ProbeQuiescenceTable(_boardPosition.Zobrist, alpha, beta);
 
             PieceMoves? bestHashMove = null;
 
@@ -671,7 +675,7 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
-            var evaluationScore = Evaluate(m_BoardPosition);
+            var evaluationScore = Evaluate(_boardPosition);
 
             if (evaluationScore >= beta)
             {
@@ -685,7 +689,7 @@ namespace ChessEngine.MoveSearching
                 alpha = evaluationScore;
             }
 
-            var moves = MoveGeneration.CalculateAllCapturingMoves(m_BoardPosition);
+            var moves = MoveGeneration.CalculateAllCapturingMoves(_boardPosition);
 
             if (moves.Count == 0)
             {
@@ -706,11 +710,11 @@ namespace ChessEngine.MoveSearching
             {
                 var currentPath = new List<PieceMoves> { move };
 
-                m_BoardPosition.MakeMove(move, false);
+                _pieceMover.MakeMove(move, false);
                 
                 evaluationScore = -QuiescenceEvaluate(-beta, -alpha, currentPath);
 
-                m_BoardPosition.UnMakeLastMove();
+                _pieceMover.UnMakeLastMove();
 
                 if (evaluationScore >= beta)
                 {
@@ -743,7 +747,7 @@ namespace ChessEngine.MoveSearching
         {
             var hash = new Hash
             {
-                Key      = m_BoardPosition.Zobrist,
+                Key      = _boardPosition.Zobrist,
                 NodeType = hashNodeType,
                 Score    = evaluationScore
             };
@@ -760,15 +764,15 @@ namespace ChessEngine.MoveSearching
         {
             var moveList = new List<PieceMoves>();
 
-            m_InitialMovesIterativeDeepeningShuffleOrder =
-                m_InitialMovesIterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
+            _initialMovesIterativeDeepeningShuffleOrder =
+                _initialMovesIterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
 
-            foreach (var move in m_InitialMovesIterativeDeepeningShuffleOrder)
+            foreach (var move in _initialMovesIterativeDeepeningShuffleOrder)
             {
                 moveList.Add(move.Item2);
             }
 
-            m_InitialMovesIterativeDeepeningShuffleOrder.Clear();
+            _initialMovesIterativeDeepeningShuffleOrder.Clear();
 
             return moveList;
         }
@@ -807,7 +811,7 @@ namespace ChessEngine.MoveSearching
                     || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
                     || IsPromotionCapture(moveList[moveNum].SpecialMove))
                 {
-                    var victimType = BoardChecking.GetPieceTypeOnSquare(m_BoardPosition, moveList[moveNum].Moves);
+                    var victimType = BoardChecking.GetPieceTypeOnSquare(_boardPosition, moveList[moveNum].Moves);
 
                     ordering.Add(new Tuple<PieceMoves, int, int>(
                         moveList[moveNum],
@@ -840,7 +844,7 @@ namespace ChessEngine.MoveSearching
         {
             for (var slot = 0; slot < m_KillerMovesToStore; slot++)
             {
-                var killerMove = m_KillerMoves[depth-1, slot];
+                var killerMove = _killerMoves[depth-1, slot];
 
                 // There are no more killer moves at this depth
                 if (killerMove.Type == PieceType.None)
@@ -909,9 +913,9 @@ namespace ChessEngine.MoveSearching
         // (i.e. A low score if the current player loses)
         private int EvaluateEndGame(int depth)
         {
-            var movesToEnd = (m_EvaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
+            var movesToEnd = (_evaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
 
-            var isInCheck = BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove);
+            var isInCheck = BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove);
 
             if (isInCheck)
             {
@@ -993,7 +997,7 @@ namespace ChessEngine.MoveSearching
 
         public List<MoveValueInfo> GetMoveValueInfo()
         {
-            return m_InitialMoves;
+            return _initialMoves;
         }
     }
 }

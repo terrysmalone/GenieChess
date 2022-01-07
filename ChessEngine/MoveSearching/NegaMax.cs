@@ -13,15 +13,19 @@ namespace ChessEngine.MoveSearching
     /// </summary>
     public class NegaMax
     {
-        private readonly Board m_BoardPosition;
-        private readonly IScoreCalculator m_ScoreCalc;
+        private readonly Board _boardPosition;
+        private readonly IScoreCalculator _scoreCalc;
+
+        private PieceMover _pieceMover;
 
         private decimal m_Score;
 
         public NegaMax(Board boardPosition, IScoreCalculator scoreCalc)
         {
-            m_BoardPosition = boardPosition;
-            m_ScoreCalc = scoreCalc;
+            _boardPosition = boardPosition;
+            _scoreCalc = scoreCalc;
+
+            _pieceMover = new PieceMover(_boardPosition);
         }
 
         public PieceMoves MoveCalculate(int depth)
@@ -33,10 +37,10 @@ namespace ChessEngine.MoveSearching
             var max = decimal.MinValue;
 
             
-            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
 
 
-            var isWhite = m_BoardPosition.WhiteToMove;
+            var isWhite = _boardPosition.WhiteToMove;
 
 
             for (var i = 0; i < moveList.Count; i++)
@@ -45,8 +49,8 @@ namespace ChessEngine.MoveSearching
 
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (BoardChecking.IsKingInCheck(m_BoardPosition, m_BoardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateCastlingMove(m_BoardPosition, moveList[i]))
+                    if (BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove) 
+                        || !MoveGeneration.ValidateCastlingMove(_boardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }
@@ -54,9 +58,9 @@ namespace ChessEngine.MoveSearching
 
                 if (!skipMove)
                 {
-                    m_BoardPosition.MakeMove(moveList[i], false);
+                    _pieceMover.MakeMove(moveList[i], false);
 
-                    if (MoveGeneration.ValidateMove(m_BoardPosition))
+                    if (MoveGeneration.ValidateMove(_boardPosition))
                     {
                         if (isWhite)
                             m_Score = -Calculate(depth - 1, false);
@@ -70,7 +74,7 @@ namespace ChessEngine.MoveSearching
                         }
                     }
 
-                    m_BoardPosition.UnMakeLastMove();
+                    _pieceMover.UnMakeLastMove();
                 }
             }
 
@@ -80,17 +84,17 @@ namespace ChessEngine.MoveSearching
         private decimal Calculate(int depth, bool maximisingPlayer)
         {
             if (depth == 0)
-                return Evaluate(m_BoardPosition, maximisingPlayer);
+                return Evaluate(_boardPosition, maximisingPlayer);
 
             var max = decimal.MinValue;
 
-            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(m_BoardPosition));
+            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
 
             for (var i = 0; i < moveList.Count; i++)
             {
-                m_BoardPosition.MakeMove(moveList[i], false);
+                _pieceMover.MakeMove(moveList[i], false);
 
-                if (MoveGeneration.ValidateMove(m_BoardPosition))
+                if (MoveGeneration.ValidateMove(_boardPosition))
                 {
                     m_Score = -Calculate(depth - 1, !maximisingPlayer);
 
@@ -98,7 +102,7 @@ namespace ChessEngine.MoveSearching
                         max = m_Score;
                 }
 
-                m_BoardPosition.UnMakeLastMove();
+                _pieceMover.UnMakeLastMove();
             }
 
             return max;
@@ -107,9 +111,9 @@ namespace ChessEngine.MoveSearching
         private decimal Evaluate(Board boardPosition, bool maximisingPlayer)
         {
             if (maximisingPlayer)
-                return m_ScoreCalc.CalculateScore(boardPosition);
+                return _scoreCalc.CalculateScore(boardPosition);
             else
-                return -m_ScoreCalc.CalculateScore(boardPosition);
+                return -_scoreCalc.CalculateScore(boardPosition);
         }
     }
 }
