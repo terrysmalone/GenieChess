@@ -10,6 +10,7 @@ namespace ChessEngine.BoardRepresentation
 {
     // Represents a game board state needed for a full game
     // including all 12 bitboards who is to move and flags for moves like en-passant and castling
+    [Serializable]
     public class Board 
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection
