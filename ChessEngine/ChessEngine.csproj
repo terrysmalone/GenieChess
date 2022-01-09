@@ -253,7 +253,6 @@
     <Compile Include="IChessGameFactory.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearch.cs" />
     <Compile Include="MoveSearching\Hash.cs" />
-    <Compile Include="MoveSearching\NegaMax.cs" />
     <Compile Include="Debugging\CountDebugger.cs" />
     <Compile Include="MoveSearching\MoveValueInfo.cs" />
     <Compile Include="MoveSearching\TranspositionTable.cs" />

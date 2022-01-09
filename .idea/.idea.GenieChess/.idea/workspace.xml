@@ -61,9 +61,9 @@
       <option value="$PROJECT_DIR$/ChessEngineTests/ZobristHashTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/PgnTranslatorTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/MoveValueInfo.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
-      <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/MoveValueInfo.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/PossibleMoves/MoveGeneration.cs" />
     </changedPaths>
   </component>
@@ -183,33 +183,33 @@
       <expand>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="Total 20% 5027/6277" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="Total 20% 5027/6277" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="Total 20% 5027/6277" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="Total 20% 5027/6277" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="BoardSearching 64% 289/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardSearching 80% 159/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
         <path>
           <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
-          <item name="Total 20% 5027/6277" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="ChessEngine 28% 2572/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="BoardSearching 64% 289/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
-          <item name="BoardChecking 41% 265/450" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardSearching 80% 159/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardChecking 70% 135/450" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
         </path>
       </expand>
       <select />

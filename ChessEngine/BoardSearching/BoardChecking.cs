@@ -321,7 +321,7 @@ namespace ChessEngine.BoardSearching
                 friendlyKing = board.BlackKing;
             }
             
-            return IsSquareAttackedSuperFast(board, friendlyKing, whitePieces);
+            return IsSquareAttacked(board, friendlyKing, whitePieces);
         }
 
         // Checks if the king has any flight squares
@@ -345,7 +345,7 @@ namespace ChessEngine.BoardSearching
 
                     foreach (var possMove in possMoves)
                     {
-                        if(!IsSquareAttackedSuperFast(boardPosition, possMove, whitePieces))
+                        if(!IsSquareAttacked(boardPosition, possMove, whitePieces))
                             return true;
                     }
                 }
@@ -368,7 +368,7 @@ namespace ChessEngine.BoardSearching
 
                     foreach (var t in possMoves)
                     {
-                        if (!IsSquareAttackedSuperFast(boardPosition, t, whitePieces))
+                        if (!IsSquareAttacked(boardPosition, t, whitePieces))
                         {
                             return true;
                         }
@@ -384,15 +384,15 @@ namespace ChessEngine.BoardSearching
         // 
         // NOTE: To save time it is assumed that the pieceBoard has exactly 1 piece on it. If not, it may not behave as expecte
         //
-        private static bool IsSquareAttackedSuperFast(Board board, ulong pieceBoard, bool whitePieces)
+        private static bool IsSquareAttacked(Board board, ulong pieceBoard, bool whitePieces)
         {
              if (IsKnightAttackingSquare(board, pieceBoard, whitePieces))
              {
                 return true;
              }
 
-            // Check if piece is surrounded by friends. If so, we only need to worry about 
-            // knights so we can assume false
+             // Check if piece is surrounded by friends. If so, we only need to worry about 
+             // knights so we can assume false
              var surroundingSpace = GetSurroundingSpace(pieceBoard);
 
              ulong emptyOrEnemyNeighbours;
@@ -434,25 +434,6 @@ namespace ChessEngine.BoardSearching
 
              return false;
         }
-
-        // This method is used to check if a square is under attack or to check if the king is undert attack.
-        // Use this method if knowing the attacking piece/position or attack count is not necessary as it returns as soon as it knows       
-        //internal static bool IsSquareAttackedFast(Board board, ulong squarePositionBoard, PieceColour friendlyColour)
-        //{
-        //    if (IsPawnAttackingSquareFast(board, squarePositionBoard, friendlyColour))
-        //        return true;
-
-        //    if (IsKnightAttackingSquare(board, squarePositionBoard, friendlyColour))
-        //        return true;
-
-        //    if (IsSquareAttackedByKing(board, squarePositionBoard, friendlyColour))
-        //        return true;
-
-        //    if (IsSquareUnderRayAttackFast(board, squarePositionBoard, friendlyColour))
-        //        return true;
-
-        //    return false;
-        //}
         
         // Checks if pawn is attacking square. There is no need to check all pawns for double-check 
         // since only one pawn can be attacking the king at once

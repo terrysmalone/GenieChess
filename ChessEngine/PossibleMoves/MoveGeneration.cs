@@ -26,8 +26,6 @@ namespace ChessEngine.PossibleMoves
 
             _checkCount = 0;
 
-            //PieceValidMoves.GenerateMoveArrays();
-
             CalculateAllPseudoLegalMoves(board);
 
             RemoveSelfCheckingMoves();
@@ -47,8 +45,6 @@ namespace ChessEngine.PossibleMoves
             m_AllMoves = new List<PieceMoves>();
 
             _checkCount = 0;
-
-            //PieceValidMoves.GenerateMoveArrays();
 
             m_CurrentBoard = board;
             m_CurrentBoard.CalculateUsefulBitboards();
@@ -932,13 +928,8 @@ namespace ChessEngine.PossibleMoves
             else
                 return false;
         }
-
-        /// <summary>
-        /// Checks if the square is under ray attack. Must check every square for double-checks
-        /// </summary>
-        /// <param name="squarePositionBoard"></param>
-        /// <param name="friendlyColour"></param>
-        /// <returns></returns>
+        
+        // Checks if the square is under ray attack. Must check every square for double-checks
         private static bool IsSquareUnderRayAttack(ulong squarePositionBoard, bool whiteToMove)
         {
             var underRayAttack = false;
