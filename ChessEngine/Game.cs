@@ -180,11 +180,6 @@ namespace ChessEngine
             TranspositionTable.Restart();
         }
 
-        public void PlacePiece(PieceType typeToPlace, bool isWhite, int file, int rank)
-        {
-            currentBoard.PlacePiece(typeToPlace, isWhite, file, rank);
-        }
-
         public void AllowAllCastling(bool allow)
         {
             currentBoard.AllowAllCastling(allow);

@@ -49,12 +49,14 @@
       <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BitboardOperations.cs" />
-      <option value="$PROJECT_DIR$/ChessEngine/Game.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" />
-      <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/Game.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/PieceMover.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
