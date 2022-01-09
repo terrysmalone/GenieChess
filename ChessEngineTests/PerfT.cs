@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -10,6 +11,7 @@ namespace ChessEngineTests
 {
     public class PerfT
     {
+        private PieceMover _pieceMover;
         public bool UseHashing { get; set; } = true;
 
         public int Perft(Board boardPosition, int depth)
@@ -41,6 +43,8 @@ namespace ChessEngineTests
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
 
+            _pieceMover = new PieceMover(boardPosition);
+
             for (var i = 0; i < moveList.Count; i++) 
             {
                 var skipMove = false;
@@ -56,12 +60,12 @@ namespace ChessEngineTests
 
                 if (!skipMove)
                 {
-                    boardPosition.MakeMove(moveList[i], false);
+                    _pieceMover.MakeMove(moveList[i], false);
 
                     if (MoveGeneration.ValidateMove(boardPosition))
                         nodes += Perft(boardPosition, depth - 1);
 
-                    boardPosition.UnMakeLastMove(false);
+                    _pieceMover.UnMakeLastMove(false);
                 }
             }
 
@@ -91,6 +95,8 @@ namespace ChessEngineTests
             
             Console.WriteLine($"Moves: {moveList.Count}");
             Console.WriteLine("");
+            
+            _pieceMover = new PieceMover(boardPosition);
 
             for (var i = 0; i < moveList.Count; i++)
             {
@@ -98,11 +104,11 @@ namespace ChessEngineTests
 
                 var rootMoveString = GetPieceMoveAsString(currentMove);
                 
-                boardPosition.MakeMove(currentMove, false);
+                _pieceMover.MakeMove(currentMove, false);
 
                 var numberOfNodes = Perft(boardPosition, depth-1);
 
-                boardPosition.UnMakeLastMove(false);
+                _pieceMover.UnMakeLastMove(false);
 
                 totalNodes += numberOfNodes;
 
@@ -117,16 +123,18 @@ namespace ChessEngineTests
             var divides = new List<Tuple<string, int>>();
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(boardPosition));
+            
+            _pieceMover = new PieceMover(boardPosition);
 
             foreach (var move in moveList)
             {
-                boardPosition.MakeMove(move, false);
+                _pieceMover.MakeMove(move, false);
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
                 
                 divides.Add(new Tuple<string, int>(GetPieceMoveAsString(move), branchMoves.Count));
 
-                boardPosition.UnMakeLastMove(false);
+                _pieceMover.UnMakeLastMove(false);
             }
 
             return divides;
@@ -138,15 +146,17 @@ namespace ChessEngineTests
 
             var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(boardPosition));
 
+            _pieceMover = new PieceMover(boardPosition);
+            
             foreach (var move in moveList)
             {
-                boardPosition.MakeMove(move, false);
+                _pieceMover.MakeMove(move, false);
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
 
                 divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
 
-                boardPosition.UnMakeLastMove(false);
+                _pieceMover.UnMakeLastMove(false);
             }
 
             return divides;

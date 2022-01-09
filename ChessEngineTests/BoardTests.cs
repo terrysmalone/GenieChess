@@ -227,24 +227,6 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestMakeUnMakeMove()
-        {
-            var board = new Board();
-            board.InitaliseStartingPosition();
-
-            var moves = MoveGeneration.CalculateAllMoves(board);
-            Assert.AreEqual(20, moves.Count);
-
-            board.MakeMove(512, 33554432, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b2-b4
-
-            var moves2 = MoveGeneration.CalculateAllMoves(board);
-            Assert.AreEqual(20, moves2.Count);
-
-            board.MakeMove(562949953421312, 8589934592, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b7-b5
-            board.UnMakeLastMove();
-        }
-
-        [TestMethod]
         public void TestSetFenSetFENPosition_Initial()
         {
             var board = new Board();

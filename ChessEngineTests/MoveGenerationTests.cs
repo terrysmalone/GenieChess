@@ -1,4 +1,5 @@
 ﻿using System;
+using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.NotationHelpers;
@@ -84,7 +85,9 @@ namespace ChessEngineTests
             board.BlackCanCastleQueenside = false;
             board.WhiteCanCastleQueenside = false;
 
-            board.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move h pawn 2 spaces
+            var pieceMover = new PieceMover(board);
+
+            pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move h pawn 2 spaces
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -110,7 +113,10 @@ namespace ChessEngineTests
 
             board.SwitchSides();
 
-            board.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move black f-pawn 2 spaces
+            var pieceMover = new PieceMover(board);
+                
+
+            pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move black f-pawn 2 spaces
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 

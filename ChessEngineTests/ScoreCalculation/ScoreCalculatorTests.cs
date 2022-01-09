@@ -1,4 +1,5 @@
-﻿using ChessEngine.BoardRepresentation;
+﻿using ChessEngine;
+using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
@@ -32,10 +33,11 @@ namespace ChessEngineTests.ScoreCalculation
         public void TestTwoMovesAreEqual_Pawns()
         {
             var board = new Board();
+            var pieceMover = new PieceMover(board);
 
             board.InitaliseStartingPosition();
-            board.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
-            board.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
+            pieceMover.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
+            pieceMover.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -48,10 +50,11 @@ namespace ChessEngineTests.ScoreCalculation
         public void TestTwoMovesAreEqual_Knights()
         {
             var board = new Board();
+            var pieceMover = new PieceMover(board);
 
             board.InitaliseStartingPosition();
-            board.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal, true);
-            board.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal, true);
+            pieceMover.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal, true);
+            pieceMover.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal, true);
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 

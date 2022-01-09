@@ -1,4 +1,5 @@
-﻿using ChessEngine.BoardRepresentation;
+﻿using ChessEngine;
+using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
@@ -348,7 +349,9 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.InitaliseStartingPosition();
-            board.MakeMove(new PieceMoves() { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            var pieceMover = new PieceMover(board);
+            
+            pieceMover.MakeMove(new PieceMoves() { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
 
             var boardString = FenTranslator.ToFENString(board.GetCurrentBoardState());
 
