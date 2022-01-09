@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.MoveSearching;
+using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using log4net;
 
@@ -159,6 +160,11 @@ namespace ChessEngine.BoardRepresentation
             CalculateUsefulBitboards();
 
             CalculateZobristKey();
+        }
+
+        public void SetPosition(string fenPosition)
+        {
+            SetPosition(FenTranslator.ToBoardState(fenPosition));
         }
 
         public void SetPosition(BoardState state)
