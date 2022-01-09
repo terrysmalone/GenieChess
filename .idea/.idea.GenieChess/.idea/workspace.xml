@@ -28,13 +28,15 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Constraints/FalseConstraint.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Is.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBoardState.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBitboard.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/nunit/nunit/c933a883ea25263ec575a654dae69fa38000edd9/src/NUnitFramework/framework/Constraints/Constraint.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/README.md" />
-      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/PerfT.cs" />
@@ -51,6 +53,8 @@
       <option value="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
