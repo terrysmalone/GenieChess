@@ -110,38 +110,6 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestGetSquareIndexFromBoardValueSpeed()
-        {
-            var rand = new Random();
-
-            var start = DateTime.UtcNow;
-
-            for (var i = 0; i < 4000000; i++)
-            {
-                var position = BitboardOperations.GetSquareIndexFromBoardValue((ulong)Math.Pow(1, rand.Next(64)));
-            }
-
-            var end = DateTime.UtcNow;
-
-            var diff = end - start;
-
-            Console.WriteLine(string.Format("New:{0}", diff));
-
-            start = DateTime.UtcNow;
-
-            for (var i = 0; i < 4000000; i++)
-            {
-                var position = BitboardOperations.GetSquareIndexFromBoardValueOld((ulong)Math.Pow(1, rand.Next(64)));
-            }
-
-            end = DateTime.UtcNow;
-
-            diff = end - start;
-
-            Console.WriteLine(string.Format("Old:{0}", diff));
-        }
-
-        [TestMethod]
         public void TestGetSquareIndexesFromBoardValue()
         {
             //byte[] returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);

@@ -10,12 +10,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GenieChess/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BoardState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BoardState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EngineEvaluation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/EngineEvaluation/Program.cs" afterDir="false" />
-    </list>
+    <list default="true" id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,18 +28,14 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBitboard.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/FD824CFB-5500-4855-B9E6-D51B008C90E4/2c/858e65e0/Number.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Development/GenieChess/ResourceLoading/ResourceLoader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBoardState.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Development/GenieChess/ResourceLoading/ResourceLoader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/BitboardVisualiser/DebuggerBitboard.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/README.md" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs" />
-      <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/PerfT.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/Hash.cs" />
@@ -56,9 +47,12 @@
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BoardState.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BitboardOperations.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -156,6 +150,7 @@
       <workItem from="1614863689916" duration="933000" />
       <workItem from="1614864648098" duration="3300000" />
       <workItem from="1615818657595" duration="3398000" />
+      <workItem from="1641742291269" duration="313000" />
     </task>
     <servers />
   </component>
@@ -197,105 +192,49 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
           <line>240</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="240" containingFunctionPresentation="method 'FlippedBoard_JustQueens'">
-            <startOffsets>
-              <option value="7985" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8067" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="240" containingFunctionPresentation="method 'FlippedBoard_JustQueens'" />
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
           <line>129</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="130" containingFunctionPresentation="method 'CalculateScore'">
-            <startOffsets>
-              <option value="3675" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3707" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="130" containingFunctionPresentation="method 'CalculateScore'" />
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
           <line>556</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="557" containingFunctionPresentation="method 'CalculateDevelopmentBonus'">
-            <startOffsets>
-              <option value="20000" />
-            </startOffsets>
-            <endOffsets>
-              <option value="20028" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="557" containingFunctionPresentation="method 'CalculateDevelopmentBonus'" />
           <option name="timeStamp" value="12" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs</url>
           <line>134</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="135" containingFunctionPresentation="method 'CalculateScore'">
-            <startOffsets>
-              <option value="3843" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3880" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngine\ScoreCalculation\ScoreCalculator.cs" initialLine="135" containingFunctionPresentation="method 'CalculateScore'" />
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
           <line>236</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="236" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'">
-            <startOffsets>
-              <option value="7882" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7932" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="236" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'" />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
           <line>244</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="244" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'">
-            <startOffsets>
-              <option value="8147" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8187" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="244" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'" />
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/PerfT.cs</url>
           <line>18</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\PerfT.cs" initialLine="18" containingFunctionPresentation="method 'Perft'">
-            <startOffsets>
-              <option value="470" />
-            </startOffsets>
-            <endOffsets>
-              <option value="751" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngineTests\PerfT.cs" initialLine="18" containingFunctionPresentation="method 'Perft'" />
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngine/BoardSearching/StaticBoardChecks.cs</url>
           <line>33</line>
-          <properties documentPath="D:\Development\GenieChess\ChessEngine\BoardSearching\StaticBoardChecks.cs" initialLine="33" containingFunctionPresentation="method 'CalculateWhiteRangedBoard'">
-            <startOffsets>
-              <option value="1173" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1193" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="D:\Development\GenieChess\ChessEngine\BoardSearching\StaticBoardChecks.cs" initialLine="33" containingFunctionPresentation="method 'CalculateWhiteRangedBoard'" />
           <option name="timeStamp" value="22" />
         </line-breakpoint>
       </breakpoints>

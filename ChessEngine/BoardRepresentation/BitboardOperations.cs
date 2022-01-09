@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ChessEngine.BoardSearching;
+﻿using System.Collections.Generic;
 
 namespace ChessEngine.BoardRepresentation
 {
@@ -22,28 +20,8 @@ namespace ChessEngine.BoardRepresentation
         {
             return Index64[((boardValue & (~boardValue + 1)) * Debruijn64) >> 58];
         }
-
-        public static byte GetSquareIndexFromBoardValueOld(ulong boardValue)
-        {
-            LookupTables.InitialiseAllTables();
-
-            if (boardValue == 0)
-                return 0;
-
-            for (byte i = 0; i < 64; i++)
-            {
-                if (LookupTables.SquareValuesFromIndex[i] == boardValue)
-                    return i;
-            }
-
-            throw new Exception($"Bitboard value {boardValue} does not represent a value");
-        }
-
-        /// <summary>
-        /// Returns the indexes of the bitboard value as a byte array
-        /// </summary>
-        /// <param name="boardValue"></param>
-        /// <returns></returns>
+        
+        // Returns the indexes of the bitboard value as a byte array
         public static List<byte> GetSquareIndexesFromBoardValue(ulong boardValue)
         {
             var values = new List<byte>();
@@ -97,12 +75,7 @@ namespace ChessEngine.BoardRepresentation
             return boards;
         }
 
-        /// <summary>
-        /// Flips the bitboard vertically so that a1 becomes a8 etc
-        /// from https://chessprogramming.wikispaces.com/Flipping+Mirroring+and+Rotating#FlipVertically
-        /// </summary>
-        /// <param name="beforeBoard"></param>
-        /// <returns></returns>
+        // Flips the bitboard vertically so that a1 becomes a8 etc
         internal static ulong FlipVertical(ulong beforeBoard)
         {
             var afterBoard = beforeBoard;
