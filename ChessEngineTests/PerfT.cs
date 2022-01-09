@@ -49,10 +49,18 @@ namespace ChessEngineTests
             {
                 var skipMove = false;
 
-                if (moveList[i].SpecialMove == SpecialMoveType.KingCastle || moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
+                if (moveList[i].SpecialMove == SpecialMoveType.KingCastle)
                 {
                     if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateCastlingMove(boardPosition, moveList[i]))
+                        || !MoveGeneration.ValidateKingsideCastlingMove(boardPosition, moveList[i]))
+                    {
+                        skipMove = true;
+                    }
+                }
+                else if (moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
+                {
+                    if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
+                        || !MoveGeneration.ValidateQueensideCastlingMove(boardPosition, moveList[i]))
                     {
                         skipMove = true;
                     }

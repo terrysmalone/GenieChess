@@ -177,14 +177,24 @@ namespace ChessEngine.PossibleMoves
             {
                 var currentMove = m_AllMoves[i];
 
-                if (currentMove.SpecialMove == SpecialMoveType.KingCastle
-                 || currentMove.SpecialMove == SpecialMoveType.QueenCastle)
+                if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
                     if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
                     {
                         m_AllMoves.RemoveAt(i);
                     }
-                    else if (!ValidateCastlingMove(m_CurrentBoard, currentMove))
+                    else if (!ValidateKingsideCastlingMove(m_CurrentBoard, currentMove))
+                    {
+                        m_AllMoves.RemoveAt(i);
+                    }
+                }
+                else if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
+                {
+                    if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
+                    {
+                        m_AllMoves.RemoveAt(i);
+                    }
+                    else if (!ValidateQueensideCastlingMove(m_CurrentBoard, currentMove))
                     {
                         m_AllMoves.RemoveAt(i);
                     }
@@ -192,11 +202,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        /// <summary>
-        /// Checks that the last move was legal by ensuring that the player who has just moved is not in check
-        /// </summary>
-        /// <param name="board"></param>
-        /// <returns></returns>
+        // Checks that the last move was legal by ensuring that the player who has just moved is not in check
         public static bool ValidateMove(Board board)
         {
             bool valid;
@@ -208,39 +214,41 @@ namespace ChessEngine.PossibleMoves
 
             return valid;
         }
-
-        /// <summary>
-        /// Checks that making a castling move would not violate any castling rules
-        /// </summary>
-        /// <param name="boardPosition"></param>
-        /// <param name="currentMove"></param>
-        internal static bool ValidateCastlingMove(Board boardPosition, PieceMoves currentMove)
+        
+        internal static bool ValidateKingsideCastlingMove(Board boardPosition, PieceMoves currentMove)
         {
             if (boardPosition.WhiteToMove)
             {
-                if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
+                if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, true))
                 {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, true))
-                        return false;
-                }
-                else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
-                {
-                    if (IsCastlingPathAttacked(LookupTables.WhiteCastlingKingsideAttackPath, true))
-                        return false;
+                    return false;
                 }
             }
             else
             {
-                if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
+
+                if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, false))
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, false))
-                        return false;
+                    return false;
                 }
-                else if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
+            }
+
+            return true;
+        }
+        
+        internal static bool ValidateQueensideCastlingMove(Board boardPosition, PieceMoves currentMove)
+        {
+            if (boardPosition.WhiteToMove)
+            {
+                if (IsCastlingPathAttacked(LookupTables.WhiteCastlingQueensideAttackPath, true))
                 {
-                    if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, false))
-                        return false;
+                    return false;
                 }
+            }
+            else
+            {
+                if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, false))
+                    return false;
             }
 
             return true;
