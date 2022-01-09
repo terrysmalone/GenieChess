@@ -50,15 +50,19 @@
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BitboardOperations.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" />
-      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
-      <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/PieceMover.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/Game.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/NotationHelpers/PgnTranslator.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/NotationHelpers/FenTranslator.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/FENTranslatorTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/EngineSanityChecks.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/ZobristHashTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/PgnTranslatorTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />

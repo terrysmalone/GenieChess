@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    // TODO: Change everything to Assert.That
     [TestFixture]
     public class BoardCheckingTests
     {
@@ -33,7 +32,7 @@ namespace ChessEngineTests
             var board = new Board();
             board.SetPosition(fenString);
 
-            Assert.That(BoardChecking.IsPieceOnSquare(board, (ulong)squareToCheck), Is.True);
+            Assert.That(BoardChecking.IsPieceOnSquare(board, squareToCheck), Is.True);
         }
         
         [Test]
@@ -57,8 +56,8 @@ namespace ChessEngineTests
             var board = new Board();
             board.SetPosition(fenString);
             
-            Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, (ulong)squareToCheck), Is.True);
-            Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, (ulong)squareToCheck), Is.False);
+            Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, squareToCheck), Is.True);
+            Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), Is.False);
         }
 
         [TestCase("8/1P6/8/8/8/8/8/8 b - - 0 1", 562949953421312u)]
@@ -68,8 +67,8 @@ namespace ChessEngineTests
             var board = new Board();
             board.SetPosition(fenString);
 
-            Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, (ulong) squareToCheck), Is.False);
-            Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, (ulong) squareToCheck), Is.True);
+            Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, squareToCheck), Is.False);
+            Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), Is.True);
         }
 
         [Test]
@@ -95,7 +94,7 @@ namespace ChessEngineTests
             Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Pawn));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A5);
-            Assert.AreNotEqual(PieceType.Pawn, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Pawn));
         }
 
         [Test]
@@ -108,7 +107,7 @@ namespace ChessEngineTests
             Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Knight));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B2);
-            Assert.AreNotEqual(PieceType.Knight, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Knight));
         }
 
         [Test]
@@ -118,10 +117,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.G8);
-            Assert.AreEqual(PieceType.Knight, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Knight));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D5);
-            Assert.AreNotEqual(PieceType.Knight, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Knight));
         }
 
         [Test]
@@ -131,10 +130,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C1);
-            Assert.AreEqual(PieceType.Bishop, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Bishop));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
-            Assert.AreNotEqual(PieceType.Bishop, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Bishop));
         }
 
         [Test]
@@ -144,10 +143,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C8);
-            Assert.AreEqual(PieceType.Bishop, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Bishop));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
-            Assert.AreNotEqual(PieceType.Bishop, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Bishop));
         }
 
         [Test]
@@ -157,10 +156,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.H1);
-            Assert.AreEqual(PieceType.Rook, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Rook));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
-            Assert.AreNotEqual(PieceType.Rook, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Rook));
         }
 
         [Test]
@@ -170,10 +169,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.H8);
-            Assert.AreEqual(PieceType.Rook, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Rook));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
-            Assert.AreNotEqual(PieceType.Rook, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Rook));
         }
 
         [Test]
@@ -183,10 +182,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D1);
-            Assert.AreEqual(PieceType.Queen, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Queen));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
-            Assert.AreNotEqual(PieceType.Queen, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Queen));
         }
 
         [Test]
@@ -196,10 +195,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D8);
-            Assert.AreEqual(PieceType.Queen, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Queen));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
-            Assert.AreNotEqual(PieceType.Queen, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Queen));
         }
 
         [Test]
@@ -209,10 +208,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.E1);
-            Assert.AreEqual(PieceType.King, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.King));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
-            Assert.AreNotEqual(PieceType.King, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.King));
         }
 
         [Test]
@@ -222,10 +221,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.E8);
-            Assert.AreEqual(PieceType.King, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.King));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
-            Assert.AreNotEqual(PieceType.King, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.King));
         }
 
         [Test]
@@ -235,10 +234,10 @@ namespace ChessEngineTests
             board.InitaliseStartingPosition();
 
             var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C5);
-            Assert.AreEqual(PieceType.None, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.EqualTo(PieceType.None));
 
             pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A1);
-            Assert.AreNotEqual(PieceType.None, pieceOnSquare);
+            Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.None));
         }
 
         [Test]
@@ -254,7 +253,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)3034571949281478664;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -270,7 +269,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)3034571949281478664;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -286,7 +285,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)3034571949281478664;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -302,7 +301,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)3034571949281478664;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -318,7 +317,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)163334998696951808;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -334,7 +333,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)163334998696951808;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -350,7 +349,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)1188500000215553;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -366,7 +365,7 @@ namespace ChessEngineTests
 
             var expected = (ulong)1188500000215553;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -378,13 +377,13 @@ namespace ChessEngineTests
 
             var rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteRooks);
 
-            Assert.AreEqual(1, rookPositions.Count);
+            Assert.That(rookPositions.Count, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
 
             var expected = (ulong)35325504126976;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -396,13 +395,13 @@ namespace ChessEngineTests
 
             var rookPositions = BitboardOperations.SplitBoardToArray(board.WhiteRooks);
 
-            Assert.AreEqual(1, rookPositions.Length);
+            Assert.That(rookPositions.Length, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
 
             var expected = (ulong)35325504126976;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -414,13 +413,13 @@ namespace ChessEngineTests
 
             var rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackRooks);
 
-            Assert.AreEqual(1, rookPositions.Count);
+            Assert.That(rookPositions.Count, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
 
             var expected = (ulong)139018117120;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -432,13 +431,13 @@ namespace ChessEngineTests
 
             var rookPositions = BitboardOperations.SplitBoardToArray(board.BlackRooks);
 
-            Assert.AreEqual(1, rookPositions.Length);
+            Assert.That(rookPositions.Length, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
 
             var expected = (ulong)139018117120;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -451,13 +450,13 @@ namespace ChessEngineTests
 
             var bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteBishops);
 
-            Assert.AreEqual(1, bishopPositions.Count);
+            Assert.That(bishopPositions.Count, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
 
             var expected = (ulong)585457745920;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -469,13 +468,13 @@ namespace ChessEngineTests
 
             var bishopPositions = BitboardOperations.SplitBoardToArray(board.WhiteBishops);
 
-            Assert.AreEqual(1, bishopPositions.Length);
+            Assert.That(bishopPositions.Length, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
 
             var expected = (ulong)585457745920;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -487,13 +486,13 @@ namespace ChessEngineTests
 
             var bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackBishops);
 
-            Assert.AreEqual(1, bishopPositions.Count);
+            Assert.That(bishopPositions.Count, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
 
             var expected = (ulong)5664958784208896;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
 
         [Test]
@@ -505,313 +504,14 @@ namespace ChessEngineTests
 
             var bishopPositions = BitboardOperations.SplitBoardToArray(board.BlackBishops);
 
-            Assert.AreEqual(1, bishopPositions.Length);
+            Assert.That(bishopPositions.Length, Is.EqualTo(1));
 
             var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
 
             var expected = (ulong)5664958784208896;
 
-            Assert.AreEqual(allowedMoves, expected);
+            Assert.That(expected, Is.EqualTo(allowedMoves));
         }
-
-        [Test]
-        public void TestCalculateAllowedUpRightMoves()
-        {
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
-            
-
-            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, true);
-            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, 17, false);
-
-            var whiteExpected = (ulong)34426847232;
-            var blackExpected = (ulong)67108864;
-
-            Assert.AreEqual(whiteExpected, whiteMoves);
-            Assert.AreEqual(blackExpected, blackMoves);
-
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpRightMoves_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
-            
-
-            var whiteMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], true);
-            var blackMoves = BoardChecking.CalculateAllowedUpRightMoves(board, LookupTables.SquareValuesFromIndex[17], false);
-
-            var whiteExpected = (ulong)34426847232;
-            var blackExpected = (ulong)67108864;
-
-            Assert.AreEqual(whiteExpected, whiteMoves);
-            Assert.AreEqual(blackExpected, blackMoves);
-
-        }
-
-        #region calculateUpMoves methods
-
-        [Test]
-        public void TestCalculateAllowedUpMoves_NoBlocking()
-        {
-            var board = new Board();
-
-            board.ClearBoard();
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, true); //d2
-
-            Assert.AreEqual((ulong)578721382704611328, upMoves);
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpMoves_NoBlocking_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var board = new Board();
-
-            board.ClearBoard();
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], true); //d2
-
-            Assert.AreEqual((ulong)578721382704611328, upMoves);
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpMoves_FriendlyBlocking_White()
-        {
-            var board = new Board();
-            board.SetPosition("8/3N4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, true); //d2
-
-            Assert.AreEqual((ulong)8830587502592, upMoves);
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpMoves_FriendlyBlocking_White_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var board = new Board();
-            board.SetPosition("8/3N4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board,
-                                                                LookupTables.SquareValuesFromIndex[11],
-                                                                true); //d2
-
-            Assert.AreEqual((ulong)8830587502592, upMoves);
-        }
-
-        /// <summary>
-        /// Friendly moves - Does not include placed blocking piece
-        /// </summary>
-        [Test]
-        public void TestCalculateAllowedUpMoves_FriendlyBlocking_Black()
-        {
-            var board = new Board();
-
-            board.ClearBoard();
-            board.SetPosition("8/3n4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, false); //d2
-
-            Assert.AreEqual((ulong)8830587502592, upMoves);
-        }
-
-        /// <summary>
-        /// Friendly moves - Does not include placed blocking piece
-        /// </summary>
-        [Test]
-        public void TestCalculateAllowedUpMoves_FriendlyBlocking_Black_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var board = new Board();
-            board.SetPosition("8/3n4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-            
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], false); //d2
-
-            Assert.AreEqual((ulong)8830587502592, upMoves);
-        }
-
-        /// <summary>
-        /// Enemy  moves - includes placed blocking piece
-        /// </summary>
-        [Test]
-        public void TestCalculateAllowedUpMoves_EnemyBlocking_White()
-        {
-            var board = new Board();
-            board.SetPosition("8/3n4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-            
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, true); //d2
-
-            Assert.AreEqual((ulong)2260630401187840, upMoves);
-        }
-
-        /// <summary>
-        /// Enemy  moves - includes placed blocking piece
-        /// </summary>
-        [Test]
-        public void TestCalculateAllowedUpMoves_EnemyBlocking_White_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var board = new Board();
-            board.SetPosition("8/3n4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-            
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], true); //d2
-
-            Assert.AreEqual((ulong)2260630401187840, upMoves);
-        }
-        
-        // Enemy  moves - includes placed blocking piece
-        [Test]
-        public void TestCalculateAllowedUpMoves_EnemyBlocking_Black()
-        {
-            var board = new Board();
-            board.SetPosition("8/3N4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, 11, false); // d2
-
-            Assert.AreEqual((ulong)2260630401187840, upMoves);
-        }
-        
-        // Enemy  moves - includes placed blocking piece
-        [Test]
-        public void TestCalculateAllowedUpMoves_EnemyBlocking_Black_Ray()
-        {
-            LookupTables.InitialiseAllTables();
-            var board = new Board();
-            board.SetPosition("8/3N4/8/8/8/8/8/8 w - - 0 1"); // Knight on d7
-
-            var upMoves = BoardChecking.CalculateAllowedUpMoves(board, LookupTables.SquareValuesFromIndex[11], false); //d2
-
-            Assert.AreEqual((ulong)2260630401187840, upMoves);
-        }
-
-        #region calculateUpLeftMoves methods
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_NoBlocking_White()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_FriendlyBlocking_White()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_EnemyBlocking_White()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_NoBlocking_Black()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_FriendlyBlocking_Black()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedUpLeftMoves_EnemyBlocking_Black()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        #endregion calculateUpLeftMoves methods
-
-        [Test]
-        public void TestCalculateAllowedRightMoves()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedRightMoves_Ray()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedLeftMoves()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedLeftMoves_Ray()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownRightMoves()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownRightMoves_Ray()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownMoves()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownMoves_Ray()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownLeftMoves()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [Test]
-        public void TestCalculateAllowedDownLeftMoves_Ray()
-        {
-            // TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        #endregion Calculate Allowed Moves
 
         [Test]
         public void TestGetSpecialMoveType()

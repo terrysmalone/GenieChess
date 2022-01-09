@@ -8,8 +8,6 @@ namespace ChessEngine.BoardSearching
     // Checks carried out on the chess board regarding various moves and attacks
     internal static class BoardChecking
     {
-        #region piece on square checks
-
         internal static bool IsPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
@@ -85,8 +83,6 @@ namespace ChessEngine.BoardSearching
 
             return PieceType.None;
         }
-
-        #endregion Piece on square methods
 
         internal static SpecialMoveType GetSpecialMoveType(Board board, 
                                                            ulong moveFrom,
@@ -214,8 +210,6 @@ namespace ChessEngine.BoardSearching
 
             }
         }
-
-        #region is square attacked methods
         
         // Checks if the square is attacked from a ray attack above.
         // Used to find if white king will be in check when castling
@@ -309,8 +303,6 @@ namespace ChessEngine.BoardSearching
 
             return false;
         }
-
-        #region fast attack methods
 
         // Returns true or false whether king is in check. If we do not need to know the number
         // of checks or who/where is checking king use this over IsKingInCheck since it returns
@@ -713,12 +705,6 @@ namespace ChessEngine.BoardSearching
             return false;
         }
 
-        #endregion fast attack methods
-
-        #endregion is square attacked methods
-
-        #region Calculate allowed moves methods
-
         internal static ulong CalculateAllowedBishopMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             return (CalculateAllowedUpRightMoves(board, pieceIndex, whiteToMove) |
@@ -775,9 +761,7 @@ namespace ChessEngine.BoardSearching
                     CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
         }
 
-        #region Calculate up moves
-
-        internal static ulong CalculateAllowedUpMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedUpMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var upBoard = LookupTables.UpBoard[pieceIndex];
 
@@ -786,7 +770,7 @@ namespace ChessEngine.BoardSearching
                                                     whiteToMove);
         }
 
-        internal static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, bool whiteToMove)
         {
             var upBoard = GetUpBoard(pieceIndex);
 
@@ -808,26 +792,22 @@ namespace ChessEngine.BoardSearching
                       | (upMoves << 40) 
                       | (upMoves << 48);  //Fill all squares above by performing left shifts
             
-            upMoves = upMoves ^ upBoard;       //Get just the allowed squares using XOR
+            upMoves ^= upBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                upMoves = upMoves & board.BlackOrEmpty;
+                upMoves &= board.BlackOrEmpty;
             }
             else
             {
-                upMoves = upMoves & board.WhiteOrEmpty;
+                upMoves &= board.WhiteOrEmpty;
             }
 
             return upMoves;
         }
 
-        #endregion Calculate up moves
-
-        #region calculate right moves
-
-        internal static ulong CalculateAllowedRightMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedRightMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var rightBoard = LookupTables.RightBoard[pieceIndex];
 
@@ -836,7 +816,7 @@ namespace ChessEngine.BoardSearching
                                                        whiteToMove);
         }
 
-        internal static ulong CalculateAllowedRightMoves(Board board, ulong pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedRightMoves(Board board, ulong pieceIndex, bool whiteToMove)
         {
             var rightBoard = GetRightBoard(pieceIndex);
 
@@ -858,24 +838,20 @@ namespace ChessEngine.BoardSearching
                          | (rightMoves << 5) 
                          | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
 
-            rightMoves = rightMoves & rightBoard;       //Remove overflow
+            rightMoves &= rightBoard;       //Remove overflow
 
-            rightMoves = rightMoves ^ rightBoard;       //Get just the allowed squares using XOR
+            rightMoves ^= rightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
-                rightMoves = rightMoves & board.BlackOrEmpty;
+                rightMoves &= board.BlackOrEmpty;
             else
-                rightMoves = rightMoves & board.WhiteOrEmpty;
+                rightMoves &= board.WhiteOrEmpty;
 
             return rightMoves;
         }
 
-        #endregion calculate right moves
-
-        #region Calculate down moves
-
-        internal static ulong CalculateAllowedDownMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedDownMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var downBoard = LookupTables.DownBoard[pieceIndex];
 
@@ -884,7 +860,7 @@ namespace ChessEngine.BoardSearching
                                                       whiteToMove);
         }
 
-        internal static ulong CalculateAllowedDownMoves(Board board, ulong pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedDownMoves(Board board, ulong pieceIndex, bool whiteToMove)
         {
             var downBoard = GetDownBoard(pieceIndex);
 
@@ -906,26 +882,22 @@ namespace ChessEngine.BoardSearching
                         | (downMoves >> 40) 
                         | (downMoves >> 48); //Fill all squares below by performing right shifts
 
-            downMoves = downMoves ^ downBoard; //Get just the allowed squares using XOR
+            downMoves ^= downBoard; //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                downMoves = downMoves & board.BlackOrEmpty;
+                downMoves &= board.BlackOrEmpty;
             }
             else
             {
-                downMoves = downMoves & board.WhiteOrEmpty;
+                downMoves &= board.WhiteOrEmpty;
             }
 
             return downMoves;
         }
 
-        #endregion Calculate down moves
-
-        #region Calculate left moves
-
-        internal static ulong CalculateAllowedLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var leftBoard = LookupTables.LeftBoard[pieceIndex];
 
@@ -956,28 +928,24 @@ namespace ChessEngine.BoardSearching
                         | (leftMoves >> 5) 
                         | (leftMoves >> 6);  //Fill all squares to the left by performing right shifts
 
-            leftMoves = leftMoves & leftBoard;       //Remove overflow
+            leftMoves &= leftBoard;       //Remove overflow
 
-            leftMoves = leftMoves ^ leftBoard;       //Get just the allowed squares using XOR
+            leftMoves ^= leftBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                leftMoves = leftMoves & board.BlackOrEmpty;
+                leftMoves &= board.BlackOrEmpty;
             }
             else
             {
-                leftMoves = leftMoves & board.WhiteOrEmpty;
+                leftMoves &= board.WhiteOrEmpty;
             }
 
             return leftMoves;
         }
 
-        #endregion Calculate left moves
-
-        #region Calculate up right moves
-
-        internal static ulong CalculateAllowedUpRightMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedUpRightMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var upRightBoard = LookupTables.UpRightBoard[pieceIndex];
 
@@ -986,7 +954,7 @@ namespace ChessEngine.BoardSearching
                                                           whiteToMove);
         }
 
-        internal static ulong CalculateAllowedUpRightMoves(Board board, ulong piecePosition, bool whiteToMove)
+        private static ulong CalculateAllowedUpRightMoves(Board board, ulong piecePosition, bool whiteToMove)
         {
             var upRightBoard = GetUpRightBoard(piecePosition);
 
@@ -1008,28 +976,24 @@ namespace ChessEngine.BoardSearching
                            | (upRightMoves << 45) 
                            | (upRightMoves << 54);  //Fill all squares up and right by performing left shifts
 
-            upRightMoves = upRightMoves & upRightBoard;       //Remove overflow
+            upRightMoves &= upRightBoard;       //Remove overflow
 
-            upRightMoves = upRightMoves ^ upRightBoard;       //Get just the allowed squares using XOR
+            upRightMoves ^= upRightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                upRightMoves = upRightMoves & board.BlackOrEmpty;
+                upRightMoves &= board.BlackOrEmpty;
             }
             else
             {
-                upRightMoves = upRightMoves & board.WhiteOrEmpty;
+                upRightMoves &= board.WhiteOrEmpty;
             }
 
             return upRightMoves;
         }
 
-        #endregion Calculate up right moves
-        
-        #region Calculate down right moves
-
-        internal static ulong CalculateAllowedDownRightMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedDownRightMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var downRightBoard = LookupTables.DownRightBoard[pieceIndex];
 
@@ -1038,7 +1002,7 @@ namespace ChessEngine.BoardSearching
                                                            whiteToMove);
         }
 
-        internal static ulong CalculateAllowedDownRightMoves(Board board, ulong piecePosition, bool whiteToMove)
+        private static ulong CalculateAllowedDownRightMoves(Board board, ulong piecePosition, bool whiteToMove)
         {
             var downRightBoard = GetDownRightBoard(piecePosition);
 
@@ -1060,28 +1024,24 @@ namespace ChessEngine.BoardSearching
                              | (downRightMoves >> 35) 
                              | (downRightMoves >> 42);  //Fill all squares down and right by performing left shifts
 
-            downRightMoves = downRightMoves & downRightBoard;       //Remove overflow
+            downRightMoves &= downRightBoard;       //Remove overflow
 
-            downRightMoves = downRightMoves ^ downRightBoard;       //Get just the allowed squares using XOR
+            downRightMoves ^= downRightBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                downRightMoves = downRightMoves & board.BlackOrEmpty;
+                downRightMoves &= board.BlackOrEmpty;
             }
             else
             {
-                downRightMoves = downRightMoves & board.WhiteOrEmpty;
+                downRightMoves &= board.WhiteOrEmpty;
             }
 
             return downRightMoves;
         }
 
-        #endregion Calculate down right moves
-
-        #region Calculate down left moves
-        
-        internal static ulong CalculateAllowedDownLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedDownLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var downLeftBoard = LookupTables.DownLeftBoard[pieceIndex];
 
@@ -1090,7 +1050,7 @@ namespace ChessEngine.BoardSearching
                                                            whiteToMove);
         }
 
-        internal static ulong CalculateAllowedDownLeftMoves(Board board, ulong piecePosition, bool whiteToMove)
+        private static ulong CalculateAllowedDownLeftMoves(Board board, ulong piecePosition, bool whiteToMove)
         {
             //ulong downLeftBoard = LookupTables.DownLeftBoard[BitboardOperations.GetSquareIndexFromBoardValue(piecePosition)];
             var downLeftBoard = GetDownLeftBoard(piecePosition);
@@ -1112,28 +1072,24 @@ namespace ChessEngine.BoardSearching
                             | (downLeftMoves >> 45)     // Fill all squares down and
                             | (downLeftMoves >> 54);    // left by performing right shifts
 
-            downLeftMoves = downLeftMoves & downLeftBoard;       //Remove overflow
+            downLeftMoves &= downLeftBoard;       //Remove overflow
 
-            downLeftMoves = downLeftMoves ^ downLeftBoard;       //Get just the allowed squares using XOR
+            downLeftMoves ^= downLeftBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                downLeftMoves = downLeftMoves & board.BlackOrEmpty;
+                downLeftMoves &= board.BlackOrEmpty;
             }
             else
             {
-                downLeftMoves = downLeftMoves & board.WhiteOrEmpty;
+                downLeftMoves &= board.WhiteOrEmpty;
             }
 
             return downLeftMoves;
         }
 
-        #endregion Calculate down left moves
-
-        #region Calculate up left moves
-
-        internal static ulong CalculateAllowedUpLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
+        private static ulong CalculateAllowedUpLeftMoves(Board board, byte pieceIndex, bool whiteToMove)
         {
             var upLeftBoard = LookupTables.UpLeftBoard[pieceIndex];
 
@@ -1142,7 +1098,7 @@ namespace ChessEngine.BoardSearching
                                                         whiteToMove);
         }
 
-        internal static ulong CalculateAllowedUpLeftMoves(Board board, ulong piecePosition, bool whiteToMove)
+        private static ulong CalculateAllowedUpLeftMoves(Board board, ulong piecePosition, bool whiteToMove)
         {
             var upLeftBoard = GetUpLeftBoard(piecePosition);
 
@@ -1164,33 +1120,25 @@ namespace ChessEngine.BoardSearching
                           | (upLeftMoves << 35)   //Fill all squares up and 
                           | (upLeftMoves << 42);  // left by performing right shifts
 
-            upLeftMoves = upLeftMoves & upLeftBoard;       //Remove overflow
+            upLeftMoves &= upLeftBoard;       //Remove overflow
 
-            upLeftMoves = upLeftMoves ^ upLeftBoard;       //Get just the allowed squares using XOR
+            upLeftMoves ^= upLeftBoard;       //Get just the allowed squares using XOR
 
             //Remove the blocking piece if it can't be captured (i.e. It is a friendly piece)
             if (whiteToMove)
             {
-                upLeftMoves = upLeftMoves & board.BlackOrEmpty;
+                upLeftMoves &= board.BlackOrEmpty;
             }
             else
             {
-                upLeftMoves = upLeftMoves & board.WhiteOrEmpty;
+                upLeftMoves &= board.WhiteOrEmpty;
             }
 
             return upLeftMoves;
         }
 
-        #endregion Calculate up left moves
-
-        #endregion Calculate allowed moves methods
-
-        #region find nearest piece searches
-
-        /// <summary>
-        /// Returns the bitboard value of the first piece, of any colour, up from the given squarePosition
-        /// </summary>
-        internal static ulong FindUpBlockingPosition(Board board, ulong square)
+        // Returns the bitboard value of the first piece, of any colour, up from the given squarePosition
+        public static ulong FindUpBlockingPosition(Board board, ulong square)
         {
             var upBoard = GetUpBoard(square);
 
@@ -1203,12 +1151,12 @@ namespace ChessEngine.BoardSearching
                       | (upMoves << 40) 
                       | (upMoves << 48);  //Fill all squares above by performing left shifts
             
-            upMoves = upMoves ^ upBoard;        //Just allowed squares
+            upMoves ^= upBoard;        //Just allowed squares
 
             return upMoves & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindUpRightBlockingPosition(Board board, ulong square)
+        public static ulong FindUpRightBlockingPosition(Board board, ulong square)
         {
             var upRightBoard = GetUpRightBoard(square);
 
@@ -1221,14 +1169,14 @@ namespace ChessEngine.BoardSearching
                            | (upRightMoves << 45)       //Fill all squares above and
                            | (upRightMoves << 54);      // right by performing left shifts
 
-            upRightMoves = upRightMoves & upRightBoard;       //Remove overflow
+            upRightMoves &= upRightBoard;       //Remove overflow
 
             var notAboveRight = upRightMoves ^ upRightBoard;
 
             return notAboveRight & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindRightBlockingPosition(Board board, ulong square)
+        public static ulong FindRightBlockingPosition(Board board, ulong square)
         {
             var rightBoard = GetRightBoard(square);
             
@@ -1241,14 +1189,14 @@ namespace ChessEngine.BoardSearching
                          | (rightMoves << 5) 
                          | (rightMoves << 6);  //Fill all squares to the right by performing left shifts
 
-            rightMoves = rightMoves & rightBoard;       //Remove overflow
+            rightMoves &= rightBoard;       //Remove overflow
 
             var notRight = rightMoves ^ rightBoard;
 
             return notRight & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindDownRightBlockingPosition(Board board, ulong square)
+        public static ulong FindDownRightBlockingPosition(Board board, ulong square)
         {
             var downRightBoard = GetDownRightBoard(square);
             
@@ -1261,7 +1209,7 @@ namespace ChessEngine.BoardSearching
                              | (downRightMoves >> 35)   //Fill all squares below-right
                              | (downRightMoves >> 42);  // by performing right shifts
 
-            downRightMoves = downRightMoves & downRightBoard;       //Remove overflow
+            downRightMoves &= downRightBoard;       //Remove overflow
 
             var notBelowRight = downRightMoves ^ downRightBoard;
 
@@ -1271,7 +1219,7 @@ namespace ChessEngine.BoardSearching
         /// <summary>
         /// Returns the bitboard value of the first piece, of any colour, down from the given square
         /// </summary>
-        internal static ulong FindDownBlockingPosition(Board board, ulong square)
+        public static ulong FindDownBlockingPosition(Board board, ulong square)
         {
             var downBoard = GetDownBoard(square);
 
@@ -1284,17 +1232,14 @@ namespace ChessEngine.BoardSearching
             return notBelow & board.AllOccupiedSquares;
         }
 
-        internal static ulong FindDownLeftBlockingPosition(Board board, ulong square)
+        public static ulong FindDownLeftBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong downLeftBoard = LookupTables.DownLeftBoard[squareIndex];
-
             var downLeftBoard = GetDownLeftBoard(square);
 
             var downLeftMoves = downLeftBoard & board.AllOccupiedSquares;   //Find first hit square
             downLeftMoves = (downLeftMoves >> 9) | (downLeftMoves >> 18) | (downLeftMoves >> 27) | (downLeftMoves >> 36) | (downLeftMoves >> 45) | (downLeftMoves >> 54);  //Fill all squares below-left by performing right shifts
 
-            downLeftMoves = downLeftMoves & downLeftBoard;       //Remove overflow
+            downLeftMoves &= downLeftBoard;       //Remove overflow
 
             var notBelowRight = downLeftMoves ^ downLeftBoard;
             return notBelowRight & board.AllOccupiedSquares;
@@ -1302,15 +1247,12 @@ namespace ChessEngine.BoardSearching
 
         internal static ulong FindLeftBlockingPosition(Board board, ulong square)
         {
-            //int squareIndex = BitboardOperations.GetSquareIndexFromBoardValue(square);
-            //ulong leftBoard = LookupTables.LeftBoard[squareIndex];
-
             var leftBoard = GetLeftBoard(square);
 
             var leftMoves = leftBoard & board.AllOccupiedSquares;   //Find first hit square
             leftMoves = (leftMoves >> 1) | (leftMoves >> 2) | (leftMoves >> 3) | (leftMoves >> 4) | (leftMoves >> 5) | (leftMoves >> 6);  //Fill all squares to the right by performing left shifts
 
-            leftMoves = leftMoves & leftBoard;       //Remove overflow
+            leftMoves &= leftBoard;       //Remove overflow
 
             var notLeft = leftMoves ^ leftBoard;
 
@@ -1330,18 +1272,13 @@ namespace ChessEngine.BoardSearching
                           | (upLeftMoves << 35) 
                           | (upLeftMoves << 42);  //Fill all squares up-left by performing left shifts
 
-            upLeftMoves = upLeftMoves & upLeftBoard;       //Remove overflow
+            upLeftMoves &= upLeftBoard;       //Remove overflow
 
             var notAboveLeft = upLeftMoves ^ upLeftBoard;
 
             return notAboveLeft & board.AllOccupiedSquares;
         }
 
-        #endregion find nearest piece searches
-
-        #region shifts
-
-         
         private static ulong GetSurroundingSpace(ulong pieceBoard)
         {
             const ulong notA = 18374403900871474942; //All squares except A column
@@ -1351,11 +1288,6 @@ namespace ChessEngine.BoardSearching
                    ((pieceBoard >> 1) & notH) |                     ((pieceBoard << 1) & notA) |
                    ((pieceBoard >> 9) & notH) | (pieceBoard >> 8) | ((pieceBoard >> 7) & notA);
         }
-         
-
-        #endregion shifts
-
-        #region ray boards
 
         private static ulong GetUpRightBoard(ulong square)
         {
@@ -1468,7 +1400,5 @@ namespace ChessEngine.BoardSearching
 
             return shift7; 
         }
-
-        #endregion ray boards
     }
 }
