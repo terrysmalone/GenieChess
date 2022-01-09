@@ -47,6 +47,8 @@
       <option value="$PROJECT_DIR$/ChessEngine/ScoreCalculation/ScoreCalculator.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BitboardOperations.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/Game.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
@@ -142,8 +144,10 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="1e67cc19-10b6-4416-b8a4-b12f26874b1c" name="Default Changelist" comment="" />
+      <created>1641742936617</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
+      <updated>1641742936617</updated>
       <workItem from="1614863689916" duration="933000" />
       <workItem from="1614864648098" duration="3300000" />
       <workItem from="1615818657595" duration="3398000" />
@@ -188,7 +192,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
-          <line>240</line>
           <line>243</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="240" containingFunctionPresentation="method 'FlippedBoard_JustQueens'" />
           <option name="timeStamp" value="7" />
@@ -213,14 +216,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
-          <line>236</line>
           <line>239</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="236" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'" />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ChessEngineTests/ScoreCalculation/ScoreCalculatorTests.cs</url>
-          <line>244</line>
           <line>247</line>
           <properties documentPath="D:\Development\GenieChess\ChessEngineTests\ScoreCalculation\ScoreCalculatorTests.cs" initialLine="244" containingFunctionPresentation="method 'FlippedBoard_JustQueenCheckingKing'" />
           <option name="timeStamp" value="15" />
