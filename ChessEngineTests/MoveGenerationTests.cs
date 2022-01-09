@@ -1,194 +1,122 @@
-﻿using System;
-using ChessEngine;
+﻿using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    [TestClass]
+    [TestFixture]
     public class MoveGenerationTests
     {
-        #region move calculation tests
-        
-        /// <summary>
-        /// Checks that pawns can't move when they are blocked
-        /// </summary>
-        [TestMethod]
-        public void TestPawnMoves()
+        [Test]
+        public void TestPawnsBlockPawns_White()
         {
             var board = new Board();
-            board.PlacePiece(PieceType.Pawn, true, 1, 1);
-            board.PlacePiece(PieceType.Pawn, false, 1, 2);
-
-            board.PlacePiece(PieceType.King,true, 1, 6);
-            board.PlacePiece(PieceType.King, false, 5, 6);
             
-            board.WhiteCanCastleKingside = false;
-            board.WhiteCanCastleQueenside = false;
-            board.BlackCanCastleQueenside = false;
-            board.BlackCanCastleKingside = false;
+             board.SetPosition("8/1K3k2/8/8/8/1p6/1P6/8 w - - 0 1");
+
+             var moveList = MoveGeneration.CalculateAllMoves(board);
+
+            Assert.That(moveList.Count, Is.EqualTo(8));
+        }
+        
+        [Test]
+        public void TestPawnsBlockPawns_Black()
+        {
+            var board = new Board();
+            
+            board.SetPosition("8/1K3k2/8/8/8/1p6/1P6/8 b - - 0 1");
+            board.SwitchSides();
 
             var moveList = MoveGeneration.CalculateAllMoves(board);
 
-            Assert.AreEqual(8, moveList.Count);
-
+            Assert.That(moveList.Count, Is.EqualTo(8));
         }
-
-        //[TestMethod]
-        //public void TestKnightMoves()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[TestMethod]
-        //public void TestBishopMoves()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[TestMethod]
-        //public void TestRookMoves()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[TestMethod]
-        //public void TestQueenMoves()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //[TestMethod]
-        //public void TestKingMoves()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        [TestMethod]
-        public void TestEnPassantCaptureBlack()
-        {
-            var board = new Board();
-
-            board.PlacePiece(PieceType.King, true, 0, 0);
-            board.PlacePiece(PieceType.King, false, 0, 7);
-
-            board.PlacePiece(PieceType.Pawn, true, 7, 1);
-            board.PlacePiece(PieceType.Pawn, false, 6, 3);
-
-            //flags changed
-            board.BlackCanCastleKingside = false;
-            board.WhiteCanCastleKingside = false;
-            board.BlackCanCastleQueenside = false;
-            board.WhiteCanCastleQueenside = false;
-
-            var pieceMover = new PieceMover(board);
-
-            pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move h pawn 2 spaces
-
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
-
-            Assert.AreEqual(5, allMoves.Count);
-        }
-
-        [TestMethod]
+        
+        [Test]
         public void TestEnPassantCaptureWhite()
         {
             var board = new Board();
 
-            board.PlacePiece(PieceType.King, true, 4, 3); 
-            board.PlacePiece(PieceType.King, false, 0, 7);
-
-            board.PlacePiece(PieceType.Pawn, true, 6, 4);
-            board.PlacePiece(PieceType.Pawn, false, 5, 6);
-
-            //flags changed
-            board.BlackCanCastleKingside = false;
-            board.WhiteCanCastleKingside = false;
-            board.BlackCanCastleQueenside = false;
-            board.WhiteCanCastleQueenside = false;
-
-            board.SwitchSides();
+            board.SetPosition("k7/5p2/8/6P1/4K3/8/8/8 b - - 0 1");
 
             var pieceMover = new PieceMover(board);
-                
-
-            pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);       //Move black f-pawn 2 spaces
+            //Move black f-pawn 2 spaces
+            pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-            Assert.AreEqual(9, allMoves.Count);
+            Assert.That(allMoves.Count, Is.EqualTo(9));
         }
 
-        //[TestMethod]
-        //public void TestCastling()
-        //{
-        //    throw new NotImplementedException();
+        [Test]
+        public void TestEnPassantCaptureBlack()
+        {
+            var board = new Board();
 
-        //    //Test blocked pieces
+            board.SetPosition("k7/8/8/8/6p1/8/7P/K7 w - - 0 1");
 
-        //    //Test attacked path
+            var pieceMover = new PieceMover(board);
+            // Move h pawn 2 spaces
+            pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false); 
 
-        //    //Test can castle
-        //}
+            var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-        #region Check tests
+            Assert.That(allMoves.Count, Is.EqualTo(5));
+        }
 
-        [TestMethod]
+        [Test]
         public void TestDoubleCheck()
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1"));
+            board.SetPosition("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1");
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
             
             Assert.AreEqual(2, allMoves.Count);
 
             var move1 = allMoves[0];
-            Assert.AreEqual(PieceType.King, move1.Type);
-            Assert.AreEqual((ulong)1048576, move1.Position);
-            Assert.AreEqual((ulong)524288, move1.Moves);
+            Assert.That(move1.Type, Is.EqualTo(PieceType.King));
+            Assert.That(move1.Position, Is.EqualTo((ulong)1048576));
+            Assert.That(move1.Moves, Is.EqualTo((ulong)524288));
 
             var move2 = allMoves[1];
-            Assert.AreEqual(PieceType.King, move2.Type);
-            Assert.AreEqual((ulong)1048576, move2.Position);
-            Assert.AreEqual((ulong)134217728, move2.Moves); 
+            Assert.That(move2.Type, Is.EqualTo(PieceType.King));
+            Assert.That(move2.Position, Is.EqualTo((ulong)1048576));
+            Assert.That(move2.Moves, Is.EqualTo((ulong)134217728)); 
         }
-
-        #region Test blocking checks
         
-        [TestMethod]
+        [Test]
         public void TestBlockingPieceCantMove1()
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("b4k2/8/8/8/8/8/6P1/7K w - - 0 1"));
+            board.SetPosition("b4k2/8/8/8/8/8/6P1/7K w - - 0 1");
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
             Assert.AreEqual(2, allMoves.Count);
 
             var move1 = allMoves[0];
-            Assert.AreEqual(PieceType.King, move1.Type);
-            Assert.AreEqual((ulong)128, move1.Position);
-            Assert.AreEqual((ulong)64, move1.Moves);
+            Assert.That(move1.Type, Is.EqualTo(PieceType.King));
+            Assert.That(move1.Position, Is.EqualTo((ulong)128));
+            Assert.That(move1.Moves, Is.EqualTo((ulong)64));
 
             var move2 = allMoves[1];
-            Assert.AreEqual(PieceType.King, move2.Type);
-            Assert.AreEqual((ulong)128, move2.Position);
-            Assert.AreEqual((ulong)32768, move2.Moves);        
+            Assert.That(move2.Type, Is.EqualTo(PieceType.King));
+            Assert.That(move2.Position, Is.EqualTo((ulong)128));
+            Assert.That(move2.Moves, Is.EqualTo((ulong)32768));        
         }
 
-        [TestMethod]
+        [Test]
         public void TestBlockingPieceCantMove2()
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1"));
+            board.SetPosition("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1");
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -196,75 +124,21 @@ namespace ChessEngineTests
 
             foreach (var pieceMove in allMoves)
             {
-                Assert.AreEqual(PieceType.King, pieceMove.Type);
-                Assert.AreEqual((ulong)16, pieceMove.Position);
+                Assert.That(pieceMove.Type, Is.EqualTo(PieceType.King));
+                Assert.That(pieceMove.Position, Is.EqualTo((ulong)16));
             }
         }
 
-        #endregion Test blocking checks
-
-        #region Check wrap tests
-
-        [TestMethod]
+        [Test]
         public void TestCheckWrapping()
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1"));
+            board.SetPosition("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1");
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-            Assert.AreEqual(2, allMoves.Count);
-
-            //PieceMoves move1 = allMoves[0];
-            //Assert.AreEqual(PieceType.King, move1.Type);
-            //Assert.AreEqual((ulong)1048576, move1.Position);
-            //Assert.AreEqual((ulong)524288, move1.Moves);
-
-            //PieceMoves move2 = allMoves[1];
-            //Assert.AreEqual(PieceType.King, move2.Type);
-            //Assert.AreEqual((ulong)1048576, move2.Position);
-            //Assert.AreEqual((ulong)134217728, move2.Moves);
+            Assert.That(allMoves.Count, Is.EqualTo(2));
         }
-
-        #endregion Check wrap tests
-
-        #endregion Check tests
-
-        #endregion move calculation tests
-
-        #region speed tests
-
-        /// <summary>
-        /// Tests the move generator speed by running a number of perft tests
-        /// </summary>
-        [TestMethod]
-        public void TestMoveGenerationSpeed()
-        { 
-            
-            
-
-
-        }
-
-        private TimeSpan GetRunningTime(string boardPosition, int depth)
-        {
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(boardPosition));
-
-            var startTime = DateTime.Now;
-            var perft = new PerfT();
-
-            perft.Perft(board, depth);
-
-            var endTime = DateTime.Now;
-
-            var time = endTime - startTime;
-
-            return time;
-        }
-
-        #endregion speed tests
-
     }
 }

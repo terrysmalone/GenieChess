@@ -24,14 +24,14 @@ namespace ChessEngine.BoardSearching
             return false;
         }
         
-        internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
+        internal static bool IsFriendlyPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
-                var enemySquares = 
-                    board.WhiteToMove ? board.AllBlackOccupiedSquares : board.AllWhiteOccupiedSquares;
+                var friendlySquares = 
+                    board.WhiteToMove ? board.AllWhiteOccupiedSquares : board.AllBlackOccupiedSquares;
 
-                if ((enemySquares & square) != 0)
+                if ((friendlySquares & square) != 0)
                 {
                     return true;
                 }
@@ -43,15 +43,15 @@ namespace ChessEngine.BoardSearching
 
             return false;
         }
-
-        internal static bool IsFriendlyPieceOnSquare(Board board, ulong square)
+        
+        internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
         {
             if (BitboardOperations.GetPopCount(square) == 1)
             {
-                var friendlySquares = 
-                    board.WhiteToMove ? board.AllWhiteOccupiedSquares : board.AllBlackOccupiedSquares;
+                var enemySquares = 
+                    board.WhiteToMove ? board.AllBlackOccupiedSquares : board.AllWhiteOccupiedSquares;
 
-                if ((friendlySquares & square) != 0)
+                if ((enemySquares & square) != 0)
                 {
                     return true;
                 }

@@ -102,58 +102,6 @@ namespace ChessEngineTests
             Assert.AreEqual(expectedBlackOrEmpty, blackOrEmpty);
         }
 
-        //[TestMethod]
-        //public void TestPlacePiece()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        [TestMethod]
-        public void TestRemovePiece()
-        {
-            var board = new Board();
-            board.InitaliseStartingPosition();
-
-            // Remove from index 3 (white queen)
-            Assert.AreEqual((ulong)8, board.WhiteQueen);
-            board.RemovePiece(3);       
-            Assert.AreEqual((ulong)0, board.WhiteQueen);
-
-            //Check nothing else has changed
-            CheckAllPiecesArePresent(board, PieceType.Pawn, true);
-            CheckAllPiecesArePresent(board, PieceType.Knight, true);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, true);
-            CheckAllPiecesArePresent(board, PieceType.Rook, true);
-            CheckAllPiecesArePresent(board, PieceType.King, true);
-
-            CheckAllPiecesArePresent(board, PieceType.Pawn, false);
-            CheckAllPiecesArePresent(board, PieceType.Knight, false);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, false);
-            CheckAllPiecesArePresent(board, PieceType.Rook, false);
-            CheckAllPiecesArePresent(board, PieceType.Queen, false);            
-            CheckAllPiecesArePresent(board, PieceType.King, false);
-
-            // Remove from file 4, rank 6 (black pawn)
-            board.RemovePiece(4, 6);
-            Assert.AreEqual((ulong)67272519433846784, board.BlackPawns);
-
-            //Check white queen is still removed
-            Assert.AreEqual((ulong)0, board.WhiteQueen);
-
-            //Check nothing else has changed
-            CheckAllPiecesArePresent(board, PieceType.Pawn, true);
-            CheckAllPiecesArePresent(board, PieceType.Knight, true);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, true);
-            CheckAllPiecesArePresent(board, PieceType.Rook, true);
-            CheckAllPiecesArePresent(board, PieceType.King, true);
-
-            CheckAllPiecesArePresent(board, PieceType.Knight, false);
-            CheckAllPiecesArePresent(board, PieceType.Bishop, false);
-            CheckAllPiecesArePresent(board, PieceType.Rook, false);
-            CheckAllPiecesArePresent(board, PieceType.Queen, false);
-            CheckAllPiecesArePresent(board, PieceType.King, false);
-        }
-
         private void CheckAllPiecesArePresent(Board board, PieceType type, bool isWhite)
         {
             var compareBoard = new Board();

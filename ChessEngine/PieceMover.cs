@@ -31,11 +31,11 @@ namespace ChessEngine
 
             UpdateZobrist(moveFromBoard, moveToBoard, pieceToMove, specialMove);    //Do before everything else so we can check for capture etc 
 
-            _board.RemovePiece(moveFromBoard);
+            RemovePiece(moveFromBoard);
             
             var whiteToMove =_board.WhiteToMove; //This is mostly because I worry that constantly hitting a property will be slow
             
-            _board.RemovePiece(moveToBoard);       //Clear the square we're moving the piece to first
+            RemovePiece(moveToBoard);       //Clear the square we're moving the piece to first
 
             //UpdateUsefulBitboardsForRemoval(moveFromBoard | moveToBoard);
 
@@ -45,34 +45,34 @@ namespace ChessEngine
                 switch (specialMove)
                 {
                     case SpecialMoveType.KnightPromotion:
-                        _board.PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.KnightPromotionCapture:
-                        _board.PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.BishopPromotion:
-                        _board.PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.BishopPromotionCapture:
-                        _board.PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.RookPromotion:
-                        _board.PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.RookPromotionCapture:
-                        _board.PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.QueenPromotion:
-                        _board.PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
                         break;
                     case SpecialMoveType.QueenPromotionCapture:
-                        _board.PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
+                        PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
                         break;
                 }                
             }
             else
             {
-                _board.PlacePiece(pieceToMove, whiteToMove, moveToBoard);
+                PlacePiece(pieceToMove, whiteToMove, moveToBoard);
             }
             
             CheckCastlingStatus(moveFromBoard, moveToBoard, pieceToMove);
@@ -134,6 +134,180 @@ namespace ChessEngine
             
             CalculateUsefulBitboards();
         } 
+        
+        // Adds the given bitboard value to the given piece type and colour bitboard
+        // Note: No checks are done on squareToPlace. A correct value must be given or multiple 
+        // pieces may be placed
+        private void PlacePiece(PieceType typeToPlace, bool pieceIsWhite, ulong squareToPlace)
+        {
+            switch (typeToPlace)
+            {
+                case (PieceType.Pawn):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhitePawns |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackPawns |= squareToPlace;
+                    }
+
+                    break;
+                case (PieceType.Knight):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhiteKnights |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackKnights |= squareToPlace;
+                    }
+
+                    break;
+                case (PieceType.Bishop):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhiteBishops |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackBishops |= squareToPlace;
+                    }
+
+                    break;
+                case (PieceType.Rook):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhiteRooks |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackRooks |= squareToPlace;
+                    }
+
+                    break;
+                case (PieceType.Queen):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhiteQueen |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackQueen |= squareToPlace;
+                    }
+
+                    break;
+                case (PieceType.King):
+                    if (pieceIsWhite)
+                    {
+                        _board.WhiteKing |= squareToPlace;
+                    }
+                    else
+                    {
+                        _board.BlackKing |= squareToPlace;
+                    }
+
+                    break;
+            }
+        }
+        
+        // Removes the piece at the given square value
+        // Note: No checks are done on squareToRemove. An actual value must be given or multiple pieces will be removed
+        private void RemovePiece(ulong squareToClear)
+        {
+            var notSquareToClear = ~squareToClear;
+
+            var pieceBefore = _board.WhitePawns;
+
+            _board.WhitePawns &= notSquareToClear;
+
+            if (pieceBefore != _board.WhitePawns)
+            {
+                return;
+            }
+
+            pieceBefore = _board.BlackPawns;            
+            _board.BlackPawns &= notSquareToClear;
+
+            if (pieceBefore != _board.BlackPawns)
+            {
+                return;
+            }
+
+            pieceBefore = _board.WhiteKnights;
+            _board.WhiteKnights &= notSquareToClear;
+
+            if (pieceBefore != _board.WhiteKnights)
+            {
+                return;
+            }
+
+            pieceBefore = _board.BlackKnights;
+            _board.BlackKnights &= notSquareToClear;
+
+            if (pieceBefore != _board.BlackKnights)
+            {
+                return;
+            }
+
+            pieceBefore = _board.WhiteBishops;            
+            _board.WhiteBishops &= notSquareToClear;
+
+            if (pieceBefore != _board.WhiteBishops)
+            {
+                return;
+            }
+
+            pieceBefore = _board.BlackBishops;
+            _board.BlackBishops &= notSquareToClear;
+
+            if (pieceBefore != _board.BlackBishops)
+            {
+                return;
+            }
+
+            pieceBefore = _board.WhiteRooks;
+            _board.WhiteRooks &= notSquareToClear;
+
+            if (pieceBefore != _board.WhiteRooks)
+            {
+                return;
+            }
+
+            pieceBefore = _board.BlackRooks;
+            _board.BlackRooks &= notSquareToClear;
+
+            if (pieceBefore != _board.BlackRooks)
+            {
+                return;
+            }
+
+            pieceBefore = _board.WhiteQueen;
+            _board.WhiteQueen &= notSquareToClear;
+
+            if (pieceBefore != _board.WhiteQueen)
+            {
+                return;
+            }
+
+            pieceBefore = _board.BlackQueen;
+            _board.BlackQueen &= notSquareToClear;
+
+            if (pieceBefore != _board.BlackQueen)
+            {
+                return;
+            }
+
+            pieceBefore = _board.WhiteKing;
+            _board.WhiteKing &= notSquareToClear;
+
+            if (pieceBefore != _board.WhiteKing)
+            {
+                return;
+            }
+            
+            _board.BlackKing &= notSquareToClear;
+        }
         
         private void SaveBoardState()
         {
@@ -352,8 +526,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            _board.RemovePiece(LookupTables.H1);
-                            _board.PlacePiece(PieceType.Rook, true, LookupTables.F1);
+                            RemovePiece(LookupTables.H1);
+                            PlacePiece(PieceType.Rook, true, LookupTables.F1);
                         }
 
                         _board.Zobrist ^= ZobristKey.WhiteCastleKingside;
@@ -374,8 +548,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            _board.RemovePiece(LookupTables.A1);
-                            _board.PlacePiece(PieceType.Rook, true, LookupTables.D1);
+                            RemovePiece(LookupTables.A1);
+                            PlacePiece(PieceType.Rook, true, LookupTables.D1);
 
                             _board.WhiteCanCastleQueenside = false;
                             //whiteCanCastleKingside = false;  
@@ -422,8 +596,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            _board.RemovePiece(LookupTables.H8);
-                            _board.PlacePiece(PieceType.Rook, false, LookupTables.F8);
+                            RemovePiece(LookupTables.H8);
+                            PlacePiece(PieceType.Rook, false, LookupTables.F8);
                         }
 
                         _board.BlackCanCastleKingside = false; //Any king move means we can no longer castle
@@ -445,8 +619,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            _board.RemovePiece(LookupTables.A8);
-                            _board.PlacePiece(PieceType.Rook, false, LookupTables.D8);
+                            RemovePiece(LookupTables.A8);
+                            PlacePiece(PieceType.Rook, false, LookupTables.D8);
                         }
 
                         _board.BlackCanCastleQueenside = false;
@@ -494,7 +668,7 @@ namespace ChessEngine
                     if ((moveToBoard & _board.EnPassantPosition) != 0) //Move is an en-passant capture  
                     {
                         //Remove captured piece
-                        _board.RemovePiece(_board.EnPassantPosition >> 8);
+                        RemovePiece(_board.EnPassantPosition >> 8);
                         
                         _board.EnPassantPosition = 0;
                     }
@@ -512,7 +686,7 @@ namespace ChessEngine
                     if ((moveToBoard & _board.EnPassantPosition) != 0)      //Move is an en-passant capture
                     {
                         //Remove captured piece
-                        _board.RemovePiece(_board.EnPassantPosition << 8);
+                        RemovePiece(_board.EnPassantPosition << 8);
 
                         _board.EnPassantPosition = 0;
                     }
