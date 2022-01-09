@@ -50,15 +50,21 @@
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/BitboardOperations.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/GameTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/MoveGenerationTests.cs" />
-      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
-      <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/PieceMover.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BitboardOperationsTests.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/Game.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/NotationHelpers/PgnTranslator.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/NotationHelpers/FenTranslator.cs" />
       <option value="$PROJECT_DIR$/ChessEngine/BoardRepresentation/Board.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/FENTranslatorTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/EngineSanityChecks.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/ZobristHashTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/PgnTranslatorTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngineTests/BoardTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/MoveSearching/MoveValueInfo.cs" />
       <option value="$PROJECT_DIR$/ChessEngineTests/BoardCheckingTests.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/BoardSearching/BoardChecking.cs" />
+      <option value="$PROJECT_DIR$/ChessEngine/PossibleMoves/MoveGeneration.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1pIHS1RznHAUAo3c98xgp67cOBk" />
@@ -167,6 +173,47 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnitTestsCoverage.Settings">
+    <option name="coveragePercentColumnWidth" value="150" />
+    <option name="sortOrder" value="DESCENDING" />
+    <option name="sortedColumn" value="1" />
+    <option name="symbolColumnWidth" value="342" />
+    <coverage-tree-state>
+      <expand>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardSearching 80% 159/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+        <path>
+          <item name="rootNode" type="c53c71d1:RiderDotCoverCoverageTreeModel$RootNode" />
+          <item name="Total 22% 4884/6293" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="ChessEngine 32% 2429/3575" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardSearching 80% 159/793" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+          <item name="BoardChecking 70% 135/450" type="8b8fad3a:RiderDotCoverCoverageTreeNode" />
+        </path>
+      </expand>
+      <select />
+    </coverage-tree-state>
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
