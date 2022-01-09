@@ -3,9 +3,7 @@ using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.MoveSearching
 {
-    /// <summary>
-    /// Stores info relating to a move. Used for storing iterative deepening lines
-    /// </summary>
+    // Stores info relating to a move. Used for storing iterative deepening lines
     public struct MoveValueInfo
     {
         public PieceMoves Move;

@@ -16,8 +16,6 @@ namespace ChessEngine.PossibleMoves
 
         private static int _checkCount; //Used to find if king is in double check
 
-        #region Calculate moves methods
-
         /// <summary>
         /// Returns all truly legal moves
         /// </summary>
@@ -251,29 +249,6 @@ namespace ChessEngine.PossibleMoves
 
             return true;
         }
-
-        /// <summary>
-        /// Checks if the king is in check
-        /// </summary>
-        /// <returns></returns>
-        //private static bool IsKingInCheck()
-        //{
-        //    _checkCount = 0;
-
-        //    ulong friendlyKing;
-
-        //    if (m_FriendlyColour == PieceColour.White)
-        //        friendlyKing = m_CurrentBoard.WhiteKing;
-        //    else
-        //        friendlyKing = m_CurrentBoard.BlackKing;
-
-        //    IsSquareAttacked(friendlyKing, m_FriendlyColour);
-
-        //    if (_checkCount > 0)
-        //        return true;
-        //    else
-        //        return false;
-        //}
 
         #region Pawn moves
 
@@ -594,10 +569,6 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        #endregion Pawn moves
-
-        #region Knight moves
-
         private static void CalculateWhiteKnightMoves(bool capturesOnly)
         {
             var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteKnights);
@@ -690,10 +661,6 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        #endregion Knight moves
-
-        #region Bishop moves
-
         private static void CalculateBishopMoves(IReadOnlyList<byte> bishopPositions, bool capturesOnly)
         {
             var index = bishopPositions.Count - 1;
@@ -732,10 +699,6 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        #endregion Bishop moves
-
-        #region Rook moves
-
         private static void CalculateRookMoves(IReadOnlyList<byte> rookPositions, bool capturesOnly)
         {
             var index = rookPositions.Count - 1;
@@ -760,10 +723,6 @@ namespace ChessEngine.PossibleMoves
                 index--;
             }
         }
-
-        #endregion Rook moves
-
-        #region Queen moves
 
         private static void CalculateQueenMoves(IReadOnlyList<byte> queenPositions, bool capturesOnly)
         {
@@ -791,10 +750,6 @@ namespace ChessEngine.PossibleMoves
                 index--;
             }
         }
-
-        #endregion Queen moves
-
-        #region King moves
 
         private static void CalculateWhiteKingMoves(bool capturesOnly)
         {
@@ -861,10 +816,6 @@ namespace ChessEngine.PossibleMoves
                 }
             }
         }
-
-        #endregion King moves
-
-        #region Special move methods
 
         /// <summary>
         /// Adds an en passant capture to the valid movelist
@@ -954,10 +905,6 @@ namespace ChessEngine.PossibleMoves
                 }
             }
         }
-
-        #endregion Special move methods
-
-        #region Attack calculations
 
         /// <summary>
         /// This method is used to check if a square is under attack or to check if the king is under attack.
@@ -1172,8 +1119,6 @@ namespace ChessEngine.PossibleMoves
                 return false;
         }
 
-        #region Castling attacks
-
         private static bool IsCastlingPathAttacked(ulong path, bool whiteToMove)
         {
             //Calculate path positions
@@ -1220,11 +1165,5 @@ namespace ChessEngine.PossibleMoves
 
             return false;
         }
-
-        #endregion castling attacks
-
-        #endregion attack calculations
-
-        #endregion Calculate moves methods
     }
 }
