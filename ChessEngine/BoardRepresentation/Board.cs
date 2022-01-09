@@ -19,10 +19,6 @@ namespace ChessEngine.BoardRepresentation
                                                                       .GetCurrentMethod()
                                                                       .DeclaringType);
 
-        #region piece bitboard properties
-
-        private int m_MoveCount;
-        
         private const ulong FullBoard = ulong.MaxValue;
         
         public ulong WhitePawns;
@@ -39,10 +35,6 @@ namespace ChessEngine.BoardRepresentation
         public ulong BlackQueen;
         public ulong BlackKing;
         
-        #endregion piece bitboard properties
-
-        #region useful bitboard properties
-
         public ulong AllWhiteOccupiedSquares;
         public ulong AllBlackOccupiedSquares;
         
@@ -56,17 +48,11 @@ namespace ChessEngine.BoardRepresentation
         public ulong WhiteOrEmpty;
         public ulong BlackOrEmpty;
 
-        #endregion useful bitboard properties
-
-        #region Castling check properties
-
         public bool WhiteCanCastleQueenside = true;
         public bool WhiteCanCastleKingside = true;
 
         public bool BlackCanCastleQueenside = true;
         public bool BlackCanCastleKingside = true;
-
-        #endregion Castling check properties
 
         public ulong EnPassantPosition;
 
@@ -80,8 +66,6 @@ namespace ChessEngine.BoardRepresentation
 
         public ulong Zobrist;
         
-        #region constructor
-
         public Board()
         {
             LookupTables.InitialiseAllTables();            
@@ -91,16 +75,10 @@ namespace ChessEngine.BoardRepresentation
 
             m_History = new Stack<BoardState>();
         }
-
-        #endregion constructor
-
-        #region place piece methods
-
-        /// <summary>
-        /// Initialises the pieces to a games starting position
-        /// Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
-        /// therefore the far left digit is a1 and the leftmeos digit is h8
-        /// </summary>
+        
+        // Initialises the pieces to a games starting position
+        // Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
+        // therefore the far left digit is a1 and the leftmeos digit is h8
         public void InitaliseStartingPosition()
         {
             WhiteToMove = true;
@@ -119,8 +97,6 @@ namespace ChessEngine.BoardRepresentation
             BlackQueen = LookupTables.D8;
             BlackKing = LookupTables.E8;
 
-            m_MoveCount = 0;
-
             HalfMoveClock = 0;
             FullMoveClock = 1;
 
@@ -130,10 +106,7 @@ namespace ChessEngine.BoardRepresentation
 
             CalculateZobristKey();
         }
-
-        /// <summary>
-        /// Removes all pieces from the board
-        /// </summary>
+        
         public void ClearBoard()
         {
             WhitePawns = 0;
@@ -149,8 +122,6 @@ namespace ChessEngine.BoardRepresentation
             BlackRooks = 0;
             BlackQueen = 0;
             BlackKing = 0;
-
-            m_MoveCount = 0;
 
             HalfMoveClock = 0;
             FullMoveClock = 1;
@@ -195,8 +166,6 @@ namespace ChessEngine.BoardRepresentation
             HalfMoveClock = state.HalfMoveClock;
             FullMoveClock = state.FullMoveClock;
 
-            m_MoveCount = 0;
-
             CalculateZobristKey();
 
             CalculateUsefulBitboards();
@@ -224,8 +193,6 @@ namespace ChessEngine.BoardRepresentation
             BlackCanCastleKingside = value;
         }
 
-        #endregion place piece methods
-
         //Gets called every time a move is made to update all useful boards
         public void CalculateUsefulBitboards()
         {
@@ -239,10 +206,6 @@ namespace ChessEngine.BoardRepresentation
             WhiteOrEmpty            = AllWhiteOccupiedSquares | EmptySquares;
             BlackOrEmpty            = AllBlackOccupiedSquares | EmptySquares;
         }
-
-        #region slower debug get methods
-
-        #region WriteWriteBoardToConsole methods
 
         public void WriteBoardToConsole()
         {
@@ -353,10 +316,6 @@ namespace ChessEngine.BoardRepresentation
                 squares[pieceSquare] = letterToAdd;
             }
         }
-
-        #endregion WriteWriteBoardToConsole methods
-
-        #endregion slower debug methods
         
         public BoardState GetCurrentBoardState()
         {
@@ -389,9 +348,6 @@ namespace ChessEngine.BoardRepresentation
             return state;
         }
 
-        #region Zobrist functions
-
-
         /// <summary>
         /// Calculates the Zobrist key from the board
         /// </summary>
@@ -399,8 +355,6 @@ namespace ChessEngine.BoardRepresentation
         {
             Zobrist = ZobristHash.HashBoard(GetCurrentBoardState());
         }
-
-        #endregion Zobrist functions
 
         public void ResetFlags()
         {

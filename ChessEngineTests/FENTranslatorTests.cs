@@ -119,14 +119,14 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestToBoardState_EnPassant_White()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
         [TestMethod]
         public void TestToBoardState_EnPassant_Black()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 

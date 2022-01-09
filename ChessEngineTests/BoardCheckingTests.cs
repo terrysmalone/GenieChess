@@ -700,42 +700,42 @@ namespace ChessEngineTests
         [Test]
         public void TestCalculateAllowedUpLeftMoves_NoBlocking_White()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedUpLeftMoves_FriendlyBlocking_White()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedUpLeftMoves_EnemyBlocking_White()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedUpLeftMoves_NoBlocking_Black()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedUpLeftMoves_FriendlyBlocking_Black()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedUpLeftMoves_EnemyBlocking_Black()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
@@ -744,70 +744,70 @@ namespace ChessEngineTests
         [Test]
         public void TestCalculateAllowedRightMoves()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedRightMoves_Ray()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedLeftMoves()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedLeftMoves_Ray()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownRightMoves()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownRightMoves_Ray()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownMoves()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownMoves_Ray()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownLeftMoves()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
         [Test]
         public void TestCalculateAllowedDownLeftMoves_Ray()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
@@ -816,9 +816,8 @@ namespace ChessEngineTests
         [Test]
         public void TestGetSpecialMoveType()
         {
-#warning write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
-
     }
 }

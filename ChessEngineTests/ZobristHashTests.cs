@@ -103,7 +103,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestHashBoard_Castling()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
@@ -269,14 +269,14 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestHashBoard_Board_TwoGamesReachingSamePosition()
         {
-#warning Write tests
+// TODO: write tests
             throw new NotImplementedException();
         }
 
         [TestMethod]
         public void TestHashBoard_BoardState()
         {
-#warning Write tests
+// TODO: write tests
             throw new NotImplementedException();
         }
     }

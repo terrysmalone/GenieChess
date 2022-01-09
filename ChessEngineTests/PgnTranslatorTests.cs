@@ -12,14 +12,14 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestToBoard()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
         [TestMethod]
         public void TestToPgnString()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
@@ -250,7 +250,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestToPgnMove_AmbiguousMoves()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
@@ -355,14 +355,14 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestToPgnMove_CheckMate_White()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 
         [TestMethod]
         public void TestToPgnMove_CheckMate_Black()
         {
-#warning Write tests
+// TODO: write tests
             //throw new NotImplementedException();
         }
 

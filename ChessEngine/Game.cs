@@ -163,10 +163,7 @@ namespace ChessEngine
         {
             currentBoard.InitaliseStartingPosition();
 
-            if (openingBook != null)
-            {
-                openingBook.ResetBook();
-            }
+            openingBook?.ResetBook();
         }
         
         public void ClearBoard()
@@ -186,7 +183,7 @@ namespace ChessEngine
         }
 
         /// <param name="fenNotation"></param>
-        public void SetFENPosition(string fenNotation)
+        public void SetPosition(string fenNotation)
         {
             currentBoard.SetPosition(FenTranslator.ToBoardState(fenNotation));
         }

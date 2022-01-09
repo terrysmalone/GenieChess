@@ -60,9 +60,9 @@ namespace ChessEngine.NotationHelpers
                     state.FullMoveClock = 0;
 
             }
-            catch (Exception exc)
+            catch (Exception)
             {
-                log.Error(string.Format("Error converting FEN string {0} to board state", fenNotation));
+                log.Error($"Error converting FEN string {fenNotation} to board state");
                     
             }
 

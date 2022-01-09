@@ -152,12 +152,12 @@ namespace ChessEngine
                     //Console.WriteLine(string.Format("DEBUGGING-fenPos: INPUT={0}", fenPos));
                     //Console.WriteLine(string.Format("DEBUGGING-moves: INPUT={0}", moves));
             
-                    game.SetFENPosition(fenPos);
+                    game.SetPosition(fenPos);
                     game.ReceiveUciMoves(moves);
                 }
                 else
                 {
-                    game.SetFENPosition(input);
+                    game.SetPosition(input);
                 }
             }            
         }

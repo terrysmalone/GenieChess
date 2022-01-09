@@ -46,8 +46,8 @@ namespace ChessEngine.NotationHelpers
                 //Get string of position moved to
                 var moveTo = TranslationHelper.SquareBitboardToSquareString(moveToBoard);
 
-#warning ToDo
-                //If another piece can move here, specify which it was
+
+                // TODO: If another piece can move here, specify which it was
 
                 if (movedPiece == PieceType.Pawn && !moveIsCapture)
                 {

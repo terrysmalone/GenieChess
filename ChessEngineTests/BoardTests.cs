@@ -319,7 +319,7 @@ namespace ChessEngineTests
         [TestMethod]
         public void TestIsKingInCheckFlags()
         {
-#warning write tests
+            // TODO: write tests
             //throw new NotImplementedException();
         }
 
