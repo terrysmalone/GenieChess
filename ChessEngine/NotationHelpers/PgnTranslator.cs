@@ -10,65 +10,7 @@ namespace ChessEngine.NotationHelpers
     /// </summary>
     public static class PgnTranslator
     {
-        /// <summary>
-        /// Creates a board from an entire PGN list
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="pgnString"></param>
-        //public static void ToBoard(Board board, string pgnString)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        /// <summary>
-        /// Creates an entire PGN string from a board 
-        /// </summary>
-        /// <param name="board"></param>
-        /// <returns></returns>
-        //public static string ToPgnMovesList(Board board)
-        //{
-        //    var pgnString = string.Empty;
-                        
-        //    if (!DidGameStartFromInitialPosition(board))
-        //    {
-        //        var fenNotation = FenTranslator.ToFENString(board.History[0]);
-
-        //        pgnString += "[FEN \"" + fenNotation + "\"]\n";
-        //    }
-
-        //    pgnString += "\n";
-
-        //    var boardStates = board.History;
-
-        //    var whiteStarted = true;
-
-        //    if (boardStates[0].HalfMoveClock % 2 != 0)
-        //        whiteStarted = false;
-
-        //    return pgnString;
-        //}
-
-        //private static bool DidGameStartFromInitialPosition(Board board)
-        //{
-        //    var initialPosition = board.History[0];
-
-        //    var startBoard = new Board();
-        //    startBoard.InitaliseStartingPosition();
-        //    var startState = startBoard.History[0];
-
-        //    if (initialPosition.Equals(startState))
-        //        return true;
-        //    else
-        //        return false;
-        //}
-
-        /// <summary>
-        /// Creates a PGN move string from a board move
-        /// </summary>
-        /// <param name="moveFromBoard"></param>
-        /// <param name="moveToBoard"></param>
-        /// <param name="pieceToMove"></param>
-        /// <returns></returns>
+        // Creates a PGN move string from a board move
         public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
         {
             var moveIsCapture = false;
@@ -119,15 +61,18 @@ namespace ChessEngine.NotationHelpers
                 if (movedPiece != pieceToMove)
                     move += "=" + TranslationHelper.GetPieceLetter(pieceToMove, moveToBoard);
 
-               //Move piece to test for check                
+                //Move piece to test for check  
+
+                var pieceMover = new PieceMover(board);
                 
                 //board.RemovePiece(moveFromBoard);
                 //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
-                board.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
+                pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
+                
                 if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
                     move += "+";
                 
-                board.UnMakeLastMove();
+                pieceMover.UnMakeLastMove();
                 
                 //board.PlacePiece(capturedPiece, colour, moveToBoard);
                 //board.PlacePiece(movedPiece, movingColour, moveFromBoard); 
