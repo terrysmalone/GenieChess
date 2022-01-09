@@ -250,8 +250,6 @@ namespace ChessEngine.PossibleMoves
             return true;
         }
 
-        #region Pawn moves
-
         private static void CalculateWhitePawnMoves(bool capturesOnly)
         {
             var whitePawnPositions = BitboardOperations.SplitBoardToArray(m_CurrentBoard.WhitePawns);
