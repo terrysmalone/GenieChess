@@ -46,7 +46,7 @@ namespace ChessEngineTests
         // Anything less than 8 ply can't find 1..f6.
         // 1..b2 loses the queen to 4 pawns
         [ Test]
-        public void HorizonEffect([Range (2, 6)] int depth)
+        public void HorizonEffect([Range (3, 6)] int depth)
         {
             // TODO: write tests
 
@@ -59,7 +59,7 @@ namespace ChessEngineTests
             game.ThinkingDepth = depth;
             game.FindAndMakeBestMove();
 
-            Assert.That(game.GetPosition(), Is.EqualTo("5r1k/4Q1q1/4pp2/1p1p2P1/2p2P2/1p2P3/3P4/BK6 w - - 0 1"));
+            Assert.That(game.GetPosition(), Is.EqualTo("5r1k/4Q1q1/4pp2/1p1p2P1/2p2P2/1p2P3/3P4/BK6 w - - 1 1"));
         }
 
         /// <summary>
