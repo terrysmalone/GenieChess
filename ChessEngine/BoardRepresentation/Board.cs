@@ -170,6 +170,11 @@ namespace ChessEngine.BoardRepresentation
 
             CalculateUsefulBitboards();
         }
+
+        public string GetPosition()
+        {
+            return FenTranslator.ToFENString(GetCurrentBoardState());
+        }
         
         public void SwitchSides()
         {

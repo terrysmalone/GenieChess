@@ -187,6 +187,11 @@ namespace ChessEngine
         {
             currentBoard.SetPosition(fenNotation);
         }
+
+        public string GetPosition()
+        {
+            return currentBoard.GetPosition();
+        }
         
         /// <summary>
         /// Resets various flags to their defaults 
