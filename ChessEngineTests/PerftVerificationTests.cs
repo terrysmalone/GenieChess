@@ -1,645 +1,635 @@
 ﻿using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    [TestClass]
+    [TestFixture]
     public class PerftVerificationTests
     {
-        /// <summary>
-        /// https://sites.google.com/site/numptychess/perft/position-1
-        /// </summary>
-        [TestMethod]
-        public void TestPerftInitial()
+        // https://sites.google.com/site/numptychess/perft/position-1
+        [Test]
+        public void TestPerftInitial([Values] bool useHashing)
         {
             var board = new Board();
             board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
 
-            var perft = new PerfT();
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(20));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(400));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(8902));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(197281));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(4865609));
+        }
+        
+        // https://sites.google.com/site/numptychess/perft/position-2
+        [Test]
+        public void TestPerft2([Values] bool useHashing)
+        {
+            var board = new Board();
             
-            Assert.AreEqual(20, perft.Perft(board, 1));
-            Assert.AreEqual(400, perft.Perft(board, 2));
-            Assert.AreEqual(8902, perft.Perft(board, 3));
-            Assert.AreEqual(197281, perft.Perft(board, 4));
-            Assert.AreEqual(4865609, perft.Perft(board, 5));
-            //Assert.AreEqual(119060324, perft.Perft(board, 6));
-        }
-
-        /// <summary>
-        /// https://sites.google.com/site/numptychess/perft/position-1
-        /// </summary>
-        [TestMethod]
-        public void TestPerftInitial_WithHashing()
-        {
-            var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
-
-            var perft = new PerfT();
-            perft.UseHashing = true;
-
-            //List<Tuple<string, ulong>> divides = perft.Divides(board);
-
-            Assert.AreEqual(20, perft.Perft(board, 1));
-            Assert.AreEqual(400, perft.Perft(board, 2));
-            Assert.AreEqual(8902, perft.Perft(board, 3));
-            Assert.AreEqual(197281, perft.Perft(board, 4));
-            Assert.AreEqual(4865609, perft.Perft(board, 5));
-            //Assert.AreEqual(119060324, perft.Perft(board, 6));
-        }
-
-        /// <summary>
-        /// https://sites.google.com/site/numptychess/perft/position-2
-        /// </summary>
-        [TestMethod]
-        public void TestPerft2()
-        {
-            var board = new Board();
-            var perft = new PerfT();
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
 
-            Assert.AreEqual(5, perft.Perft(board, 1));
-            Assert.AreEqual(39, perft.Perft(board, 2));
-            Assert.AreEqual(237, perft.Perft(board, 3));
-            Assert.AreEqual(2002, perft.Perft(board, 4));
-            Assert.AreEqual(14062, perft.Perft(board, 5));
-            Assert.AreEqual(120995, perft.Perft(board, 6));
-            Assert.AreEqual(966152, perft.Perft(board, 7));
-            Assert.AreEqual(8103790, perft.Perft(board, 8));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(5));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(39));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(237));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(2002));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(14062));
+            Assert.That(perft.Perft(board, 6), Is.EqualTo(120995));
+            Assert.That(perft.Perft(board, 7), Is.EqualTo(966152));
+            Assert.That(perft.Perft(board, 8), Is.EqualTo(8103790));
         }
         
-        /// <summary>
-        /// https://sites.google.com/site/numptychess/perft/position-3
-        /// </summary>
-        [TestMethod]
-        public void TestPerft3()
+        // https://sites.google.com/site/numptychess/perft/position-3
+        [Test]
+        public void TestPerft3([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -"));
 
-            var perft = new PerfT();
-
-            //var divides = perft.Divides(board);
-
-            Assert.AreEqual(17, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual(341, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual(6666, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual(150072, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual(3186478, perft.Perft(board, 5), "Failed at 5");
-            //Assert.AreEqual(77054993, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(17));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(341));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(6666));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(150072));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(3186478));
         }
 
-        [TestMethod]
-        public void TestPerft4()
+        [Test]
+        public void TestPerft4([Values] bool useHashing)
         {
             var board = new Board();
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -"));
 
-            var perft = new PerfT();
-
-            //var divides = perft.Divides(board);
-
-            Assert.AreEqual(9, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual(85, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual(795, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual(7658, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual(72120, perft.Perft(board, 5), "Failed at 5");
-            Assert.AreEqual(703851, perft.Perft(board, 6), "Failed at 6");
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(9));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(85));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(795));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(7658));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(72120));
+            Assert.That(perft.Perft(board, 6), Is.EqualTo(703851));
             //Assert.AreEqual(6627106, perft.Perft(board, 7));
         }
-
-        /// <summary>
-        /// https://sites.google.com/site/numptychess/perft/position-5
-        /// </summary>
-        [TestMethod]
-        public void TestPerft5()
+        
+        // https://sites.google.com/site/numptychess/perft/position-5
+        [Test]
+        public void TestPerft5([Values] bool useHashing)
         {
             var board = new Board();
 
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+            
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -"));
-
-            var perft = new PerfT();
 
             Assert.AreEqual(30, perft.Perft(board, 1));
             Assert.AreEqual(986, perft.Perft(board, 2));
             Assert.AreEqual(29777, perft.Perft(board, 3));
             Assert.AreEqual(967198, perft.Perft(board, 4));
-            //Assert.AreEqual(29345534, perft.Perft(board, 5));
-            //Assert.AreEqual(943244129, perft.Perft(board, 6));
         }
 
-        /// <summary>
-        /// "kiwipete"
-        /// http://chessprogramming.wikispaces.com/Perft+Results
-        /// </summary>
-        [TestMethod]
-        public void TestPerft6()
+        // "kiwipete"
+        // http://chessprogramming.wikispaces.com/Perft+Results
+        [Test]
+        public void TestPerft6([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(48, perft.Perft(board, 1));
-            Assert.AreEqual(2039, perft.Perft(board, 2));
-            Assert.AreEqual(97862, perft.Perft(board, 3));
-            Assert.AreEqual(4085603, perft.Perft(board, 4));
-            //Assert.AreEqual(193690690, perft.Perft(board, 5));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(48));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(2039));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(97862));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(4085603));
         }
 
-        /// <summary>
-        /// "kiwipete" (above) failed at higher depth than I do in unit tests. This test plays 3 moves
-        /// in from that, closer to the failed position to make sure it doesn't go unnoticed again
-        /// It failed because of a bug in the en-passant zobrist hashing
-        /// </summary>
-        [TestMethod]
-        public void TestPerft6Fail()
+        // "kiwipete" (above) failed at higher depth than I do in unit tests. This test plays 3 moves
+        // in from that, closer to the failed position to make sure it doesn't go unnoticed again
+        // It failed because of a bug in the en-passant zobrist hashing
+        [Test]
+        public void TestPerft6Fail([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2"));
 
-            //board.MakeMove(UciMoveTranslator.ToGameMove("d5c6", board), false);
-            var perft = new PerfT();
-
-            //var perftScore = perft.Perft(board, 3);
-
-            Assert.AreEqual(50,        perft.Perft(board, 1));
-            Assert.AreEqual(2028,      perft.Perft(board, 2));
-            Assert.AreEqual(98109,     perft.Perft(board, 3));
-            Assert.AreEqual(3901513,   perft.Perft(board, 4));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(50));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(2028));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(98109));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(3901513));
         }
 
-        /// <summary>
-        /// http://www.rocechess.ch/perft.html
-        /// Good for checking promotions
-        /// </summary>
-        [TestMethod]
-        public void TestPerft7()
+        // http://www.rocechess.ch/perft.html
+        // Good for checking promotions
+        [Test]
+        public void TestPerft7([Values] bool useHashing)
         {
             var board = new Board();
 
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+            
             board.SetPosition(FenTranslator.ToBoardState("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(24, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual(496, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual(9483, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual(182838, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual(3605103, perft.Perft(board, 5), "Failed at 5");
-            //Assert.AreEqual(71179139, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(24));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(496));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(9483));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(182838));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(3605103));
         }
 
-        [TestMethod]
-        public void TestPerft8()
+        [Test]
+        public void TestPerft8([Values] bool useHashing)
         {
             var board = new Board();
-
             
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+
             board.SetPosition(FenTranslator.ToBoardState("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"));
                         
-            var perft = new PerfT();
-            
-            Assert.AreEqual(14, perft.Perft(board, 1));
-            Assert.AreEqual(191, perft.Perft(board, 2));
-            Assert.AreEqual(2812, perft.Perft(board, 3));
-            Assert.AreEqual(43238, perft.Perft(board, 4));
-            Assert.AreEqual(674624, perft.Perft(board, 5));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(14)); 
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(191)); 
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(2812)); 
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(43238)); 
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(674624)); 
             //Assert.AreEqual(11030083, perft.Perft(board, 6));
         }
-
-        /// <summary>
-        /// A contrived position where the kings are in the middle of the board and can be checked lots next move
-        /// </summary>
-        [TestMethod]
-        public void TestPerft9()
+        
+        // A contrived position where the kings are in the middle of the board and can be checked lots next move
+        [Test]
+        public void TestPerft9([Values] bool useHashing)
         {
             var board = new Board();
 
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+            
             board.SetPosition(FenTranslator.ToBoardState("q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(37, perft.Perft(board, 1));
-            Assert.AreEqual(1109, perft.Perft(board, 2));
-            Assert.AreEqual(35507, perft.Perft(board, 3));
-            Assert.AreEqual(1064191, perft.Perft(board, 4));
-            //Assert.AreEqual(33673031, perft.Perft(board, 5));       //116.87 seconds - 08/02/2014
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(37)); 
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(1109)); 
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(35507)); 
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(1064191)); 
         }
 
-        /// <summary>
-        /// http://www.chessprogramming.net/philosophy/perfect-perft/
-        /// //--Illegal ep move #1
-        /// </summary>
-         [TestMethod]
-        public void TestPerft10()
+        // http://www.chessprogramming.net/philosophy/perfect-perft/
+        [Test]
+        public void TestPerft10([Values] bool useHashing)
         {
             var board = new Board();
 
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
+            
             board.SetPosition(FenTranslator.ToBoardState("3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(18, perft.Perft(board, 1));
-            Assert.AreEqual(92, perft.Perft(board, 2));
-            Assert.AreEqual(1670, perft.Perft(board, 3));
-            Assert.AreEqual(10138, perft.Perft(board, 4));
-            Assert.AreEqual(185429, perft.Perft(board, 5));
-            Assert.AreEqual(1134888, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(18)); 
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(92)); 
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(1670)); 
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(10138)); 
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(185429)); 
+            Assert.That(perft.Perft(board, 6), Is.EqualTo(1134888)); 
         }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         /// //--Illegal ep move #2
-         /// </summary>
-         [TestMethod]
-         public void TestPerft11()
+        
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Illegal ep move #2
+         [Test]
+         public void TestPerft11([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(13, perft.Perft(board, 1));
-             Assert.AreEqual(102, perft.Perft(board, 2));
-             Assert.AreEqual(1266, perft.Perft(board, 3));
-             Assert.AreEqual(10276, perft.Perft(board, 4));
-             Assert.AreEqual(135655, perft.Perft(board, 5));
-             Assert.AreEqual(1015133, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(13)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(102)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(1266)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(10276)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(135655)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(1015133)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--EP Capture Checks Opponent
-         /// </summary>
-         [TestMethod]
-         public void TestPerft12()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // EP Capture Checks Opponent
+         [Test]
+         public void TestPerft12([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(15, perft.Perft(board, 1));
-             Assert.AreEqual(126, perft.Perft(board, 2));
-             Assert.AreEqual(1928, perft.Perft(board, 3));
-             Assert.AreEqual(13931, perft.Perft(board, 4));
-             Assert.AreEqual(206379, perft.Perft(board, 5));
-             Assert.AreEqual(1440467, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(15)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(126)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(1928)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(13931)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(206379)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(1440467)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Short Castling Gives Check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft13()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Short Castling Gives Check
+         [Test]
+         public void TestPerft13([Values] bool useHashing)
          {
              var board = new Board();
 
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
+             
              board.SetPosition(FenTranslator.ToBoardState("5k2/8/8/8/8/8/8/4K2R w K - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(15, perft.Perft(board, 1));
-             Assert.AreEqual(66, perft.Perft(board, 2));
-             Assert.AreEqual(1198, perft.Perft(board, 3));
-             Assert.AreEqual(6399, perft.Perft(board, 4));
-             Assert.AreEqual(120330, perft.Perft(board, 5));
-             Assert.AreEqual(661072, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(15)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(66)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(1198)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(6399)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(120330)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(661072)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Long Castling Gives Check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft14()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Long Castling Gives Check
+         [Test]
+         public void TestPerft14([Values] bool useHashing)
          {
              var board = new Board();
 
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
+             
              board.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/8/8/R3K3 w Q - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(16, perft.Perft(board, 1));
-             Assert.AreEqual(71, perft.Perft(board, 2));
-             Assert.AreEqual(1286, perft.Perft(board, 3));
-             Assert.AreEqual(7418, perft.Perft(board, 4));
-             Assert.AreEqual(141077, perft.Perft(board, 5));
-             Assert.AreEqual(803711, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(16)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(71)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(1286)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(7418)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(141077)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(803711)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Castle Rights
-         /// </summary>
-         [TestMethod]
-         public void TestPerft15()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         /// Castle Rights
+         [Test]
+         public void TestPerft15([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1"));
 
-             //board.SetPosition(FenTranslator.ToBoardState("r3k2r/1b4bq/8/8/8/8/7B/2KR3R b kq - 0 1");
-             var perft = new PerfT();
-
-             //List<Tuple<string, ulong>> divides = perft.Divides(board);
-
-             Assert.AreEqual(26, perft.Perft(board, 1));
-             Assert.AreEqual(1141, perft.Perft(board, 2));
-             Assert.AreEqual(27826, perft.Perft(board, 3));
-             Assert.AreEqual(1274206, perft.Perft(board, 4));
-             //Assert.AreEqual(31912360, perft.Perft(board, 5));
-             //Assert.AreEqual(1509218880, perft.Perft(board, 6));            
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(26)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(1141)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(27826)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(1274206));         
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Castle Prevented
-         /// </summary>
-         [TestMethod]
-         public void TestPerft16()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Castle Prevented
+         [Test]
+         public void TestPerft16([Values] bool useHashing)
          {
              var board = new Board();
 
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
+             
              board.SetPosition(FenTranslator.ToBoardState("r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(44, perft.Perft(board, 1));
-             Assert.AreEqual(1494, perft.Perft(board, 2));
-             Assert.AreEqual(50509, perft.Perft(board, 3));
-             Assert.AreEqual(1720476, perft.Perft(board, 4));
-             //Assert.AreEqual(58773923, perft.Perft(board, 5));
-             //Assert.AreEqual(2010267707, perft.Perft(board, 6));             
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(44)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(1494)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(50509)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(1720476));            
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Promote out of Check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft17()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Promote out of Check
+         [Test]
+         public void TestPerft17([Values] bool useHashing)
          {
              var board = new Board();
 
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
+             
              board.SetPosition(FenTranslator.ToBoardState("2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(11, perft.Perft(board, 1));
-             Assert.AreEqual(133, perft.Perft(board, 2));
-             Assert.AreEqual(1442, perft.Perft(board, 3));
-             Assert.AreEqual(19174, perft.Perft(board, 4));
-             Assert.AreEqual(266199, perft.Perft(board, 5));
-             Assert.AreEqual(3821001, perft.Perft(board, 6));             
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(11)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(133)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(1442)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(19174)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(266199)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(3821001));              
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Discovered Check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft18()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Discovered Check
+         [Test]
+         public void TestPerft18([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(29, perft.Perft(board, 1));
-             Assert.AreEqual(165, perft.Perft(board, 2));
-             Assert.AreEqual(5160, perft.Perft(board, 3));
-             Assert.AreEqual(31961, perft.Perft(board, 4));
-             Assert.AreEqual(1004658, perft.Perft(board, 5));
-            // Assert.AreEqual(6334638, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(29)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(165)); 
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(5160)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(31961)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(1004658)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Promote to give check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft19()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Promote to give check
+         [Test]
+         public void TestPerft19([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("4k3/1P6/8/8/8/8/K7/8 w - - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(9, perft.Perft(board, 1));
-             Assert.AreEqual(40, perft.Perft(board, 2));
-             Assert.AreEqual(472, perft.Perft(board, 3));
-             Assert.AreEqual(2661, perft.Perft(board, 4));
-             Assert.AreEqual(38983, perft.Perft(board, 5));
-             Assert.AreEqual(217342, perft.Perft(board, 6));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(9)); 
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(40));
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(472)); 
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(2661)); 
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(38983)); 
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(217342)); 
          }
-
-         /// <summary>
-         /// http://www.chessprogramming.net/philosophy/perfect-perft/
-         ///--Under Promote to give check
-         /// </summary>
-         [TestMethod]
-         public void TestPerft20()
+         
+         // http://www.chessprogramming.net/philosophy/perfect-perft/
+         // Under Promote to give check
+         [Test]
+         public void TestPerft20([Values] bool useHashing)
          {
              var board = new Board();
+             
+             var perft = new PerfT
+             {
+                 UseHashing = useHashing
+             };
 
              board.SetPosition(FenTranslator.ToBoardState("8/P1k5/K7/8/8/8/8/8 w - - 0 1"));
 
-             var perft = new PerfT();
-
-             Assert.AreEqual(6, perft.Perft(board, 1), "Failed at 1");
-             Assert.AreEqual(27, perft.Perft(board, 2), "Failed at 2");
-             Assert.AreEqual(273, perft.Perft(board, 3), "Failed at 3");
-             Assert.AreEqual(1329, perft.Perft(board, 4), "Failed at 4");
-             Assert.AreEqual(18135, perft.Perft(board, 5), "Failed at 5");
-             Assert.AreEqual(92683, perft.Perft(board, 6), "Failed at 6");
-             Assert.AreEqual(1555980, perft.Perft(board, 7), "Failed at 7");
-             //Assert.AreEqual(8110830, perft.Perft(board, 8));
+             Assert.That(perft.Perft(board, 1), Is.EqualTo(6), "Failed at 1");
+             Assert.That(perft.Perft(board, 2), Is.EqualTo(27), "Failed at 2");
+             Assert.That(perft.Perft(board, 3), Is.EqualTo(273), "Failed at 3");
+             Assert.That(perft.Perft(board, 4), Is.EqualTo(1329), "Failed at 4");
+             Assert.That(perft.Perft(board, 5), Is.EqualTo(18135), "Failed at 5");
+             Assert.That(perft.Perft(board, 6), Is.EqualTo(92683), "Failed at 6");
+             Assert.That(perft.Perft(board, 7), Is.EqualTo(1555980), "Failed at 7");
          }
 
-        #region Perft simple test
-
-        [TestMethod]
-        public void TestPerftCheckMate()
+        [Test]
+        public void TestPerftCheckMate([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5b2/4n1p1/7K w - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(0, perft.Perft(board, 1));
-            Assert.AreEqual(0, perft.Perft(board, 2));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(0));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(0));
         }
 
-        [TestMethod]
-        public void TestPerftStalemate()
+        [Test]
+        public void TestPerftStalemate([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5n1b/7p/7K w - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(0, perft.Perft(board, 1));
-            Assert.AreEqual(0, perft.Perft(board, 2));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(0));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(0));
         }
-          
-        #endregion Perft simple test
 
-        #region Individual tests
-
-        [TestMethod]
-        public void TestPerftJustKings()
+        [Test]
+        public void TestPerftJustKings([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/8/2K1k3 w - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(3, perft.Perft(board, 1));
-            Assert.AreEqual(13, perft.Perft(board, 2));
-            Assert.AreEqual(77, perft.Perft(board, 3));
-            Assert.AreEqual(484, perft.Perft(board, 4));
-            Assert.AreEqual(2630, perft.Perft(board, 5));
-            //Assert.AreEqual(16680, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(3));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(13));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(77));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(484));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(2630));
         }
 
 
-        [TestMethod]
-        public void TestPerftKingsAndBishops()
+        [Test]
+        public void TestPerftKingsAndBishops([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("2b1B3/8/8/8/8/8/8/2K1k3 b - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(10, perft.Perft(board, 1));
-            Assert.AreEqual(99, perft.Perft(board, 2));
-            Assert.AreEqual(1162, perft.Perft(board, 3));
-            Assert.AreEqual(13614, perft.Perft(board, 4));
-            Assert.AreEqual(166917, perft.Perft(board, 5));
-            //Assert.AreEqual(2038592, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(10));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(99));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(1162));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(13614));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(166917));
         }
 
-        [TestMethod]
-        public void TestPerftKingsAndPawns()
+        [Test]
+        public void TestPerftKingsAndPawns([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("2k5/2p5/8/8/8/8/3P4/3K4 w - - 0 1"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(6, perft.Perft(board, 1), "Failed at 1");
-            Assert.AreEqual(36, perft.Perft(board, 2), "Failed at 2");
-            Assert.AreEqual(253, perft.Perft(board, 3), "Failed at 3");
-            Assert.AreEqual(1777, perft.Perft(board, 4), "Failed at 4");
-            Assert.AreEqual(13516, perft.Perft(board, 5), "Failed at 5");
-            Assert.AreEqual(98271, perft.Perft(board, 6), "Failed at 6");
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(6), "Failed at 1");
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(36), "Failed at 2");
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(253), "Failed at 3");
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(1777), "Failed at 4");
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(13516), "Failed at 5");
+            Assert.That(perft.Perft(board, 6), Is.EqualTo(98271), "Failed at 6");
         }
 
-        [TestMethod]
-        public void TestPerftKingsAndKnights()
+        [Test]
+        public void TestPerftKingsAndKnights([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("2K2k2/8/8/8/8/8/8/2n2N2 w - -"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(9, perft.Perft(board, 1));
-            Assert.AreEqual(77, perft.Perft(board, 2));
-            Assert.AreEqual(789, perft.Perft(board, 3));
-            Assert.AreEqual(8001, perft.Perft(board, 4));
-            Assert.AreEqual(85768, perft.Perft(board, 5));
-            Assert.AreEqual(910419, perft.Perft(board, 6));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(9));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(77));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(789));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(8001));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(85768));
+            Assert.That(perft.Perft(board, 6), Is.EqualTo(910419));
         }
 
-        [TestMethod]
-        public void TestPerftKingsAndRooks()
+        [Test]
+        public void TestPerftKingsAndRooks([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/2R2r2/1K3k2 w - -"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(16, perft.Perft(board, 1));
-            Assert.AreEqual(219, perft.Perft(board, 2));
-            Assert.AreEqual(3352, perft.Perft(board, 3));
-            Assert.AreEqual(50146, perft.Perft(board, 4));
-            Assert.AreEqual(783632, perft.Perft(board, 5));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(16));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(219));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(3352));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(50146));
+            Assert.That(perft.Perft(board, 5), Is.EqualTo(783632));
         }
 
-        [TestMethod]
-        public void TestPerftKingsAndQueens()
+        [Test]
+        public void TestPerftKingsAndQueens([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("8/8/2Q2q2/8/8/8/8/1K3k2 w - -"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(26, perft.Perft(board, 1));
-            Assert.AreEqual(512, perft.Perft(board, 2));
-            Assert.AreEqual(11318, perft.Perft(board, 3));
-            Assert.AreEqual(235936, perft.Perft(board, 4));
-            //Assert.AreEqual(4991335, perft.Perft(board, 5));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(26));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(512));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(11318));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(235936));
         }
-
-        #endregion Individual tests
-
-        #region previously failed tests
-
-        /// <summary>
-        /// The first time I encountered this position in Arena the engine came up with an illegal move
-        /// Not sure if it was the ngine or the UCI interface at fault
-        /// </summary>
-        [TestMethod]
-        public void TestPerftArena_1a()
+        
+        // The first time I encountered this position in Arena the engine came up with an illegal move
+        // Not sure if it was the engine or the UCI interface at fault
+        [Test]
+        public void TestPerftArena_1a([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR4K1 w - - 1 22"));
 
-            var perft = new PerfT();
-
-            Assert.AreEqual(39, perft.Perft(board, 1));
-            Assert.AreEqual(1020, perft.Perft(board, 2));
-            Assert.AreEqual(37572, perft.Perft(board, 3));
-            Assert.AreEqual(1005030, perft.Perft(board, 4));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(39));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(1020));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(37572));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(1005030));
         }
 
-        [TestMethod]
-        public void TestPerftArena_1b()
+        [Test]
+        public void TestPerftArena_1b([Values] bool useHashing)
         {
             var board = new Board();
+            
+            var perft = new PerfT
+            {
+                UseHashing = useHashing
+            };
 
             board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR1Q2K1 b - - 1 23"));
-
-            var perft = new PerfT();
             
-            Assert.AreEqual(28, perft.Perft(board, 1));
-            Assert.AreEqual(1356, perft.Perft(board, 2));
-            Assert.AreEqual(35758, perft.Perft(board, 3));
-            Assert.AreEqual(1695866, perft.Perft(board, 4));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(28));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(1356));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(35758));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(1695866));
         }
-
-        #endregion previously failed tests
-
     }
 }
