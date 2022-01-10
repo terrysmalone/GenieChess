@@ -1,5 +1,4 @@
 ﻿using ChessEngine.BoardRepresentation;
-using ChessEngine.NotationHelpers;
 using NUnit.Framework;
 
 namespace ChessEngineTests
@@ -12,7 +11,7 @@ namespace ChessEngineTests
         public void TestPerftInitial([Values] bool useHashing)
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"));
+            board.SetPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
             var perft = new PerfT
             {
@@ -37,7 +36,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -"));
+            board.SetPosition("8/p7/8/1P6/K1k3p1/6P1/7P/8 w - -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(5));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(39));
@@ -60,7 +59,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -"));
+            board.SetPosition("r3k2r/p6p/8/B7/1pp1p3/3b4/P6P/R3K2R w KQkq -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(17));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(341));
@@ -78,7 +77,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -"));
+            board.SetPosition("8/5p2/8/2k3P1/p3K3/8/1P6/8 b - -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(9));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(85));
@@ -100,7 +99,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
             
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -"));
+            board.SetPosition("r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -");
 
             Assert.AreEqual(30, perft.Perft(board, 1));
             Assert.AreEqual(986, perft.Perft(board, 2));
@@ -120,7 +119,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -"));
+            board.SetPosition("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(48));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(2039));
@@ -141,7 +140,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2"));
+            board.SetPosition("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(50));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(2028));
@@ -161,7 +160,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
             
-            board.SetPosition(FenTranslator.ToBoardState("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1"));
+            board.SetPosition("n1n5/PPPk4/8/8/8/8/4Kppp/5N1N b - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(24));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(496));
@@ -180,7 +179,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1"));
+            board.SetPosition("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - 0 1");
                         
             Assert.That(perft.Perft(board, 1), Is.EqualTo(14)); 
             Assert.That(perft.Perft(board, 2), Is.EqualTo(191)); 
@@ -201,7 +200,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
             
-            board.SetPosition(FenTranslator.ToBoardState("q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1"));
+            board.SetPosition("q7/2pp3b/8/3n1k1r/R1K1N3/8/B4PP1/7Q b - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(37)); 
             Assert.That(perft.Perft(board, 2), Is.EqualTo(1109)); 
@@ -220,7 +219,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
             
-            board.SetPosition(FenTranslator.ToBoardState("3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1"));
+            board.SetPosition("3k4/3p4/8/K1P4r/8/8/8/8 b - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(18)); 
             Assert.That(perft.Perft(board, 2), Is.EqualTo(92)); 
@@ -242,7 +241,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1"));
+             board.SetPosition("8/8/4k3/8/2p5/8/B2P2K1/8 w - - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(13)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(102)); 
@@ -264,7 +263,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1"));
+             board.SetPosition("8/8/1k6/2b5/2pP4/8/5K2/8 b - d3 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(15)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(126)); 
@@ -286,7 +285,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
              
-             board.SetPosition(FenTranslator.ToBoardState("5k2/8/8/8/8/8/8/4K2R w K - 0 1"));
+             board.SetPosition("5k2/8/8/8/8/8/8/4K2R w K - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(15)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(66)); 
@@ -308,7 +307,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
              
-             board.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/8/8/R3K3 w Q - 0 1"));
+             board.SetPosition("3k4/8/8/8/8/8/8/R3K3 w Q - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(16)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(71)); 
@@ -330,7 +329,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1"));
+             board.SetPosition("r3k2r/1b4bq/8/8/8/8/7B/R3K2R w KQkq - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(26)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(1141)); 
@@ -350,7 +349,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
              
-             board.SetPosition(FenTranslator.ToBoardState("r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1"));
+             board.SetPosition("r3k2r/8/3Q4/8/8/5q2/8/R3K2R b KQkq - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(44)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(1494)); 
@@ -370,7 +369,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
              
-             board.SetPosition(FenTranslator.ToBoardState("2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1"));
+             board.SetPosition("2K2r2/4P3/8/8/8/8/8/3k4 w - - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(11)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(133)); 
@@ -392,7 +391,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1"));
+             board.SetPosition("8/8/1P2K3/8/2n5/1q6/8/5k2 b - - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(29)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(165)); 
@@ -413,7 +412,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("4k3/1P6/8/8/8/8/K7/8 w - - 0 1"));
+             board.SetPosition("4k3/1P6/8/8/8/8/K7/8 w - - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(9)); 
              Assert.That(perft.Perft(board, 2), Is.EqualTo(40));
@@ -435,7 +434,7 @@ namespace ChessEngineTests
                  UseHashing = useHashing
              };
 
-             board.SetPosition(FenTranslator.ToBoardState("8/P1k5/K7/8/8/8/8/8 w - - 0 1"));
+             board.SetPosition("8/P1k5/K7/8/8/8/8/8 w - - 0 1");
 
              Assert.That(perft.Perft(board, 1), Is.EqualTo(6), "Failed at 1");
              Assert.That(perft.Perft(board, 2), Is.EqualTo(27), "Failed at 2");
@@ -456,7 +455,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5b2/4n1p1/7K w - - 0 1"));
+            board.SetPosition("k6r/8/8/8/8/5b2/4n1p1/7K w - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(0));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(0));
@@ -472,7 +471,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("k6r/8/8/8/8/5n1b/7p/7K w - - 0 1"));
+            board.SetPosition("k6r/8/8/8/8/5n1b/7p/7K w - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(0));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(0));
@@ -488,7 +487,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/8/2K1k3 w - - 0 1"));
+            board.SetPosition("8/8/8/8/8/8/8/2K1k3 w - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(3));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(13));
@@ -508,7 +507,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("2b1B3/8/8/8/8/8/8/2K1k3 b - - 0 1"));
+            board.SetPosition("2b1B3/8/8/8/8/8/8/2K1k3 b - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(10));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(99));
@@ -527,7 +526,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("2k5/2p5/8/8/8/8/3P4/3K4 w - - 0 1"));
+            board.SetPosition("2k5/2p5/8/8/8/8/3P4/3K4 w - - 0 1");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(6), "Failed at 1");
             Assert.That(perft.Perft(board, 2), Is.EqualTo(36), "Failed at 2");
@@ -547,7 +546,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("2K2k2/8/8/8/8/8/8/2n2N2 w - -"));
+            board.SetPosition("2K2k2/8/8/8/8/8/8/2n2N2 w - -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(9));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(77));
@@ -567,7 +566,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/8/8/8/8/8/2R2r2/1K3k2 w - -"));
+            board.SetPosition("8/8/8/8/8/8/2R2r2/1K3k2 w - -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(16));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(219));
@@ -586,7 +585,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("8/8/2Q2q2/8/8/8/8/1K3k2 w - -"));
+            board.SetPosition("8/8/2Q2q2/8/8/8/8/1K3k2 w - -");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(26));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(512));
@@ -606,7 +605,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR4K1 w - - 1 22"));
+            board.SetPosition("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR4K1 w - - 1 22");
 
             Assert.That(perft.Perft(board, 1), Is.EqualTo(39));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(1020));
@@ -624,7 +623,7 @@ namespace ChessEngineTests
                 UseHashing = useHashing
             };
 
-            board.SetPosition(FenTranslator.ToBoardState("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR1Q2K1 b - - 1 23"));
+            board.SetPosition("5rk1/1Bp1bpp1/1p6/7Q/8/3P4/5PPP/rR1Q2K1 b - - 1 23");
             
             Assert.That(perft.Perft(board, 1), Is.EqualTo(28));
             Assert.That(perft.Perft(board, 2), Is.EqualTo(1356));
