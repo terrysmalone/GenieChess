@@ -15,7 +15,7 @@ namespace ChessEngineTests.ScoreCalculation
         private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
         
         [Test]
-        public void TestInitialPositionIsEven()
+        public void InitialPositionIsEven()
         {
             var board = new Board();
 
@@ -29,7 +29,7 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
-        public void TestTwoMovesAreEqual_Pawns()
+        public void TwoMovesAreEqual_Pawns()
         {
             var board = new Board();
             var pieceMover = new PieceMover(board);
@@ -46,7 +46,7 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
-        public void TestTwoMovesAreEqual_Knights()
+        public void TwoMovesAreEqual_Knights()
         {
             var board = new Board();
             var pieceMover = new PieceMover(board);
@@ -62,12 +62,8 @@ namespace ChessEngineTests.ScoreCalculation
             Assert.That(score, Is.EqualTo(0));
         }
 
-        #region sanity checks
-
-        #region pawn structure - Checks that player is rewarded for a better pawn structure
-
         [Test]
-        public void TestScoreCalculatorSanityCheck_PawnStructure1()
+        public void ScoreCalculatorSanityCheck_PawnStructure1()
         {
             var board = new Board();
 
@@ -81,7 +77,7 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
-        public void TestScoreCalculatorSanityCheck_PawnStructure2()
+        public void ScoreCalculatorSanityCheck_PawnStructure2()
         {
             var board = new Board();
 
@@ -95,7 +91,7 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
-        public void TestScoreCalculatorSanityCheck_PawnStructure3()
+        public void ScoreCalculatorSanityCheck_PawnStructure3()
         {
             var board = new Board();
 
@@ -114,10 +110,6 @@ namespace ChessEngineTests.ScoreCalculation
 
             Assert.That(score, Is.EqualTo(-score2));
         }
-
-        #endregion sanity checks
-
-        #endregion pawn structure
 
         [Test]
         public void MirroredBoard_EvenPositions_Knights()
