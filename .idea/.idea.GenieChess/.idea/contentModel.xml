@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\terry.malone\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\terry.malone\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_GenieChess.586706895.00" t="ExcludeRecursive" />
+    <e p="D:\Development\GenieChess" t="IncludeFlat">
+      <e p="BitboardVisualiser" t="IncludeRecursive">
+        <e p="BitboardVisualiser.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="BitboardVisualiserTest" t="IncludeRecursive">
+        <e p="BitboardVisualiserTest.csproj" t="IncludeRecursive" />
+      </e>
+      <e p="ChessEngine" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="BoardRepresentation" t="Include">
+          <e p="BitboardOperations.cs" t="Include" />
+          <e p="Board.cs" t="Include" />
+          <e p="BoardState.cs" t="Include" />
+          <e p="Enums" t="Include">
+            <e p="PieceType.cs" t="Include" />
+          </e>
+        </e>
+        <e p="BoardSearching" t="Include">
+          <e p="BoardChecking.cs" t="Include" />
+          <e p="LookupTables.cs" t="Include" />
+          <e p="StaticBoardChecks.cs" t="Include" />
+        </e>
+        <e p="ChessEngine.csproj" t="IncludeRecursive" />
+        <e p="Debugging" t="Include">
+          <e p="CountDebugger.cs" t="Include" />
+        </e>
+        <e p="Exceptions" t="Include">
+          <e p="BitboardException.cs" t="Include" />
+          <e p="ChessBoardException.cs" t="Include" />
+        </e>
+        <e p="Extensions" t="Include">
+          <e p="RandomExtensions.cs" t="Include" />
+        </e>
+        <e p="Game.cs" t="Include" />
+        <e p="GameFactory.cs" t="Include" />
+        <e p="IChessGameFactory.cs" t="Include" />
+        <e p="log4net.dll" t="Include" />
+        <e p="MoveSearching" t="Include">
+          <e p="AlphaBetaSearch.cs" t="Include" />
+          <e p="Hash.cs" t="Include" />
+          <e p="MoveValueInfo.cs" t="Include" />
+          <e p="TranspositionTable.cs" t="Include" />
+          <e p="ZobristHash.cs" t="Include" />
+          <e p="ZobristKey.cs" t="Include" />
+        </e>
+        <e p="NotationHelpers" t="Include">
+          <e p="FenTranslator.cs" t="Include" />
+          <e p="INotationTranslator.cs" t="Include" />
+          <e p="PgnTranslator.cs" t="Include" />
+          <e p="TranslationHelper.cs" t="Include" />
+          <e p="UciMoveTranslator.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="PieceMover.cs" t="Include" />
+        <e p="PossibleMoves" t="Include">
+          <e p="MoveGeneration.cs" t="Include" />
+          <e p="PieceMove.cs" t="Include" />
+          <e p="PieceValidMoves.cs" t="Include" />
+          <e p="SpecialMoveType.cs" t="Include" />
+          <e p="ValidMoveArrays.cs" t="Include" />
+        </e>
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="ScoreCalculation" t="Include">
+          <e p="IScoreCalculator.cs" t="Include" />
+          <e p="ScoreCalculator.cs" t="Include" />
+          <e p="ScoreValueXmlReader.cs" t="Include" />
+        </e>
+        <e p="Uci.cs" t="Include" />
+      </e>
+      <e p="ChessEngineTests" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="BitboardOperationsTests.cs" t="Include" />
+        <e p="BoardCheckingTests.cs" t="Include" />
+        <e p="BoardStateTests.cs" t="Include" />
+        <e p="BoardTests.cs" t="Include" />
+        <e p="ChessEngineTests.csproj" t="IncludeRecursive" />
+        <e p="EngineSanityChecks.cs" t="Include" />
+        <e p="GameTests.cs" t="Include" />
+        <e p="LookupTablesTests.cs" t="Include" />
+        <e p="MoveGenerationTests.cs" t="Include" />
+        <e p="MoveSearching" t="Include">
+          <e p="AlphaBetaSearchTests.cs" t="Include" />
+          <e p="ZobristHashTests.cs" t="Include" />
+        </e>
+        <e p="NotationHelpers" t="Include">
+          <e p="FENTranslatorTests.cs" t="Include" />
+          <e p="UCIMoveTranslatorTests.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="PerfT.cs" t="Include" />
+        <e p="PerftVerificationTests.cs" t="Include" />
+        <e p="PgnTranslatorTests.cs" t="Include" />
+        <e p="PieceMoverTests.cs" t="Include" />
+        <e p="PieceValidMovesTests.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="RandomExtensions.cs" t="Include" />
+        <e p="ScoreCalculation" t="Include">
+          <e p="ScoreCalculatorTests.cs" t="Include" />
+        </e>
+        <e p="TranslationHelperTests.cs" t="Include" />
+        <e p="ZobristHashTests.cs" t="Include" />
+      </e>
+      <e p="EngineEvaluation" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="EngineEvaluation.csproj" t="IncludeRecursive" />
+        <e p="EnginePerformanceEvaluator.cs" t="Include" />
+        <e p="ExcelHandler.cs" t="Include" />
+        <e p="IEvaluator.cs" t="Include" />
+        <e p="IPerformanceEvaluatorFactory.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="PerformanceEvaluatorFactory.cs" t="Include" />
+        <e p="PerfTEvaluator.cs" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="TestPositionsEvaluator.cs" t="Include" />
+      </e>
+      <e p="Genie_CommandLine" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Genie.cs" t="Include" />
+        <e p="Genie_CommandLine.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Genie_UCI" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Genie_UCI.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+      </e>
+      <e p="GenieChess.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="ResourceLoading" t="IncludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="IOpeningBook.cs" t="Include" />
+        <e p="IResourceLoader.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive" />
+        <e p="Opening.cs" t="Include" />
+        <e p="OpeningBook.cs" t="Include" />
+        <e p="PerfTPosition.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="ResourceLoader.cs" t="Include" />
+        <e p="ResourceLoading.csproj" t="IncludeRecursive" />
+        <e p="TestPosition.cs" t="Include" />
+      </e>
+    </e>
+  </component>
+</project>

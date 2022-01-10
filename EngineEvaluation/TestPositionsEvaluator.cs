@@ -117,7 +117,7 @@ namespace EngineEvaluation
                     Log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
                     
                     var board = new Board();
-                    board.SetPosition(FenTranslator.ToBoardState(position.FenPosition));
+                    board.SetPosition(position.FenPosition);
 
                     var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 

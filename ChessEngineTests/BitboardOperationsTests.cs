@@ -1,181 +1,101 @@
-﻿using System;
-using ChessEngine.BoardRepresentation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using ChessEngine.BoardRepresentation;
+using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    /// <summary>
-    /// Summary description for BitboardOperationsTests
-    /// </summary>
-    [TestClass]
+    [TestFixture]
     public class BitboardOperationsTests
     {
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
-
-        [TestMethod]
+        [Test]
         public void TestFlipVertical_1()
         {
             ulong before = 16;
             
             var after = BitboardOperations.FlipVertical(before);
 
-            Assert.AreEqual((ulong)1152921504606846976, after);
+            Assert.That(after, Is.EqualTo((ulong)1152921504606846976));
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlipVertical_2()
         {
             ulong before = 137707913216;
 
             var after = BitboardOperations.FlipVertical(before);
 
-            Assert.AreEqual((ulong)8865349369856, after);
-
+            Assert.That(after, Is.EqualTo((ulong)8865349369856));
         }
 
-        [TestMethod]
+        [Test]
         public void TestFlipVertical_3()
         {
             ulong before = 2160124144;
 
             var after = BitboardOperations.FlipVertical(before);
 
-            Assert.AreEqual((ulong)17357084619874238464, after);
-
+            Assert.That(after, Is.EqualTo(17357084619874238464));
         }
 
-        [TestMethod]
+        [Test]
         public void TestPopCount()
         {
-            Assert.AreEqual(0, BitboardOperations.GetPopCount(0));
-            Assert.AreEqual(3, BitboardOperations.GetPopCount(3298601992192));
-            Assert.AreEqual(6, BitboardOperations.GetPopCount(217018310850510848));
-            Assert.AreEqual(7, BitboardOperations.GetPopCount(13835058055315849731));
-            Assert.AreEqual(8, BitboardOperations.GetPopCount(848857606930560));
+            Assert.That(BitboardOperations.GetPopCount(0), Is.EqualTo(0));
+            Assert.That(BitboardOperations.GetPopCount(3298601992192), Is.EqualTo(3));
+            Assert.That(BitboardOperations.GetPopCount(217018310850510848), Is.EqualTo(6));
+            Assert.That(BitboardOperations.GetPopCount(13835058055315849731), Is.EqualTo(7));
+            Assert.That(BitboardOperations.GetPopCount(848857606930560), Is.EqualTo(8));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSquareIndexFromBoardValue()
         {
-            Assert.AreEqual(0, BitboardOperations.GetSquareIndexFromBoardValue(1));
-            Assert.AreEqual(10, BitboardOperations.GetSquareIndexFromBoardValue(1024));
-            Assert.AreEqual(21, BitboardOperations.GetSquareIndexFromBoardValue(2097152));
-            Assert.AreEqual(63, BitboardOperations.GetSquareIndexFromBoardValue(9223372036854775808));
+            Assert.That(BitboardOperations.GetSquareIndexFromBoardValue(1), Is.EqualTo(0));
+            Assert.That(BitboardOperations.GetSquareIndexFromBoardValue(1024), Is.EqualTo(10));
+            Assert.That(BitboardOperations.GetSquareIndexFromBoardValue(2097152), Is.EqualTo(21));
+            Assert.That(BitboardOperations.GetSquareIndexFromBoardValue(9223372036854775808), Is.EqualTo(63));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetSquareIndexesFromBoardValue()
         {
             //byte[] returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);
             var returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(16140901064495857664);
 
 
-            Assert.AreEqual(3, returnedIndexes.Count);
-            Assert.AreEqual(61, returnedIndexes[0]);
-            Assert.AreEqual(62, returnedIndexes[1]);
-            Assert.AreEqual(63, returnedIndexes[2]);
+            Assert.That(returnedIndexes.Count, Is.EqualTo(3));
+            Assert.That(returnedIndexes[0], Is.EqualTo(61));
+            Assert.That(returnedIndexes[1], Is.EqualTo(62));
+            Assert.That(returnedIndexes[2], Is.EqualTo(63));
 
             //
             returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(65793);
-            Assert.AreEqual(3, returnedIndexes.Count);
-            Assert.AreEqual(0, returnedIndexes[0]);
-            Assert.AreEqual(8, returnedIndexes[1]);
-            Assert.AreEqual(16, returnedIndexes[2]);
+            Assert.That(returnedIndexes.Count, Is.EqualTo(3));
+            Assert.That(returnedIndexes[0], Is.EqualTo(0));
+            Assert.That(returnedIndexes[1], Is.EqualTo(8));
+            Assert.That(returnedIndexes[2], Is.EqualTo(16));
 
             //
             returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(0);
-            Assert.AreEqual(0, returnedIndexes.Count);
+            Assert.That(returnedIndexes.Count, Is.EqualTo(0));
 
             //
             returnedIndexes = BitboardOperations.GetSquareIndexesFromBoardValue(17179869184);
-            Assert.AreEqual(1, returnedIndexes.Count);
-            Assert.AreEqual(34, returnedIndexes[0]);
+            Assert.That(returnedIndexes.Count, Is.EqualTo(1));
+            Assert.That(returnedIndexes[0], Is.EqualTo(34));
         }
 
-        [TestMethod]
-        public void TestGetSquareIndexesFromBoardValueSpeed()
-        {
-            var rand = new Random();
-            var start = DateTime.UtcNow;
-
-            for (var i = 0; i < 1000000; i++)
-            {
-                var positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
-            }
-
-            var end = DateTime.UtcNow;
-
-            var diff = end - start;
-
-            Console.WriteLine(string.Format("New:{0}", diff));
-        }
-
-        [TestMethod]
+        [Test]
         public void TestSplitBoard()
         {
             var split = BitboardOperations.SplitBoardToArray(17626747109376);
 
-            Assert.AreEqual(4, split.Length);
+            Assert.That(split.Length, Is.EqualTo(4));
 
-            Assert.AreEqual((ulong)67108864, split[0]);
-            Assert.AreEqual((ulong)134217728, split[1]);
-            Assert.AreEqual((ulong)34359738368, split[2]);
-            Assert.AreEqual((ulong)17592186044416, split[3]);
-        }
-
-        [TestMethod]
-        private void TestFastestPopCount()
-        {
-            var rand = new Random();
-            var start = DateTime.UtcNow;
-
-            for (var i = 0; i < 10000000; i++)
-            {
-                var positions = BitboardOperations.GetSquareIndexesFromBoardValue((ulong)Math.Pow(1, rand.Nextulong()));
-                //positions.Count();
-            }
-
-            var end = DateTime.UtcNow;
-
-            var diff = end - start;
-
-            Console.WriteLine(string.Format("Finding bits:{0}", diff));
-
-            rand = new Random();
-
-            start = DateTime.UtcNow;
-
-            for (var i = 0; i < 10000000; i++)
-            {
-                var popCount = BitboardOperations.GetPopCount(rand.Nextulong());
-            }
-
-            end = DateTime.UtcNow;
-
-            diff = end - start;
-
-            Console.WriteLine(string.Format("PopCount:{0}", diff));
+            Assert.That(split[0], Is.EqualTo((ulong)67108864));
+            Assert.That(split[1], Is.EqualTo((ulong)134217728));
+            Assert.That(split[2], Is.EqualTo((ulong)34359738368));
+            Assert.That(split[3], Is.EqualTo((ulong)17592186044416));
         }
     }
 }

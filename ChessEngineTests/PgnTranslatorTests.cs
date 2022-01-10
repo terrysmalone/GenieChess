@@ -92,7 +92,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/8/4p3/3P4/8/8/8 w - - 0 1"));
+            board.SetPosition("8/8/8/4p3/3P4/8/8/8 w - - 0 1");
 
             var moveFrom = LookupTables.D4;
             var moveTo = LookupTables.E5;
@@ -108,7 +108,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/8/4p3/3P4/8/8/8 b - - 0 1"));
+            board.SetPosition("8/8/8/4p3/3P4/8/8/8 b - - 0 1");
 
             var moveFrom = LookupTables.E5;
             var moveTo = LookupTables.D4;
@@ -124,7 +124,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/4r3/3B4/4p3/3P4/8/8/8 w - - 0 1"));
+            board.SetPosition("8/4r3/3B4/4p3/3P4/8/8/8 w - - 0 1");
 
             var moveFrom = LookupTables.D6;
             var moveTo = LookupTables.E7;
@@ -140,7 +140,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/2N2r2/8/8/8/8/8 b - - 0 1"));
+            board.SetPosition("8/8/2N2r2/8/8/8/8/8 b - - 0 1");
 
             var moveFrom = LookupTables.F6;
             var moveTo = LookupTables.C6;
@@ -156,7 +156,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"));
+            board.SetPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
 
             var moveFrom = LookupTables.E1;
             var moveTo = LookupTables.G1;
@@ -172,7 +172,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"));
+            board.SetPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
 
             var moveFrom = LookupTables.E1;
             var moveTo = LookupTables.C1;
@@ -188,7 +188,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"));
+            board.SetPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
             
             var moveFrom = LookupTables.E8;
             var moveTo = LookupTables.G8;
@@ -204,7 +204,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1"));
+            board.SetPosition("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b KQkq - 0 1");
             
             var moveFrom = LookupTables.E8;
             var moveTo = LookupTables.C8;
@@ -220,7 +220,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/1P6/2K5/8/8/8/5k2/8 w - - 0 1"));
+            board.SetPosition("8/1P6/2K5/8/8/8/5k2/8 w - - 0 1");
             
             var moveFrom = LookupTables.B7;
             var moveTo = LookupTables.B8;
@@ -236,7 +236,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("8/1P6/2K5/8/8/8/5kp1/8 b - - 0 1"));
+            board.SetPosition("8/1P6/2K5/8/8/8/5kp1/8 b - - 0 1");
              
             var moveFrom = LookupTables.G2;
             var moveTo = LookupTables.G1;
@@ -259,7 +259,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("4k3/8/8/8/8/8/8/4KB2 w - - 0 1"));
+            board.SetPosition("4k3/8/8/8/8/8/8/4KB2 w - - 0 1");
             
             var moveFrom = LookupTables.F1;
             var moveTo = LookupTables.B5;
@@ -275,7 +275,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("r3k3/8/8/8/8/8/8/4KB2 b - - 0 1"));
+            board.SetPosition("r3k3/8/8/8/8/8/8/4KB2 b - - 0 1");
 
             var moveFrom = LookupTables.A8;
             var moveTo = LookupTables.A1;
@@ -291,7 +291,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4r3/3P4/3K4/8/8/8/8 w - - 0 1"));
+            board.SetPosition("5k2/4r3/3P4/3K4/8/8/8/8 w - - 0 1");
 
             var moveFrom = LookupTables.D6;
             var moveTo = LookupTables.E7;
@@ -308,7 +308,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4r3/3P4/3KQ3/8/8/8/8 b - - 0 1"));
+            board.SetPosition("5k2/4r3/3P4/3KQ3/8/8/8/8 b - - 0 1");
 
             var moveFrom = LookupTables.E7;
             var moveTo = LookupTables.E5;
@@ -324,7 +324,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/3Pr3/8/3KQ3/8/8/8/8 w - - 0 1"));
+            board.SetPosition("5k2/3Pr3/8/3KQ3/8/8/8/8 w - - 0 1");
 
             var moveFrom = LookupTables.D7;
             var moveTo = LookupTables.D8;
@@ -340,7 +340,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             board.ClearBoard();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/3Pr3/8/3KQ3/8/8/7p/8 b - - 0 1"));
+            board.SetPosition("5k2/3Pr3/8/3KQ3/8/8/7p/8 b - - 0 1");
 
             var moveFrom = LookupTables.H2;
             var moveTo = LookupTables.H1;

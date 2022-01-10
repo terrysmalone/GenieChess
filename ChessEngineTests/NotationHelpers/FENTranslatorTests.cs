@@ -6,10 +6,10 @@ using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.NotationHelpers
 {
     [TestClass]
-    public class FENTranslatorTests
+    public class FenTranslatorTests
     {
         [TestMethod]
         public void TestTwoWayTranslate1()
