@@ -32,8 +32,6 @@ namespace Genie_CommandLine
 
             m_Game.ThinkingDepth = 6;
 
-            //m_Game.SetFENPosition("rnbqkb1r/pppp1ppp/4pn2/8/3P4/2N5/PPP1PPPP/R1BQKBNR w KQkq - 1 3");   //It seems to play a weird move
-
             m_Game.InitaliseStartingPosition();
 
             CountDebugger.ClearAll();
@@ -61,9 +59,28 @@ namespace Genie_CommandLine
 
                         m_Game.ReceiveUciMove(bestMove);
                     }
+                    else if (moveText.StartsWith("set"))
+                    {
+                        var toSet = moveText.Substring(4, moveText.Length-4);
+
+                        if (toSet.StartsWith("ply"))
+                        {
+                            var plyToSet = toSet.Substring(4, toSet.Length-4);
+
+                            var ply = Convert.ToInt32(plyToSet);
+
+                            m_Game.ThinkingDepth = ply;
+                        }
+                        else if (toSet.StartsWith("position"))
+                        {
+                            var positionToSet = toSet.Substring(9, toSet.Length-9);
+
+                            m_Game.SetPosition(positionToSet);
+                        }
+                    }
                     else if (moveText.StartsWith("info"))
                     {
-                        DisplayGameInfo(moveText.Substring(5, moveText.Length-5));
+                        DisplayGameInfo();
                     }
                     else
                     {
@@ -79,20 +96,20 @@ namespace Genie_CommandLine
         {
             Console.WriteLine("------------");
             Console.WriteLine("print - displays the board");
-            Console.WriteLine("info [subject] - displays game setup info. Current subjects: book");
-            Console.WriteLine("genie - makes computer take next move");
+            Console.WriteLine("info - displays game setup info");
+            Console.WriteLine("set ply [x] - Sets the thinking depth");
+            Console.WriteLine("set position [fen position] - Sets the game to the given fen position");
+            Console.WriteLine("genie(g) - makes computer take next move");
             Console.WriteLine("[Smith notation move] - plays a move (i.e 'e2e4')");
             Console.WriteLine("------------");
         }
 
-        private void DisplayGameInfo(string toDisplay)
+        private void DisplayGameInfo()
         {
-            switch (toDisplay)
-            {
-                case "book":
-                    Console.WriteLine($"Opening book file:{m_Game.OpeningBookFile}");
-                    break;
-            }
+            Console.WriteLine("------------");
+            Console.WriteLine($"Search ply:{m_Game.ThinkingDepth}");
+            Console.WriteLine($"Opening book file:{m_Game.OpeningBookFile}");
+            Console.WriteLine("------------");
         }
     }
 }
