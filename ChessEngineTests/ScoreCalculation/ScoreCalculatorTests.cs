@@ -2,7 +2,6 @@
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
-using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using NUnit.Framework;
