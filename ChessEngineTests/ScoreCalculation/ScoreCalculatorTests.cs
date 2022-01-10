@@ -72,7 +72,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1"));
+            board.SetPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -86,7 +86,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1"));
+            board.SetPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -100,7 +100,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1"));
+            board.SetPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -108,7 +108,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1"));
+            board2.SetPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
 
 
             var score2 = scoreCalculator.CalculateScore(board2);
@@ -125,7 +125,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("8/5k2/5n2/8/8/2N5/2K5/8 w - - 0 1"));
+            board.SetPosition("8/5k2/5n2/8/8/2N5/2K5/8 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -135,7 +135,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("8/2K5/2N5/8/8/5n2/5k2/8 b - - 0 1"));
+            board2.SetPosition("8/2K5/2N5/8/8/5n2/5k2/8 b - - 0 1");
             
             var score2 = scoreCalculator.CalculateScore(board2);
 
@@ -147,7 +147,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("8/5k2/4np2/4p3/3P4/2PN4/2K5/8 b - - 0 1"));
+            board.SetPosition("8/5k2/4np2/4p3/3P4/2PN4/2K5/8 b - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -157,7 +157,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("8/2K5/2PN4/3P4/4p3/4np2/5k2/8 w - - 0 1"));
+            board2.SetPosition("8/2K5/2PN4/3P4/4p3/4np2/5k2/8 w - - 0 1");
 
             var score2 = scoreCalculator.CalculateScore(board2);
 
@@ -169,7 +169,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/8/8/2b2b2/2B2B2/8/8/4K3 w - - 0 1"));
+            board.SetPosition("4k3/8/8/2b2b2/2B2B2/8/8/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -179,7 +179,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("4K3/8/8/2B2B2/2b2b2/8/8/4k3 b - - 0 1"));
+            board2.SetPosition("4K3/8/8/2B2B2/2b2b2/8/8/4k3 b - - 0 1");
 
             var score2 = scoreCalculator.CalculateScore(board2);
 
@@ -191,7 +191,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/3p1p2/3Qp3/8/8/3qP3/3P1P2/4K3 w - - 0 1"));
+            board.SetPosition("4k3/3p1p2/3Qp3/8/8/3qP3/3P1P2/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -201,7 +201,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("4K3/3P1P2/3qP3/8/8/3Qp3/3p1p2/4k3 b - - 0 1"));
+            board2.SetPosition("4K3/3P1P2/3qP3/8/8/3Qp3/3p1p2/4k3 b - - 0 1");
 
             var score2 = scoreCalculator.CalculateScore(board2);
 
@@ -213,7 +213,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/8/4q3/8/8/1B6/8/4K3 w - - 0 1"));
+            board.SetPosition("4k3/8/4q3/8/8/1B6/8/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -221,7 +221,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("3k4/8/6b1/8/8/3Q4/8/3K4 w - - 0 1"));
+            board2.SetPosition("3k4/8/6b1/8/8/3Q4/8/3K4 w - - 0 1");
 
             var score2 = scoreCalculator.CalculateScore(board2);
 
@@ -233,7 +233,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var board = new Board();
 
-            board.SetPosition(FenTranslator.ToBoardState("4k3/8/4q3/8/8/8/8/4K3 w - - 0 1"));
+            board.SetPosition("4k3/8/4q3/8/8/8/8/4K3 w - - 0 1");
 
             var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -241,7 +241,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             var board2 = new Board();
 
-            board2.SetPosition(FenTranslator.ToBoardState("3k4/8/8/8/8/3Q4/8/3K4 w - - 0 1"));
+            board2.SetPosition("3k4/8/8/8/8/3Q4/8/3K4 w - - 0 1");
 
             var score2 = scoreCalculator.CalculateScore(board2);
 

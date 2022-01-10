@@ -76,7 +76,7 @@ namespace EngineEvaluation
                     var depth = i + 1;
 
                     var board = new Board();
-                    board.SetPosition(FenTranslator.ToBoardState(perfTPos.FenPosition));
+                    board.SetPosition(perfTPos.FenPosition);
 
                     var perft = new PerfT { UseHashing = true };
 

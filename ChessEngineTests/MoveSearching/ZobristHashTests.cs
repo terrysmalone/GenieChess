@@ -141,7 +141,7 @@ namespace ChessEngineTests.MoveSearching
             ZobristHash.Initialise();
 
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3nk3/8/8/8/8/8/8/3NK3 w - - 0 1"));
+            board.SetPosition("3nk3/8/8/8/8/8/8/3NK3 w - - 0 1");
 
             var pieceMover = new PieceMover(board);
 
@@ -167,14 +167,14 @@ namespace ChessEngineTests.MoveSearching
 
             var board1 = new Board();
             board1.SetPosition(
-                FenTranslator.ToBoardState("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2"));
+                "r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq c6 0 2");
 
             var initialZobristValue1 = board1.Zobrist;
             Assert.That(initialZobristValue1, Is.Not.EqualTo((ulong) 0));
 
             var board2 = new Board();
             board2.SetPosition(
-                FenTranslator.ToBoardState("r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq - 0 2"));
+                "r3k2r/p2pqpb1/bn2pnp1/2pPN3/1p2P3/2N1BQ1p/PPP1BPPP/R3K2R w KQkq - 0 2");
 
             var initialZobristValue2 = board2.Zobrist;
             Assert.That(initialZobristValue2, Is.Not.EqualTo((ulong) 0));
@@ -269,15 +269,15 @@ namespace ChessEngineTests.MoveSearching
 
             var board1 = new Board();
             board1.SetPosition(
-                FenTranslator.ToBoardState(
-                    "2kr3r/pp1qppbp/2p2np1/2np1b2/8/BPNPPP1N/P1PQBKPP/R6R w - - 3 11"));
+                
+                    "2kr3r/pp1qppbp/2p2np1/2np1b2/8/BPNPPP1N/P1PQBKPP/R6R w - - 3 11");
 
             var zobrist1 = board1.Zobrist;
 
             var board2 = new Board();
             board2.SetPosition(
-                FenTranslator.ToBoardState(
-                    "2kr3r/pp1qppbp/2p2np1/2np1b2/8/BPNPPP1N/P1PQBKPP/R6R b - - 3 11"));
+                
+                    "2kr3r/pp1qppbp/2p2np1/2np1b2/8/BPNPPP1N/P1PQBKPP/R6R b - - 3 11");
 
             board2.SwitchSides();
 
@@ -294,8 +294,8 @@ namespace ChessEngineTests.MoveSearching
             ZobristHash.Initialise();
 
             var board1 = new Board();
-            board1.SetPosition(FenTranslator.ToBoardState(
-                                   "rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1"));   // After e2e3
+            board1.SetPosition(
+                                   "rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b KQkq - 0 1");   // After e2e3
 
             var zobrist1 = board1.Zobrist;
 
@@ -318,8 +318,8 @@ namespace ChessEngineTests.MoveSearching
 
             var board1 = new Board();
             board1.SetPosition(
-                FenTranslator.ToBoardState(
-                    "rnbqkbnr/pp1ppppp/2p5/8/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2")); // After 1.e2e3 c7c6
+                
+                    "rnbqkbnr/pp1ppppp/2p5/8/8/4P3/PPPP1PPP/RNBQKBNR w KQkq - 0 2"); // After 1.e2e3 c7c6
 
             var zobrist1 = board1.Zobrist;
 
@@ -343,8 +343,8 @@ namespace ChessEngineTests.MoveSearching
 
             var board1 = new Board();
             board1.SetPosition(
-                FenTranslator.ToBoardState(
-                    "rnbqkbnr/pp1ppppp/2p5/8/8/3PP3/PPP2PPP/RNBQKBNR b KQkq - 0 2")); // After 1.e2e3 c7c6 2.d2d3
+                
+                    "rnbqkbnr/pp1ppppp/2p5/8/8/3PP3/PPP2PPP/RNBQKBNR b KQkq - 0 2"); // After 1.e2e3 c7c6 2.d2d3
             
             var zobrist1 = board1.Zobrist;
 

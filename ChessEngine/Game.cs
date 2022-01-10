@@ -185,7 +185,7 @@ namespace ChessEngine
         /// <param name="fenNotation"></param>
         public void SetPosition(string fenNotation)
         {
-            currentBoard.SetPosition(FenTranslator.ToBoardState(fenNotation));
+            currentBoard.SetPosition(fenNotation);
         }
         
         /// <summary>

@@ -138,7 +138,7 @@ namespace ChessEngine.BoardRepresentation
             SetPosition(FenTranslator.ToBoardState(fenPosition));
         }
 
-        public void SetPosition(BoardState state)
+        private void SetPosition(BoardState state)
         {
             WhiteToMove = state.WhiteToMove;
 

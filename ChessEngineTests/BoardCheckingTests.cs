@@ -269,7 +269,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_White_EmptyBoard()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/3Q4/8/8/8/8/8 w - - 0 1"));
+            board.SetPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
@@ -285,7 +285,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_White_EmptyBoard_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/3Q4/8/8/8/8/8 w - - 0 1"));
+            board.SetPosition("8/8/3Q4/8/8/8/8/8 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
@@ -301,7 +301,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_Black_EmptyBoard()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/3q4/8/8/8/8/8 b - - 0 1"));
+            board.SetPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
             
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
@@ -317,7 +317,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_Black_EmptyBoard_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("8/8/3q4/8/8/8/8/8 b - - 0 1"));
+            board.SetPosition("8/8/3q4/8/8/8/8/8 b - - 0 1");
             
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
@@ -333,7 +333,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_White_WithPieces()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
@@ -349,7 +349,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_White_WithPieces_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("1r2k3/4pppp/8/8/8/3b2Q1/5PP1/4K3 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
@@ -365,7 +365,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_Black_WithPieces()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1"));
+            board.SetPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
@@ -381,7 +381,7 @@ namespace ChessEngineTests
         public void CalculateAllowedQueenMoves_Black_WithPieces_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1"));
+            board.SetPosition("1r2k3/4pppp/8/4q3/8/3b2Q1/4PPP1/4K3 w - - 0 1");
             
 
             var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
@@ -397,7 +397,7 @@ namespace ChessEngineTests
         public void CalculateAllowedRookMoves_White()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
             
 
             var rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteRooks);
@@ -415,7 +415,7 @@ namespace ChessEngineTests
         public void CalculateAllowedRookMoves_White_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("5k2/4p3/5p2/8/1N3R1q/8/5PP1/4K3 w - - 0 1");
             
 
             var rookPositions = BitboardOperations.SplitBoardToArray(board.WhiteRooks);
@@ -433,7 +433,7 @@ namespace ChessEngineTests
         public void CalculateAllowedRookMoves_Black()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
             
 
             var rookPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackRooks);
@@ -451,7 +451,7 @@ namespace ChessEngineTests
         public void CalculateAllowedRookMoves_Black_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1"));
+            board.SetPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
             
 
             var rookPositions = BitboardOperations.SplitBoardToArray(board.BlackRooks);
@@ -469,7 +469,7 @@ namespace ChessEngineTests
         public void CalculateAllowedBishopMoves_White()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1"));
+            board.SetPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
 
             
 
@@ -488,7 +488,7 @@ namespace ChessEngineTests
         public void CalculateAllowedBishopMoves_White_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1"));
+            board.SetPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
             
 
             var bishopPositions = BitboardOperations.SplitBoardToArray(board.WhiteBishops);
@@ -506,7 +506,7 @@ namespace ChessEngineTests
         public void CalculateAllowedBishopMoves_Black()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
+            board.SetPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             
 
             var bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackBishops);
@@ -524,7 +524,7 @@ namespace ChessEngineTests
         public void CalculateAllowedBishopMoves_Black_Ray()
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1"));
+            board.SetPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
             
 
             var bishopPositions = BitboardOperations.SplitBoardToArray(board.BlackBishops);
@@ -556,7 +556,7 @@ namespace ChessEngineTests
         public void IsKingInCheck(string fenString, bool whiteKing, bool expectedIsInCheck)
         {
             var board = new Board();
-            board.SetPosition(FenTranslator.ToBoardState(fenString));
+            board.SetPosition(fenString);
             
             Assert.That(BoardChecking.IsKingInCheck(board, whiteKing), Is.EqualTo(expectedIsInCheck));
         }
