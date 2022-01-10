@@ -12,7 +12,7 @@ namespace ChessEngineTests.ScoreCalculation
     [TestFixture]
     public class ScoreCalculatorTests
     {
-        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
         
         [Test]
         public void InitialPositionIsEven()
@@ -21,7 +21,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.InitaliseStartingPosition();
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -38,7 +38,7 @@ namespace ChessEngineTests.ScoreCalculation
             pieceMover.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
             pieceMover.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -55,7 +55,7 @@ namespace ChessEngineTests.ScoreCalculation
             pieceMover.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal, true);
             pieceMover.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal, true);
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -69,7 +69,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -83,7 +83,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/pp4pp/2p2p2/3pp3/8/1P4P1/PP1PPPP1/4K3 b - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -97,7 +97,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/pp1pppp1/1p4p1/8/3PP3/2P2P2/PP4PP/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -118,7 +118,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("8/5k2/5n2/8/8/2N5/2K5/8 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -140,7 +140,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("8/5k2/4np2/4p3/3P4/2PN4/2K5/8 b - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -162,7 +162,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/8/8/2b2b2/2B2B2/8/8/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -184,7 +184,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/3p1p2/3Qp3/8/8/3qP3/3P1P2/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -206,7 +206,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/8/4q3/8/8/1B6/8/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
@@ -226,7 +226,7 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("4k3/8/4q3/8/8/8/8/4K3 w - - 0 1");
 
-            var scoreCalculator = new ScoreCalculator(m_ResourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             var score = scoreCalculator.CalculateScore(board);
 
