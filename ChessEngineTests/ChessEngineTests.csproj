@@ -238,11 +238,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EngineSanityChecks.cs" />
-    <Compile Include="FENTranslatorTests.cs" />
     <Compile Include="LookupTablesTests.cs" />
     <Compile Include="MoveGenerationTests.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearchTests.cs" />
     <Compile Include="MoveSearching\ZobristHashTests.cs" />
+    <Compile Include="NotationHelpers\FENTranslatorTests.cs" />
+    <Compile Include="NotationHelpers\UCIMoveTranslatorTests.cs" />
     <Compile Include="PerfT.cs" />
     <Compile Include="PerftVerificationTests.cs" />
     <Compile Include="PieceMoverTests.cs" />
@@ -254,7 +255,6 @@
     <Compile Include="RandomExtensions.cs" />
     <Compile Include="ScoreCalculation\ScoreCalculatorTests.cs" />
     <Compile Include="TranslationHelperTests.cs" />
-    <Compile Include="UCIMoveTranslatorTests.cs" />
     <Compile Include="ZobristHashTests.cs" />
   </ItemGroup>
   <ItemGroup>

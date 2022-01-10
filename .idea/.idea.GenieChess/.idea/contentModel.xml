@@ -84,13 +84,16 @@
         <e p="BoardTests.cs" t="Include" />
         <e p="ChessEngineTests.csproj" t="IncludeRecursive" />
         <e p="EngineSanityChecks.cs" t="Include" />
-        <e p="FENTranslatorTests.cs" t="Include" />
         <e p="GameTests.cs" t="Include" />
         <e p="LookupTablesTests.cs" t="Include" />
         <e p="MoveGenerationTests.cs" t="Include" />
         <e p="MoveSearching" t="Include">
           <e p="AlphaBetaSearchTests.cs" t="Include" />
           <e p="ZobristHashTests.cs" t="Include" />
+        </e>
+        <e p="NotationHelpers" t="Include">
+          <e p="FENTranslatorTests.cs" t="Include" />
+          <e p="UCIMoveTranslatorTests.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
@@ -107,7 +110,6 @@
           <e p="ScoreCalculatorTests.cs" t="Include" />
         </e>
         <e p="TranslationHelperTests.cs" t="Include" />
-        <e p="UCIMoveTranslatorTests.cs" t="Include" />
         <e p="ZobristHashTests.cs" t="Include" />
       </e>
       <e p="EngineEvaluation" t="IncludeRecursive">
