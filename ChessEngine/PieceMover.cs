@@ -77,8 +77,9 @@ namespace ChessEngine
             
             CheckCastlingStatus(moveFromBoard, moveToBoard, pieceToMove);
             CheckEnPassantStatus(moveFromBoard, moveToBoard, pieceToMove);
-                        
-            _board.HalfMoveClock ++;
+
+            // TODO: I think this is wrong. Isn't it moves since last capture?
+            _board.HalfMoveClock++;
 
             if (!_board.WhiteToMove)
             {
@@ -448,8 +449,7 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            var notSquareToClear = ~(ulong)128;   // h1
-                            _board.WhiteRooks &= notSquareToClear;
+                            _board.WhiteRooks &= 18446744073709551487; // ~h1
 
                             PlacePiece(PieceType.Rook, true, LookupTables.F1);
                         }
@@ -472,8 +472,7 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            var notSquareToClear = ~(ulong)1;   // a1
-                            _board.WhiteRooks &= notSquareToClear;
+                            _board.WhiteRooks &= 18446744073709551614;  // ~a1
 
                             PlacePiece(PieceType.Rook, true, LookupTables.D1);
 
@@ -518,8 +517,7 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            var notSquareToClear = ~9223372036854775808;   // h8
-                            _board.BlackRooks &= notSquareToClear;
+                            _board.BlackRooks &= 9223372036854775807u; // ~h8
 
                             PlacePiece(PieceType.Rook, false, LookupTables.F8);
                         }
@@ -543,8 +541,7 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            var notSquareToClear = ~72057594037927936u;   // a8
-                            _board.BlackRooks &= notSquareToClear;
+                            _board.BlackRooks &= 18374686479671623679; // ~a8
 
                             PlacePiece(PieceType.Rook, false, LookupTables.D8);
                         }
