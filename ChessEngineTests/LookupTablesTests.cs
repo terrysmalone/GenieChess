@@ -76,32 +76,52 @@ namespace ChessEngineTests
             Assert.That(LookupTables.LeftBoard[boardPosition], Is.EqualTo(expectedLeftBoard));
         }
 
-        #region mask tests
+        [Test]
+        public void UpRightDirectionBoards()
+        {
+            // TODO: Write tests
+        }
+
+        [Test]
+        public void DownRightDirectionBoards()
+        {
+            // TODO: Write tests
+        }
+
+        [Test]
+        public void UpLeftDirectionBoards()
+        {
+            // TODO: Write tests
+        }
+
+        [Test]
+        public void DownLeftDirectionBoards()
+        {
+            // TODO: Write tests
+        }
 
         [Test]
         public void FileMasks()
         {
-            throw new NotImplementedException();
+            // TODO: Write tests
         }
 
-        //[Test]
-        //public void TestRankMasks()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [Test]
+        public void TestRankMasks()
+        {
+            // TODO: Write tests
+        }
 
-        //[Test]
-        //public void TestFileMasksByColumn()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        [Test]
+        public void TestFileMasksByColumn()
+        {
+            // TODO: Write tests
+        }
 
-        //[Test]
-        //public void TestFileMasksByIndex()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        #endregion
+        [Test]
+        public void TestFileMasksByIndex()
+        {
+            // TODO: Write tests
+        }
     }
 }

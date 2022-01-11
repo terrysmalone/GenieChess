@@ -244,7 +244,7 @@ namespace ChessEngine.ScoreCalculation
             
             for (var i = 0; i < 8; i++)
 			{
-                var mask = LookupTables.FileMaskByColumn[i];
+                var mask = LookupTables.ColumnMaskByColumn[i];
 
                 if (BitboardOperations.GetPopCount(mask & _CurrentBoard.WhitePawns) > 1)
                 {
@@ -281,7 +281,7 @@ namespace ChessEngine.ScoreCalculation
             foreach (var whitePawnBoard in BitboardOperations.SplitBoardToArray(_CurrentBoard.WhitePawns))
             {
                 //Pawn is on 7th rank so it can promote
-                if ((whitePawnBoard & LookupTables.RankMask7) != 0)
+                if ((whitePawnBoard & LookupTables.RowMask7) != 0)
                 {
                     pawnStructureScore += PassedPawnBonus;
                     pawnStructureScore += PassedPawnAdvancementBonus * 5;
@@ -303,7 +303,7 @@ namespace ChessEngine.ScoreCalculation
             foreach (var blackPawnBoard in BitboardOperations.SplitBoardToArray(_CurrentBoard.BlackPawns))
             {
                 //Pawn is on 2nd rank so it can promote
-                if ((blackPawnBoard & LookupTables.RankMask2) != 0)
+                if ((blackPawnBoard & LookupTables.RowMask2) != 0)
                 {
                     pawnStructureScore -= PassedPawnBonus;
                     pawnStructureScore -= PassedPawnAdvancementBonus * 5;

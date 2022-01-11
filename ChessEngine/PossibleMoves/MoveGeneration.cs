@@ -156,10 +156,10 @@ namespace ChessEngine.PossibleMoves
                 var currentMove = m_AllMoves[i];
 
                 pieceMover.MakeMove(currentMove.Position, 
-                                        currentMove.Moves, 
-                                        currentMove.Type,
-                                        currentMove.SpecialMove, 
-                                        false);
+                                    currentMove.Moves,
+                                    currentMove.Type,
+                                    currentMove.SpecialMove,
+                                    false);
 
                 if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
                 {
@@ -268,7 +268,7 @@ namespace ChessEngine.PossibleMoves
                 {
                     //Check for promotions
                     var promotionsBoard =
-                        (pawnSingleMove & LookupTables.RankMask8) & ~m_CurrentBoard.AllOccupiedSquares;
+                        (pawnSingleMove & LookupTables.RowMask8) & ~m_CurrentBoard.AllOccupiedSquares;
 
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
@@ -321,7 +321,7 @@ namespace ChessEngine.PossibleMoves
 
                             var pawnDoubleMove = (currentPosition << 16) & m_CurrentBoard.EmptySquares;
 
-                            if ((currentPosition & LookupTables.RankMask2) != 0 && pawnDoubleMove > 0
+                            if ((currentPosition & LookupTables.RowMask2) != 0 && pawnDoubleMove > 0
                             ) //If on start rank and first rank is not blocked
                             {
                                 m_AllMoves.Add(new PieceMoves
@@ -339,7 +339,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.WhitePawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask6);
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RowMask6);
 
                 if (pawnEnPassantCaptures > 0)
                 {
@@ -356,7 +356,7 @@ namespace ChessEngine.PossibleMoves
 
                 if (pawnCaptures > 0)
                 {
-                    var capturePromotionsBoard = pawnCaptures & LookupTables.RankMask8;
+                    var capturePromotionsBoard = pawnCaptures & LookupTables.RowMask8;
 
                     if (capturePromotionsBoard > 0)
                     {
@@ -426,7 +426,7 @@ namespace ChessEngine.PossibleMoves
                 {
                     // Check for promotions
                     var promotionsBoard =
-                        (pawnSingleMove & LookupTables.RankMask1) & ~m_CurrentBoard.AllOccupiedSquares;
+                        (pawnSingleMove & LookupTables.RowMask1) & ~m_CurrentBoard.AllOccupiedSquares;
 
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
@@ -479,7 +479,7 @@ namespace ChessEngine.PossibleMoves
                             var pawnDoubleMove = (currentPosition >> 16) & m_CurrentBoard.EmptySquares;
 
                             // If on start rank and first rank is not blocked
-                            if ((currentPosition & LookupTables.RankMask7) != 0 && pawnDoubleMove != 0) 
+                            if ((currentPosition & LookupTables.RowMask7) != 0 && pawnDoubleMove != 0) 
                             {
                                 m_AllMoves.Add(new PieceMoves
                                                   {
@@ -496,7 +496,7 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.BlackPawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RankMask3);
+                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RowMask3);
 
                 if (pawnEnPassantCaptures > 0)
                     m_AllMoves.Add(new PieceMoves
@@ -511,7 +511,7 @@ namespace ChessEngine.PossibleMoves
 
                 if (pawnCaptures > 0)
                 {
-                    var capturePromotionsBoard = pawnCaptures & LookupTables.RankMask1;
+                    var capturePromotionsBoard = pawnCaptures & LookupTables.RowMask1;
 
                     if (capturePromotionsBoard > 0)
                     {
