@@ -526,7 +526,9 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.H1);
+                            var notSquareToClear = ~(ulong)128;   // h1
+                            _board.WhiteRooks &= notSquareToClear;
+
                             PlacePiece(PieceType.Rook, true, LookupTables.F1);
                         }
 
@@ -548,18 +550,16 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.A1);
+                            var notSquareToClear = ~(ulong)1;   // a1
+                            _board.WhiteRooks &= notSquareToClear;
+
                             PlacePiece(PieceType.Rook, true, LookupTables.D1);
 
                             _board.WhiteCanCastleQueenside = false;
-                            //whiteCanCastleKingside = false;  
                         }
 
                         _board.Zobrist ^= ZobristKey.WhiteCastleQueenside;
                         _board.WhiteCanCastleQueenside = false;
-
-                        //else if (moveFromBoard == BitboardSquare.A1)     //Moved Rook
-                        //    whiteCanCastleQueenside = false;
                     }
 
                     if (moveFromBoard == LookupTables.A1)     //Moved Rook
@@ -596,7 +596,9 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.H8);
+                            var notSquareToClear = ~9223372036854775808;   // h8
+                            _board.BlackRooks &= notSquareToClear;
+
                             PlacePiece(PieceType.Rook, false, LookupTables.F8);
                         }
 
@@ -619,7 +621,9 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.A8);
+                            var notSquareToClear = ~72057594037927936u;   // a8
+                            _board.BlackRooks &= notSquareToClear;
+
                             PlacePiece(PieceType.Rook, false, LookupTables.D8);
                         }
 
@@ -662,40 +666,53 @@ namespace ChessEngine
             {
                 if (_board.WhiteToMove)
                 {
-                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) 
-                                                   - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
-                    
+
                     if ((moveToBoard & _board.EnPassantPosition) != 0) //Move is an en-passant capture  
                     {
                         //Remove captured piece
-                        RemovePiece(_board.EnPassantPosition >> 8);
+                        var notSquareToClear = ~(_board.EnPassantPosition >> 8);
+                        _board.BlackPawns &= notSquareToClear;
                         
                         _board.EnPassantPosition = 0;
+                        return;
                     }
-                    else if(differenceInMoveIndex == 16)
+
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)
+                                                   - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
+
+                    if(differenceInMoveIndex == 16)
                     {
                         _board.EnPassantPosition = moveToBoard >> 8;
                     }
                     else
+                    {
                         _board.EnPassantPosition = 0;
+                    }
                 }
                 else
                 {
-                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
-                    
-                    if ((moveToBoard & _board.EnPassantPosition) != 0)      //Move is an en-passant capture
+                    if ((moveToBoard & _board.EnPassantPosition) != 0) //Move is an en-passant capture
                     {
                         //Remove captured piece
-                        RemovePiece(_board.EnPassantPosition << 8);
+                        var notSquareToClear = ~(_board.EnPassantPosition << 8);
+                        _board.WhitePawns &= notSquareToClear;
 
                         _board.EnPassantPosition = 0;
+
+                        return;
                     }
-                    else if (differenceInMoveIndex == 16)
+
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)
+                                                - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
+
+                    if (differenceInMoveIndex == 16)
                     {
                         _board.EnPassantPosition = moveToBoard << 8;
                     }
                     else
+                    {
                         _board.EnPassantPosition = 0;
+                    }
                 }
             }
             else
