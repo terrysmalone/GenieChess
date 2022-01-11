@@ -77,8 +77,9 @@ namespace ChessEngine
             
             CheckCastlingStatus(moveFromBoard, moveToBoard, pieceToMove);
             CheckEnPassantStatus(moveFromBoard, moveToBoard, pieceToMove);
-                        
-            _board.HalfMoveClock ++;
+
+            // TODO: I think this is wrong. Isn't it moves since last capture?
+            _board.HalfMoveClock++;
 
             if (!_board.WhiteToMove)
             {
@@ -217,95 +218,17 @@ namespace ChessEngine
         {
             var notSquareToClear = ~squareToClear;
 
-            var pieceBefore = _board.WhitePawns;
-
             _board.WhitePawns &= notSquareToClear;
-
-            if (pieceBefore != _board.WhitePawns)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackPawns;            
             _board.BlackPawns &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackPawns)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteKnights;
             _board.WhiteKnights &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteKnights)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackKnights;
             _board.BlackKnights &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackKnights)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteBishops;            
             _board.WhiteBishops &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteBishops)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackBishops;
             _board.BlackBishops &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackBishops)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteRooks;
             _board.WhiteRooks &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteRooks)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackRooks;
             _board.BlackRooks &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackRooks)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteQueen;
             _board.WhiteQueen &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteQueen)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackQueen;
             _board.BlackQueen &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackQueen)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteKing;
             _board.WhiteKing &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteKing)
-            {
-                return;
-            }
-            
             _board.BlackKing &= notSquareToClear;
         }
         
@@ -526,7 +449,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.H1);
+                            _board.WhiteRooks &= 18446744073709551487; // ~h1
+
                             PlacePiece(PieceType.Rook, true, LookupTables.F1);
                         }
 
@@ -548,18 +472,15 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C1)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.A1);
+                            _board.WhiteRooks &= 18446744073709551614;  // ~a1
+
                             PlacePiece(PieceType.Rook, true, LookupTables.D1);
 
                             _board.WhiteCanCastleQueenside = false;
-                            //whiteCanCastleKingside = false;  
                         }
 
                         _board.Zobrist ^= ZobristKey.WhiteCastleQueenside;
                         _board.WhiteCanCastleQueenside = false;
-
-                        //else if (moveFromBoard == BitboardSquare.A1)     //Moved Rook
-                        //    whiteCanCastleQueenside = false;
                     }
 
                     if (moveFromBoard == LookupTables.A1)     //Moved Rook
@@ -596,7 +517,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.G8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.H8);
+                            _board.BlackRooks &= 9223372036854775807u; // ~h8
+
                             PlacePiece(PieceType.Rook, false, LookupTables.F8);
                         }
 
@@ -619,7 +541,8 @@ namespace ChessEngine
                         if (moveToBoard == LookupTables.C8)     //No need to check origin square because we know from the whiteCanCastleKingside that this is the kings first move
                         {
                             //Move rook too
-                            RemovePiece(LookupTables.A8);
+                            _board.BlackRooks &= 18374686479671623679; // ~a8
+
                             PlacePiece(PieceType.Rook, false, LookupTables.D8);
                         }
 
@@ -662,40 +585,53 @@ namespace ChessEngine
             {
                 if (_board.WhiteToMove)
                 {
-                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard) 
-                                                   - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
-                    
+
                     if ((moveToBoard & _board.EnPassantPosition) != 0) //Move is an en-passant capture  
                     {
                         //Remove captured piece
-                        RemovePiece(_board.EnPassantPosition >> 8);
+                        var notSquareToClear = ~(_board.EnPassantPosition >> 8);
+                        _board.BlackPawns &= notSquareToClear;
                         
                         _board.EnPassantPosition = 0;
+                        return;
                     }
-                    else if(differenceInMoveIndex == 16)
+
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)
+                                                   - BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard);
+
+                    if(differenceInMoveIndex == 16)
                     {
                         _board.EnPassantPosition = moveToBoard >> 8;
                     }
                     else
+                    {
                         _board.EnPassantPosition = 0;
+                    }
                 }
                 else
                 {
-                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard) - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
-                    
-                    if ((moveToBoard & _board.EnPassantPosition) != 0)      //Move is an en-passant capture
+                    if ((moveToBoard & _board.EnPassantPosition) != 0) //Move is an en-passant capture
                     {
                         //Remove captured piece
-                        RemovePiece(_board.EnPassantPosition << 8);
+                        var notSquareToClear = ~(_board.EnPassantPosition << 8);
+                        _board.WhitePawns &= notSquareToClear;
 
                         _board.EnPassantPosition = 0;
+
+                        return;
                     }
-                    else if (differenceInMoveIndex == 16)
+
+                    var differenceInMoveIndex = BitboardOperations.GetSquareIndexFromBoardValue(moveFromBoard)
+                                                - BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard);
+
+                    if (differenceInMoveIndex == 16)
                     {
                         _board.EnPassantPosition = moveToBoard << 8;
                     }
                     else
+                    {
                         _board.EnPassantPosition = 0;
+                    }
                 }
             }
             else
