@@ -173,7 +173,7 @@ namespace ChessEngine.BoardRepresentation
 
         public string GetPosition()
         {
-            return FenTranslator.ToFENString(GetCurrentBoardState());
+            return FenTranslator.ToFenString(GetCurrentBoardState());
         }
         
         public void SwitchSides()
