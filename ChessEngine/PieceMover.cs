@@ -217,95 +217,17 @@ namespace ChessEngine
         {
             var notSquareToClear = ~squareToClear;
 
-            var pieceBefore = _board.WhitePawns;
-
             _board.WhitePawns &= notSquareToClear;
-
-            if (pieceBefore != _board.WhitePawns)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackPawns;            
             _board.BlackPawns &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackPawns)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteKnights;
             _board.WhiteKnights &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteKnights)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackKnights;
             _board.BlackKnights &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackKnights)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteBishops;            
             _board.WhiteBishops &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteBishops)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackBishops;
             _board.BlackBishops &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackBishops)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteRooks;
             _board.WhiteRooks &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteRooks)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackRooks;
             _board.BlackRooks &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackRooks)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteQueen;
             _board.WhiteQueen &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteQueen)
-            {
-                return;
-            }
-
-            pieceBefore = _board.BlackQueen;
             _board.BlackQueen &= notSquareToClear;
-
-            if (pieceBefore != _board.BlackQueen)
-            {
-                return;
-            }
-
-            pieceBefore = _board.WhiteKing;
             _board.WhiteKing &= notSquareToClear;
-
-            if (pieceBefore != _board.WhiteKing)
-            {
-                return;
-            }
-            
             _board.BlackKing &= notSquareToClear;
         }
         
