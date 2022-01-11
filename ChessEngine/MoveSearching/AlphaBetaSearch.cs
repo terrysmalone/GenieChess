@@ -29,14 +29,14 @@ namespace ChessEngine.MoveSearching
         private PieceMover _pieceMover;
  
         private List<MoveValueInfo> _initialMoves;
-        private List<Tuple<int, PieceMoves>> _initialMovesIterativeDeepeningShuffleOrder;
+        private List<Tuple<int, PieceMove>> _initialMovesIterativeDeepeningShuffleOrder;
 
         private int m_KillerMovesToStore = 2;
-        private PieceMoves[,] _killerMoves;
+        private PieceMove[,] _killerMoves;
 
         private int _evaluationDepth;
 
-        private PieceMoves? _bestMoveSoFar;
+        private PieceMove? _bestMoveSoFar;
 
         private int _nullMoveR = 1;
 
@@ -51,18 +51,18 @@ namespace ChessEngine.MoveSearching
             _pieceMover = new PieceMover(_boardPosition);
         }
 
-        private static PieceMoves s_CompletedSearchBestMove;
-        private static PieceMoves s_LatestDepthBestMove;
-        private static PieceMoves s_InDepthBestMove;
+        private static PieceMove _completedSearchBestMove;
+        private static PieceMove _latestDepthBestMove;
+        private static PieceMove _inDepthBestMove;
         public ulong TotalSearchNodes;
 
         // See: https://stackoverflow.com/questions/2265412/set-timeout-to-an-operation
         // Task might be better
-        public PieceMoves CalculateBestMove(int maxDepth, int maxThinkingSeconds)
+        public PieceMove CalculateBestMove(int maxDepth, int maxThinkingSeconds)
         {
-            s_CompletedSearchBestMove = new PieceMoves();
-            s_LatestDepthBestMove = new PieceMoves();
-            s_InDepthBestMove = new PieceMoves();
+            _completedSearchBestMove = new PieceMove();
+            _latestDepthBestMove = new PieceMove();
+            _inDepthBestMove = new PieceMove();
 
             TotalSearchNodes = 0;
 
@@ -98,58 +98,58 @@ namespace ChessEngine.MoveSearching
             s_Log.Info($"Move Time: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
 
             // Temporary
-            s_Log.Info(s_CompletedSearchBestMove.Type == PieceType.None
+            s_Log.Info(_completedSearchBestMove.Type == PieceType.None
                            ? "Completed search best move: -"
-                           : $"Completed search best move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
+                           : $"Completed search best move: {UciMoveTranslator.ToUciMove(_completedSearchBestMove)}");
 
-            s_Log.Info(s_LatestDepthBestMove.Type == PieceType.None
+            s_Log.Info(_latestDepthBestMove.Type == PieceType.None
                            ? "Highest depth best move: -"
-                            :$"Highest depth best move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
+                            :$"Highest depth best move: {UciMoveTranslator.ToUciMove(_latestDepthBestMove)}");
 
-            s_Log.Info(s_InDepthBestMove.Type == PieceType.None
+            s_Log.Info(_inDepthBestMove.Type == PieceType.None
                            ? "In latest depth best move: -"
-                           : $"In latest depth best move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
+                           : $"In latest depth best move: {UciMoveTranslator.ToUciMove(_inDepthBestMove)}");
 
             // Temporary end
 
-            if (s_CompletedSearchBestMove.Type != PieceType.None)
+            if (_completedSearchBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_CompletedSearchBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(_completedSearchBestMove)}");
 
-                return s_CompletedSearchBestMove;
+                return _completedSearchBestMove;
             }
 
-            if (s_LatestDepthBestMove.Type != PieceType.None)
+            if (_latestDepthBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_LatestDepthBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(_latestDepthBestMove)}");
 
-                return s_LatestDepthBestMove;
+                return _latestDepthBestMove;
             }
 
-            if (s_InDepthBestMove.Type != PieceType.None)
+            if (_inDepthBestMove.Type != PieceType.None)
             {
-                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(s_InDepthBestMove)}");
+                s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(_inDepthBestMove)}");
 
-                return s_InDepthBestMove;
+                return _inDepthBestMove;
             }
 
             throw new ChessBoardException("No move was found in given time");
         }
 
-        public PieceMoves CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
+        public PieceMove CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
         {
             var toMove = _boardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
             s_Log.Info(FenTranslator.ToFenString(_boardPosition.GetCurrentBoardState()));
 
-            _killerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
+            _killerMoves = new PieceMove[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
             _initialMoves = new List<MoveValueInfo>();
-            _initialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMoves>>();
+            _initialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMove>>();
 
             TranspositionTable.ResetAncients();
 
-            var bestMove = new PieceMoves();
+            var bestMove = new PieceMove();
 
             CountDebugger.ClearTranspositionValues();
             
@@ -174,10 +174,10 @@ namespace ChessEngine.MoveSearching
                 // Calculate the best move at the current depth
                 bestMove = CalculateBestMove(depth, out var bestScore);
 
-                s_LatestDepthBestMove = bestMove;
+                _latestDepthBestMove = bestMove;
 
                 // Reset this after each depth to make sure any move is from the current depth
-                s_InDepthBestMove = new PieceMoves();
+                _inDepthBestMove = new PieceMove();
 
                 timer.Stop();
 
@@ -238,21 +238,21 @@ namespace ChessEngine.MoveSearching
 
             s_Log.Info($"Found move: {UciMoveTranslator.ToUciMove(bestMove)}");
 
-            s_CompletedSearchBestMove = bestMove;
+            _completedSearchBestMove = bestMove;
 
             return bestMove;
         }
 
-        private PieceMoves CalculateBestMove(int depth, out int bestScore)
+        private PieceMove CalculateBestMove(int depth, out int bestScore)
         {
             var alpha = int.MinValue / 2 - 1;
             var beta = int.MaxValue / 2 + 1;
 
             bestScore = alpha;
 
-            var bestMove = new PieceMoves();
+            var bestMove = new PieceMove();
 
-            List<PieceMoves> moveList;
+            List<PieceMove> moveList;
 
             // Order the initial moves by their scores from the last depth, if any.
             // Otherwise order them based on....
@@ -262,7 +262,7 @@ namespace ChessEngine.MoveSearching
             }
             else
             {
-                moveList = new List<PieceMoves>(MoveGeneration.CalculateAllMoves(_boardPosition));
+                moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(_boardPosition));
                 
                 //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList, depth);
@@ -279,7 +279,7 @@ namespace ChessEngine.MoveSearching
                 Console.WriteLine($"info currmove {UciMoveTranslator.ToUciMove(move)} currmovenumber {i + 1}");
 #endif
 
-                var movePath = new List<PieceMoves>();
+                var movePath = new List<PieceMove>();
 
                 _pieceMover.MakeMove(move, false);
 
@@ -291,10 +291,10 @@ namespace ChessEngine.MoveSearching
                     bestMove = move;
                     bestScore = score;
 
-                    s_InDepthBestMove = bestMove;
+                    _inDepthBestMove = bestMove;
                 }
 
-                _initialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMoves>(score, move));
+                _initialMovesIterativeDeepeningShuffleOrder.Add(new Tuple<int, PieceMove>(score, move));
 
                 _pieceMover.UnMakeLastMove();
                 
@@ -316,13 +316,13 @@ namespace ChessEngine.MoveSearching
         //    otherwise order moves by best hash move, killer moves and MVV/LVA
         // 6. Loop through the moves recursively calling AlphaBeta
         // 7. Record alpha, beta or evaluation to the transposition table
-        private int AlphaBeta(int alpha, int beta, int depthLeft, bool allowNull, bool isNullSearch, List<PieceMoves> pvPath, int extensionDepth)
+        private int AlphaBeta(int alpha, int beta, int depthLeft, bool allowNull, bool isNullSearch, List<PieceMove> pvPath, int extensionDepth)
         {
             var pvPosition = pvPath.Count;
             
             var positionValue = int.MinValue / 2 + 1;
 
-            PieceMoves? bestHashMove = null;
+            PieceMove? bestHashMove = null;
 
             // Check transposition table
             var hash = TranspositionTable.ProbeTable(_boardPosition.Zobrist, depthLeft, alpha, beta);
@@ -387,7 +387,7 @@ namespace ChessEngine.MoveSearching
                                       depthLeft - _nullMoveR - 1, 
                                       false, 
                                       true, 
-                                      new List<PieceMoves>(), 
+                                      new List<PieceMove>(), 
                                       _maxCheckExtension); 
 
                 _boardPosition.SwitchSides();
@@ -398,7 +398,7 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
-            var moveList = new List<PieceMoves>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
+            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
             
             // There are no possible moves. It's either check mate or stale mate
             if (moveList.Count == 0)
@@ -421,7 +421,7 @@ namespace ChessEngine.MoveSearching
                           depthLeft - 1, 
                           false, 
                           false, 
-                          new List<PieceMoves>(), 
+                          new List<PieceMove>(), 
                           _maxCheckExtension); 
 
                 if (_bestMoveSoFar != null)
@@ -439,7 +439,7 @@ namespace ChessEngine.MoveSearching
                 OrderMovesInPlace(moveList, depthLeft, bestHashMove);
             }
 
-            PieceMoves? bestMoveSoFar = null;
+            PieceMove? bestMoveSoFar = null;
             var bestScoreSoFar = positionValue;
 
             // Check the colour before moving since it's this colour king we have to check for 
@@ -502,7 +502,7 @@ namespace ChessEngine.MoveSearching
                     continue;
                 }
                 
-                var bestPath = new List<PieceMoves>();
+                var bestPath = new List<PieceMove>();
 
                 int score;
 
@@ -537,7 +537,7 @@ namespace ChessEngine.MoveSearching
                                            depthLeft - 1, 
                                            true, 
                                            false, 
-                                           new List<PieceMoves>(), 
+                                           new List<PieceMove>(), 
                                            extensionDepth);
                     }
                 }
@@ -610,7 +610,7 @@ namespace ChessEngine.MoveSearching
             return positionValue;
         }
 
-        private void RecordHash(int depth, int score, HashNodeType hashNodeType, PieceMoves? bestMove = null)
+        private void RecordHash(int depth, int score, HashNodeType hashNodeType, PieceMove? bestMove = null)
         {
             var hash = new Hash
                        {
@@ -622,7 +622,7 @@ namespace ChessEngine.MoveSearching
 
             if (bestMove != null)
             {
-                hash.BestMove = (PieceMoves)bestMove;
+                hash.BestMove = (PieceMove)bestMove;
             }
 
             TranspositionTable.Add(hash);
@@ -648,14 +648,14 @@ namespace ChessEngine.MoveSearching
 
         // Keep examining down the tree until all moves are quiet.
         // Quiet moves are ones without captures
-        private int QuiescenceEvaluate(int alpha, int beta, List<PieceMoves> pvPath)
+        private int QuiescenceEvaluate(int alpha, int beta, List<PieceMove> pvPath)
         {
             var pvPosition = pvPath.Count;
 
             // Check transposition table
             var hash = TranspositionTable.ProbeQuiescenceTable(_boardPosition.Zobrist, alpha, beta);
 
-            PieceMoves? bestHashMove = null;
+            PieceMove? bestHashMove = null;
 
             if (hash.Key != 0)
             {
@@ -712,14 +712,14 @@ namespace ChessEngine.MoveSearching
 
             if (bestHashMove != null)
             {
-                BringBestHashMoveToTheFront(moves, (PieceMoves)bestHashMove);
+                BringBestHashMoveToTheFront(moves, (PieceMove)bestHashMove);
             }
 
-            PieceMoves? bestMoveSoFar = null;
+            PieceMove? bestMoveSoFar = null;
 
             foreach (var move in moves)
             {
-                var currentPath = new List<PieceMoves> { move };
+                var currentPath = new List<PieceMove> { move };
 
                 _pieceMover.MakeMove(move, false);
                 
@@ -754,7 +754,7 @@ namespace ChessEngine.MoveSearching
             return alpha;
         }
 
-        private void RecordQuiescenceHash(int evaluationScore, HashNodeType hashNodeType, PieceMoves? bestMove = null)
+        private void RecordQuiescenceHash(int evaluationScore, HashNodeType hashNodeType, PieceMove? bestMove = null)
         {
             var hash = new Hash
             {
@@ -765,15 +765,15 @@ namespace ChessEngine.MoveSearching
 
             if (bestMove != null)
             {
-                hash.BestMove = (PieceMoves)bestMove;
+                hash.BestMove = (PieceMove)bestMove;
             }
 
             TranspositionTable.AddQuiescenceHash(hash);
         }
 
-        private List<PieceMoves> OrderFromIterativeDeepeningMoves()
+        private List<PieceMove> OrderFromIterativeDeepeningMoves()
         {
-            var moveList = new List<PieceMoves>();
+            var moveList = new List<PieceMove>();
 
             _initialMovesIterativeDeepeningShuffleOrder =
                 _initialMovesIterativeDeepeningShuffleOrder.OrderByDescending(i => i.Item1).ToList();
@@ -789,14 +789,14 @@ namespace ChessEngine.MoveSearching
         }
 
         // Order all moves by MVV/LVA
-        private void OrderMovesInPlace(IList<PieceMoves> moveList, int depth)
+        private void OrderMovesInPlace(IList<PieceMove> moveList, int depth)
         {
             OrderMovesByMvvVla(moveList);
 
             BringKillerMovesToTheFront(moveList, depth);
         }
 
-        private void OrderMovesInPlace(IList<PieceMoves> moveList, int depth, PieceMoves? bestHashMove)
+        private void OrderMovesInPlace(IList<PieceMove> moveList, int depth, PieceMove? bestHashMove)
         {
             OrderMovesByMvvVla(moveList);
 
@@ -804,14 +804,14 @@ namespace ChessEngine.MoveSearching
 
             if (bestHashMove != null)
             {
-                BringBestHashMoveToTheFront(moveList, (PieceMoves)bestHashMove);
+                BringBestHashMoveToTheFront(moveList, (PieceMove)bestHashMove);
             }
         }
 
-        private void OrderMovesByMvvVla(IList<PieceMoves> moveList)
+        private void OrderMovesByMvvVla(IList<PieceMove> moveList)
         {
             // move list position, victim score, attacker score
-            var ordering = new List<Tuple<PieceMoves, int, int>>();
+            var ordering = new List<Tuple<PieceMove, int, int>>();
 
             var toRemove = new List<int>();
 
@@ -824,7 +824,7 @@ namespace ChessEngine.MoveSearching
                 {
                     var victimType = BoardChecking.GetPieceTypeOnSquare(_boardPosition, moveList[moveNum].Moves);
 
-                    ordering.Add(new Tuple<PieceMoves, int, int>(
+                    ordering.Add(new Tuple<PieceMove, int, int>(
                         moveList[moveNum],
                         GetPieceScore(victimType),
                         GetPieceScore(moveList[moveNum].Type)));
@@ -851,7 +851,7 @@ namespace ChessEngine.MoveSearching
             }
         }
 
-        private void BringKillerMovesToTheFront(IList<PieceMoves> moveList, int depth)
+        private void BringKillerMovesToTheFront(IList<PieceMove> moveList, int depth)
         {
             for (var slot = 0; slot < m_KillerMovesToStore; slot++)
             {
@@ -879,7 +879,7 @@ namespace ChessEngine.MoveSearching
             }
         }
 
-        private static void BringBestHashMoveToTheFront(IList<PieceMoves> moveList, PieceMoves bestHashMove)
+        private static void BringBestHashMoveToTheFront(IList<PieceMove> moveList, PieceMove bestHashMove)
         {
             if (moveList.Remove(bestHashMove))
             {
@@ -952,7 +952,7 @@ namespace ChessEngine.MoveSearching
             s_Log.Info("----------------------------------------------------------------------------------");
         }
 
-        private static void LogKillerMoves(PieceMoves[,] killerMoves)
+        private static void LogKillerMoves(PieceMove[,] killerMoves)
         {
             s_Log.Info("----------------------------------------------------------------------------------");
             s_Log.Info("KILLER MOVES");

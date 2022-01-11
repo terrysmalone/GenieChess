@@ -14,7 +14,7 @@ namespace ChessEngine.NotationHelpers
         /// </summary>
         /// <param name="move"></param>
         /// <returns></returns>
-        public static string ToUciMove(PieceMoves move)
+        public static string ToUciMove(PieceMove move)
         {
             var moveString = string.Empty;
 
@@ -59,9 +59,9 @@ namespace ChessEngine.NotationHelpers
         /// </summary>
         /// <param name="move"></param>
         /// <returns></returns>
-        public static PieceMoves ToGameMove(string move, Board board)
+        public static PieceMove ToGameMove(string move, Board board)
         {            
-            var pieceMove = new PieceMoves();
+            var pieceMove = new PieceMove();
 
             //split string into pairs
             var moveFrom = move.Substring(0, 2);

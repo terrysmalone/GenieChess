@@ -169,13 +169,13 @@ namespace ChessEngineTests
             var board1 = new Board();
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
-            pieceMover.MakeMove(new PieceMoves { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
 
             var board2 = new Board();
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
-            pieceMover.MakeMove(new PieceMoves { Position = 4096, Moves = 1048576, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
-            pieceMover.MakeMove(new PieceMoves { Position = 1048576, Moves = 268435456, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 1048576, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 1048576, Moves = 268435456, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
 
             Assert.That(board1.Zobrist, Is.Not.EqualTo(board2.Zobrist));
         }
@@ -188,12 +188,12 @@ namespace ChessEngineTests
             var board1 = new Board();
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
-            pieceMover.MakeMove(new PieceMoves { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
 
             var board2 = new Board();
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
-            pieceMover.MakeMove(new PieceMoves { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
 
             Assert.That(board1.Zobrist, Is.EqualTo(board2.Zobrist));
         }

@@ -89,7 +89,7 @@ namespace ChessEngine
 
         #endregion UCI commands
 
-        public PieceMoves FindAndMakeBestMove()
+        public PieceMove FindAndMakeBestMove()
         {
             var currentMove = GetBestMove();
 
@@ -105,7 +105,7 @@ namespace ChessEngine
             return currentMove;
         }
 
-        public PieceMoves GetBestMove()
+        public PieceMove GetBestMove()
         {
             if(UseOpeningBook && openingBook != null)
             {

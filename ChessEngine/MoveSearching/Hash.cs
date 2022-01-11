@@ -15,7 +15,7 @@ namespace ChessEngine.MoveSearching
         internal int Depth;
         internal int Score;
         internal HashNodeType NodeType;
-        internal PieceMoves BestMove;
+        internal PieceMove BestMove;
         internal bool Ancient;
 
         //internal string fenPosition;  //For debugging only. remove once fixed

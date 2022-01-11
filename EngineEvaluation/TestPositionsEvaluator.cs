@@ -141,7 +141,7 @@ namespace EngineEvaluation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    PieceMoves currentMove = new PieceMoves();
+                    PieceMove currentMove = new PieceMove();
 
                     if (maxThinkingSeconds > 0)
                     {

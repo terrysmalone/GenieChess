@@ -12,7 +12,7 @@ namespace ChessEngine.PossibleMoves
     {
         private static Board m_CurrentBoard;
 
-        private static List<PieceMoves> m_AllMoves;
+        private static List<PieceMove> m_AllMoves;
 
         private static int _checkCount; //Used to find if king is in double check
 
@@ -20,9 +20,9 @@ namespace ChessEngine.PossibleMoves
         /// Returns all truly legal moves
         /// </summary>
         /// <returns></returns>
-        public static List<PieceMoves> CalculateAllMoves(Board board)
+        public static List<PieceMove> CalculateAllMoves(Board board)
         {
-            m_AllMoves = new List<PieceMoves>();
+            m_AllMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
@@ -40,9 +40,9 @@ namespace ChessEngine.PossibleMoves
         /// those that put the king in check)
         /// </summary>
         /// <param name="board"></param>
-        public static List<PieceMoves> CalculateAllPseudoLegalMoves(Board board)
+        public static List<PieceMove> CalculateAllPseudoLegalMoves(Board board)
         {
-            m_AllMoves = new List<PieceMoves>();
+            m_AllMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
@@ -92,9 +92,9 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Calculates all capturing moves
-        public static List<PieceMoves> CalculateAllCapturingMoves(Board board)
+        public static List<PieceMove> CalculateAllCapturingMoves(Board board)
         {
-            m_AllMoves = new List<PieceMoves>();
+            m_AllMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
@@ -215,7 +215,7 @@ namespace ChessEngine.PossibleMoves
             return valid;
         }
         
-        internal static bool ValidateKingsideCastlingMove(Board boardPosition, PieceMoves currentMove)
+        internal static bool ValidateKingsideCastlingMove(Board boardPosition, PieceMove currentMove)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -236,7 +236,7 @@ namespace ChessEngine.PossibleMoves
             return true;
         }
         
-        internal static bool ValidateQueensideCastlingMove(Board boardPosition, PieceMoves currentMove)
+        internal static bool ValidateQueensideCastlingMove(Board boardPosition, PieceMove currentMove)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -273,28 +273,28 @@ namespace ChessEngine.PossibleMoves
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
                         //Add promotions to a new move
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.KnightPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.BishopPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.RookPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
@@ -308,7 +308,7 @@ namespace ChessEngine.PossibleMoves
 
                         if (pawnSingleMove > 0)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -324,7 +324,7 @@ namespace ChessEngine.PossibleMoves
                             if ((currentPosition & LookupTables.RowMask2) != 0 && pawnDoubleMove > 0
                             ) //If on start rank and first rank is not blocked
                             {
-                                m_AllMoves.Add(new PieceMoves
+                                m_AllMoves.Add(new PieceMove
                                                   {
                                                       Type        = PieceType.Pawn,
                                                       Position    = currentPosition,
@@ -343,7 +343,7 @@ namespace ChessEngine.PossibleMoves
 
                 if (pawnEnPassantCaptures > 0)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.Pawn,
                                           Position    = currentPosition,
@@ -365,7 +365,7 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnPromotionCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -373,21 +373,21 @@ namespace ChessEngine.PossibleMoves
                                                   SpecialMove = SpecialMoveType.KnightPromotionCapture
                                               });
 
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
                                                   Moves       = move,
                                                   SpecialMove = SpecialMoveType.BishopPromotionCapture
                                               });
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
                                                   Moves       = move,
                                                   SpecialMove = SpecialMoveType.RookPromotionCapture
                                               });
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -402,7 +402,7 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn, Position = currentPosition,
                                                   Moves       = move,
@@ -431,28 +431,28 @@ namespace ChessEngine.PossibleMoves
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
                         // Add promotions to a new move
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.KnightPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.BishopPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
                                               Moves       = promotionsBoard,
                                               SpecialMove = SpecialMoveType.RookPromotion
                                           });
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = PieceType.Pawn,
                                               Position    = currentPosition,
@@ -466,7 +466,7 @@ namespace ChessEngine.PossibleMoves
 
                         if (pawnSingleMove > 0)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -481,7 +481,7 @@ namespace ChessEngine.PossibleMoves
                             // If on start rank and first rank is not blocked
                             if ((currentPosition & LookupTables.RowMask7) != 0 && pawnDoubleMove != 0) 
                             {
-                                m_AllMoves.Add(new PieceMoves
+                                m_AllMoves.Add(new PieceMove
                                                   {
                                                       Type        = PieceType.Pawn,
                                                       Position    = currentPosition,
@@ -499,7 +499,7 @@ namespace ChessEngine.PossibleMoves
                 var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RowMask3);
 
                 if (pawnEnPassantCaptures > 0)
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.Pawn,
                                           Position    = currentPosition,
@@ -522,28 +522,28 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnPromotionCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
                                                   Moves       = move,
                                                   SpecialMove = SpecialMoveType.KnightPromotionCapture
                                               });
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
                                                   Moves       = move,
                                                   SpecialMove = SpecialMoveType.BishopPromotionCapture
                                               });
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
                                                   Moves       = move,
                                                   SpecialMove = SpecialMoveType.RookPromotionCapture
                                               });
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -558,7 +558,7 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMoves
+                            m_AllMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -592,7 +592,7 @@ namespace ChessEngine.PossibleMoves
                 {
                     if ((move & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
                     {
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -603,7 +603,7 @@ namespace ChessEngine.PossibleMoves
 
                     if ((move & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
                     {
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -638,7 +638,7 @@ namespace ChessEngine.PossibleMoves
                 {
                     if ((move & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
                     {
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -649,7 +649,7 @@ namespace ChessEngine.PossibleMoves
 
                     if ((move & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
                     {
-                        m_AllMoves.Add(new PieceMoves
+                        m_AllMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -696,7 +696,7 @@ namespace ChessEngine.PossibleMoves
             foreach (var move in splitMoves)
             {
                 if (move > 0)
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {Type = type, Position = position, Moves = move, SpecialMove = specialMoveType});
             }
         }
@@ -765,7 +765,7 @@ namespace ChessEngine.PossibleMoves
             {
                 if ((moveBoard & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.WhiteKing,
@@ -776,7 +776,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((moveBoard & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.WhiteKing,
@@ -799,7 +799,7 @@ namespace ChessEngine.PossibleMoves
             {
                 if ((moveBoard & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
                                           Moves = moveBoard, SpecialMove   = SpecialMoveType.Capture
@@ -808,7 +808,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((moveBoard & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.BlackKing,
@@ -826,7 +826,7 @@ namespace ChessEngine.PossibleMoves
         /// <param name="capturePosition"></param>
         private static void AddEnPassantCapture(ulong attackingPiece, ulong capturePosition)
         {
-            var enPassantCapture = new PieceMoves();
+            var enPassantCapture = new PieceMove();
             enPassantCapture.Type     = PieceType.Pawn;
             enPassantCapture.Position = attackingPiece;
             enPassantCapture.Moves    = capturePosition;
@@ -843,7 +843,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.WhiteKing,
@@ -860,7 +860,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.WhiteKing,
@@ -880,7 +880,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.BlackKing,
@@ -897,7 +897,7 @@ namespace ChessEngine.PossibleMoves
 
                 if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMoves
+                    m_AllMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
                                           Position    = m_CurrentBoard.BlackKing,
