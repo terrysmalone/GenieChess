@@ -28,7 +28,7 @@ namespace ChessEngineTests
             game.FindAndMakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+            var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
 
             Assert.That(fenNotation, Is.EqualTo(expectedFen));
         }
@@ -49,7 +49,7 @@ namespace ChessEngineTests
             game.FindAndMakeBestMove();
 
             var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            var fenNotation = FenTranslator.ToFENString(game.GetCurrentBoardState());
+            var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
 
             Assert.That(fenNotation, Is.EqualTo(expectedFen));
         }

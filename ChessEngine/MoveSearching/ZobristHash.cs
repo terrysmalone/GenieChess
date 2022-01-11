@@ -260,21 +260,21 @@ namespace ChessEngine.MoveSearching
 
             if (enPassantPosition > 0)
             {
-                if ((enPassantPosition & LookupTables.FileMaskA) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskA) > 0)
                     return ZobristKey.EnPassantA;
-                if ((enPassantPosition & LookupTables.FileMaskB) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskB) > 0)
                     return ZobristKey.EnPassantB;
-                if ((enPassantPosition & LookupTables.FileMaskC) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskC) > 0)
                     return ZobristKey.EnPassantC;
-                if ((enPassantPosition & LookupTables.FileMaskD) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskD) > 0)
                     return ZobristKey.EnPassantD;
-                if ((enPassantPosition & LookupTables.FileMaskE) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskE) > 0)
                     return ZobristKey.EnPassantE;
-                if ((enPassantPosition & LookupTables.FileMaskF) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskF) > 0)
                     return ZobristKey.EnPassantF;
-                if ((enPassantPosition & LookupTables.FileMaskG) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskG) > 0)
                     return ZobristKey.EnPassantG;
-                if ((enPassantPosition & LookupTables.FileMaskH) > 0)
+                if ((enPassantPosition & LookupTables.ColumnMaskH) > 0)
                     return ZobristKey.EnPassantH;
             }
 

@@ -2,22 +2,15 @@
 
 namespace ChessEngine.BoardSearching
 {
-    /// <summary>
-    /// Initialises and generates lookup tables for speeding up bitboard translations
-    /// </summary>
+    // Initialises and generates lookup tables for speeding up bitboard translations
+
     [Serializable]
     public static class LookupTables
     {
-        #region properties
-
         private static bool _initialised;
-
-        #region square value properties
 
         public static ulong[] SquareValuesFromIndex = new ulong[64];
         public static ulong[,] SquareValuesFromPosition = new ulong[8, 8];
-
-        #region Square values from board position
 
         public static ulong A1;
         public static ulong B1;
@@ -90,13 +83,7 @@ namespace ChessEngine.BoardSearching
         public static ulong F8;
         public static ulong G8;
         public static ulong H8;
-
-        #endregion Square values from board osition
         
-        #endregion
-
-        #region direction boards
-
         public static ulong[] UpBoard = new ulong[64];
         public static ulong[] RightBoard = new ulong[64];
         public static ulong[] DownBoard = new ulong[64];
@@ -107,46 +94,26 @@ namespace ChessEngine.BoardSearching
         public static ulong[] DownLeftBoard = new ulong[64];
         public static ulong[] UpLeftBoard = new ulong[64];
 
-        public static ulong NotABoard = 18374403900871474942;
-        public static ulong NotHBoard = 9187201950435737471;
-        #endregion direction boards
+        public static ulong RowMask1;
+        public static ulong RowMask2;
+        public static ulong RowMask3;
+        public static ulong RowMask4;
+        public static ulong RowMask5;
+        public static ulong RowMask6;
+        public static ulong RowMask7;
+        public static ulong RowMask8;
 
-        #region rank and file masks
+        public static ulong ColumnMaskA;
+        public static ulong ColumnMaskB;
+        public static ulong ColumnMaskC;
+        public static ulong ColumnMaskD;
+        public static ulong ColumnMaskE;
+        public static ulong ColumnMaskF;
+        public static ulong ColumnMaskG;
+        public static ulong ColumnMaskH;
 
-        #region rank masks
-
-        public static ulong RankMask1;
-        public static ulong RankMask2;
-        public static ulong RankMask3;
-        public static ulong RankMask4;
-        public static ulong RankMask5;
-        public static ulong RankMask6;
-        public static ulong RankMask7;
-        public static ulong RankMask8;
-
-        #endregion rank masks
-
-        #region file masks
-
-        public static ulong FileMaskA;
-        public static ulong FileMaskB;
-        public static ulong FileMaskC;
-        public static ulong FileMaskD;
-        public static ulong FileMaskE;
-        public static ulong FileMaskF;
-        public static ulong FileMaskG;
-        public static ulong FileMaskH;
-
-        #endregion file masks
-
-        #region file mask lookup methods
-
-        public static ulong[] FileMaskByColumn = new ulong[8];
-        public static ulong[] FileMaskByIndex = new ulong[64];
-
-        #endregion
-
-        #endregion rank and file masks
+        public static ulong[] ColumnMaskByColumn = new ulong[8];
+        public static ulong[] ColumnMaskByIndex = new ulong[64];
 
         public static ulong WhiteCastlingQueensideObstructionPath;
         public static ulong WhiteCastlingQueensideAttackPath;
@@ -157,8 +124,6 @@ namespace ChessEngine.BoardSearching
         public static ulong BlackCastlingQueensideAttackPath;
         public static ulong BlackCastlingKingsideObstructionPath;
         public static ulong BlackCastlingKingsideAttackPath;
-
-        #endregion properties
 
         public static ulong[] WhitePawnFrontSpan = new ulong[64];
         public static ulong[] BlackPawnFrontSpan = new ulong[64];
@@ -172,7 +137,7 @@ namespace ChessEngine.BoardSearching
 
             CalculateDirectionBoards();
 
-            CalculateRanksAndFileMasks();
+            CalculateRowsAndColumnMasks();
 
             CalculatePawnFrontSpans();
 
@@ -258,8 +223,6 @@ namespace ChessEngine.BoardSearching
             H8 = 2 * G8;
         }
 
-        #region square value methods
-
         /// <summary>
         /// Generates a table which gives the bitboard value of all 64 squares
         /// </summary>
@@ -284,19 +247,15 @@ namespace ChessEngine.BoardSearching
         {
             ulong squareValue = 1;
 
-            for (byte rank = 0; rank < 8; rank++)        
+            for (byte row = 0; row < 8; row++)        
             {
-                for (byte file = 0; file < 8; file++)
+                for (byte column = 0; column < 8; column++)
                 {
-                    SquareValuesFromPosition[file, rank] = squareValue;
-                    squareValue = squareValue << 1;
+                    SquareValuesFromPosition[column, row] = squareValue;
+                    squareValue <<= 1;
                 }
             }
         }
-
-        #endregion square value methods
-
-        #region Direction board methods
 
         private static void CalculateDirectionBoards()
         {
@@ -313,22 +272,22 @@ namespace ChessEngine.BoardSearching
 
         private static void CalculateUpDirectionBoards()
         {
-            for (var startRank = 0; startRank < 7; startRank++)        //Only goes to 7 as rank 8 will all be empty since there are no up moves
+            for (var startRank = 0; startRank < 7; startRank++)        //Only goes to 7 as row 8 will all be empty since there are no up moves
             {
-                for (var startFile = 0; startFile < 8; startFile++)
+                for (var startColumn = 0; startColumn < 8; startColumn++)
                 {
-                    var rank = startRank + 1;
+                    var row = startRank + 1;
                     
                     ulong upSquares = 0;
 
-                    while(rank < 8)
+                    while(row < 8)
                     {
-                        upSquares = upSquares | SquareValuesFromPosition[startFile, rank];
+                        upSquares |= SquareValuesFromPosition[startColumn, row];
 
-                        rank++;
+                        row++;
                     }
 
-                    UpBoard[(startRank * 8) + startFile] = upSquares;
+                    UpBoard[(startRank * 8) + startColumn] = upSquares;
                 }
             }
         }
@@ -337,42 +296,42 @@ namespace ChessEngine.BoardSearching
         {
             for (var startRank = 0; startRank < 8; startRank++)        
             {
-                for (var startFile = 0; startFile < 7; startFile++)    //Only goes to 7 as file 8 will all be empty since there are no right moves
+                for (var startColumn = 0; startColumn < 7; startColumn++)    //Only goes to 7 as column 8 will all be empty since there are no right moves
                 {
-                    var file = startFile + 1;
+                    var column = startColumn + 1;
 
                     ulong rightSquares = 0;
 
-                    while (file < 8)
+                    while (column < 8)
                     {
-                        rightSquares = rightSquares | SquareValuesFromPosition[file, startRank];
+                        rightSquares |= SquareValuesFromPosition[column, startRank];
 
-                        file++;
+                        column++;
                     }
 
-                    RightBoard[(startRank*8)+startFile] = rightSquares;
+                    RightBoard[(startRank*8)+startColumn] = rightSquares;
                 }
             }
         }
 
         private static void CalculateDownDirectionBoards()
         {
-            for (var startRank = 1; startRank < 8; startRank++)        //Starts at 1 as rank 0 will all be empty since there are no up moves
+            for (var startRank = 1; startRank < 8; startRank++)        //Starts at 1 as row 0 will all be empty since there are no up moves
             {
-                for (var startFile = 0; startFile < 8; startFile++)
+                for (var startColumn = 0; startColumn < 8; startColumn++)
                 {
-                    var rank = startRank - 1;
+                    var row = startRank - 1;
 
                     ulong downSquares = 0;
 
-                    while (rank >= 0)
+                    while (row >= 0)
                     {
-                        downSquares = downSquares | SquareValuesFromPosition[startFile, rank];
+                        downSquares |= SquareValuesFromPosition[startColumn, row];
 
-                        rank--;
+                        row--;
                     }
 
-                    DownBoard[(startRank * 8) + startFile] = downSquares;
+                    DownBoard[(startRank * 8) + startColumn] = downSquares;
                 }
             }
         }
@@ -381,20 +340,20 @@ namespace ChessEngine.BoardSearching
         {
             for (var startRank = 0; startRank < 8; startRank++)
             {
-                for (var startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no left moves
+                for (var startColumn = 1; startColumn < 8; startColumn++)    //Starts at 1 as column 0 will all be empty since there are no left moves
                 {
-                    var file = startFile - 1;
+                    var column = startColumn - 1;
 
                     ulong leftSquares = 0;
 
-                    while (file >= 0)
+                    while (column >= 0)
                     {
-                        leftSquares = leftSquares | SquareValuesFromPosition[file, startRank];
+                        leftSquares |= SquareValuesFromPosition[column, startRank];
 
-                        file--;
+                        column--;
                     }
 
-                    LeftBoard[(startRank * 8) + startFile] = leftSquares;
+                    LeftBoard[(startRank * 8) + startColumn] = leftSquares;
                 }
             }
         }
@@ -403,70 +362,70 @@ namespace ChessEngine.BoardSearching
         {
             for (var startRank = 0; startRank < 7; startRank++)
             {
-                for (var startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file and rank 7 will all be empty since there are no up right moves
+                for (var startColumn = 0; startColumn < 7; startColumn++)    //Stops at 6 as column and row 7 will all be empty since there are no up right moves
                 {
-                    var file = startFile + 1;
-                    var rank = startRank + 1;
+                    var column = startColumn + 1;
+                    var row = startRank + 1;
 
                     ulong upRightSquares = 0;
 
-                    while (file < 8 && rank < 8)
+                    while (column < 8 && row < 8)
                     {
-                        upRightSquares = upRightSquares | SquareValuesFromPosition[file, rank];
+                        upRightSquares |= SquareValuesFromPosition[column, row];
 
-                        file++;
-                        rank++;
+                        column++;
+                        row++;
                     }
 
-                    UpRightBoard[(startRank * 8) + startFile] = upRightSquares;
+                    UpRightBoard[(startRank * 8) + startColumn] = upRightSquares;
                 }
             }
         }
 
         private static void CalculateDownRightDirectionBoards()
         {
-            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down right moves
+            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as row 0 will all be empty since there are no down right moves
             {
-                for (var startFile = 0; startFile < 7; startFile++)    //Stops at 6 as file 7 will all be empty since there are no down right moves
+                for (var startColumn = 0; startColumn < 7; startColumn++)    //Stops at 6 as column 7 will all be empty since there are no down right moves
                 {
-                    var file = startFile + 1;
-                    var rank = startRank - 1;
+                    var column = startColumn + 1;
+                    var row = startRank - 1;
 
                     ulong downRightSquares = 0;
 
-                    while (file < 8 && rank >= 0)
+                    while (column < 8 && row >= 0)
                     {
-                        downRightSquares = downRightSquares | SquareValuesFromPosition[file, rank];
+                        downRightSquares |= SquareValuesFromPosition[column, row];
 
-                        file++;
-                        rank--;
+                        column++;
+                        row--;
                     }
 
-                    DownRightBoard[(startRank * 8) + startFile] = downRightSquares;
+                    DownRightBoard[(startRank * 8) + startColumn] = downRightSquares;
                 }
             }
         }
 
         private static void CalculateDownLeftDirectionBoards()
         {
-            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as rank 0 will all be empty since there are no down left moves
+            for (var startRank = 1; startRank < 8; startRank++)     //Starts at 1 as row 0 will all be empty since there are no down left moves
             {
-                for (var startFile = 1; startFile < 8; startFile++)    //Starts at 1 as file 0 will all be empty since there are no down left moves
+                for (var startColumn = 1; startColumn < 8; startColumn++)    //Starts at 1 as column 0 will all be empty since there are no down left moves
                 {
-                    var file = startFile - 1;
-                    var rank = startRank - 1;
+                    var column = startColumn - 1;
+                    var row = startRank - 1;
 
                     ulong downLeftSquares = 0;
 
-                    while (file >= 0 && rank >= 0)
+                    while (column >= 0 && row >= 0)
                     {
-                        downLeftSquares = downLeftSquares | SquareValuesFromPosition[file, rank];
+                        downLeftSquares |= SquareValuesFromPosition[column, row];
 
-                        file--;
-                        rank--;
+                        column--;
+                        row--;
                     }
 
-                    DownLeftBoard[(startRank * 8) + startFile] = downLeftSquares;
+                    DownLeftBoard[(startRank * 8) + startColumn] = downLeftSquares;
                 }
             }
         }
@@ -475,52 +434,48 @@ namespace ChessEngine.BoardSearching
         {
             for (var startRank = 0; startRank < 7; startRank++)     
             {
-                for (var startFile = 1; startFile < 8; startFile++)   
+                for (var startColumn = 1; startColumn < 8; startColumn++)   
                 {
-                    var file = startFile - 1;
-                    var rank = startRank + 1;
+                    var column = startColumn - 1;
+                    var row = startRank + 1;
 
                     ulong upLeftSquares = 0;
 
-                    while (file >= 0 && rank < 8)
+                    while (column >= 0 && row < 8)
                     {
-                        upLeftSquares = upLeftSquares | SquareValuesFromPosition[file, rank];
+                        upLeftSquares |= SquareValuesFromPosition[column, row];
 
-                        file--;
-                        rank++;
+                        column--;
+                        row++;
                     }
 
-                    UpLeftBoard[(startRank * 8) + startFile] = upLeftSquares;
+                    UpLeftBoard[(startRank * 8) + startColumn] = upLeftSquares;
                 }
             }
         }
 
-        #endregion Direction board methods
-
-        #region file and rank mask methods
-
         /// <summary>
-        /// Calculates masks where an entire rank or file is set to 1
+        /// Calculates masks where an entire row or column is set to 1
         /// </summary>
-        private static void CalculateRanksAndFileMasks()
+        private static void CalculateRowsAndColumnMasks()
         {
-            CalculateRankMasks();
-            CalculateFileMasks();
+            CalculateRowMasks();
+            CalculateColumnMasks();
 
-            CalculateFileMaskByColumn();
-            CalculateFileMaskByIndex();
+            CalculateColumnMaskByColumn();
+            CalculateColumnMaskByIndex();
         }
 
-        private static void CalculateFileMasks()
+        private static void CalculateColumnMasks()
         {
-            FileMaskA = CalculateHorizontalMask(0);
-            FileMaskB = CalculateHorizontalMask(1);
-            FileMaskC = CalculateHorizontalMask(2);
-            FileMaskD = CalculateHorizontalMask(3);
-            FileMaskE = CalculateHorizontalMask(4);
-            FileMaskF = CalculateHorizontalMask(5);
-            FileMaskG = CalculateHorizontalMask(6);
-            FileMaskH = CalculateHorizontalMask(7);
+            ColumnMaskA = CalculateHorizontalMask(0);
+            ColumnMaskB = CalculateHorizontalMask(1);
+            ColumnMaskC = CalculateHorizontalMask(2);
+            ColumnMaskD = CalculateHorizontalMask(3);
+            ColumnMaskE = CalculateHorizontalMask(4);
+            ColumnMaskF = CalculateHorizontalMask(5);
+            ColumnMaskG = CalculateHorizontalMask(6);
+            ColumnMaskH = CalculateHorizontalMask(7);
 
         }
 
@@ -530,22 +485,22 @@ namespace ChessEngine.BoardSearching
 
             for (var column = 0; column < 8; column++)
             {
-                mask = mask | SquareValuesFromPosition[row, column];
+                mask |= SquareValuesFromPosition[row, column];
             }
 
             return mask;
         }
 
-        private static void CalculateRankMasks()
+        private static void CalculateRowMasks()
         {
-            RankMask1 = CalculateVerticalMask(0);
-            RankMask2 = CalculateVerticalMask(1);
-            RankMask3 = CalculateVerticalMask(2);
-            RankMask4 = CalculateVerticalMask(3);
-            RankMask5 = CalculateVerticalMask(4);
-            RankMask6 = CalculateVerticalMask(5);
-            RankMask7 = CalculateVerticalMask(6);
-            RankMask8 = CalculateVerticalMask(7);
+            RowMask1 = CalculateVerticalMask(0);
+            RowMask2 = CalculateVerticalMask(1);
+            RowMask3 = CalculateVerticalMask(2);
+            RowMask4 = CalculateVerticalMask(3);
+            RowMask5 = CalculateVerticalMask(4);
+            RowMask6 = CalculateVerticalMask(5);
+            RowMask7 = CalculateVerticalMask(6);
+            RowMask8 = CalculateVerticalMask(7);
         }
 
         private static ulong CalculateVerticalMask(int column)
@@ -554,27 +509,25 @@ namespace ChessEngine.BoardSearching
 
             for (var row = 0; row < 8; row++)
             {
-                mask = mask | SquareValuesFromPosition[row, column];
+                mask |= SquareValuesFromPosition[row, column];
             }
 
             return mask;
         }
 
-        #region mask by num methods
-
-        private static void CalculateFileMaskByColumn()
+        private static void CalculateColumnMaskByColumn()
         { 
-            FileMaskByColumn[0] = FileMaskA;
-            FileMaskByColumn[1] = FileMaskB;
-            FileMaskByColumn[2] = FileMaskC;
-            FileMaskByColumn[3] = FileMaskD;
-            FileMaskByColumn[4] = FileMaskE;
-            FileMaskByColumn[5] = FileMaskF;
-            FileMaskByColumn[6] = FileMaskG;
-            FileMaskByColumn[7] = FileMaskH;             
+            ColumnMaskByColumn[0] = ColumnMaskA;
+            ColumnMaskByColumn[1] = ColumnMaskB;
+            ColumnMaskByColumn[2] = ColumnMaskC;
+            ColumnMaskByColumn[3] = ColumnMaskD;
+            ColumnMaskByColumn[4] = ColumnMaskE;
+            ColumnMaskByColumn[5] = ColumnMaskF;
+            ColumnMaskByColumn[6] = ColumnMaskG;
+            ColumnMaskByColumn[7] = ColumnMaskH;             
         }
 
-        private static void CalculateFileMaskByIndex()
+        private static void CalculateColumnMaskByIndex()
         {  
             for (var index = 0; index < 64; index++)
             {
@@ -583,28 +536,28 @@ namespace ChessEngine.BoardSearching
                 switch (column)
                 {
                     case 0:
-                        FileMaskByIndex[index] = FileMaskA;
+                        ColumnMaskByIndex[index] = ColumnMaskA;
                         break;
                     case 1:
-                        FileMaskByIndex[index] = FileMaskB;
+                        ColumnMaskByIndex[index] = ColumnMaskB;
                         break;
                     case 2:
-                        FileMaskByIndex[index] = FileMaskC;
+                        ColumnMaskByIndex[index] = ColumnMaskC;
                         break;
                     case 3:
-                        FileMaskByIndex[index] = FileMaskD;
+                        ColumnMaskByIndex[index] = ColumnMaskD;
                         break;
                     case 4:
-                        FileMaskByIndex[index] = FileMaskE;
+                        ColumnMaskByIndex[index] = ColumnMaskE;
                         break;
                     case 5:
-                        FileMaskByIndex[index] = FileMaskF;
+                        ColumnMaskByIndex[index] = ColumnMaskF;
                         break;
                     case 6:
-                        FileMaskByIndex[index] = FileMaskG;
+                        ColumnMaskByIndex[index] = ColumnMaskG;
                         break;
                     case 7:
-                        FileMaskByIndex[index] = FileMaskH;
+                        ColumnMaskByIndex[index] = ColumnMaskH;
                         break;
                     default:
                         throw new Exception("Bad column given: " + column);
@@ -620,7 +573,7 @@ namespace ChessEngine.BoardSearching
 
             ulong bitboardValue = 1;
 
-            // We calculate it from 0 to 63 even though we will never need the 1st and last rank
+            // We calculate it from 0 to 63 even though we will never need the 1st and last row
             // This is just for ease of calculation and understanding
             for (var i = 0; i < 64; i++)
             {
@@ -649,10 +602,6 @@ namespace ChessEngine.BoardSearching
                 bitboardValue *= 2;
             }
         }
-
-        #endregion mask by num methods
-
-        #endregion file and rank mask methods
 
         private static void InitialiseCastlingPathBoards()
         {

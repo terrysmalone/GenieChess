@@ -250,7 +250,7 @@ namespace ChessEngine.NotationHelpers
 
         #region ToFENString methods
 
-        public static string ToFENString(BoardState boardState)
+        public static string ToFenString(BoardState boardState)
         {
             var fenNotation = string.Empty;
 

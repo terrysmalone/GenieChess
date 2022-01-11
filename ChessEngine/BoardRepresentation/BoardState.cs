@@ -29,15 +29,10 @@ namespace ChessEngine.BoardRepresentation
         public bool BlackCanCastleQueenside;
         public bool BlackCanCastleKingside;
 
-        //public bool WhiteInCheck;
-        //public bool BlackInCheck;  
-
         public int HalfMoveClock;
         public int FullMoveClock;
 
         public ulong ZobristKey;
-
-        //public string PgnMove;
 
         public override bool Equals(object obj)
         {

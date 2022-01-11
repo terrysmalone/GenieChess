@@ -179,7 +179,7 @@ namespace ChessEngine
 
         private void PrintFEN()
         {
-            var fen = FenTranslator.ToFENString(game.GetCurrentBoardState());           
+            var fen = FenTranslator.ToFenString(game.GetCurrentBoardState());           
         }
     }
 }

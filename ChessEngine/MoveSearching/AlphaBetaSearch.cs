@@ -140,7 +140,7 @@ namespace ChessEngine.MoveSearching
         {
             var toMove = _boardPosition.WhiteToMove ? "white" : "black";
             s_Log.Info($"Calculating move for {toMove}");
-            s_Log.Info(FenTranslator.ToFENString(_boardPosition.GetCurrentBoardState()));
+            s_Log.Info(FenTranslator.ToFenString(_boardPosition.GetCurrentBoardState()));
 
             _killerMoves = new PieceMoves[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 

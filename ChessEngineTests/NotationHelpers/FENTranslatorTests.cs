@@ -4,15 +4,15 @@ using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ChessEngineTests.NotationHelpers
 {
-    [TestClass]
+    [TestFixture]
     public class FenTranslatorTests
     {
-        [TestMethod]
-        public void TestTwoWayTranslate1()
+        [Test]
+        public void TwoWayTranslate1()
         {
             LookupTables.InitialiseAllTables();
 
@@ -20,13 +20,13 @@ namespace ChessEngineTests.NotationHelpers
 
             var boardState = FenTranslator.ToBoardState(before);
 
-            var after = FenTranslator.ToFENString(boardState);
+            var after = FenTranslator.ToFenString(boardState);
 
-            Assert.AreEqual(before, after);
+            Assert.That(after, Is.EqualTo(before));
         }
 
-        [TestMethod]
-        public void TestTwoWayTranslate2()
+        [Test]
+        public void TwoWayTranslate2()
         {
             LookupTables.InitialiseAllTables();
 
@@ -34,328 +34,294 @@ namespace ChessEngineTests.NotationHelpers
 
             var boardState = FenTranslator.ToBoardState(before);
 
-            var after = FenTranslator.ToFENString(boardState);
+            var after = FenTranslator.ToFenString(boardState);
 
-            Assert.AreEqual(before, after);
+            Assert.That(after, Is.EqualTo(before));
         }
 
-        #region ToBoardState tests
-
-        [TestMethod]
-        public void TestToBoardState_WhiteToMove()
+        [Test]
+        public void ToBoardState_WhiteToMove()
         {
             var state = FenTranslator.ToBoardState("8/3p4/2pPp3/5p2/5P2/4P3/PP5p/8 w - - 0 1");
-            Assert.IsTrue(state.WhiteToMove);
+            Assert.That(state.WhiteToMove, Is.True);
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackToMove()
+        [Test]
+        public void ToBoardState_BlackToMove()
         {
             var state = FenTranslator.ToBoardState("8/3p4/2pPp3/5p2/5P2/4P3/PP5p/8 b - - 0 1");
-            Assert.IsFalse(state.WhiteToMove);
+            Assert.That(state.WhiteToMove, Is.False);
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteCanCastleKingside()
+        [Test]
+        public void ToBoardState_WhiteCanCastleKingside()
         {
             var state = FenTranslator.ToBoardState("8/3p4/2pPp3/5p2/5P2/4P3/PP5p/4K2R w K - 0 1");
-            Assert.IsTrue(state.WhiteCanCastleKingside);
-            Assert.IsFalse(state.WhiteCanCastleQueenside);
-            Assert.IsFalse(state.BlackCanCastleKingside);
-            Assert.IsFalse(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.True);
+            Assert.That(state.WhiteCanCastleQueenside, Is.False);
+            Assert.That(state.BlackCanCastleKingside, Is.False);
+            Assert.That(state.BlackCanCastleQueenside, Is.False);
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteCanCastleQueenside()
+        [Test]
+        public void ToBoardState_WhiteCanCastleQueenside()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w Q - 0 1");
-            Assert.IsFalse(state.WhiteCanCastleKingside);
-            Assert.IsTrue(state.WhiteCanCastleQueenside);
-            Assert.IsFalse(state.BlackCanCastleKingside);
-            Assert.IsFalse(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.False);
+            Assert.That(state.WhiteCanCastleQueenside, Is.True);
+            Assert.That(state.BlackCanCastleKingside, Is.False);
+            Assert.That(state.BlackCanCastleQueenside, Is.False);
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackCanCastleKingside()
+        [Test]
+        public void ToBoardState_BlackCanCastleKingside()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w k - 0 1");
-            Assert.IsFalse(state.WhiteCanCastleKingside);
-            Assert.IsFalse(state.WhiteCanCastleQueenside);
-            Assert.IsTrue(state.BlackCanCastleKingside);
-            Assert.IsFalse(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.False);
+            Assert.That(state.WhiteCanCastleQueenside, Is.False);
+            Assert.That(state.BlackCanCastleKingside, Is.True);
+            Assert.That(state.BlackCanCastleQueenside, Is.False);
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackCanCastleQueenside()
+        [Test]
+        public void ToBoardState_BlackCanCastleQueenside()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w q - 0 1");
-            Assert.IsFalse(state.WhiteCanCastleKingside);
-            Assert.IsFalse(state.WhiteCanCastleQueenside);
-            Assert.IsFalse(state.BlackCanCastleKingside);
-            Assert.IsTrue(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.False);
+            Assert.That(state.WhiteCanCastleQueenside, Is.False);
+            Assert.That(state.BlackCanCastleKingside, Is.False);
+            Assert.That(state.BlackCanCastleQueenside, Is.True);
         }
 
-        [TestMethod]
-        public void TestToBoardState_AllCanCastle()
+        [Test]
+        public void ToBoardState_AllCanCastle()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w KQkq - 0 1");
-            Assert.IsTrue(state.WhiteCanCastleKingside);
-            Assert.IsTrue(state.WhiteCanCastleQueenside);
-            Assert.IsTrue(state.BlackCanCastleKingside);
-            Assert.IsTrue(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.True);
+            Assert.That(state.WhiteCanCastleQueenside, Is.True);
+            Assert.That(state.BlackCanCastleKingside, Is.True);
+            Assert.That(state.BlackCanCastleQueenside, Is.True);
         }
 
-        [TestMethod]
-        public void TestToBoardState_AllCantCastle()
+        [Test]
+        public void ToBoardState_AllCantCastle()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w - - 0 1");
-            Assert.IsFalse(state.WhiteCanCastleKingside);
-            Assert.IsFalse(state.WhiteCanCastleQueenside);
-            Assert.IsFalse(state.BlackCanCastleKingside);
-            Assert.IsFalse(state.BlackCanCastleQueenside);
+            Assert.That(state.WhiteCanCastleKingside, Is.False);
+            Assert.That(state.WhiteCanCastleQueenside, Is.False);
+            Assert.That(state.BlackCanCastleKingside, Is.False);
+            Assert.That(state.BlackCanCastleQueenside, Is.False);
         }
 
 
-        [TestMethod]
-        public void TestToBoardState_EnPassant_White()
+        [Test]
+        public void ToBoardState_EnPassant_White()
         {
-// TODO: write tests
-            //throw new NotImplementedException();
+            var state = FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 1 1");
+
+            Assert.That(state.EnPassantPosition, Is.EqualTo(1048576));
         }
 
-        [TestMethod]
-        public void TestToBoardState_EnPassant_Black()
+        [Test]
+        public void ToBoardState_EnPassant_Black()
         {
-// TODO: write tests
-            //throw new NotImplementedException();
+            var state = FenTranslator.ToBoardState("rnbqkbnr/p1pppppp/8/1p6/4P3/8/PPPP1PPP/RNBQKBNR w KQkq b6 0 2");
+
+            Assert.That(state.EnPassantPosition, Is.EqualTo(2199023255552));
         }
 
-        [TestMethod]
-        public void TestToBoardState_HalfMoveCount()
+        [Test]
+        public void ToBoardState_HalfMoveCount()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w - - 0 1");
-            Assert.AreEqual(0, state.HalfMoveClock);
+            Assert.That(state.HalfMoveClock, Is.EqualTo(0));
 
             state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w - - 6 1");
-            Assert.AreEqual(6, state.HalfMoveClock);
+            Assert.That(state.HalfMoveClock, Is.EqualTo(6));
         }
 
-        [TestMethod]
-        public void TestToBoardState_FullMoveCount()
+        [Test]
+        public void ToBoardState_FullMoveCount()
         {
             var state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w - - 0 1");
-            Assert.AreEqual(1, state.FullMoveClock);
+            Assert.That(state.FullMoveClock, Is.EqualTo(1));
 
             state = FenTranslator.ToBoardState("8/8/8/8/8/8/8/R3K3 w - - 6 43");
-            Assert.AreEqual(43, state.FullMoveClock);
+            Assert.That(state.FullMoveClock, Is.EqualTo(43));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhitePawns()
+        [Test]
+        public void ToBoardState_WhitePawns()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("rq3k2/2pp4/1pb5/p7/2P5/3PN3/4PP2/R3K3 w Q - 0 1");
 
-            ulong expected = 67645440;
-
-            Assert.AreEqual(expected, state.WhitePawns);
+            Assert.That(state.WhitePawns, Is.EqualTo(67645440));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteKnights_1()
+        [Test]
+        public void ToBoardState_WhiteKnights1()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1");
 
-            ulong expected = 66;
-
-            Assert.AreEqual(expected, state.WhiteKnights);
+            Assert.That(state.WhiteKnights, Is.EqualTo(66));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteKnights_2()
+        [Test]
+        public void ToBoardState_WhiteKnights2()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4P3/2N5/PPPP1PPP/R1BQKB1R w KQkq - 0 1");
 
-            ulong expected = 68719738880;
-
-            Assert.AreEqual(expected, state.WhiteKnights);
+            Assert.That(state.WhiteKnights, Is.EqualTo(68719738880));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteBishops_1()
+        [Test]
+        public void ToBoardState_WhiteBishops1()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4P3/2N5/PPPP1PPP/R1BQKB1R w KQkq - 0 1");
 
-            ulong expected = 36;
-
-            Assert.AreEqual(expected, state.WhiteBishops);
+            Assert.That(state.WhiteBishops, Is.EqualTo(36));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteBishops_2()
+        [Test]
+        public void ToBoardState_WhiteBishops2()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPP1BPPP/R2QK2R w KQkq - 0 1");
 
-            ulong expected = 536875008;
-
-            Assert.AreEqual(expected, state.WhiteBishops);
+            Assert.That(state.WhiteBishops, Is.EqualTo(536875008));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteRooks()
+        [Test]
+        public void ToBoardState_WhiteRooks()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPP1BPPP/R2Q1RK1 w kq - 0 1");
 
-            ulong expected = 33;
-
-            Assert.AreEqual(expected, state.WhiteRooks);
+            Assert.That(state.WhiteRooks, Is.EqualTo(33));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteQueen_1()
+        [Test]
+        public void ToBoardState_WhiteQueen1()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPP1BPPP/R2Q1RK1 w kq - 0 1");
 
-            ulong expected = 8;
-
-            Assert.AreEqual(expected, state.WhiteQueen);
+            Assert.That(state.WhiteQueen, Is.EqualTo(8));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteQueen_2()
+        [Test]
+        public void ToBoardState_WhiteQueen2()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPPQBPPP/R4RK1 w kq - 0 1");
 
-            ulong expected = 2048;
-
-            Assert.AreEqual(expected, state.WhiteQueen);
+            Assert.That(state.WhiteQueen, Is.EqualTo(2048));
         }
 
-        [TestMethod]
-        public void TestToBoardState_WhiteKing()
+        [Test]
+        public void ToBoardState_WhiteKing()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPPQBPPP/R4RK1 w kq - 0 1");
 
-            ulong expected = 64;
-
-            Assert.AreEqual(expected, state.WhiteKing);
+            Assert.That(state.WhiteKing, Is.EqualTo(64));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackPawns_1()
+        [Test]
+        public void ToBoardState_BlackPawns1()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pppppppp/7n/n3N3/4PB2/2NP4/PPPQBPPP/R4RK1 w kq - 0 1");
 
-            ulong expected = 71776119061217280;
-
-            Assert.AreEqual(expected, state.BlackPawns);
+            Assert.That(state.BlackPawns, Is.EqualTo(71776119061217280));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackPawns_2()
+        [Test]
+        public void ToBoardState_BlackPawns2()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pp3p1p/2p3pn/n3N3/3pPB2/2NP4/PPPQBPPP/R4RK1 w kq - 0 1");
 
-            ulong expected = 45955188128743424;
-
-            Assert.AreEqual(expected, state.BlackPawns);
+            Assert.That(state.BlackPawns, Is.EqualTo(45955188128743424));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackKnights()
+        [Test]
+        public void ToBoardState_BlackKnights()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqkb1r/pp3p1p/2p3pn/n3N3/3pPB2/2NP4/PPPQBPPP/R4RK1 w kq - 0 1");
 
-            ulong expected = 140741783322624;
-
-            Assert.AreEqual(expected, state.BlackKnights);
+            Assert.That(state.BlackKnights, Is.EqualTo(140741783322624));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackBishops()
+        [Test]
+        public void ToBoardState_BlackBishops()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("r1bqk2r/pp3p1p/2p3pn/n3N3/3pPB2/2NP4/P1PQBPPP/b4RK1 w kq - 0 1");
 
-            ulong expected = 288230376151711745;
-
-            Assert.AreEqual(expected, state.BlackBishops);
+            Assert.That(state.BlackBishops, Is.EqualTo(288230376151711745));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackRooks()
+        [Test]
+        public void ToBoardState_BlackRooks()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("1rbqk2r/pp3p1p/2p3pn/n3N3/3pPB2/2NP4/P1PQBPPP/b4RK1 w k - 0 1");
 
-            var expected = 9367487224930631680;
-
-            Assert.AreEqual(expected, state.BlackRooks);
+            Assert.That(state.BlackRooks, Is.EqualTo(9367487224930631680));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackQueen()
+        [Test]
+        public void ToBoardState_BlackQueen()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("1rb1k2r/pp3p1p/2p3pn/n3N3/3pPB1q/2NP4/P1PQBPPP/b4RK1 w k - 0 1");
 
-            ulong expected = 2147483648;
-
-            Assert.AreEqual(expected, state.BlackQueen);
+            Assert.That(state.BlackQueen, Is.EqualTo(2147483648));
         }
 
-        [TestMethod]
-        public void TestToBoardState_BlackKing()
+        [Test]
+        public void ToBoardState_BlackKing()
         {
             LookupTables.InitialiseAllTables();
 
             var state = FenTranslator.ToBoardState("1rb3kr/pp3p1p/2p3pn/n3N3/3pPB1q/2NP4/P1PQBPPP/b4RK1 w - - 0 1");
 
-            ulong expected = 4611686018427387904;
-
-            Assert.AreEqual(expected, state.BlackKing);
+            Assert.That(state.BlackKing, Is.EqualTo(4611686018427387904));
         }
 
-        #endregion ToBoardState tests
-
-        [TestMethod]
-        public void TestToFEN_EnPassant_White()
+        [Test]
+        public void ToFen_WithEnPassantForWhite()
         {
             var board = new Board();
             board.InitaliseStartingPosition();
+
             var pieceMover = new PieceMover(board);
-            
             pieceMover.MakeMove(new PieceMoves() { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
 
-            var boardString = FenTranslator.ToFENString(board.GetCurrentBoardState());
+            var boardString = FenTranslator.ToFenString(board.GetCurrentBoardState());
 
-            Assert.AreEqual("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 1 1", boardString);
+            Assert.That(boardString, Is.EqualTo("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 1 1"));
         }
     }
 }
