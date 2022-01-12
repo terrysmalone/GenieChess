@@ -158,8 +158,7 @@ namespace ChessEngine.PossibleMoves
                 pieceMover.MakeMove(currentMove.Position, 
                                     currentMove.Moves,
                                     currentMove.Type,
-                                    currentMove.SpecialMove,
-                                    false);
+                                    currentMove.SpecialMove);
 
                 if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
                 {

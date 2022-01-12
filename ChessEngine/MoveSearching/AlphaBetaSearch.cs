@@ -281,7 +281,7 @@ namespace ChessEngine.MoveSearching
 
                 var movePath = new List<PieceMove>();
 
-                _pieceMover.MakeMove(move, false);
+                _pieceMover.MakeMove(move);
 
                 // Since we're swapping colours at the next depth invert alpha and beta
                 var score = -AlphaBeta(-beta, -alpha, depth - 1, true, false, movePath, 0);
@@ -480,7 +480,7 @@ namespace ChessEngine.MoveSearching
                     }
                 }
 
-                _pieceMover.MakeMove(move, false);
+                _pieceMover.MakeMove(move);
 
                 // Futility pruning
                 //if (depthLeft == 1 &&
@@ -721,7 +721,7 @@ namespace ChessEngine.MoveSearching
             {
                 var currentPath = new List<PieceMove> { move };
 
-                _pieceMover.MakeMove(move, false);
+                _pieceMover.MakeMove(move);
                 
                 evaluationScore = -QuiescenceEvaluate(-beta, -alpha, currentPath);
 

@@ -44,7 +44,7 @@ namespace ChessEngineTests
 
             var pieceMover = new PieceMover(board);
             //Move black f-pawn 2 spaces
-            pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);
+            pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush);
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
@@ -60,7 +60,7 @@ namespace ChessEngineTests
 
             var pieceMover = new PieceMover(board);
             // Move h pawn 2 spaces
-            pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false); 
+            pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush); 
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 

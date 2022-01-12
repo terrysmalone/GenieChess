@@ -35,8 +35,8 @@ namespace ChessEngineTests.ScoreCalculation
             var pieceMover = new PieceMover(board);
 
             board.InitaliseStartingPosition();
-            pieceMover.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
-            pieceMover.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true);
+            pieceMover.MakeMove(LookupTables.E2, LookupTables.E4, PieceType.Pawn, SpecialMoveType.DoublePawnPush);
+            pieceMover.MakeMove(LookupTables.E7, LookupTables.E5, PieceType.Pawn, SpecialMoveType.DoublePawnPush);
 
             var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
@@ -52,8 +52,8 @@ namespace ChessEngineTests.ScoreCalculation
             var pieceMover = new PieceMover(board);
 
             board.InitaliseStartingPosition();
-            pieceMover.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal, true);
-            pieceMover.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal, true);
+            pieceMover.MakeMove(LookupTables.G1, LookupTables.F3, PieceType.Knight, SpecialMoveType.Normal);
+            pieceMover.MakeMove(LookupTables.G8, LookupTables.F6, PieceType.Knight, SpecialMoveType.Normal);
 
             var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 

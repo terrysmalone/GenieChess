@@ -169,13 +169,13 @@ namespace ChessEngineTests
             var board1 = new Board();
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
-            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn });
 
             var board2 = new Board();
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
-            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 1048576, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
-            pieceMover.MakeMove(new PieceMove { Position = 1048576, Moves = 268435456, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 1048576, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn });
+            pieceMover.MakeMove(new PieceMove { Position = 1048576, Moves = 268435456, SpecialMove = SpecialMoveType.Normal, Type = PieceType.Pawn });
 
             Assert.That(board1.Zobrist, Is.Not.EqualTo(board2.Zobrist));
         }
@@ -188,12 +188,12 @@ namespace ChessEngineTests
             var board1 = new Board();
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
-            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn });
 
             var board2 = new Board();
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
-            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn });
 
             Assert.That(board1.Zobrist, Is.EqualTo(board2.Zobrist));
         }
@@ -229,7 +229,7 @@ namespace ChessEngineTests
 
             var initialZobristValue = board.Zobrist;
 
-            pieceMover.MakeMove(2048, 134217728, PieceType.Pawn, SpecialMoveType.DoublePawnPush, true); //d2-d4
+            pieceMover.MakeMove(2048, 134217728, PieceType.Pawn, SpecialMoveType.DoublePawnPush); //d2-d4
 
             Assert.That(board.Zobrist, Is.Not.EqualTo(initialZobristValue));
 
@@ -250,27 +250,27 @@ namespace ChessEngineTests
 
             var initialZobristValue = board.Zobrist;
 
-            pieceMover.MakeMove(2, 65536, PieceType.Knight, SpecialMoveType.Normal, true); //Nb1-a3
-            pieceMover.MakeMove(144115188075855872, 1099511627776, PieceType.Knight, SpecialMoveType.Normal, true); //Nb8-a6
+            pieceMover.MakeMove(2, 65536, PieceType.Knight, SpecialMoveType.Normal); //Nb1-a3
+            pieceMover.MakeMove(144115188075855872, 1099511627776, PieceType.Knight, SpecialMoveType.Normal); //Nb8-a6
 
             Assert.That(board.Zobrist, Is.Not.EqualTo(initialZobristValue));
 
             var twoMoveZobrist = board.Zobrist;
 
-            pieceMover.MakeMove(64, 8388608, PieceType.Knight, SpecialMoveType.Normal, true); //Ng1-h3
-            pieceMover.MakeMove(4611686018427387904, 140737488355328, PieceType.Knight, SpecialMoveType.Normal, true); //Ng8-h6
+            pieceMover.MakeMove(64, 8388608, PieceType.Knight, SpecialMoveType.Normal); //Ng1-h3
+            pieceMover.MakeMove(4611686018427387904, 140737488355328, PieceType.Knight, SpecialMoveType.Normal); //Ng8-h6
 
             Assert.That(board.Zobrist, Is.Not.EqualTo(initialZobristValue));
 
 
-            pieceMover.MakeMove(8388608, 64, PieceType.Knight, SpecialMoveType.Normal, true); //Nh3-g1
-            pieceMover.MakeMove(140737488355328, 4611686018427387904, PieceType.Knight, SpecialMoveType.Normal, true); //h6-g8
+            pieceMover.MakeMove(8388608, 64, PieceType.Knight, SpecialMoveType.Normal); //Nh3-g1
+            pieceMover.MakeMove(140737488355328, 4611686018427387904, PieceType.Knight, SpecialMoveType.Normal); //h6-g8
 
             Assert.That(board.Zobrist, Is.Not.EqualTo(initialZobristValue));
             Assert.That(board.Zobrist, Is.EqualTo(twoMoveZobrist));     // It should be back to the same as after two moves
 
-            pieceMover.MakeMove(65536, 2, PieceType.Knight, SpecialMoveType.Normal, true); //a3-b1
-            pieceMover.MakeMove(1099511627776, 144115188075855872, PieceType.Knight, SpecialMoveType.Normal, true); //h6-g8
+            pieceMover.MakeMove(65536, 2, PieceType.Knight, SpecialMoveType.Normal); //a3-b1
+            pieceMover.MakeMove(1099511627776, 144115188075855872, PieceType.Knight, SpecialMoveType.Normal); //h6-g8
 
             Assert.That(board.Zobrist, Is.EqualTo(initialZobristValue));    // IT should be back to the initial position
             Assert.That(board.Zobrist, Is.Not.EqualTo(twoMoveZobrist));
@@ -292,17 +292,17 @@ namespace ChessEngineTests
 
             // Make board 1 moves
             var pieceMover = new PieceMover(board1);
-            pieceMover.MakeMove(1073741824, 134217728, PieceType.Queen, SpecialMoveType.Normal, true); // Qg4-d4
-            pieceMover.MakeMove(576460752303423488, 1152921504606846976, PieceType.Queen, SpecialMoveType.Normal, true); // QQd8-d7
-            pieceMover.MakeMove(134217728, 9223372036854775808, PieceType.Queen, SpecialMoveType.Capture, true); // QQd4xh8
+            pieceMover.MakeMove(1073741824, 134217728, PieceType.Queen, SpecialMoveType.Normal); // Qg4-d4
+            pieceMover.MakeMove(576460752303423488, 1152921504606846976, PieceType.Queen, SpecialMoveType.Normal); // QQd8-d7
+            pieceMover.MakeMove(134217728, 9223372036854775808, PieceType.Queen, SpecialMoveType.Capture); // QQd4xh8
 
             Assert.That(board1.Zobrist, Is.Not.EqualTo(board2.Zobrist));
 
             //Make board 2 moves
             pieceMover = new PieceMover(board2);
-            pieceMover.MakeMove(1073741824, 2147483648, PieceType.Queen, SpecialMoveType.Normal, true); // Qg4-h4
-            pieceMover.MakeMove(576460752303423488, 1152921504606846976, PieceType.Queen, SpecialMoveType.Normal, true); // QQd8-d7
-            pieceMover.MakeMove(2147483648, 9223372036854775808, PieceType.Queen, SpecialMoveType.Capture, true); // QQh4xh8
+            pieceMover.MakeMove(1073741824, 2147483648, PieceType.Queen, SpecialMoveType.Normal); // Qg4-h4
+            pieceMover.MakeMove(576460752303423488, 1152921504606846976, PieceType.Queen, SpecialMoveType.Normal); // QQd8-d7
+            pieceMover.MakeMove(2147483648, 9223372036854775808, PieceType.Queen, SpecialMoveType.Capture); // QQh4xh8
 
             Assert.That(board1.Zobrist, Is.EqualTo(board2.Zobrist));
         }

@@ -18,14 +18,14 @@ namespace ChessEngine
         }
         
         // If the move is confirmed extra processes are carried out (i.e. PGN calculations. During move generation these are not necessary and slow things down
-        internal void MakeMove(PieceMove move, bool confirmedMove)
+        internal void MakeMove(PieceMove move)
         {
             //MakeMove(move.Position, move.Moves, move.Type, false);
-            MakeMove(move.Position, move.Moves, move.Type, move.SpecialMove, confirmedMove);
+            MakeMove(move.Position, move.Moves, move.Type, move.SpecialMove);
         }
         
         // If the move is confirmed extra processes are carried out (i.e. PGN calculations. During move generation these are not necessary and slow things down</param>
-        internal void MakeMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove, bool confirmedMove)
+        internal void MakeMove(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMove)
         {
             SaveBoardState();            
 

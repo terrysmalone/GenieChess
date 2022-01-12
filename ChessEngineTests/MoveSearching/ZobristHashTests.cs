@@ -147,11 +147,11 @@ namespace ChessEngineTests.MoveSearching
 
             var initialZobrist = board.Zobrist;
 
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d1f2", board), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d8f7", board), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d1f2", board));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d8f7", board));
 
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f2d1", board), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f7d8", board), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f2d1", board));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f7d8", board));
 
             var endZobrist = board.Zobrist;
 
@@ -193,11 +193,11 @@ namespace ChessEngineTests.MoveSearching
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
             
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e3e4", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d5d6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d4", board1), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e3e4", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d5d6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d4", board1));
 
             var zobrist1 = board1.Zobrist;
             Assert.That(zobrist1, Is.Not.EqualTo((ulong)0));
@@ -206,11 +206,11 @@ namespace ChessEngineTests.MoveSearching
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
 
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e4", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d5d6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d3d4", board1), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e4", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d5d6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d3d4", board1));
 
             var zobrist2 = board2.Zobrist;
             Assert.That(zobrist2, Is.Not.EqualTo((ulong)0));
@@ -229,11 +229,11 @@ namespace ChessEngineTests.MoveSearching
             board1.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board1);
 
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7d6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e4", board1), false);   //En-passant move
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board1), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7d6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e4", board1));   //En-passant move
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board1));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board1));
 
             var zobrist1 = board1.Zobrist;
             Assert.That(zobrist1, Is.Not.EqualTo((ulong)0));
@@ -242,17 +242,17 @@ namespace ChessEngineTests.MoveSearching
             board2.InitaliseStartingPosition();
             pieceMover = new PieceMover(board2);
 
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7d6", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c8e6", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e3e4", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e6d7", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f3g1", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7c8", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board2), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7d6", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c8e6", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e3e4", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e6d7", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e7e6", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("f3g1", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d7c8", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("g1f3", board2));
 
             var zobrist2 = board2.Zobrist;
             Assert.That(zobrist2, Is.Not.EqualTo((ulong)0));
@@ -303,7 +303,7 @@ namespace ChessEngineTests.MoveSearching
             board2.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board2);
             
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2));
             var zobrist2 = board2.Zobrist;
 
             Assert.That(zobrist1, Is.EqualTo(zobrist2));
@@ -327,8 +327,8 @@ namespace ChessEngineTests.MoveSearching
             board2.InitaliseStartingPosition();
             var pieceMover = new PieceMover(board2);
             
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c7c6", board2), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c7c6", board2));
             var zobrist2 = board2.Zobrist;
 
             Assert.That(zobrist1, Is.EqualTo(zobrist2));
@@ -353,9 +353,9 @@ namespace ChessEngineTests.MoveSearching
 
             var pieceMover = new PieceMover(board2);
             
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c7c6", board2), false);
-            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board2), false);
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("e2e3", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("c7c6", board2));
+            pieceMover.MakeMove(UciMoveTranslator.ToGameMove("d2d3", board2));
             var zobrist2 = board2.Zobrist;
 
             Assert.That(zobrist1, Is.EqualTo(zobrist2));
