@@ -21,8 +21,8 @@ namespace ChessEngine.NotationHelpers
             var moveFromBoard = move.Position;
             var moveToBoard = move.Moves;
 
-            moveString = TranslationHelper.SquareBitboardToSquareString(moveFromBoard);
-            moveString += TranslationHelper.SquareBitboardToSquareString(moveToBoard);
+            moveString = TranslationHelper.GetSquareNotation(moveFromBoard);
+            moveString += TranslationHelper.GetSquareNotation(moveToBoard);
 
             moveString += CheckForPromotionString(move.SpecialMove);
 
@@ -67,8 +67,8 @@ namespace ChessEngine.NotationHelpers
             var moveFrom = move.Substring(0, 2);
             var moveTo = move.Substring(2, 2);
 
-            var MoveFromPosition = TranslationHelper.BitboardFromSquareString(moveFrom);
-            var MoveToPosition = TranslationHelper.BitboardFromSquareString(moveTo);
+            var MoveFromPosition = TranslationHelper.GetBitboard(moveFrom);
+            var MoveToPosition = TranslationHelper.GetBitboard(moveTo);
 
             pieceMove.Position = MoveFromPosition;
             pieceMove.Moves = MoveToPosition;

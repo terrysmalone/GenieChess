@@ -44,7 +44,7 @@ namespace ChessEngine.NotationHelpers
                 }
 
                 //Get string of position moved to
-                var moveTo = TranslationHelper.SquareBitboardToSquareString(moveToBoard);
+                var moveTo = TranslationHelper.GetSquareNotation(moveToBoard);
 
 
                 // TODO: If another piece can move here, specify which it was
