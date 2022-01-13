@@ -9,14 +9,8 @@ namespace ChessEngine.NotationHelpers
 {
     internal static class TranslationHelper
     {
-        private static readonly ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="piece"></param>
-        /// <param name="moveFromBoard">The square of the piece. This is ignored (and can be any value) unless the piece is a pawn</param>
-        /// <returns></returns>
         internal static string GetPieceLetter(PieceType piece, ulong moveFromBoard)
         {
             switch (piece)
@@ -44,7 +38,7 @@ namespace ChessEngine.NotationHelpers
             }
         }
 
-        internal static string SquareBitboardToSquareString(ulong bitBoard)
+        internal static string GetSquareNotation(ulong bitBoard)
         {
             var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
 
@@ -56,11 +50,7 @@ namespace ChessEngine.NotationHelpers
             return square;
         }
 
-        /// <summary>
-        /// Returns the colum 0-7 as a letter a-h
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
+        // Returns the colum 0-7 as a letter a-h
         private static string ColumnToString(int number)
         {
             var c = (Char)(97 + (number - 1));
@@ -70,17 +60,9 @@ namespace ChessEngine.NotationHelpers
         private static string RowToString(int number)
         {
             return  (number + 1).ToString();             
-        } 
+        }
 
-        //internal static PieceType GetPieceType(char letter)
-        //{
-        //    switch (letter)
-        //    {
-               
-        //    }
-        //}
-
-        internal static ulong BitboardFromSquareString(string position)
+        internal static ulong GetBitboard(string position)
         {
             ulong bitboard = 0;
             try

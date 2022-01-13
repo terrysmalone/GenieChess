@@ -44,7 +44,7 @@ namespace ChessEngine.NotationHelpers
                 }
 
                 //Get string of position moved to
-                var moveTo = TranslationHelper.SquareBitboardToSquareString(moveToBoard);
+                var moveTo = TranslationHelper.GetSquareNotation(moveToBoard);
 
 
                 // TODO: If another piece can move here, specify which it was
@@ -67,7 +67,7 @@ namespace ChessEngine.NotationHelpers
                 
                 //board.RemovePiece(moveFromBoard);
                 //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
-                pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal, false);
+                pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal);
                 
                 if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
                     move += "+";

@@ -317,7 +317,7 @@ namespace ChessEngineTests.NotationHelpers
             board.InitaliseStartingPosition();
 
             var pieceMover = new PieceMover(board);
-            pieceMover.MakeMove(new PieceMove() { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn }, true);
+            pieceMover.MakeMove(new PieceMove() { Position = 4096, Moves = 268435456, SpecialMove = SpecialMoveType.DoublePawnPush, Type = PieceType.Pawn });
 
             var boardString = FenTranslator.ToFenString(board.GetCurrentBoardState());
 

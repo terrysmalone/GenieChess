@@ -68,7 +68,7 @@ namespace ChessEngineTests
 
                 if (!skipMove)
                 {
-                    _pieceMover.MakeMove(moveList[i], false);
+                    _pieceMover.MakeMove(moveList[i]);
 
                     if (MoveGeneration.ValidateMove(boardPosition))
                         nodes += Perft(boardPosition, depth - 1);
@@ -112,7 +112,7 @@ namespace ChessEngineTests
 
                 var rootMoveString = GetPieceMoveAsString(currentMove);
                 
-                _pieceMover.MakeMove(currentMove, false);
+                _pieceMover.MakeMove(currentMove);
 
                 var numberOfNodes = Perft(boardPosition, depth-1);
 
@@ -136,7 +136,7 @@ namespace ChessEngineTests
 
             foreach (var move in moveList)
             {
-                _pieceMover.MakeMove(move, false);
+                _pieceMover.MakeMove(move);
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
                 
@@ -158,7 +158,7 @@ namespace ChessEngineTests
             
             foreach (var move in moveList)
             {
-                _pieceMover.MakeMove(move, false);
+                _pieceMover.MakeMove(move);
 
                 var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
 

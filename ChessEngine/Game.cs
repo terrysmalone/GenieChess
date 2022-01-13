@@ -84,7 +84,7 @@ namespace ChessEngine
 
             var pieceMove = UciMoveTranslator.ToGameMove(move, currentBoard);
 
-            _pieceMover.MakeMove(pieceMove, true);
+            _pieceMover.MakeMove(pieceMove);
         }
 
         #endregion UCI commands
@@ -95,7 +95,7 @@ namespace ChessEngine
 
             if (currentMove.Type != PieceType.None)
             {
-                _pieceMover.MakeMove(currentMove, true);
+                _pieceMover.MakeMove(currentMove);
             }
             else
             {

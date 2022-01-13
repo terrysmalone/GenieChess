@@ -1,182 +1,83 @@
 ﻿using ChessEngine.BoardRepresentation.Enums;
-using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    [TestClass]
+    [TestFixture]
     public class TranslationHelperTests
     {
-        #region GetPieceLetter tests
-
-        [TestMethod]
-        public void TestGetPieceLetter_pawn_1()
+        [TestCase(281474976710656u, "a")]
+        [TestCase(549755813888u, "h")]
+        public void GetPieceLetter_Pawn(ulong pieceBitBoard, string expectedLetter)
         {
-            var pieceLetter =  TranslationHelper.GetPieceLetter(PieceType.Pawn, 281474976710656);
+            var pieceLetter =  TranslationHelper.GetPieceLetter(PieceType.Pawn, pieceBitBoard);
 
-            Assert.AreEqual("a", pieceLetter);
+            Assert.That(pieceLetter, Is.EqualTo(expectedLetter));
         }
 
-        [TestMethod]
-        public void TestGetPieceLetter_pawn_2()
-        {
-            var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Pawn, 549755813888);
-
-            Assert.AreEqual("h", pieceLetter);
-        }
-
-        [TestMethod]
-        public void TestGetPieceLetter_Knight()
+        [Test]
+        public void PieceLetter_Knight()
         {
             var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Knight, 0);
 
-            Assert.AreEqual("N", pieceLetter);
+            Assert.That(pieceLetter, Is.EqualTo("N"));
         }
 
-        [TestMethod]
-        public void TestGetPieceLetter_Bishop()
+        [Test]
+        public void GetPieceLetter_Bishop()
         {
             var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Bishop, 0);
 
-            Assert.AreEqual("B", pieceLetter);
+            Assert.That(pieceLetter, Is.EqualTo("B"));
         }
 
-        [TestMethod]
-        public void TestGetPieceLetter_Rook()
+        [Test]
+        public void GetPieceLetter_Rook()
         {
             var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Rook, 0);
 
-            Assert.AreEqual("R", pieceLetter); 
+            Assert.That(pieceLetter, Is.EqualTo("R"));
         }
 
-        [TestMethod]
-        public void TestGetPieceLetter_Queen()
+        [Test]
+        public void GetPieceLetter_Queen()
         {
             var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.Queen, 0);
 
-            Assert.AreEqual("Q", pieceLetter);
+            Assert.That(pieceLetter, Is.EqualTo("Q"));
         }
 
-        [TestMethod]
-        public void TestGetPieceLetter_King()
+        [Test]
+        public void GetPieceLetter_King()
         {
             var pieceLetter = TranslationHelper.GetPieceLetter(PieceType.King, 0);
 
-            Assert.AreEqual("K", pieceLetter);
+            Assert.That(pieceLetter, Is.EqualTo("K"));
         }
 
-        #endregion GetPieceLetter tests
-        
-        #region SquareBitboardToString tests
-
-        [TestMethod]
-        public void TestSquareBitboardToString_a1()
+        [TestCase(1u, "a1")]
+        [TestCase(4294967296u, "a5")]
+        [TestCase(262144u, "c3")]
+        [TestCase(268435456u, "e4")]
+        [TestCase(8388608u, "h3")]
+        [TestCase(9223372036854775808u, "h8")]
+        public void GetSquareNotation(ulong bitboard, string expectedString)
         {
-            var square = TranslationHelper.SquareBitboardToSquareString((ulong)1);
-            Assert.AreEqual("a1", square);
-
+            var square = TranslationHelper.GetSquareNotation(bitboard);
+            Assert.That(square, Is.EqualTo(expectedString));
         }
 
-        [TestMethod]
-        public void TestSquareBitboardToString_e4()
+        [TestCase(1u, "A1")]
+        [TestCase(1u, "a1")]
+        [TestCase(4294967296u, "A5")]
+        [TestCase(4294967296u, "a5")]
+        [TestCase(8388608u, "H3")]
+        [TestCase(8388608u, "h3")]
+        public void GetBitboard(ulong expectedBitboard, string notation)
         {
-            var square = TranslationHelper.SquareBitboardToSquareString((ulong)268435456);
-            Assert.AreEqual("e4", square);
-
+            var square = TranslationHelper.GetBitboard(notation);
+            Assert.That(square, Is.EqualTo(expectedBitboard));
         }
-
-        [TestMethod]
-        public void TestSquareBitboardToString_h8()
-        {
-            var square = TranslationHelper.SquareBitboardToSquareString((ulong)9223372036854775808);
-            Assert.AreEqual("h8", square);
-        }
-
-        #endregion SquareBitboardToString tests
-
-        #region Test BitboardFromSquareString
-
-        [TestMethod]
-        public void BitboardFromSquareString_11()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("a1");
-
-            Assert.AreEqual((ulong)1, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_A1()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("A1");
-
-            Assert.AreEqual((ulong)1, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_a5()
-        {
-            LookupTables.InitialiseAllTables();
-            
-            var result = TranslationHelper.BitboardFromSquareString("a5");
-
-            Assert.AreEqual((ulong)4294967296, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_A5()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("A5");
-
-            Assert.AreEqual((ulong)4294967296, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_h3()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("h3");
-
-            Assert.AreEqual((ulong)8388608, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_H3()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("H3");
-
-            Assert.AreEqual((ulong)8388608, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_c3()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("c3");
-
-            Assert.AreEqual((ulong)262144, result);
-        }
-
-        [TestMethod]
-        public void BitboardFromSquareString_C3()
-        {
-            LookupTables.InitialiseAllTables();
-
-            var result = TranslationHelper.BitboardFromSquareString("C3");
-
-            Assert.AreEqual((ulong)262144, result);
-        }
-
-        #endregion Test BitboardFromSquareString
     }
 }

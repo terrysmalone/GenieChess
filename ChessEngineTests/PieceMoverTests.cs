@@ -2,32 +2,35 @@ using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.PossibleMoves;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
+using NUnit.Framework;
 
 namespace ChessEngineTests
 {
-    [TestClass]
+    [TestFixture]
     public class PieceMoverTests
     {
-        [TestMethod]
-        public void TestMakeUnMakeMove()
+        [Test]
+        public void MakeMove_ChangesBoardState()
         {
-            var board = new Board();
-            board.InitaliseStartingPosition();
+            // TODO: Write tests
+        }
 
-            var pieceMover = new PieceMover(board);
+        [Test]
+        public void MakeMove_ChangesUsefulBitboards()
+        {
+            // TODO: Write tests
+        }
 
-            var moves = MoveGeneration.CalculateAllMoves(board);
-            Assert.AreEqual(20, moves.Count);
+        [Test]
+        public void UnMakeLastMove_RestoresBoardState()
+        {
+            // TODO: Write tests
+        }
 
-            pieceMover.MakeMove(512, 33554432, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b2-b4
-
-            var moves2 = MoveGeneration.CalculateAllMoves(board);
-            Assert.AreEqual(20, moves2.Count);
-
-            pieceMover.MakeMove(562949953421312, 8589934592, PieceType.Pawn, SpecialMoveType.DoublePawnPush, false);  //b7-b5
-            pieceMover.UnMakeLastMove();
+        [Test]
+        public void MakeMove_RestoresUsefulBitboards()
+        {
+            // TODO: Write tests
         }
     }
 }
