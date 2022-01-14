@@ -6,164 +6,86 @@
         xmlns:local="clr-namespace:Genie_WPF"
         DataContext="ChessPiece"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="1000" Width="900">
 
     <Window.Resources>
-        <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
-            <DrawingBrush.Drawing>
-                <DrawingGroup>
-                    <GeometryDrawing Brush="Tan">
-                        <GeometryDrawing.Geometry>
-                            <RectangleGeometry Rect="0,0,2,2" />
-                        </GeometryDrawing.Geometry>
-                    </GeometryDrawing>
-                    <GeometryDrawing Brush="Brown">
-                        <GeometryDrawing.Geometry>
-                            <GeometryGroup>
-                                <RectangleGeometry Rect="0,0,1,1" />
-                                <RectangleGeometry Rect="1,1,1,1" />
-                            </GeometryGroup>
-                        </GeometryDrawing.Geometry>
-                    </GeometryDrawing>
-                </DrawingGroup>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-
-        <Style x:Key="ChessPieceStyle" TargetType="{x:Type Image}">
-        <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Path=Type}" Value="{x:Static local:PieceType.Pawn}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_pawn_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Rook}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_rook_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Knight}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_knight_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Bishop}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_bishop_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Queen}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_queen_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.King}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_white_king_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Pawn}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_pawn_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Rook}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_rook_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Knight}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_knight_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Bishop}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_bishop_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Path=Type}" Value="{x:Static local:PieceType.Queen}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_queen_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.King}"/>
-                    <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
-                </MultiDataTrigger.Conditions>
-                <MultiDataTrigger.Setters>
-                    <Setter Property="Image.Source" Value="http://www.wpclipart.com/recreation/games/chess/chess_set_1/chess_piece_black_king_T.png" />
-                </MultiDataTrigger.Setters>
-            </MultiDataTrigger>
-        </Style.Triggers>
-    </Style>
+        <BitmapImage x:Key="BlackBishop" UriSource="Images/bishop_black.png"></BitmapImage>
 
     </Window.Resources>
 
-    <ItemsControl Name="ChessBoard">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Grid Width="1" Height="1">
-                    <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
-                </Grid>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        <ItemsControl.ItemContainerStyle>
-            <Style>
-                <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
-                <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
-            </Style>
-        </ItemsControl.ItemContainerStyle>
-    </ItemsControl>
+    <UniformGrid Columns="8" Rows="8" Name="Board" Width="800" Height="800">
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+
+        <Border Background="Brown"><Image Name="A1" Source="{StaticResource BlackBishop}" Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+    </UniformGrid>
 
 
 
