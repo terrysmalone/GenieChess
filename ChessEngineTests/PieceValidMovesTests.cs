@@ -1,5 +1,4 @@
-﻿using ChessEngine.BoardSearching;
-using ChessEngine.PossibleMoves;
+﻿using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
 namespace ChessEngineTests
@@ -31,6 +30,31 @@ namespace ChessEngineTests
             Assert.That(movesFrom, Is.EqualTo(expectedMoveToBoard));
         }
 
+        [TestCase(51, 8830452760576u)]
+        [TestCase(16, 256u)]
+        [TestCase(47, 549755813888u)]
+        public void BlackPawnMoves(int moveFromPosition, ulong expectedMoveToBoard)
+        {
+            PieceValidMoves.GenerateMoveArrays();
+
+            var movesFrom = ValidMoveArrays.BlackPawnMoves[moveFromPosition];
+
+            Assert.That(movesFrom, Is.EqualTo(expectedMoveToBoard));
+        }
+
+        [TestCase(48, 2199023255552u)]
+        [TestCase(10, 10u)]
+        [TestCase(38, 2684354560u)]
+
+        public void BlackPawnCaptures(int moveFromPosition, ulong expectedMoveToBoard)
+        {
+            PieceValidMoves.GenerateMoveArrays();
+
+            var movesFrom = ValidMoveArrays.BlackPawnCaptures[moveFromPosition];
+
+            Assert.That(movesFrom, Is.EqualTo(expectedMoveToBoard));
+        }
+
         [TestCase(0, 132096u)]
         [TestCase(35, 5666883501293568u)]
         [TestCase(61, 38368557762871296u)]
@@ -42,6 +66,19 @@ namespace ChessEngineTests
             var movesFromD5 = ValidMoveArrays.KnightMoves[moveFromPosition];
 
             Assert.That(movesFromD5, Is.EqualTo(expectedMoveToBoard));
+        }
+
+        [TestCase(28, 241192927232u)]
+        [TestCase(24, 12918652928u)]
+        [TestCase(63, 4665729213955833856u)]
+        [TestCase(0, 770u)]
+        public void KingMoves(int moveFromPosition, ulong expectedMoveToBoard)
+        {
+            PieceValidMoves.GenerateMoveArrays();
+
+            var movesFrom = ValidMoveArrays.KingMoves[moveFromPosition];
+
+            Assert.That(movesFrom, Is.EqualTo(expectedMoveToBoard));
         }
     }
 }
