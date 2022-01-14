@@ -1,8 +1,7 @@
 ﻿namespace ChessEngine.PossibleMoves
 {
-    /// <summary>
-    /// Currently uses ray attacks for sliding piece generation. This will be replaced with rotated bitboards eventually
-    /// </summary>
+    // We only need some pieces here since we use ray attacks for sliding piece generation.
+    // This will be replaced with rotated bitboards eventually
     public struct ValidMoveArrays
     {
         public static ulong[] WhitePawnMoves;

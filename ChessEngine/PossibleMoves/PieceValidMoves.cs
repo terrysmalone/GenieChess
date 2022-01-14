@@ -8,11 +8,11 @@ namespace ChessEngine.PossibleMoves
     /// </summary>
     public static class PieceValidMoves
     {
-        static bool initilaised = false;
+        private static bool _initialised;
 
         public static void GenerateMoveArrays()
         {
-            if (initilaised == false)
+            if (_initialised == false)
             {
                 ValidMoveArrays.WhitePawnMoves = new ulong[64];
                 ValidMoveArrays.WhitePawnCaptures = new ulong[64];
@@ -27,11 +27,9 @@ namespace ChessEngine.PossibleMoves
                 InitialiseMovesKnights();
                 InitialiseMovesKing();
 
-                initilaised = true;
+                _initialised = true;
             }
         }
-
-        #region Initialise pieces methods
 
         private static void InitialiseMovesWhitePawns()
         {
@@ -50,13 +48,13 @@ namespace ChessEngine.PossibleMoves
                     var file = (byte)(startFile);
                     var rank = (byte)(startRank + 1);
 
-                    validMoves = validMoves | CalculateSquareValue(file, rank);
+                    validMoves |= CalculateSquareValue(file, rank);
 
                     //Add initial two moves
                     if (startRank == 1)
                     {
                         rank = 3;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     var startSquare = (byte)(startFile + (startRank * 8));
@@ -78,7 +76,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 1);
@@ -86,7 +84,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
                    
                     var startSquare = (byte)(startFile + (startRank * 8));
@@ -112,13 +110,13 @@ namespace ChessEngine.PossibleMoves
                     var file = (byte)(startFile);
                     var rank = (byte)(startRank - 1);
 
-                    validMoves = validMoves | CalculateSquareValue(file, rank);
+                    validMoves |= CalculateSquareValue(file, rank);
 
                     //Add initial two moves
                     if (startRank == 6)
                     {
                         rank = 4;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     var startSquare = (byte)(startFile + (startRank * 8));
@@ -140,7 +138,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 1);
@@ -148,7 +146,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     var startSquare = (byte)(startFile + (startRank * 8));
@@ -175,7 +173,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile + 2);
@@ -183,7 +181,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile + 2);
@@ -191,7 +189,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile + 1);
@@ -199,7 +197,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 1);
@@ -207,7 +205,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 2);
@@ -215,7 +213,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 2);
@@ -223,7 +221,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     file = (byte)(startFile - 1);
@@ -231,7 +229,7 @@ namespace ChessEngine.PossibleMoves
 
                     if (rank >= 0 && rank < 8 && file >= 0 && file < 8)
                     {
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //move.Moves = validMoves;
@@ -264,7 +262,7 @@ namespace ChessEngine.PossibleMoves
                     {
                         rank++;
 
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Up right
@@ -276,7 +274,7 @@ namespace ChessEngine.PossibleMoves
                         rank++;
                         file++;
 
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Right
@@ -287,7 +285,7 @@ namespace ChessEngine.PossibleMoves
                     {
                         file++;
 
-                        validMoves = validMoves | CalculateSquareValue(file, rank);                      
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Right down
@@ -299,7 +297,7 @@ namespace ChessEngine.PossibleMoves
                         file++;
                         rank--;
 
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Down
@@ -309,7 +307,7 @@ namespace ChessEngine.PossibleMoves
                     if (rank > 0)
                     {
                         rank--;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Left Down
@@ -320,7 +318,7 @@ namespace ChessEngine.PossibleMoves
                     {
                         rank--;
                         file--;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Left 
@@ -330,7 +328,7 @@ namespace ChessEngine.PossibleMoves
                     if (file > 0)
                     {
                         file--;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //Left Up
@@ -341,7 +339,7 @@ namespace ChessEngine.PossibleMoves
                     {
                         file--;
                         rank++;
-                        validMoves = validMoves | CalculateSquareValue(file, rank);
+                        validMoves |= CalculateSquareValue(file, rank);
                     }
 
                     //move.Moves = validMoves;
@@ -354,10 +352,6 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        #endregion Initialise pieces methods
-
-        #region move calculations
-
         private static ulong CalculateSquareValue(byte file, byte rank)
         {
             ulong moveIndex = (byte)(file + (rank * 8));
@@ -365,7 +359,5 @@ namespace ChessEngine.PossibleMoves
 
             return moveSquare;
         }
-
-        #endregion move calculations        
     }
 }
