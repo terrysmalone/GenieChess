@@ -1,7 +1,3 @@
-using ChessEngine;
-using ChessEngine.BoardRepresentation;
-using ChessEngine.BoardRepresentation.Enums;
-using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
 namespace ChessEngineTests
