@@ -7,7 +7,7 @@ using log4net;
 
 namespace ChessEngine.NotationHelpers
 {
-    internal static class TranslationHelper
+    public static class TranslationHelper
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -38,7 +38,7 @@ namespace ChessEngine.NotationHelpers
             }
         }
 
-        internal static string GetSquareNotation(ulong bitBoard)
+        public static string GetSquareNotation(ulong bitBoard)
         {
             var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
 

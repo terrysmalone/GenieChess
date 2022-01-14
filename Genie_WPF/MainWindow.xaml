@@ -25,77 +25,77 @@
     </Window.Resources>
 
     <UniformGrid Columns="8" Rows="8" Name="Board" Width="800" Height="800">
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="A8" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="B8" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="C8" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="D8" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="E8" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="F8" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="G8" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="H8" Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="A7" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="B7" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="C7" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="D7" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="E7" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="F7" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="G7" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="H7" Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="A6" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="B6" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="C6" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="D6" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="E6" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="F6" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="G6" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="H6" Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="A5" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="B5" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="C5" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="D5" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="E5" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="F5" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="G5" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="H5" Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="A4" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="B4" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="C4" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="D4" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="E4" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="F4" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="G4" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="H4" Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="A3" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="B3" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="C3" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="D3" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="E3" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="F3" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="G3" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="H3" Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="A2" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="B2" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="C2" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="D2" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="E2" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="F2" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="G2" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="H2" Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Name="A1" Source="{StaticResource BlackBishop}" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
-        <Border Background="Brown"><Image Margin ="10"/></Border>
-        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="A1" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="B1" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="C1" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="D1" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="E1" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="F1" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="G1" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Name="H1" Margin ="10"/></Border>
     </UniformGrid>
 
 
