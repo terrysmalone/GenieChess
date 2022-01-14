@@ -9,8 +9,19 @@
         Title="MainWindow" Height="1000" Width="900">
 
     <Window.Resources>
-        <BitmapImage x:Key="BlackBishop" UriSource="Images/bishop_black.png"></BitmapImage>
+        <BitmapImage x:Key="WhitePawn" UriSource="Images/pawn_white.png"></BitmapImage>
+        <BitmapImage x:Key="WhiteKnight" UriSource="Images/knight_white.png"></BitmapImage>
+        <BitmapImage x:Key="WhiteBishop" UriSource="Images/bishop_white.png"></BitmapImage>
+        <BitmapImage x:Key="WhiteRook" UriSource="Images/rook_white.png"></BitmapImage>
+        <BitmapImage x:Key="WhiteQueen" UriSource="Images/queen_white.png"></BitmapImage>
+        <BitmapImage x:Key="WhiteKing" UriSource="Images/king_white.png"></BitmapImage>
 
+        <BitmapImage x:Key="BlackPawn" UriSource="Images/pawn_black.png"></BitmapImage>
+        <BitmapImage x:Key="BlackKnight" UriSource="Images/knight_black.png"></BitmapImage>
+        <BitmapImage x:Key="BlackBishop" UriSource="Images/bishop_black.png"></BitmapImage>
+        <BitmapImage x:Key="BlackRook" UriSource="Images/rook_black.png"></BitmapImage>
+        <BitmapImage x:Key="BlackQueen" UriSource="Images/queen_black.png"></BitmapImage>
+        <BitmapImage x:Key="BlackKing" UriSource="Images/king_black.png"></BitmapImage>
     </Window.Resources>
 
     <UniformGrid Columns="8" Rows="8" Name="Board" Width="800" Height="800">
