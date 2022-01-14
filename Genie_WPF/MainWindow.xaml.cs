@@ -14,7 +14,6 @@ namespace Genie_WPF
             InitializeComponent();
 
             A1.Source = (System.Windows.Media.ImageSource)Resources["BlackBishop"];
-
         }
     }
 }

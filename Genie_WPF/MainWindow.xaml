@@ -25,77 +25,77 @@
     </Window.Resources>
 
     <UniformGrid Columns="8" Rows="8" Name="Board" Width="800" Height="800">
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
 
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
 
-        <Border Background="Brown"><Image Name="A1" Source="{StaticResource BlackBishop}" Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Brown"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
-        <Border Background="Tan"><Image Grid.Column="0" Grid.Row="0" Margin ="10"/></Border>
+        <Border Background="Brown"><Image Name="A1" Source="{StaticResource BlackBishop}" Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
+        <Border Background="Brown"><Image Margin ="10"/></Border>
+        <Border Background="Tan"><Image Margin ="10"/></Border>
     </UniformGrid>
 
 

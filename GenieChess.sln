@@ -295,6 +295,8 @@ Global
 		{50F0B236-EB80-443D-924F-67C65F6F9336}.UCI|x64.Build.0 = Debug|Any CPU
 		{50F0B236-EB80-443D-924F-67C65F6F9336}.UCI|x86.ActiveCfg = Debug|Any CPU
 		{50F0B236-EB80-443D-924F-67C65F6F9336}.UCI|x86.Build.0 = Debug|Any CPU
+		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Release|x64.ActiveCfg = Release|x64
+		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
