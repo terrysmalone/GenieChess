@@ -6,7 +6,6 @@ namespace Genie_WPF
     {
         public BoardViewModel(BoardState boardState)
         {
-
         }
     }
 }
