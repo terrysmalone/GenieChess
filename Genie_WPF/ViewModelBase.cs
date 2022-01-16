@@ -42,6 +42,20 @@ namespace Genie_WPF
             }
         }
 
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
+
         public void RefreshAllBindings() => RaisePropertyChanged(string.Empty);
 
         public virtual bool AllowClose() => true;

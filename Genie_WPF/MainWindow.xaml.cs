@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardSearching;
@@ -14,19 +15,21 @@ namespace Genie_WPF
     public partial class MainWindow
     {
         private Dictionary<Piece, BitmapImage> _pieceBitmaps = new Dictionary<Piece, BitmapImage>();
-        
+
         public MainWindow()
         {
             InitializeComponent();
-            
+
             InitialiseBitmaps();
-            
+
             LookupTables.InitialiseAllTables();
             var boardState = FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
             //var boardState = FenTranslator.ToBoardState("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");
 
             var num = 3;
             var boardViewModel = new BoardViewModel();
+
+            boardViewModel.MyTextBoxValue = "Test";
 
             foreach (var whitePawnMove in BitboardOperations.SplitBoardToArray(boardState.WhitePawns))
             {
