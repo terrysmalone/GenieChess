@@ -1,33 +1,48 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media.Imaging;
 using ChessEngine.BoardRepresentation;
 using Genie_WPF.Annotations;
-using Genie_WPF.Properties;
 
 namespace Genie_WPF
 {
     public class BoardViewModel : INotifyPropertyChanged
     {
-        private string _gridImage;
+        private string _b6;
+        private string _c6;
 
         public BoardViewModel()
         {
-            GridImage = "WhitePawn";
+            B6 = "WhitePawn";
+            C6 = "BlackRook";
+
+            var chessBoard = (UniformGrid)App.Current.Windows[0].FindName("ChessBoard");
         }
 
-        public string GridImage
+        public string B6
         {
-            get => _gridImage;
+            get => _b6;
 
             set
             {
-                _gridImage = value;
-                OnPropertyChanged("GridImage");
+                _b6 = value;
+                OnPropertyChanged("B6");
             }
         }
+
+        public string C6
+        {
+            get => _c6;
+
+            set
+            {
+                _c6 = value;
+                OnPropertyChanged("C6");
+            }
+        }
+
+
         public BitmapImage GridImageA
         {
             get;
@@ -45,6 +60,10 @@ namespace Genie_WPF
                 _myTextBoxValue = value;
                 OnPropertyChanged("MyTextBoxValue");
             }
+        }
+        public object FullGrid
+        {
+            get { throw new System.NotImplementedException(); }
         }
 
         public void AddPiece(object whitePawn, string position)
