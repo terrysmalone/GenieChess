@@ -7,6 +7,11 @@ namespace Genie_WPF
 {
     public sealed class ChessPiece : INotifyPropertyChanged
     {
+        public ChessPiece()
+        {
+
+        }
+
         private Point _Pos;
         public Point Pos
         {

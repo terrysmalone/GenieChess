@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="1000" Width="900">
         <Window.DataContext>
-            <local:ChessPiece />
-            <!-- <local:BoardViewModel /> -->
+            <!-- <local:ChessPiece /> -->
+            <local:BoardViewModel />
         </Window.DataContext>
 
     <Window.Resources>
@@ -155,7 +155,7 @@
     <StackPanel>
 
         <Viewbox Stretch="Fill" Width="800" Height="800">
-            <ItemsControl Name="Board">
+            <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>

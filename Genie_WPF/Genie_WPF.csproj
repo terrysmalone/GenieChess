@@ -62,7 +62,6 @@
         </ApplicationDefinition>
         <Compile Include="BoardViewModel.cs" />
         <Compile Include="ChessPiece.cs" />
-        <Compile Include="Piece.cs" />
         <Compile Include="PieceConverter.cs" />
         <Compile Include="ViewModelBase.cs" />
         <Page Include="MainWindow.xaml">
