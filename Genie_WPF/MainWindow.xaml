@@ -155,7 +155,7 @@
     <StackPanel>
 
         <Viewbox Stretch="Fill" Width="800" Height="800">
-            <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces}">
+            <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>

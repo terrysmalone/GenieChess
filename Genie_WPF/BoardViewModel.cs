@@ -7,10 +7,27 @@ using Genie_WPF.Annotations;
 
 namespace Genie_WPF
 {
-    public sealed class BoardViewModel : INotifyPropertyChanged
-    {
-        private ObservableCollection<ChessPiece> _chessPieces = new()
+    public sealed class BoardViewModel : INotifyPropertyChanged {
+
+        public ObservableCollection<ChessPiece> _chessPieces;
+
+        public static BoardViewModel Instance {get; set;}
+
+        public ObservableCollection<ChessPiece> ChessPieces
         {
+            get => _chessPieces;
+
+            set
+            {
+                _chessPieces = value;
+                OnPropertyChanged("ChessPieces");
+            }
+        }
+
+        public BoardViewModel()
+        {
+            _chessPieces = new ObservableCollection<ChessPiece>()
+            {
                 new ChessPiece{Pos=new Point(0, 6), Type=PieceType.Pawn, Player=Player.White},
                 new ChessPiece{Pos=new Point(1, 6), Type=PieceType.Pawn, Player=Player.White},
                 new ChessPiece{Pos=new Point(2, 6), Type=PieceType.Pawn, Player=Player.White},
@@ -44,31 +61,19 @@ namespace Genie_WPF
                 new ChessPiece{Pos=new Point(6, 0), Type=PieceType.Knight, Player=Player.Black},
                 new ChessPiece{Pos=new Point(7, 0), Type=PieceType.Rook, Player=Player.Black}
             };
-
-        public BoardViewModel()
-        {
-            //SetBoard(boardState);
-        }
-
-        public ObservableCollection<ChessPiece> ChessPieces
-        {
-            get { return _chessPieces; }
-
-            set
-            {
-                _chessPieces = value;
-                OnPropertyChanged();
-            }
         }
 
         public void AddPiece(object whitePawn, string position)
         {
             
         }
-        private static void SetBoard(BoardState boardState)
-        {
 
+        internal void SetBoard(BoardState boardState)
+        {
+            _chessPieces.Clear();
+            _chessPieces.Add( new ChessPiece{Pos=new Point(4, 4), Type=PieceType.Bishop, Player=Player.White});
         }
+
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
