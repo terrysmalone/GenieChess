@@ -16,12 +16,12 @@
         <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
-                    <GeometryDrawing Brush="Tan">
+                    <GeometryDrawing Brush="Brown">
                         <GeometryDrawing.Geometry>
                             <RectangleGeometry Rect="0,0,2,2" />
                         </GeometryDrawing.Geometry>
                     </GeometryDrawing>
-                    <GeometryDrawing Brush="Brown">
+                    <GeometryDrawing Brush="Tan">
                         <GeometryDrawing.Geometry>
                             <GeometryGroup>
                                 <RectangleGeometry Rect="0,0,1,1" />
