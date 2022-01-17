@@ -1,11 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
-using Genie_WPF.Annotations;
 
 namespace Genie_WPF
 {
