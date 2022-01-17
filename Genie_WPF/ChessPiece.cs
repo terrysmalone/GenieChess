@@ -7,31 +7,26 @@ namespace Genie_WPF
 {
     public sealed class ChessPiece : INotifyPropertyChanged
     {
-        public ChessPiece()
-        {
-
-        }
-
-        private Point _Pos;
+        private Point _pos;
+        private PieceType _type;
+        private Player _player;
 
         public Point Pos
         {
-            get { return _Pos; }
-            set { _Pos = value; OnPropertyChanged(); }
+            get => _pos;
+            set { _pos = value; OnPropertyChanged(); }
         }
 
-        private PieceType _Type;
         public PieceType Type
         {
-            get { return _Type; }
-            set { _Type = value; OnPropertyChanged(); }
+            get => _type;
+            set { _type = value; OnPropertyChanged(); }
         }
 
-        private Player _Player;
         public Player Player
         {
-            get { return _Player; }
-            set { _Player = value; OnPropertyChanged(); }
+            get => _player;
+            set { _player = value; OnPropertyChanged(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -41,5 +36,4 @@ namespace Genie_WPF
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }
