@@ -22,6 +22,8 @@ namespace ChessEngine.NotationHelpers
         /// <returns></returns>
         public static BoardState ToBoardState(string fenNotation)
         {
+            // TODO: We need to verify the position
+
             var state = new BoardState();
 
             try

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -14,6 +15,7 @@ namespace Genie_WPF
         private ObservableCollection<ChessPiece> _chessPieces;
         private string _fenPosition;
 
+        private BoardState _boardState;
 
         public ObservableCollection<ChessPiece> ChessPieces
         {
@@ -46,8 +48,26 @@ namespace Genie_WPF
             
         }
 
+        internal void SetBoard()
+        {
+            try
+            {
+                var boardState = FenTranslator.ToBoardState(_fenPosition);
+
+                _chessPieces.Clear();
+                SetBoard(boardState);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                //Maybe stick up a warning
+            }
+        }
+
         internal void SetBoard(BoardState boardState)
         {
+            _chessPieces.Clear();
+
             foreach (var whitePawnMove in BitboardOperations.SplitBoardToArray(boardState.WhitePawns))
             {
                 AddPiece(Player.White, PieceType.Pawn, whitePawnMove);
@@ -108,8 +128,11 @@ namespace Genie_WPF
                 AddPiece(Player.Black, PieceType.King, blackKingMove);
             }
 
+            _boardState = boardState;
+
             FenPosition = FenTranslator.ToFenString(boardState);
         }
+
         private void AddPiece(Player player, PieceType pieceType, ulong pieceMove)
         {
             var position = TranslationHelper.GetPosition(pieceMove);
@@ -121,6 +144,10 @@ namespace Genie_WPF
             _chessPieces.Add(new ChessPiece{ Pos = new Point(column, row),
                                                  Type = pieceType,
                                                  Player = player });
+        }
+
+        public void GetFen()
+        {
         }
     }
 }
