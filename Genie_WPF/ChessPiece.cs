@@ -14,19 +14,31 @@ namespace Genie_WPF
         public Point Pos
         {
             get => _pos;
-            set { _pos = value; OnPropertyChanged(); }
+            set
+            {
+                _pos = value;
+                OnPropertyChanged();
+            }
         }
 
         public PieceType Type
         {
             get => _type;
-            set { _type = value; OnPropertyChanged(); }
+            set
+            {
+                _type = value;
+                OnPropertyChanged();
+            }
         }
 
         public Player Player
         {
             get => _player;
-            set { _player = value; OnPropertyChanged(); }
+            set
+            {
+                _player = value;
+                OnPropertyChanged();
+            }
         }
     }
 }
