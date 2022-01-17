@@ -12,6 +12,8 @@ namespace Genie_WPF
     {
 
         private ObservableCollection<ChessPiece> _chessPieces;
+        private string _fenPosition;
+
 
         public ObservableCollection<ChessPiece> ChessPieces
         {
@@ -20,7 +22,17 @@ namespace Genie_WPF
             set
             {
                 _chessPieces = value;
-                OnPropertyChanged("ChessPieces");
+                OnPropertyChanged();
+            }
+        }
+        public string FenPosition
+        {
+            get { return _fenPosition; }
+
+            set
+            {
+                _fenPosition = value;
+                OnPropertyChanged();
             }
         }
 
@@ -95,6 +107,8 @@ namespace Genie_WPF
             {
                 AddPiece(Player.Black, PieceType.King, blackKingMove);
             }
+
+            FenPosition = FenTranslator.ToFenString(boardState);
         }
         private void AddPiece(Player player, PieceType pieceType, ulong pieceMove)
         {
