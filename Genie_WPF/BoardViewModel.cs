@@ -8,11 +8,10 @@ using Genie_WPF.Annotations;
 
 namespace Genie_WPF
 {
-    public sealed class BoardViewModel : INotifyPropertyChanged {
+    public sealed class BoardViewModel : ViewModelBase
+    {
 
-        public ObservableCollection<ChessPiece> _chessPieces;
-
-        public static BoardViewModel Instance {get; set;}
+        private ObservableCollection<ChessPiece> _chessPieces;
 
         public ObservableCollection<ChessPiece> ChessPieces
         {
@@ -108,16 +107,6 @@ namespace Genie_WPF
             _chessPieces.Add(new ChessPiece{ Pos = new Point(column, row),
                                                  Type = pieceType,
                                                  Player = player });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
     }
 }

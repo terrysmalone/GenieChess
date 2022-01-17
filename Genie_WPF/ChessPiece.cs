@@ -5,7 +5,7 @@ using Genie_WPF.Annotations;
 
 namespace Genie_WPF
 {
-    public sealed class ChessPiece : INotifyPropertyChanged
+    public sealed class ChessPiece : ViewModelBase
     {
         private Point _pos;
         private PieceType _type;
@@ -27,13 +27,6 @@ namespace Genie_WPF
         {
             get => _player;
             set { _player = value; OnPropertyChanged(); }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
