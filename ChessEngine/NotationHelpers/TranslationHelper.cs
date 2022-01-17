@@ -50,7 +50,17 @@ namespace ChessEngine.NotationHelpers
             return square;
         }
 
-        // Returns the colum 0-7 as a letter a-h
+        public static (int, int) GetPosition(ulong bitBoard)
+        {
+            var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
+
+            var row = index / 8;
+            var col = (index % 8)+1;
+
+            return (col, row);
+        }
+
+        // Returns the column 0-7 as a letter a-h
         private static string ColumnToString(int number)
         {
             var c = (Char)(97 + (number - 1));

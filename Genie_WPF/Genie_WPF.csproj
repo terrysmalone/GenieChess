@@ -63,6 +63,8 @@
         <Compile Include="BoardViewModel.cs" />
         <Compile Include="ChessPiece.cs" />
         <Compile Include="PieceConverter.cs" />
+        <Compile Include="PieceType.cs" />
+        <Compile Include="Player.cs" />
         <Compile Include="ViewModelBase.cs" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>

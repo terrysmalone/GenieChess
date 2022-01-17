@@ -13,6 +13,7 @@ namespace Genie_WPF
         }
 
         private Point _Pos;
+
         public Point Pos
         {
             get { return _Pos; }
@@ -41,19 +42,4 @@ namespace Genie_WPF
         }
     }
 
-    public enum PieceType
-    {
-        Pawn,
-        Rook,
-        Knight,
-        Bishop,
-        Queen,
-        King
-    }
-
-    public enum Player
-    {
-        White,
-        Black
-    }
 }
