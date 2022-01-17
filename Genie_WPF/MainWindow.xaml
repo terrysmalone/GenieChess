@@ -152,29 +152,87 @@
     </Window.Resources>
 
     <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="a"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="b"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="c"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="d"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="e"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="f"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="g"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="h"/>
+            <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+        </StackPanel>
 
-        <Viewbox Stretch="Fill" Width="800" Height="800"  Margin="10">
-            <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="1" Height="1">
-                            <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
-        </Viewbox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <TextBlock Width="20" Height="42" Background="{StaticResource BlackBoardColour}" />
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="8"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="7"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="6"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="5"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="4"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="3"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="2"/>
+                <TextBlock Width="20" Height="62" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="1"/>
+            </StackPanel>
+
+            <Border BorderThickness="2" BorderBrush="{StaticResource WhiteBoardColour}">
+                <Viewbox Stretch="Fill" Width="800" Height="800">
+
+                    <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Width="1" Height="1">
+                                    <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
+                                <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
+                </Viewbox>
+            </Border>
+
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <TextBlock Width="20" Height="42" Background="{StaticResource BlackBoardColour}" />
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="8"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="7"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="6"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="5"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="4"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="3"/>
+                <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="2"/>
+                <TextBlock Width="20" Height="62" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="1"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0, 10">
+
+            <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="a"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="b"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="c"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="d"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="e"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="f"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="g"/>
+            <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="h"/>
+            <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+
+        </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button FontFamily="Segoe UI Symbol" Content="&#xE1FD; Get FEN from board &#xE1FD;" Width="200" Margin="10, 0, 0, 0" Click="GetFenOnClick"></Button>
