@@ -9,6 +9,8 @@ namespace Genie_WPF
     /// </summary>
     public partial class MainWindow
     {
+        BoardViewModel _boardViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -17,10 +19,20 @@ namespace Genie_WPF
             //var boardState = FenTranslator.ToBoardState("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
             var boardState = FenTranslator.ToBoardState("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");
 
-            var boardViewModel = new BoardViewModel();
-            DataContext = boardViewModel;
+            _boardViewModel = new BoardViewModel();
+            DataContext = _boardViewModel;
 
-            boardViewModel.SetBoard(boardState);
+            _boardViewModel.SetBoard(boardState);
+        }
+
+        // TODO: Look into making this a relay command
+        private void SetFenOnClick(object sender, RoutedEventArgs e)
+        {
+            _boardViewModel.SetBoard();
+        }
+        private void GetFenOnClick(object sender, RoutedEventArgs e)
+        {
+            _boardViewModel.GetFen();
         }
     }
 }
