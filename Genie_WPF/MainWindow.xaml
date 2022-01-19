@@ -38,6 +38,19 @@
 
         <Style x:Key="ChessPieceStyle" TargetType="{x:Type Image}">
         <Style.Triggers>
+
+            <!-- <MultiDataTrigger> -->
+            <!--     <MultiDataTrigger.Conditions> -->
+            <!--         <Condition ></Condition> -->
+            <!--     </MultiDataTrigger.Conditions> -->
+            <!-- </MultiDataTrigger> -->
+
+            <!-- <Trigger Property="IsMouseOver" Value="True"> -->
+            <!--     <Setter Property="BorderBrush" Value="Red"/> -->
+            <!--     <Setter Property="Background" Value="Aqua"/> -->
+            <!-- </Trigger> -->
+
+
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Pawn}"/>
@@ -185,13 +198,15 @@
                     <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}"/>
+                                <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="1" Height="1">
-                                    <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
+                                    <Border>
+                                        <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -236,7 +251,7 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <Button FontFamily="Segoe UI Symbol" Content="&#xE1FD; Get FEN from board &#xE1FD;" Width="200" Margin="10, 0, 0, 0" Click="GetFenOnClick"></Button>
-            <Button FontFamily="Segoe UI Symbol" Content="&#xE110; Set board from FEN &#xE110;" Width="200" Margin="10, 0, 0, 0" Click="SetFenOnClick"></Button>
+            <Button FontFamily="Segoe UI Symbol" Content="&#xE110; Set board from FEN &#xE110;" Width="200" Margin="10, 0, 0, 0" Command="SetFenButtonClickCommand"></Button>
         </StackPanel>
 
         <TextBox Name="PositionTextBox" Margin="10" Text="{Binding FenPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"></TextBox>
