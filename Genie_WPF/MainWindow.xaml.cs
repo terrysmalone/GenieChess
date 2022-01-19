@@ -25,15 +25,5 @@ namespace Genie_WPF
 
             _boardViewModel.SetBoard(boardState);
         }
-
-        // TODO: Look into making this a relay command
-        private void SetFenOnClick(object sender, RoutedEventArgs e)
-        {
-            _boardViewModel.SetBoard();
-        }
-        private void GetFenOnClick(object sender, RoutedEventArgs e)
-        {
-            _boardViewModel.GetFen();
-        }
     }
 }

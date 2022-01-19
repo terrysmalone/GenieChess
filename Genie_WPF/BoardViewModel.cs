@@ -15,10 +15,16 @@ namespace Genie_WPF
         private BoardState _boardState;
 
         private readonly DelegateCommand _setFenButtonClickCommand;
+        private readonly DelegateCommand _getFenButtonClickCommand;
 
         public DelegateCommand SetFenButtonClickCommand
         {
             get { return _setFenButtonClickCommand; }
+        }
+
+        public DelegateCommand GetFenButtonClickCommand
+        {
+            get { return _getFenButtonClickCommand; }
         }
 
         public ObservableCollection<ChessPiece> ChessPieces
@@ -48,11 +54,8 @@ namespace Genie_WPF
             _chessPieces = new ObservableCollection<ChessPiece>();
 
             _setFenButtonClickCommand = new DelegateCommand(SetBoard);
+            _getFenButtonClickCommand = new DelegateCommand(GetFen);
 
-        }
-        private void SetBoard(object obj)
-        {
-            SetBoard();
         }
 
         public void AddPiece(object whitePawn, string position)
@@ -60,7 +63,7 @@ namespace Genie_WPF
             
         }
 
-        internal void SetBoard()
+        internal void SetBoard(object obj = null)
         {
             try
             {
@@ -158,7 +161,7 @@ namespace Genie_WPF
                                                  Player = player });
         }
 
-        public void GetFen()
+        public void GetFen(object obj = null)
         {
         }
     }

@@ -250,7 +250,7 @@
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button FontFamily="Segoe UI Symbol" Content="&#xE1FD; Get FEN from board &#xE1FD;" Width="200" Margin="10, 0, 0, 0" Click="GetFenOnClick"></Button>
+            <Button FontFamily="Segoe UI Symbol" Content="&#xE1FD; Get FEN from board &#xE1FD;" Width="200" Margin="10, 0, 0, 0" Command="{Binding GetFenButtonClickCommand}"></Button>
             <Button FontFamily="Segoe UI Symbol" Content="&#xE110; Set board from FEN &#xE110;" Width="200" Margin="10, 0, 0, 0" Command="{Binding SetFenButtonClickCommand}"></Button>
         </StackPanel>
 
