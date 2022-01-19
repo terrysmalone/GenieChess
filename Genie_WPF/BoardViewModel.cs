@@ -47,9 +47,12 @@ namespace Genie_WPF
         {
             _chessPieces = new ObservableCollection<ChessPiece>();
 
-            _setFenButtonClickCommand = new DelegateCommand((s) => { /* perform some action */ },
-                                                            null);
+            _setFenButtonClickCommand = new DelegateCommand(SetBoard);
 
+        }
+        private void SetBoard(object obj)
+        {
+            SetBoard();
         }
 
         public void AddPiece(object whitePawn, string position)
