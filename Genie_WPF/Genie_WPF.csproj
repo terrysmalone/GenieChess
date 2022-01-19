@@ -62,6 +62,7 @@
         </ApplicationDefinition>
         <Compile Include="BoardViewModel.cs" />
         <Compile Include="ChessPiece.cs" />
+        <Compile Include="DelegateCommand.cs" />
         <Compile Include="PieceConverter.cs" />
         <Compile Include="PieceType.cs" />
         <Compile Include="Player.cs" />

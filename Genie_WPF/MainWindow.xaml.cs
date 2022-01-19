@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 
@@ -23,16 +24,6 @@ namespace Genie_WPF
             DataContext = _boardViewModel;
 
             _boardViewModel.SetBoard(boardState);
-        }
-
-        // TODO: Look into making this a relay command
-        private void SetFenOnClick(object sender, RoutedEventArgs e)
-        {
-            _boardViewModel.SetBoard();
-        }
-        private void GetFenOnClick(object sender, RoutedEventArgs e)
-        {
-            _boardViewModel.GetFen();
         }
     }
 }
