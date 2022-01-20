@@ -55,12 +55,6 @@ namespace Genie_WPF
 
             _setFenButtonClickCommand = new DelegateCommand(SetBoard);
             _getFenButtonClickCommand = new DelegateCommand(GetFen);
-
-        }
-
-        public void AddPiece(object whitePawn, string position)
-        {
-            
         }
 
         internal void SetBoard(BoardState boardState)
@@ -148,8 +142,6 @@ namespace Genie_WPF
             {
                 AddPiece(Player.Black, PieceType.King, blackKingMove);
             }
-
-            _boardState = _boardState;
 
             FenPosition = FenTranslator.ToFenString(_boardState);
         }
