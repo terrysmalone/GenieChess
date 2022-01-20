@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using ChessEngine.BoardSearching;
+﻿using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 
 namespace Genie_WPF

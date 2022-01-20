@@ -156,11 +156,11 @@ namespace Genie_WPF
 
         private void AddPiece(Player player, PieceType pieceType, ulong pieceMove)
         {
-            var position = TranslationHelper.GetPosition(pieceMove);
+            var (column, row) = TranslationHelper.GetPosition(pieceMove);
 
             //Normalise the positions
-            var column = position.Item1 - 1;
-            var row = 8 - position.Item2 - 1;
+            column = column - 1;
+            row = 8 - row - 1;
 
             _chessPieces.Add(new ChessPiece{ Pos = new Point(column, row),
                                                  Type = pieceType,
