@@ -1,4 +1,6 @@
-﻿using ChessEngine.BoardSearching;
+﻿using System.Windows;
+using System.Windows.Input;
+using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 
 namespace Genie_WPF
@@ -22,6 +24,17 @@ namespace Genie_WPF
             DataContext = _boardViewModel;
 
             _boardViewModel.SetBoard(boardState);
+        }
+        private void Test(object sender, MouseButtonEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition((IInputElement)sender);
+
+            _boardViewModel.BoardClicked((int)position.X, (int)position.Y);
+
         }
     }
 }
