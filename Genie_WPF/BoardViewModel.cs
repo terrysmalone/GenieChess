@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 
@@ -8,24 +10,16 @@ namespace Genie_WPF
 {
     public sealed class BoardViewModel : ViewModelBase
     {
+    private ChessPiece _selectedPiece;
 
         private ObservableCollection<ChessPiece> _chessPieces;
         private string _fenPosition;
 
         private BoardState _boardState;
 
-        private readonly DelegateCommand _setFenButtonClickCommand;
-        private readonly DelegateCommand _getFenButtonClickCommand;
+        public RelayCommand SetFenButtonClickCommand { get; }
 
-        public DelegateCommand SetFenButtonClickCommand
-        {
-            get { return _setFenButtonClickCommand; }
-        }
-
-        public DelegateCommand GetFenButtonClickCommand
-        {
-            get { return _getFenButtonClickCommand; }
-        }
+        public RelayCommand GetFenButtonClickCommand { get; }
 
         public ObservableCollection<ChessPiece> ChessPieces
         {
@@ -53,8 +47,8 @@ namespace Genie_WPF
         {
             _chessPieces = new ObservableCollection<ChessPiece>();
 
-            _setFenButtonClickCommand = new DelegateCommand(SetBoard);
-            _getFenButtonClickCommand = new DelegateCommand(GetFen);
+            SetFenButtonClickCommand = new RelayCommand(SetBoard);
+            GetFenButtonClickCommand = new RelayCommand(GetFen);
         }
 
         internal void SetBoard(BoardState boardState)
@@ -76,6 +70,22 @@ namespace Genie_WPF
             {
                 Console.WriteLine(e);
                 //Maybe stick up a warning
+            }
+        }
+        
+        public void BoardClicked(int column, int row)
+        {
+            var clickedPiece = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row);
+
+            if (clickedPiece != null)
+            {
+                _selectedPiece = clickedPiece;
+            }
+            else if (_selectedPiece != null)
+            {
+                _selectedPiece.Pos = new Point(column, row);
+
+                _selectedPiece = null;
             }
         }
 
