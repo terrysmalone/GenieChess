@@ -37,18 +37,6 @@
         <Style x:Key="ChessPieceStyle" TargetType="{x:Type Image}">
         <Style.Triggers>
 
-            <!-- <MultiDataTrigger> -->
-            <!--     <MultiDataTrigger.Conditions> -->
-            <!--         <Condition ></Condition> -->
-            <!--     </MultiDataTrigger.Conditions> -->
-            <!-- </MultiDataTrigger> -->
-
-            <!-- <Trigger Property="IsMouseOver" Value="True"> -->
-            <!--     <Setter Property="BorderBrush" Value="Red"/> -->
-            <!--     <Setter Property="Background" Value="Aqua"/> -->
-            <!-- </Trigger> -->
-
-
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Pawn}"/>
@@ -202,10 +190,18 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Width="1" Height="1">
-                                    <Border>
+                                    <Border Name="PieceBorder">
                                         <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
                                     </Border>
                                 </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding Path=.IsSelected, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="True">
+                                        <Setter Property="Background" TargetName="PieceBorder" Value="Red"/>
+
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemContainerStyle>

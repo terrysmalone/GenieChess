@@ -82,12 +82,19 @@ namespace Genie_WPF
 
             if (clickedPiece != null)
             {
+                if (_selectedPiece != null)
+                {
+                    _selectedPiece.IsSelected = false;
+                }
+
                 _selectedPiece = clickedPiece;
+                _selectedPiece.IsSelected = true;
             }
             else if (_selectedPiece != null)
             {
                 _selectedPiece.Pos = new Point(column, row);
 
+                _selectedPiece.IsSelected = false;
                 _selectedPiece = null;
             }
         }
