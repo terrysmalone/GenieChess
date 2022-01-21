@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 
@@ -10,12 +11,15 @@ namespace Genie_WPF
 {
     public sealed class BoardViewModel : ViewModelBase
     {
-    private ChessPiece _selectedPiece;
+        private readonly Game _game;
+        private BoardState _boardState;
+
+        private ChessPiece _selectedPiece;
 
         private ObservableCollection<ChessPiece> _chessPieces;
         private string _fenPosition;
 
-        private BoardState _boardState;
+
 
         public RelayCommand SetFenButtonClickCommand { get; }
 
@@ -43,17 +47,16 @@ namespace Genie_WPF
             }
         }
 
-        public BoardViewModel()
+        public BoardViewModel(Game game)
         {
             _chessPieces = new ObservableCollection<ChessPiece>();
 
             SetFenButtonClickCommand = new RelayCommand(SetBoard);
             GetFenButtonClickCommand = new RelayCommand(GetFen);
-        }
 
-        internal void SetBoard(BoardState boardState)
-        {
-            _boardState = boardState;
+
+            _game = game;
+            _boardState = _game.GetCurrentBoardState();
 
             SetPieces();
         }
