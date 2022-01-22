@@ -42,6 +42,22 @@ namespace ChessEngineTests
 
             Assert.That(game.GetPosition(), Is.EqualTo("1k4q1/7r/8/8/8/8/8/7K w - - 1 2"));
         }
+        
+        // qxd8!+ (to prevent nf7 block), rxd8, bc4+kh8, ng6+, hxg6, hxg6+, nh6, rxh6!+, gxh6, bf6++ mate.
+        [Test]
+        public void DistantSacrificeMate([Range(1, 10)] int depth)
+        {
+            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+
+            var game = new Game(scoreCalculator, new Board(), null);
+            game.ClearBoard();
+            game.SetPosition("1r1n2k1/2p1B1pp/1p6/pB3p1P/P4Nn1/1P2r1PR/5q2/3Q3K w - - 0 1");
+
+            game.ThinkingDepth = depth;
+            game.FindAndMakeBestMove();
+
+            Assert.That(game.GetPosition(), Is.EqualTo("1r1Q2k1/2p1B1pp/1p6/pB3p1P/P4Nn1/1P2r1PR/5q2/7K b - - 1 1")); // Qxd8+
+        }
 
         // Anything less than 8 ply can't find 1..f6.
         // 1..b2 loses the queen to 4 pawns
