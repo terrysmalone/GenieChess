@@ -7,6 +7,7 @@ namespace Genie_WPF
         private Point _pos;
         private PieceType _type;
         private Player _player;
+        private bool _isSelected;
 
         public Point Pos
         {
@@ -34,6 +35,16 @@ namespace Genie_WPF
             set
             {
                 _player = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsSelected
+        {
+            get => _isSelected;
+
+            set
+            {
+                _isSelected = value;
                 OnPropertyChanged();
             }
         }

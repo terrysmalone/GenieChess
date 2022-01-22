@@ -127,6 +127,10 @@
         <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
         <Name>ChessEngine</Name>
       </ProjectReference>
+      <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
+        <Project>{7d4f16b0-adfa-45ff-b0c0-1844b9ec3c35}</Project>
+        <Name>ResourceLoading</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
