@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 
 namespace Genie_WPF
 {
@@ -79,7 +81,12 @@ namespace Genie_WPF
 
             if (_selectedPiece is not null) // A piece has been selected. Deal with the move to
             {
-               // var validMoves = _game.GetCurrentBoardState()
+                var validMoves = _game.GetValidMoves().Where(m => ConvertToPoint(m.Position) == new Point(_selectedPiece.Pos.X, _selectedPiece.Pos.Y));
+
+                if (!validMoves.Any(v => ConvertToPoint(v.Moves) == new Point(column, row)))
+                {
+                    return;
+                }
 
                 // Remove any existing piece
                 var pieceToRemove = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row);
@@ -88,6 +95,10 @@ namespace Genie_WPF
                 {
                     _chessPieces.Remove(pieceToRemove);
                 }
+
+                var move = validMoves.Single(v => ConvertToPoint(v.Moves) == new Point(column, row));
+
+                _game.ReceiveMove(move);
 
                 _selectedPiece.Pos = new Point(column, row);
 
@@ -109,6 +120,16 @@ namespace Genie_WPF
                     _selectedPiece.IsSelected = true;
                 }
             }
+        }
+        private static Point ConvertToPoint(ulong bitPosition)
+        {
+            var (column, row) = TranslationHelper.GetPosition(bitPosition);
+
+            //Normalise the positions
+            column -= 1;
+            row = 8 - row - 1;
+
+            return new Point(column, row);
         }
 
         private void SetPieces()
@@ -182,13 +203,7 @@ namespace Genie_WPF
 
         private void AddPiece(Player player, PieceType pieceType, ulong pieceMove)
         {
-            var (column, row) = TranslationHelper.GetPosition(pieceMove);
-
-            //Normalise the positions
-            column = column - 1;
-            row = 8 - row - 1;
-
-            _chessPieces.Add(new ChessPiece{ Pos = new Point(column, row),
+            _chessPieces.Add(new ChessPiece{ Pos = ConvertToPoint(pieceMove),
                                                  Type = pieceType,
                                                  Player = player });
         }
