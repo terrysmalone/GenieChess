@@ -298,6 +298,7 @@ Global
 		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Release|x64.ActiveCfg = Release|x64
 		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Release|x64.Build.0 = Release|x64
 		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{78D6EEBC-CD5B-49C2-A878-58FCB74E14E3}.Debug|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

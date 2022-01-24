@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
@@ -12,14 +11,11 @@ namespace Genie_WPF
     public sealed class BoardViewModel : ViewModelBase
     {
         private readonly Game _game;
-        private BoardState _boardState;
 
         private ChessPiece _selectedPiece;
 
         private ObservableCollection<ChessPiece> _chessPieces;
         private string _fenPosition;
-
-
 
         public RelayCommand SetFenButtonClickCommand { get; }
 
@@ -56,16 +52,15 @@ namespace Genie_WPF
 
 
             _game = game;
-            _boardState = _game.GetCurrentBoardState();
 
             SetPieces();
         }
 
-        internal void SetBoard(object obj = null)
+        private void SetBoard(object obj = null)
         {
             try
             {
-                _boardState = FenTranslator.ToBoardState(_fenPosition);
+                _game.SetPosition(_fenPosition);
 
                 SetPieces();
             }
@@ -78,110 +73,144 @@ namespace Genie_WPF
         
         public void BoardClicked(int column, int row)
         {
-            var clickedPiece = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row);
+            var currentPlayer = _game.GetCurrentBoardState().WhiteToMove ? Player.White : Player.Black;
+            
+            var clickedPiece = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row && p.Player == currentPlayer);
 
-            if (clickedPiece != null)
+            if (_selectedPiece is not null) // A piece has been selected. Deal with the move to
             {
-                if (_selectedPiece != null)
+                if (clickedPiece is not null && clickedPiece.Player == currentPlayer)
                 {
                     _selectedPiece.IsSelected = false;
+                    _selectedPiece = clickedPiece;
+                    _selectedPiece.IsSelected = true;
+
+                    return;
+                }
+                
+                var validMoves = _game.GetValidMoves().Where(m => ConvertToPoint(m.Position) == new Point(_selectedPiece.Pos.X, _selectedPiece.Pos.Y));
+
+                if (!validMoves.Any(v => ConvertToPoint(v.Moves) == new Point(column, row)))
+                {
+                    return;
                 }
 
-                _selectedPiece = clickedPiece;
-                _selectedPiece.IsSelected = true;
-            }
-            else if (_selectedPiece != null)
-            {
-                _selectedPiece.Pos = new Point(column, row);
+                // Remove any existing piece
+                var pieceToRemove = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row);
 
+                if (pieceToRemove is not null)
+                {
+                    _chessPieces.Remove(pieceToRemove);
+                }
+
+                var move = validMoves.Single(v => ConvertToPoint(v.Moves) == new Point(column, row));
+
+                _game.ReceiveMove(move);
+
+                _selectedPiece.Pos = new Point(column, row);
                 _selectedPiece.IsSelected = false;
                 _selectedPiece = null;
             }
+            else
+            {
+                if (clickedPiece is not null)
+                {
+                    _selectedPiece = clickedPiece;
+                    _selectedPiece.IsSelected = true;
+                }
+            }
+        }
+        
+        private static Point ConvertToPoint(ulong bitPosition)
+        {
+            var (column, row) = TranslationHelper.GetPosition(bitPosition);
+
+            //Normalise the positions
+            column -= 1;
+            row = 8 - row - 1;
+
+            return new Point(column, row);
         }
 
         private void SetPieces()
         {
             _chessPieces.Clear();
 
-            foreach (var whitePawnMove in BitboardOperations.SplitBoardToArray(_boardState.WhitePawns))
+            var boardState = _game.GetCurrentBoardState();
+
+            foreach (var whitePawnMove in BitboardOperations.SplitBoardToArray(boardState.WhitePawns))
             {
                 AddPiece(Player.White, PieceType.Pawn, whitePawnMove);
             }
             
-            foreach (var whiteKnightMove in BitboardOperations.SplitBoardToArray(_boardState.WhiteKnights))
+            foreach (var whiteKnightMove in BitboardOperations.SplitBoardToArray(boardState.WhiteKnights))
             {
                 AddPiece(Player.White, PieceType.Knight, whiteKnightMove);
             }
             
-            foreach (var whiteBishopMove in BitboardOperations.SplitBoardToArray(_boardState.WhiteBishops))
+            foreach (var whiteBishopMove in BitboardOperations.SplitBoardToArray(boardState.WhiteBishops))
             {
                 AddPiece(Player.White, PieceType.Bishop, whiteBishopMove);
             }
             
-            foreach (var whiteRookMove in BitboardOperations.SplitBoardToArray(_boardState.WhiteRooks))
+            foreach (var whiteRookMove in BitboardOperations.SplitBoardToArray(boardState.WhiteRooks))
             {
                 AddPiece(Player.White, PieceType.Rook, whiteRookMove);
             }
             
-            foreach (var whiteQueenMove in BitboardOperations.SplitBoardToArray(_boardState.WhiteQueen))
+            foreach (var whiteQueenMove in BitboardOperations.SplitBoardToArray(boardState.WhiteQueen))
             {
                 AddPiece(Player.White, PieceType.Queen, whiteQueenMove);
             }
             
-            foreach (var whiteKingMove in BitboardOperations.SplitBoardToArray(_boardState.WhiteKing))
+            foreach (var whiteKingMove in BitboardOperations.SplitBoardToArray(boardState.WhiteKing))
             {
                 AddPiece(Player.White, PieceType.King, whiteKingMove);
             }
             
-            foreach (var blackPawnMove in BitboardOperations.SplitBoardToArray(_boardState.BlackPawns))
+            foreach (var blackPawnMove in BitboardOperations.SplitBoardToArray(boardState.BlackPawns))
             {
                 AddPiece(Player.Black, PieceType.Pawn, blackPawnMove);
             }
             
-            foreach (var blackKnightMove in BitboardOperations.SplitBoardToArray(_boardState.BlackKnights))
+            foreach (var blackKnightMove in BitboardOperations.SplitBoardToArray(boardState.BlackKnights))
             {
                 AddPiece(Player.Black, PieceType.Knight, blackKnightMove);
             }
             
-            foreach (var blackBishopMove in BitboardOperations.SplitBoardToArray(_boardState.BlackBishops))
+            foreach (var blackBishopMove in BitboardOperations.SplitBoardToArray(boardState.BlackBishops))
             {
                 AddPiece(Player.Black, PieceType.Bishop, blackBishopMove);
             }
             
-            foreach (var blackRookMove in BitboardOperations.SplitBoardToArray(_boardState.BlackRooks))
+            foreach (var blackRookMove in BitboardOperations.SplitBoardToArray(boardState.BlackRooks))
             {
                 AddPiece(Player.Black, PieceType.Rook, blackRookMove);
             }
             
-            foreach (var blackQueenMove in BitboardOperations.SplitBoardToArray(_boardState.BlackQueen))
+            foreach (var blackQueenMove in BitboardOperations.SplitBoardToArray(boardState.BlackQueen))
             {
                 AddPiece(Player.Black, PieceType.Queen, blackQueenMove);
             }
             
-            foreach (var blackKingMove in BitboardOperations.SplitBoardToArray(_boardState.BlackKing))
+            foreach (var blackKingMove in BitboardOperations.SplitBoardToArray(boardState.BlackKing))
             {
                 AddPiece(Player.Black, PieceType.King, blackKingMove);
             }
 
-            FenPosition = FenTranslator.ToFenString(_boardState);
+            FenPosition = FenTranslator.ToFenString(boardState);
         }
 
         private void AddPiece(Player player, PieceType pieceType, ulong pieceMove)
         {
-            var (column, row) = TranslationHelper.GetPosition(pieceMove);
-
-            //Normalise the positions
-            column = column - 1;
-            row = 8 - row - 1;
-
-            _chessPieces.Add(new ChessPiece{ Pos = new Point(column, row),
+            _chessPieces.Add(new ChessPiece{ Pos = ConvertToPoint(pieceMove),
                                                  Type = pieceType,
                                                  Player = player });
         }
 
         public void GetFen(object obj = null)
         {
-            FenPosition = FenTranslator.ToFenString(_boardState);
+            FenPosition = FenTranslator.ToFenString(_game.GetCurrentBoardState());
         }
     }
 }

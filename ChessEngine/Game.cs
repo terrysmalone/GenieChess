@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -21,7 +22,7 @@ namespace ChessEngine
 
         private bool _gameIsActive = true;
         
-        private Board currentBoard;
+        private Board _currentBoard;
 
         private readonly IScoreCalculator scoreCalculator;
         
@@ -37,7 +38,7 @@ namespace ChessEngine
         {
             this.scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 
-            currentBoard = board ?? throw new ArgumentNullException(nameof(board));
+            _currentBoard = board ?? throw new ArgumentNullException(nameof(board));
 
             this.openingBook = openingBook;
 
@@ -52,9 +53,9 @@ namespace ChessEngine
             ZobristHash.Initialise();
             TranspositionTable.InitialiseTable();
 
-            currentBoard.InitaliseStartingPosition();
+            _currentBoard.InitaliseStartingPosition();
 
-            _pieceMover = new PieceMover(currentBoard);
+            _pieceMover = new PieceMover(_currentBoard);
 
             Log.Info("Initialised Game to starting position");
         }
@@ -82,12 +83,17 @@ namespace ChessEngine
                 openingBook.RegisterMadeMove(move);
             }
 
-            var pieceMove = UciMoveTranslator.ToGameMove(move, currentBoard);
+            var pieceMove = UciMoveTranslator.ToGameMove(move, _currentBoard);
 
             _pieceMover.MakeMove(pieceMove);
         }
 
         #endregion UCI commands
+
+        public void ReceiveMove(PieceMove move)
+        {
+            _pieceMover.MakeMove(move);
+        }
 
         public PieceMove FindAndMakeBestMove()
         {
@@ -113,7 +119,7 @@ namespace ChessEngine
 
                 if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
-                    var openingMove = UciMoveTranslator.ToGameMove(openingMoveUci, currentBoard);
+                    var openingMove = UciMoveTranslator.ToGameMove(openingMoveUci, _currentBoard);
 
                     var uciMove = UciMoveTranslator.ToUciMove(openingMove);
 
@@ -136,7 +142,7 @@ namespace ChessEngine
             Log.Info("===============================================================");
             Log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
-            var search = new AlphaBetaSearch(currentBoard, scoreCalculator);
+            var search = new AlphaBetaSearch(_currentBoard, scoreCalculator);
 
             var bestMove = search.CalculateBestMove(ThinkingDepth);
 
@@ -147,13 +153,13 @@ namespace ChessEngine
 
         public BoardState GetCurrentBoardState()
         {
-            return currentBoard.GetCurrentBoardState();
+            return _currentBoard.GetCurrentBoardState();
         }
 
         // TODO: I will split this logic out so that the request doesn't have to be passed down
         public void WriteBoardToConsole()
         {
-            currentBoard.WriteBoardToConsole();
+            _currentBoard.WriteBoardToConsole();
         }
         
         // Initialises the pieces to a games starting position
@@ -161,14 +167,14 @@ namespace ChessEngine
         // therefore the far left digit is a1 and the leftmost digit is h8
         public void InitaliseStartingPosition()
         {
-            currentBoard.InitaliseStartingPosition();
+            _currentBoard.InitaliseStartingPosition();
 
             openingBook?.ResetBook();
         }
         
         public void ClearBoard()
         {
-            currentBoard.ClearBoard();
+            _currentBoard.ClearBoard();
         }
         
         public void ClearAllStorage()
@@ -179,18 +185,23 @@ namespace ChessEngine
 
         public void AllowAllCastling(bool allow)
         {
-            currentBoard.AllowAllCastling(allow);
+            _currentBoard.AllowAllCastling(allow);
         }
 
         /// <param name="fenNotation"></param>
         public void SetPosition(string fenNotation)
         {
-            currentBoard.SetPosition(fenNotation);
+            _currentBoard.SetPosition(fenNotation);
         }
 
         public string GetPosition()
         {
-            return currentBoard.GetPosition();
+            return _currentBoard.GetPosition();
+        }
+
+        public List<PieceMove> GetValidMoves()
+        {
+            return MoveGeneration.CalculateAllMoves(_currentBoard);
         }
         
         /// <summary>
@@ -201,7 +212,7 @@ namespace ChessEngine
         /// </summary>
         internal void ResetFlags()
         {
-            currentBoard.ResetFlags();
+            _currentBoard.ResetFlags();
         }
     }
 }
