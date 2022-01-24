@@ -75,6 +75,43 @@ To test the speed of the engine, go to EngineEvaluation > Program. Set the thing
 
 and the max thinking depth (maxDepth)
 
+## TODO ## 
+
+Chess Engine
+
+* Change all instances of == null and != null to is null and is not null
+
+WPF
+
+* BUG: Let the player deselect a piece
+
+* Highlight available moves when a piece is selected
+
+* Allow the board to be flipped
+
+* Add options to change colours
+
+* Let the player get an AI move
+
+* Let a FULL GAME VS ai TO BE PLAYED
+
+* Put mouse clicks into the viewmodel
+
+* Make Chess board a separate control
+
+* show move history
+
+
+Large Tasks
+
+* Pull out BoardState from Board. Pass PoardState into things rather than Board
+	1. Roll history and current board state into one thing. 
+
+* Include useful bitboards in BoardState
+
+* Implement Magic Bitboards
+
+
 ## Working Notes ##
 
 2021/12/17
