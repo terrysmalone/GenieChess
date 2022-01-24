@@ -14,6 +14,8 @@
         <Brush x:Key="WhiteBoardColour">Bisque</Brush>
         <Brush x:Key="BlackBoardColour">Tan</Brush>
 
+        <Brush x:Key="SelectedPieceColour">SandyBrown</Brush>
+
         <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
@@ -195,11 +197,8 @@
                                     </Border>
                                 </Grid>
                                 <DataTemplate.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding Path=.IsSelected, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Value="True">
-                                        <Setter Property="Background" TargetName="PieceBorder" Value="Red"/>
-
+                                    <DataTrigger Binding="{Binding .IsSelected}" Value="True">
+                                        <Setter Property="Background" TargetName="PieceBorder" Value="{StaticResource SelectedPieceColour}"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
