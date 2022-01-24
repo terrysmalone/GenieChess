@@ -182,7 +182,6 @@
 
             <Border BorderThickness="2" BorderBrush="{StaticResource WhiteBoardColour}">
                 <Viewbox Stretch="Fill" Width="800" Height="800">
-
                     <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -248,5 +247,7 @@
         </StackPanel>
 
         <TextBox Name="PositionTextBox" Margin="10" Text="{Binding FenPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"></TextBox>
+        
+        <Button Width="100" Margin="10" HorizontalAlignment="Left" Command="{Binding MakeAiMoveCommand}">Make AI move</Button>
     </StackPanel>
  </Window>

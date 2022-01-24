@@ -20,6 +20,9 @@ namespace Genie_WPF
         public RelayCommand SetFenButtonClickCommand { get; }
 
         public RelayCommand GetFenButtonClickCommand { get; }
+        
+        public RelayCommand MakeAiMoveCommand { get; }
+        
 
         public ObservableCollection<ChessPiece> ChessPieces
         {
@@ -49,13 +52,14 @@ namespace Genie_WPF
 
             SetFenButtonClickCommand = new RelayCommand(SetBoard);
             GetFenButtonClickCommand = new RelayCommand(GetFen);
+            MakeAiMoveCommand = new RelayCommand(MakeAiMove);
 
 
             _game = game;
 
             SetPieces();
         }
-
+        
         private void SetBoard(object obj = null)
         {
             try
@@ -69,6 +73,12 @@ namespace Genie_WPF
                 Console.WriteLine(e);
                 //Maybe stick up a warning
             }
+        }
+        
+        private void MakeAiMove(object obj = null)
+        {
+            _game.FindAndMakeBestMove();
+            SetPieces();
         }
         
         public void BoardClicked(int column, int row)
