@@ -108,7 +108,6 @@ namespace Genie_WPF
                 _game.ReceiveMove(move);
 
                 _selectedPiece.Pos = new Point(column, row);
-
                 _selectedPiece.IsSelected = false;
                 _selectedPiece = null;
             }
@@ -121,6 +120,7 @@ namespace Genie_WPF
                 }
             }
         }
+        
         private static Point ConvertToPoint(ulong bitPosition)
         {
             var (column, row) = TranslationHelper.GetPosition(bitPosition);
