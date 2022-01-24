@@ -81,6 +81,8 @@ namespace Genie_WPF
 
             if (_selectedPiece is not null) // A piece has been selected. Deal with the move to
             {
+                //TODO: Let player select another of their own pieces
+
                 var validMoves = _game.GetValidMoves().Where(m => ConvertToPoint(m.Position) == new Point(_selectedPiece.Pos.X, _selectedPiece.Pos.Y));
 
                 if (!validMoves.Any(v => ConvertToPoint(v.Moves) == new Point(column, row)))
