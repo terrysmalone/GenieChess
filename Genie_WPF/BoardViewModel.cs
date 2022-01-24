@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
-using ChessEngine.PossibleMoves;
 
 namespace Genie_WPF
 {
@@ -77,12 +74,20 @@ namespace Genie_WPF
         public void BoardClicked(int column, int row)
         {
             var currentPlayer = _game.GetCurrentBoardState().WhiteToMove ? Player.White : Player.Black;
-
+            
+            var clickedPiece = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row && p.Player == currentPlayer);
 
             if (_selectedPiece is not null) // A piece has been selected. Deal with the move to
             {
-                //TODO: Let player select another of their own pieces
+                if (clickedPiece is not null && clickedPiece.Player == currentPlayer)
+                {
+                    _selectedPiece.IsSelected = false;
+                    _selectedPiece = clickedPiece;
+                    _selectedPiece.IsSelected = true;
 
+                    return;
+                }
+                
                 var validMoves = _game.GetValidMoves().Where(m => ConvertToPoint(m.Position) == new Point(_selectedPiece.Pos.X, _selectedPiece.Pos.Y));
 
                 if (!validMoves.Any(v => ConvertToPoint(v.Moves) == new Point(column, row)))
@@ -109,15 +114,8 @@ namespace Genie_WPF
             }
             else
             {
-                var clickedPiece = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row && p.Player == currentPlayer);
-
                 if (clickedPiece is not null)
                 {
-                    if (_selectedPiece != null)
-                    {
-                        _selectedPiece.IsSelected = false;
-                    }
-
                     _selectedPiece = clickedPiece;
                     _selectedPiece.IsSelected = true;
                 }
