@@ -6,4 +6,5 @@
 
         void Evaluate(int maxDepth);
     }
+
 }

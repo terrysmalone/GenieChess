@@ -11,9 +11,9 @@ namespace EngineEvaluation
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly List<IEvaluator> m_Evaluators;
+        private readonly List<IEvaluator> _evaluators;
         
-        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
+        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
         
         public EnginePerformanceEvaluator(List<IEvaluator> evaluators)
         {
@@ -23,12 +23,12 @@ namespace EngineEvaluation
                 throw new ArgumentNullException(nameof(evaluators));
             }
 
-            m_Evaluators = evaluators;
+            _evaluators = evaluators;
         }
 
         public void RunFullPerformanceEvaluation(int maxDepth, int maxThinkingSeconds)
         {
-            foreach (var evaluator in m_Evaluators)
+            foreach (var evaluator in _evaluators)
             {
                 evaluator.Evaluate(maxDepth, maxThinkingSeconds);
             }
@@ -36,7 +36,7 @@ namespace EngineEvaluation
 
         public void RunFullPerformanceEvaluation(int maxDepth)
         {
-            foreach (var evaluator in m_Evaluators)
+            foreach (var evaluator in _evaluators)
             {
                 evaluator.Evaluate(maxDepth);
             }

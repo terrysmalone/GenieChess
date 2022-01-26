@@ -91,7 +91,7 @@ namespace ResourceLoading
 
             var lines = File.ReadAllLines(testFilePath);
 
-            var toLoad = maxToLoad > lines.Length ? lines.Length : maxToLoad;
+            var toLoad = maxToLoad == 0 ? lines.Length : Math.Min(lines.Length, maxToLoad);
 
             for (var i = 0; i < toLoad; i++)
             {
@@ -128,24 +128,17 @@ namespace ResourceLoading
 
             var lines = File.ReadAllLines(testFilePath);
 
-            var toLoad = maxToLoad > lines.Length ? lines.Length : maxToLoad;
+            var toLoad = maxToLoad == 0 ? lines.Length : Math.Min(lines.Length, maxToLoad);
 
             for (var i = 0; i < toLoad; i++)
             {
                 var parts = lines[i].Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-                //var subParts = parts[0].Split(new string[] {"bm"}, StringSplitOptions.None);
-
-                var id = parts[2];
-
-                var start = id.IndexOf("\"", StringComparison.Ordinal) + 1;   // Add one to not include quote
-                var end = id.LastIndexOf("\"", StringComparison.Ordinal) - start;
-
                 var testPos = new MateInXTestPosition
                 {
                     FenPosition = parts[0].Trim(),
                     MovesList   = parts[1].Split(' '),
-                    Name        = id.Substring(start, end)
+                    Name        = parts[2]
                 };
 
                 position.Add(testPos);

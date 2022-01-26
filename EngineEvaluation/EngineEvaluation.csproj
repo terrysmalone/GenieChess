@@ -217,6 +217,7 @@
     <Compile Include="ExcelHandler.cs" />
     <Compile Include="IEvaluator.cs" />
     <Compile Include="IPerformanceEvaluatorFactory.cs" />
+    <Compile Include="MateInXEvaluator.cs" />
     <Compile Include="PerformanceEvaluatorFactory.cs" />
     <Compile Include="PerfTEvaluator.cs" />
     <Compile Include="Program.cs" />

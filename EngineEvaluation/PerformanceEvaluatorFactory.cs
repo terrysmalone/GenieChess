@@ -24,14 +24,18 @@ namespace EngineEvaluation
 
             var timeStamp = Path.GetFileNameWithoutExtension(logFolder);
 
-            var highlightsLogFile = CreateAndGetLogFile(logFolder, $"Overview - {timeStamp}.txt");
+            var logFileCounter = 1;
+
+            var highlightsLogFile = CreateAndGetLogFile(logFolder, $"0{logFileCounter} Overview - {timeStamp}.txt");
 
             var evaluators = new List<IEvaluator>();
 
             // PerfTEvaluator
             if (evaluatePerfTPositions)
             {
-                var perfTLogFile = CreateAndGetLogFile(logFolder, $"PerfTEvaluator - {timeStamp}.txt");
+                logFileCounter++;
+
+                var perfTLogFile = CreateAndGetLogFile(logFolder, $"0{logFileCounter} PerfTEvaluator - {timeStamp}.txt");
 
                 var perfTPositions = _resourceLoader.LoadPerfTPositions();
 
@@ -43,15 +47,17 @@ namespace EngineEvaluation
             // From https://chess.stackexchange.com/questions/19633/chess-problem-database-with-pgn-or-fen
             if (evaluateMateInXPositions)
             {
-                var testPosLogFile = CreateAndGetLogFile(logFolder, $"Mate in X Evaluator - {timeStamp}.txt");
+                logFileCounter++;
 
-                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"Mate in X Evaluator  - {timeStamp}.xlsx");
+                var mateInXLogFile = CreateAndGetLogFile(logFolder, $"0{logFileCounter} Mate in X Evaluator - {timeStamp}.txt");
+
+                var mateInXExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"0{logFileCounter} Mate in X Evaluator  - {timeStamp}.xlsx");
 
 
                 var mateInXPositions = InitialiseMateInXTestPositions(problemPerSuiteLimit);
 
                 var testPositionsEvaluator =
-                    new MateInXEvaluator(mateInXPositions, highlightsLogFile, mateInXLogFile, MateInXExcelLogFile);
+                    new MateInXEvaluator(mateInXPositions, highlightsLogFile, mateInXLogFile, mateInXExcelLogFile);
 
                 evaluators.Add(testPositionsEvaluator);
 
@@ -60,10 +66,11 @@ namespace EngineEvaluation
             // Test position evaluator
             if (evaluateTestSuitePositions)
             {
-                var testPosLogFile = CreateAndGetLogFile(logFolder, $"TestPositionsEvaluator - {timeStamp}.txt");
+                logFileCounter++;
 
-                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"TestPositionsEvaluator - {timeStamp}.xlsx");
+                var testPosLogFile = CreateAndGetLogFile(logFolder, $"0{logFileCounter} TestPositionsEvaluator - {timeStamp}.txt");
 
+                var testExcelLogFile = CreateAndGetExcelLogFile(logFolder, $"0{logFileCounter} TestPositionsEvaluator - {timeStamp}.xlsx");
 
                 var testPositions = InitialiseTestPositions(problemPerSuiteLimit);
 
@@ -76,14 +83,14 @@ namespace EngineEvaluation
             return new EnginePerformanceEvaluator(evaluators);
         }
 
-        private object InitialiseMateInXTestPositions(int problemPerSuiteLimit)
+        private List<Tuple<string, List<MateInXTestPosition>>> InitialiseMateInXTestPositions(int problemsPerSuiteLimit)
         {
-            var testSuites = new List<Tuple<string, List<TestPosition>>>();
+            var testSuites = new List<Tuple<string, List<MateInXTestPosition>>>();
 
             foreach (var mateInXTestFile in _resourceLoader.GetAllPerformanceEvaluationFilePaths("mateInXTests"))
             {
-                var testPositions = _resourceLoader.LoadMateInXPositions(mateInXTestFile, problemPerSuiteLimit);
-                testSuites.Add(new Tuple<string, List<TestPosition>>(Path.GetFileName(mateInXTestFile), testPositions));
+                var testPositions = _resourceLoader.LoadMateInXPositions(mateInXTestFile, problemsPerSuiteLimit);
+                testSuites.Add(new Tuple<string, List<MateInXTestPosition>>(Path.GetFileName(mateInXTestFile), testPositions));
             }
 
             return testSuites;

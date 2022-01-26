@@ -6,19 +6,19 @@ using ChessEngine.PossibleMoves;
 
 namespace ChessEngine
 {
-    internal sealed class PieceMover
+    public sealed class PieceMover
     {
         private readonly Board _board;
         
         private const ulong FullBoard = ulong.MaxValue;
 
-        internal PieceMover(Board board)
+        public PieceMover(Board board)
         {
             _board = board;
         }
         
         // If the move is confirmed extra processes are carried out (i.e. PGN calculations. During move generation these are not necessary and slow things down
-        internal void MakeMove(PieceMove move)
+        public void MakeMove(PieceMove move)
         {
             //MakeMove(move.Position, move.Moves, move.Type, false);
             MakeMove(move.Position, move.Moves, move.Type, move.SpecialMove);
