@@ -14,23 +14,21 @@ namespace ResourceLoading
             return fullFileName;
         }
 
-        public string GetTestResourcePath(string fileName)
+        public string[] GetAllPerformanceEvaluationFilePaths(string directory)
         {
-            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", fileName });
-
-            return fullFileName;
-        }
-
-        public string[] GetAllPerformanceEvaluationFilePaths()
-        {
-            var directory = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", "performanceEvaluationTests" });
-
-            return Directory.GetFiles(directory);
+            return Directory.GetFiles(Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", directory }));
         }
 
         public List<PerfTPosition> LoadPerfTPositions()
         {
             return LoadPerfTPositions(GetTestResourcePath("PerfTPositions.txt"));
+        }
+
+        private string GetTestResourcePath(string fileName)
+        {
+            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", fileName });
+
+            return fullFileName;
         }
 
         private static string GetSolutionDirectory()
@@ -123,5 +121,38 @@ namespace ResourceLoading
 
             return position;
         }
+
+        public List<MateInXTestPosition> LoadMateInXPositions(string testFilePath, int maxToLoad)
+        {
+            var position = new List<MateInXTestPosition>();
+
+            var lines = File.ReadAllLines(testFilePath);
+
+            var toLoad = maxToLoad > lines.Length ? lines.Length : maxToLoad;
+
+            for (var i = 0; i < toLoad; i++)
+            {
+                var parts = lines[i].Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                //var subParts = parts[0].Split(new string[] {"bm"}, StringSplitOptions.None);
+
+                var id = parts[2];
+
+                var start = id.IndexOf("\"", StringComparison.Ordinal) + 1;   // Add one to not include quote
+                var end = id.LastIndexOf("\"", StringComparison.Ordinal) - start;
+
+                var testPos = new MateInXTestPosition
+                {
+                    FenPosition = parts[0].Trim(),
+                    MovesList   = parts[1].Split(' '),
+                    Name        = id.Substring(start, end)
+                };
+
+                position.Add(testPos);
+            }
+
+            return position;
+        }
     }
+
 }

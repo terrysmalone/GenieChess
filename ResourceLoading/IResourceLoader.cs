@@ -6,12 +6,12 @@ namespace ResourceLoading
     {
         string GetGameResourcePath(string fileName);
 
-        string GetTestResourcePath(string fileName);
-
-        string[] GetAllPerformanceEvaluationFilePaths();
+        string[] GetAllPerformanceEvaluationFilePaths(string directory);
 
         List<PerfTPosition> LoadPerfTPositions();
 
         List<TestPosition> LoadTestPositions(string fileName, int maxToLoad);
+
+        List<MateInXTestPosition> LoadMateInXPositions(string fileName, int maxToLoad);
     }
 }
