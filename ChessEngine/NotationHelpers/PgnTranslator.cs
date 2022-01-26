@@ -2,6 +2,7 @@
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
+using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.NotationHelpers
 {
@@ -60,11 +61,11 @@ namespace ChessEngine.NotationHelpers
 
             var pieceMover = new PieceMover(board);
 
-            pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal);
+            pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, SpecialMoveType.Normal);
 
             if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
             {
-                if (BoardChecking.CanKingMove(board, board.WhiteToMove))
+                if (MoveGeneration.CalculateAllMoves(board).Count > 0 || BoardChecking.CanKingMove(board, board.WhiteToMove))
                 {
                     move += "+";
                 }
