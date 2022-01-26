@@ -40,6 +40,7 @@ namespace EngineEvaluation
             }
 
             // Mate in X evaluator
+            // From https://chess.stackexchange.com/questions/19633/chess-problem-database-with-pgn-or-fen
             if (evaluateMateInXPositions)
             {
                 var testPosLogFile = CreateAndGetLogFile(logFolder, $"Mate in X Evaluator - {timeStamp}.txt");
