@@ -338,18 +338,31 @@ namespace ChessEngine.BoardSearching
                 // Even if a black piece is on the square the king can go there if the square is not
                 // under attack (i.e. the piece is not protected)
                 var freeSquares = possibleMoves & ~boardPosition.AllWhiteOccupiedSquares; 
-                
+
+                var storedAllOccupiedSquares = boardPosition.AllOccupiedSquares;
+                var storedAllOccupiedWhiteSquares = boardPosition.AllWhiteOccupiedSquares;
+
                 if (freeSquares > 0)
                 {
+                    // We need to temporarily remove the king to make sure his current place isn't blocking an attack
+                    boardPosition.AllOccupiedSquares &= ~boardPosition.WhiteKing;
+                    boardPosition.AllWhiteOccupiedSquares &= ~boardPosition.WhiteKing;
+
                     var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
                     foreach (var possMove in possMoves)
                     {
-                        if(!IsSquareAttacked(boardPosition, possMove, whitePieces))
+                        if (!IsSquareAttacked(boardPosition, possMove, whitePieces))
+                        {
+                            boardPosition.AllOccupiedSquares = storedAllOccupiedSquares;
+                            boardPosition.AllWhiteOccupiedSquares = storedAllOccupiedWhiteSquares;
                             return true;
+                        }
                     }
                 }
-                
+
+                boardPosition.AllOccupiedSquares = storedAllOccupiedSquares;
+                boardPosition.AllWhiteOccupiedSquares = storedAllOccupiedWhiteSquares;
                 return false;
             }
             else
@@ -361,20 +374,30 @@ namespace ChessEngine.BoardSearching
                 //
                 var freeSquares = 
                     possibleMoves & ~boardPosition.AllBlackOccupiedSquares; 
-                    
+
+                var storedAllOccupiedSquares = boardPosition.AllOccupiedSquares;
+                var storedAllOccupiedBlackSquares = boardPosition.AllBlackOccupiedSquares;
+
                 if (freeSquares > 0)
                 {
+                    boardPosition.AllOccupiedSquares &= ~boardPosition.BlackKing;
+                    boardPosition.AllBlackOccupiedSquares &= ~boardPosition.BlackKing;
+
                     var possMoves = BitboardOperations.SplitBoardToArray(freeSquares);
 
                     foreach (var t in possMoves)
                     {
                         if (!IsSquareAttacked(boardPosition, t, whitePieces))
                         {
+                            boardPosition.AllOccupiedSquares = storedAllOccupiedSquares;
+                            boardPosition.AllBlackOccupiedSquares = storedAllOccupiedBlackSquares;
                             return true;
                         }
                     }
                 }
 
+                boardPosition.AllOccupiedSquares = storedAllOccupiedSquares;
+                boardPosition.AllBlackOccupiedSquares = storedAllOccupiedBlackSquares;
                 return false;
             }
         }

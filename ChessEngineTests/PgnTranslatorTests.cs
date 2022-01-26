@@ -248,13 +248,6 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_AmbiguousMoves()
-        {
-// TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [TestMethod]
         public void TestToPgnMove_Check_White()
         {
             var board = new Board();
@@ -351,19 +344,85 @@ namespace ChessEngineTests
             Assert.AreEqual("h1=Q+", move);  
         }
 
+        [TestMethod]
+        public void TestAmbiguousMove_White()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("7k/1R6/8/8/1K2R3/8/8/8 w - - 0 1");
+
+            var moveFrom = LookupTables.E4;
+            var moveTo = LookupTables.E7;
+            var pieceToMove = PieceType.Rook;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("Ree7", move);
+        }
+
+        [TestMethod]
+        public void TestAmbiguousMove_White2()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("4k3/8/1R6/8/8/8/1R6/2K5 w - - 0 1");
+
+            var moveFrom = LookupTables.B4;
+            var moveTo = LookupTables.B4;
+            var pieceToMove = PieceType.Rook;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("R2b4", move);
+        }
+
+        [TestMethod]
+        public void TestAmbiguousMove_Black()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("8/8/2n5/5k2/8/5n2/K7/8 b - - 0 1");
+
+            var moveFrom = LookupTables.C6;
+            var moveTo = LookupTables.D4;
+            var pieceToMove = PieceType.Knight;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("Ncd4", move);
+        }
+
 
         [TestMethod]
         public void TestToPgnMove_CheckMate_White()
         {
-// TODO: write tests
-            //throw new NotImplementedException();
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("7k/RR6/8/8/1K6/8/8/8 w - - 0 1");
+
+            var moveFrom = LookupTables.A7;
+            var moveTo = LookupTables.A8;
+            var pieceToMove = PieceType.Rook;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("Ra8#", move);
         }
 
         [TestMethod]
         public void TestToPgnMove_CheckMate_Black()
         {
-// TODO: write tests
-            //throw new NotImplementedException();
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("5rk1/8/8/8/8/8/PPP5/1K6 b - - 0 1");
+
+            var moveFrom = LookupTables.F8;
+            var moveTo = LookupTables.F1;
+            var pieceToMove = PieceType.Rook;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("Rf1#", move);
         }
 
 
