@@ -4,6 +4,6 @@
     {
         EnginePerformanceEvaluator CreatePerformanceEvaluator(bool evaluatePerfTPositions,
                                                               bool evaluateTestPositions,
-                                                              bool runFullTestSuiteEvaluation);
+                                                              int problemsPerSuiteLimit);
     }
 }

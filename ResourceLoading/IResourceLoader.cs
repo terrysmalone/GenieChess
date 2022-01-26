@@ -8,8 +8,10 @@ namespace ResourceLoading
 
         string GetTestResourcePath(string fileName);
 
+        string[] GetAllPerformanceEvaluationFilePaths();
+
         List<PerfTPosition> LoadPerfTPositions();
 
-        List<TestPosition> LoadTestPositions(string fileName);
+        List<TestPosition> LoadTestPositions(string fileName, int maxToLoad);
     }
 }

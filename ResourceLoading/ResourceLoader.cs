@@ -21,6 +21,13 @@ namespace ResourceLoading
             return fullFileName;
         }
 
+        public string[] GetAllPerformanceEvaluationFilePaths()
+        {
+            var directory = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", "performanceEvaluationTests" });
+
+            return Directory.GetFiles(directory);
+        }
+
         public List<PerfTPosition> LoadPerfTPositions()
         {
             return LoadPerfTPositions(GetTestResourcePath("PerfTPositions.txt"));
@@ -49,10 +56,6 @@ namespace ResourceLoading
                     currentDirectory = Directory.GetParent(currentDirectory.FullName);
                 }
             }
-
-            //var solutionDirectory = 
-            //    Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            // ReSharper restore PossibleNullReferenceException
 
             return currentDirectory.FullName;
         }
@@ -84,15 +87,17 @@ namespace ResourceLoading
             return position;
         }
 
-        public List<TestPosition> LoadTestPositions(string testFilePath)
+        public List<TestPosition> LoadTestPositions(string testFilePath, int maxToLoad)
         {
             var position = new List<TestPosition>();
 
             var lines = File.ReadAllLines(testFilePath);
 
-            foreach (var line in lines)
+            var toLoad = maxToLoad > lines.Length ? lines.Length : maxToLoad;
+
+            for (var i = 0; i < toLoad; i++)
             {
-                var parts = line.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = lines[i].Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                 var subParts = parts[0].Split(new string[] {"bm"}, StringSplitOptions.None);
 
