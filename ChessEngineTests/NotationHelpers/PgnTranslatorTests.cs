@@ -451,32 +451,50 @@ namespace ChessEngineTests.NotationHelpers
         
         [Test]
         public void CaptureCheckMate_White()
-        {           throw new NotImplementedException();
+        {   
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("2b4k/2R1R3/2PP4/2K5/5pn1/4p1r1/8/8 w - - 0 1");
+
+            var move = PgnTranslator.ToPgnMove(board, LookupTables.C7, LookupTables.C8, PieceType.Rook, SpecialMoveType.Capture);
+
+            Assert.That(move, Is.EqualTo("Rxc8#"));
         }
         
         [Test]
         public void PromotionCheck_Black()
         {
-            throw new NotImplementedException();
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("8/8/8/8/8/5K2/2kp4/8 b - - 0 1");
+
+            var move = PgnTranslator.ToPgnMove(board, LookupTables.D2, LookupTables.D1, PieceType.Pawn, SpecialMoveType.BishopPromotion);
+
+            Assert.That(move, Is.EqualTo("d1=B+"));
         }
 
         [Test]
         public void CaptureCheck_Black()
         {
-            throw new NotImplementedException();
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("8/k7/8/8/8/8/3p4/1KR5 b - - 0 1");
+
+            var move = PgnTranslator.ToPgnMove(board, LookupTables.D2, LookupTables.C1, PieceType.Pawn, SpecialMoveType.RookPromotionCapture);
+
+            Assert.That(move, Is.EqualTo("dxc1=R+"));
         }
         
         [Test]
         public void CaptureCheckMate_Black()
         {
-            throw new NotImplementedException();
-        }
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("8/8/8/5k2/6rn/6BK/4RpPP/6R1 b - - 0 1");
 
-        [Test]
-        public void METHOD()
-        {
-            
+            var move = PgnTranslator.ToPgnMove(board, LookupTables.F2, LookupTables.G1, PieceType.Pawn, SpecialMoveType.KnightPromotionCapture);
+
+            Assert.That(move, Is.EqualTo("fxg1=N#"));
         }
-            
     }
 }
