@@ -10,7 +10,7 @@ namespace ChessEngine.NotationHelpers
     public static class PgnTranslator
     {
         // Creates a PGN move string from a board move
-        public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
+        public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMoveType = SpecialMoveType.Normal)
         {
             var moveIsCapture = false;
 
@@ -51,15 +51,33 @@ namespace ChessEngine.NotationHelpers
 
             move += moveTo;
 
-            //Is it a promotion, if so add "=Q"
-            if (movedPiece != pieceToMove)
-                move += "=" + TranslationHelper.GetPieceLetter(pieceToMove, moveToBoard);
+            //Is it a promotion
+            if (specialMoveType is SpecialMoveType.BishopPromotion or SpecialMoveType.KnightPromotion 
+                                                                   or SpecialMoveType.RookPromotion 
+                                                                   or SpecialMoveType.QueenPromotion 
+                                                                   or SpecialMoveType.BishopPromotionCapture 
+                                                                   or SpecialMoveType.KnightPromotionCapture 
+                                                                   or SpecialMoveType.RookPromotionCapture 
+                                                                   or SpecialMoveType.QueenPromotionCapture)
+            {
+                move += "=";
+
+                var pieceLetter = specialMoveType switch
+                {
+                    SpecialMoveType.KnightPromotion or SpecialMoveType.KnightPromotionCapture => "N",
+                    SpecialMoveType.BishopPromotion or SpecialMoveType.BishopPromotionCapture => "B",
+                    SpecialMoveType.RookPromotion or SpecialMoveType.RookPromotionCapture => "R",
+                    SpecialMoveType.QueenPromotion or SpecialMoveType.QueenPromotionCapture => "Q"
+                };
+
+                move += pieceLetter;
+            }
 
             //Move piece to test for check
 
             var pieceMover = new PieceMover(board);
 
-            pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, SpecialMoveType.Normal);
+            pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, specialMoveType);
 
             if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
             {

@@ -1,7 +1,6 @@
 ﻿using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
-using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
