@@ -1,32 +1,17 @@
-﻿using ChessEngine.BoardRepresentation;
+﻿using System;
+using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.NotationHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.NotationHelpers
 {
     [TestClass]
     public class PgnTranslatorTests
     {
         [TestMethod]
-        public void TestToBoard()
-        {
-// TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        [TestMethod]
-        public void TestToPgnString()
-        {
-// TODO: write tests
-            //throw new NotImplementedException();
-        }
-
-        #region ToPgnMove tests
-
-        [TestMethod]
-        public void TestToPgnMove_PawnMove_White()
+        public void PawnMove_White()
         {
             var board = new Board();
             board.InitaliseStartingPosition();
@@ -34,14 +19,14 @@ namespace ChessEngineTests
             var moveFrom = LookupTables.C2;
             var moveTo = LookupTables.C4;
             var pieceToMove = PieceType.Pawn;
-
+            
             var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
 
             Assert.AreEqual("c4", move);
         }
 
         [TestMethod]
-        public void TestToPgnMove_PawnMove_Black()
+        public void PawnMove_Black()
         {
             var board = new Board();
             board.InitaliseStartingPosition();
@@ -57,7 +42,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PieceMove_White()
+        public void PieceMove_White()
         {
             var board = new Board();
             board.InitaliseStartingPosition();
@@ -72,7 +57,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PieceMove_Black()
+        public void PieceMove_Black()
         {
             var board = new Board();
             board.InitaliseStartingPosition();
@@ -88,7 +73,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PawnCapture_White()
+        public void PawnCapture_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -104,7 +89,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PawnCapture_Black()
+        public void PawnCapture_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -120,7 +105,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PieceCapture_White()
+        public void PieceCapture_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -136,7 +121,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PieceCapture_Black()
+        public void PieceCapture_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -152,7 +137,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Castling_White_Kingside()
+        public void Castling_White_Kingside()
         {
             var board = new Board();
             board.ClearBoard();
@@ -168,7 +153,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Castling_White_Queenside()
+        public void Castling_White_Queenside()
         {
             var board = new Board();
             board.ClearBoard();
@@ -184,7 +169,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Castling_Black_Kingside()
+        public void Castling_Black_Kingside()
         {
             var board = new Board();
             board.ClearBoard();
@@ -200,7 +185,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Castling_Black_Queenside()
+        public void Castling_Black_Queenside()
         {
             var board = new Board();
             board.ClearBoard();
@@ -216,7 +201,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Promotion_White()
+        public void Promotion_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -230,9 +215,25 @@ namespace ChessEngineTests
 
             Assert.AreEqual("b8=Q", move);            
         }
+        
+        [TestMethod]
+        public void ToPgnMove_LowerPromotion_White()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("8/1P6/2K5/8/8/8/5k2/8 w - - 0 1");
+            
+            var moveFrom = LookupTables.B7;
+            var moveTo = LookupTables.B8;
+            var pieceToMove = PieceType.Knight;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("b8=N", move);            
+        }
 
         [TestMethod]
-        public void TestToPgnMove_Promotion_Black()
+        public void Promotion_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -248,7 +249,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Check_White()
+        public void Check_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -264,7 +265,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_Check_Black()
+        public void Check_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -280,7 +281,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_CaptureToCheck_White()
+        public void CaptureToCheck_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -297,7 +298,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_CaptureToCheck_Black()
+        public void CaptureToCheck_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -313,7 +314,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PromotionToCheck_white()
+        public void PromotionToCheck_white()
         {
             var board = new Board();
             board.ClearBoard();
@@ -329,7 +330,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_PromotionToCheck_black()
+        public void PromotionToCheck_black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -394,7 +395,7 @@ namespace ChessEngineTests
 
 
         [TestMethod]
-        public void TestToPgnMove_CheckMate_White()
+        public void CheckMate_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -410,7 +411,7 @@ namespace ChessEngineTests
         }
 
         [TestMethod]
-        public void TestToPgnMove_CheckMate_Black()
+        public void CheckMate_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -425,8 +426,82 @@ namespace ChessEngineTests
             Assert.AreEqual("Rf1#", move);
         }
 
+        [TestMethod]
+        public void PromotionCheck_White()
+        {
+            
+        }
+        
+        [TestMethod]
+        public void PromotionCheckMate_White()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("2n3rr/Pk3p2/3q4/3N4/3Pp2p/4P1p1/3B1PP1/R4RK1 w - - 1 0");
 
-        #endregion ToPgnMove tests
+            var moveFrom = LookupTables.A7;
+            var moveTo = LookupTables.A8;
+            var pieceToMove = PieceType.Queen;
 
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("a8=Q#", move);
+        }
+        
+        [TestMethod]
+        public void CaptureCheck_White()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("k1n3rr/Pp3p2/3q4/3N4/3Pp2p/1Q2P1p1/3B1PP1/R4RK1 w - - 1 0");
+
+            var moveFrom = LookupTables.B3;
+            var moveTo = LookupTables.B7;
+            var pieceToMove = PieceType.Queen;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("Qxb7+", move);
+        }
+        
+        [TestMethod]
+        public void CaptureCheckMate_White()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [TestMethod]
+        public void PromotionCheck_Black()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [TestMethod]
+        public void PromotionCheckMate_Black()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("1rb4r/p1Pp3p/kb1P3n/3Q6/N3Pp2/8/P1P3PP/7K w - - 1 0");
+
+            var moveFrom = LookupTables.C7;
+            var moveTo = LookupTables.B8;
+            var pieceToMove = PieceType.Knight;
+
+            var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
+
+            Assert.AreEqual("cxb8=N#", move);
+        }
+        
+        [TestMethod]
+        public void CaptureCheck_Black()
+        {
+            throw new NotImplementedException();
+        }
+        
+        [TestMethod]
+        public void CaptureCheckMate_Black()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

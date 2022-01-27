@@ -6,9 +6,7 @@ using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.NotationHelpers
 {
-    /// <summary>
-    /// Translates between Board and a PGN string
-    /// </summary>
+    //Translates between Board and a PGN string
     public static class PgnTranslator
     {
         // Creates a PGN move string from a board move

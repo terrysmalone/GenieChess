@@ -15,7 +15,7 @@
                                                                        0);
             
             //engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6, maxThinkingSeconds: 10);
-            engineEvaluation.RunFullPerformanceEvaluation(5);
+            engineEvaluation.RunFullPerformanceEvaluation(4);
         }
     }
 }
