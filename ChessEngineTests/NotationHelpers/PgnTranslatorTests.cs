@@ -323,7 +323,7 @@ namespace ChessEngineTests.NotationHelpers
         }
 
         [Test]
-        public void TestAmbiguousMove_White()
+        public void AmbiguousMove_White()
         {
             var board = new Board();
             board.ClearBoard();
@@ -339,7 +339,7 @@ namespace ChessEngineTests.NotationHelpers
         }
 
         [Test]
-        public void TestAmbiguousMove_White2()
+        public void AmbiguousMove_White2()
         {
             var board = new Board();
             board.ClearBoard();
@@ -355,7 +355,7 @@ namespace ChessEngineTests.NotationHelpers
         }
 
         [Test]
-        public void TestAmbiguousMove_Black()
+        public void AmbiguousMove_Black()
         {
             var board = new Board();
             board.ClearBoard();
@@ -419,6 +419,18 @@ namespace ChessEngineTests.NotationHelpers
             var move = PgnTranslator.ToPgnMove(board, LookupTables.A7, LookupTables.A8, PieceType.Pawn, SpecialMoveType.QueenPromotion);
 
             Assert.That(move, Is.EqualTo("a8=Q#"));
+        }
+
+        [Test]
+        public void CapturePromotionCheckMate_White()
+        {
+            var board = new Board();
+            board.ClearBoard();
+            board.SetPosition("1rb4r/p1Pp3p/kb1P3n/3Q4/N3Pp2/8/P1P3PP/7K w - - 1 0");
+
+            var move = PgnTranslator.ToPgnMove(board, LookupTables.C7, LookupTables.B8, PieceType.Pawn, SpecialMoveType.KnightPromotionCapture);
+
+            Assert.That(move, Is.EqualTo("cxb8=N#"));
         }
         
         [Test]

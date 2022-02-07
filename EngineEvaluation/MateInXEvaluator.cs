@@ -163,7 +163,7 @@ namespace EngineEvaluation
                             currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
                         }
 
-                        var chosenMove = PgnTranslator.ToPgnMove(boardCopy, currentMove.Position, currentMove.Moves, currentMove.Type);
+                        var chosenMove = PgnTranslator.ToPgnMove(boardCopy, currentMove.Position, currentMove.Moves, currentMove.Type, currentMove.SpecialMove);
 
                         chosenMoves[i] = chosenMove;
 
