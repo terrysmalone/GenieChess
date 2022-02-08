@@ -14,16 +14,21 @@ namespace ResourceLoading
             return fullFileName;
         }
 
-        public string GetTestResourcePath(string fileName)
+        public string[] GetAllPerformanceEvaluationFilePaths(string directory)
         {
-            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", fileName });
-
-            return fullFileName;
+            return Directory.GetFiles(Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", directory }));
         }
 
         public List<PerfTPosition> LoadPerfTPositions()
         {
             return LoadPerfTPositions(GetTestResourcePath("PerfTPositions.txt"));
+        }
+
+        private string GetTestResourcePath(string fileName)
+        {
+            var fullFileName = Path.Combine(new[] { GetSolutionDirectory(), "SharedResources", "Test", fileName });
+
+            return fullFileName;
         }
 
         private static string GetSolutionDirectory()
@@ -49,10 +54,6 @@ namespace ResourceLoading
                     currentDirectory = Directory.GetParent(currentDirectory.FullName);
                 }
             }
-
-            //var solutionDirectory = 
-            //    Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName;
-            // ReSharper restore PossibleNullReferenceException
 
             return currentDirectory.FullName;
         }
@@ -84,15 +85,17 @@ namespace ResourceLoading
             return position;
         }
 
-        public List<TestPosition> LoadTestPositions(string testFilePath)
+        public List<TestPosition> LoadTestPositions(string testFilePath, int maxToLoad)
         {
             var position = new List<TestPosition>();
 
             var lines = File.ReadAllLines(testFilePath);
 
-            foreach (var line in lines)
+            var toLoad = maxToLoad == 0 ? lines.Length : Math.Min(lines.Length, maxToLoad);
+
+            for (var i = 0; i < toLoad; i++)
             {
-                var parts = line.Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = lines[i].Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                 var subParts = parts[0].Split(new string[] {"bm"}, StringSplitOptions.None);
 
@@ -118,5 +121,31 @@ namespace ResourceLoading
 
             return position;
         }
+
+        public List<MateInXTestPosition> LoadMateInXPositions(string testFilePath, int maxToLoad)
+        {
+            var position = new List<MateInXTestPosition>();
+
+            var lines = File.ReadAllLines(testFilePath);
+
+            var toLoad = maxToLoad == 0 ? lines.Length : Math.Min(lines.Length, maxToLoad);
+
+            for (var i = 0; i < toLoad; i++)
+            {
+                var parts = lines[i].Split(new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var testPos = new MateInXTestPosition
+                {
+                    FenPosition = parts[0].Trim(),
+                    MovesList   = parts[1].Split(' '),
+                    Name        = parts[2]
+                };
+
+                position.Add(testPos);
+            }
+
+            return position;
+        }
     }
+
 }

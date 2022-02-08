@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
@@ -15,11 +16,11 @@ using ResourceLoading;
 
 namespace EngineEvaluation
 {
-    public sealed class TestPositionsEvaluator : IEvaluator
+    internal sealed class MateInXEvaluator : IEvaluator
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private List<Tuple<string, List<TestPosition>>> _testPositionSuites;
+        private readonly List<Tuple<string, List<MateInXTestPosition>>> _testPositionSuites;
 
         private readonly string _fullLogFile;
         private readonly string _highlightsLogFile;
@@ -27,15 +28,15 @@ namespace EngineEvaluation
         private readonly ExcelHandler _excelHandler;
 
         private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-        
-        public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites, 
-                                      string highlightsLogFile, 
-                                      string fullLogFile,
-                                      string testExcelLogFile)
+
+        public MateInXEvaluator(List<Tuple<string, List<MateInXTestPosition>>> testPositionSuites,
+                                string highlightsLogFile,
+                                string fullLogFile,
+                                string testExcelLogFile)
         {
             if (testPositionSuites == null)
             {
-                Log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
+                Log.Error("No Mate in X positions were passed to MateInXEvaluator");
                 throw new ArgumentNullException(nameof(testPositionSuites));
             }
 
@@ -43,7 +44,7 @@ namespace EngineEvaluation
 
             if (highlightsLogFile == null)
             {
-                Log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
+                Log.Error("No highlightsLogFile was passed to MateInXEvaluator");
                 throw new ArgumentNullException(nameof(highlightsLogFile));
             }
 
@@ -51,15 +52,15 @@ namespace EngineEvaluation
 
             if (fullLogFile == null)
             {
-                Log.Error("No fullLogFile was passed to TestPositionsEvaluator");
+                Log.Error("No fullLogFile was passed to MateInXEvaluator");
                 throw new ArgumentNullException(nameof(fullLogFile));
             }
 
-            this._fullLogFile = fullLogFile;
+            _fullLogFile = fullLogFile;
 
             if (testExcelLogFile == null)
             {
-                Log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
+                Log.Error("No testExcelLogFile was passed to MateInXEvaluator");
                 throw new ArgumentNullException(nameof(testExcelLogFile));
             }
 
@@ -77,7 +78,7 @@ namespace EngineEvaluation
         public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
         {
             LogLine("====================================================================");
-            LogLine("Test positions evaluator");
+            LogLine("Mate in X evaluator");
 
             LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
 
@@ -104,17 +105,22 @@ namespace EngineEvaluation
                 LogLine("--------------------------------------------------------------");
                 LogLine($"Test set: {testSuiteName}");
 
-                Log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
-                
+                Log.Info($"Beginning evaluation of Test suite: {testSuiteName}");
+
                 var totalTestSuiteTime = TimeSpan.Zero;
+
                 float totalTestSuiteNodeCount = 0;
 
                 var passedTestSuitePositions = 0;
 
+                var currentMove = new PieceMove();
+
                 foreach (var position in testPositionSuite.Item2)
                 {
-                    Log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
-                    
+                    var chosenMoves = new string[position.MovesList.Length];
+
+                    Log.Info($"Beginning evaluation of test: {position.Name} - FEN: {position.FenPosition}");
+
                     var board = new Board();
                     board.SetPosition(position.FenPosition);
 
@@ -125,9 +131,9 @@ namespace EngineEvaluation
                     // Serialise the board since the search might leave it in a bad state
                     IFormatter formatter = new BinaryFormatter();
                     Board boardCopy;
-                    
+
                     // Make a copy of the board since the search might mess up it's state
-                    using (MemoryStream memStream = new MemoryStream())
+                    using (var memStream = new MemoryStream())
                     {
                         formatter.Serialize(memStream, board);
 
@@ -137,43 +143,65 @@ namespace EngineEvaluation
 
                     var alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
 
-                    var timer = new Stopwatch();
-                    timer.Start();
-
-                    PieceMove currentMove = new PieceMove();
-
-                    if (maxThinkingSeconds > 0)
-                    {
-                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
-                    }
-                    else
-                    {
-                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
-                    }
-
-                    timer.Stop();
-
-                    totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
-
-                    var totalNodes = alphaBeta.TotalSearchNodes;
-                    totalTestSuiteNodeCount += totalNodes;
-
-                    var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
+                    var positionTimer = new Stopwatch();
+                    positionTimer.Start();
 
                     var passed = false;
-                    
-                    if (position.BestMovePgn == chosenMove)
+
+                    ulong totalNodes = 0;
+
+                    for (var i=0; i<position.MovesList.Length; i++)
+                    {
+                        var move = position.MovesList[i];
+
+                        if (maxThinkingSeconds > 0)
+                        {
+                            currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
+                        }
+                        else
+                        {
+                            currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
+                        }
+
+                        var chosenMove = PgnTranslator.ToPgnMove(boardCopy, currentMove.Position, currentMove.Moves, currentMove.Type, currentMove.SpecialMove);
+
+                        chosenMoves[i] = chosenMove;
+
+                        totalNodes = alphaBeta.TotalSearchNodes;
+                        totalTestSuiteNodeCount += totalNodes;
+
+                        if (move == chosenMove)
+                        {
+                            passed = true;
+
+                            var pieceMover = new PieceMover(boardCopy);
+                            pieceMover.MakeMove(currentMove);
+                            alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
+                        }
+                        else
+                        {
+                            passed = false;
+                            positionTimer.Stop();
+                            break;
+                        }
+                    }
+
+                    if (passed)
                     {
                         passedTestSuitePositions++;
-                        passed = true;
                     }
-                    
+
+                    positionTimer.Stop();
+
+                    totalTestSuiteTime = totalTestSuiteTime.Add(positionTimer.Elapsed);
+
                     LogTestPositionResults(
                         position.Name,
-                        chosenMove, 
-                        position.BestMovePgn,
+                        position.FenPosition,
+                        chosenMoves,
+                        position.MovesList,
                         passed,
-                        timer.Elapsed,
+                        positionTimer.Elapsed,
                         totalNodes);
 
                     _excelHandler.AddDataToSheet("Tests", new[]
@@ -182,14 +210,14 @@ namespace EngineEvaluation
                                                                position.Name,
                                                                passed.ToString(),
                                                                $"{totalNodes:n0}",
-                                                               $"'{timer.Elapsed.ToString()}"
+                                                               $"'{positionTimer.Elapsed.ToString()}"
                                                            });
                 }
 
                 var totalSuiteTestPositions = testPositionSuite.Item2.Count;
 
                 var passedSuite = passedTestSuitePositions == totalSuiteTestPositions ? "Passed" : "FAILED";
-                
+
                 LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - " +
                         $"Total time: {totalTestSuiteTime} - " +
                         $"Total node visited: {totalTestSuiteNodeCount:n0}");
@@ -211,6 +239,8 @@ namespace EngineEvaluation
 
                 overallTestSuiteNodes += totalTestSuiteNodeCount;
             }
+
+            LogLine("--------------------------------------------------------------");
 
             LogLine($"Overall passed: {overallPassedTestPositions}/{ overallTestPositions}");
             LogLine($"Overall time: {overallTestSuiteTime}");
@@ -237,16 +267,15 @@ namespace EngineEvaluation
                                                    });
         }
 
-        private void LogTestPositionResults(
-            string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, float totalNodes)
+        private void LogTestPositionResults(string name, string position, string[] chosenMoves, string[] bestMoves, bool passed, TimeSpan elapsedTime, float totalNodes)
         {
             var result = passed ? "Passed" : "FAILED";
 
-            LogLineAsDetailed($"Name:{ positionName } - " + 
-                              $"Best move:{ bestMove } - " +
-                              $"Selected move {chosenMove} - " +
-                              $"Total time: {elapsedTime} - " +
-                              $"Total nodes visited {totalNodes:n0} - " +
+            LogLineAsDetailed($"{name}({position}) - " +
+                              $"Winning moves:{string.Join(",", bestMoves)} - " +
+                              $"Chosen moves:{string.Join(",", chosenMoves)} - " +
+                              $"Total time:{elapsedTime} - " +
+                              $"Total nodes visited:{totalNodes:n0} - " +
                               $"{result}");
         }
 
@@ -255,7 +284,7 @@ namespace EngineEvaluation
             LogLineAsDetailed(text);
             LogLineAsHighlight(text);
         }
-        
+
         private void LogLineAsHighlight(string text)
         {
             using (var stream = File.AppendText(_highlightsLogFile))

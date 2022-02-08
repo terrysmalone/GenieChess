@@ -3,7 +3,8 @@
     internal interface IPerformanceEvaluatorFactory
     {
         EnginePerformanceEvaluator CreatePerformanceEvaluator(bool evaluatePerfTPositions,
+                                                              bool evaluateMateInXPositions,
                                                               bool evaluateTestPositions,
-                                                              bool runFullTestSuiteEvaluation);
+                                                              int problemsPerSuiteLimit);
     }
 }

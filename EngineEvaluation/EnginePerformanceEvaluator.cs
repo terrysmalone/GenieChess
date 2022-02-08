@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using log4net;
-using ResourceLoading;
 
 namespace EngineEvaluation
 {
@@ -11,10 +10,8 @@ namespace EngineEvaluation
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly List<IEvaluator> m_Evaluators;
-        
-        private readonly IResourceLoader m_ResourceLoader = new ResourceLoader();
-        
+        private readonly List<IEvaluator> _evaluators;
+
         public EnginePerformanceEvaluator(List<IEvaluator> evaluators)
         {
             if (evaluators == null)
@@ -23,20 +20,12 @@ namespace EngineEvaluation
                 throw new ArgumentNullException(nameof(evaluators));
             }
 
-            m_Evaluators = evaluators;
-        }
-
-        public void RunFullPerformanceEvaluation(int maxDepth, int maxThinkingSeconds)
-        {
-            foreach (var evaluator in m_Evaluators)
-            {
-                evaluator.Evaluate(maxDepth, maxThinkingSeconds);
-            }
+            _evaluators = evaluators;
         }
 
         public void RunFullPerformanceEvaluation(int maxDepth)
         {
-            foreach (var evaluator in m_Evaluators)
+            foreach (var evaluator in _evaluators)
             {
                 evaluator.Evaluate(maxDepth);
             }

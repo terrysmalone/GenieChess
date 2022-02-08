@@ -80,6 +80,7 @@
   <ItemGroup>
     <Compile Include="IOpeningBook.cs" />
     <Compile Include="IResourceLoader.cs" />
+    <Compile Include="MateInXTestPosition.cs" />
     <Compile Include="Opening.cs" />
     <Compile Include="OpeningBook.cs" />
     <Compile Include="PerfTPosition.cs" />

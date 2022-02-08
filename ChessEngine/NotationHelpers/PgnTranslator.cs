@@ -2,24 +2,21 @@
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
+using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.NotationHelpers
 {
-    /// <summary>
-    /// Translates between Board and a PGN string
-    /// </summary>
+    //Translates between Board and a PGN string
     public static class PgnTranslator
     {
         // Creates a PGN move string from a board move
-        public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
+        public static string ToPgnMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove, SpecialMoveType specialMoveType = SpecialMoveType.Normal)
         {
             var moveIsCapture = false;
 
-            var move = string.Empty;
-
             var movedPiece = BoardChecking.GetPieceTypeOnSquare(board, moveFromBoard);    //Can#t trust pieceToMove since it may have changed (i.e. promotion)
 
-            move = CheckForCastling(board, moveFromBoard, moveToBoard, movedPiece);
+            var move = CheckForCastling(board, moveToBoard, movedPiece);
 
             if (!string.IsNullOrEmpty(move))
             {
@@ -27,66 +24,83 @@ namespace ChessEngine.NotationHelpers
 
                 return move;
             }
-            else
+
+            //Get string of piece to move
+            move += TranslationHelper.GetPieceLetter(movedPiece, moveFromBoard);
+
+            //Is it a capture, if so use 'x'
+            if (BoardChecking.IsEnemyPieceOnSquare(board, moveToBoard))
             {
-                //Get string of piece to move 
-                move += TranslationHelper.GetPieceLetter(movedPiece, moveFromBoard);
+                moveIsCapture = true;
+                move += "x";
 
-                var capturedPiece = PieceType.None; 
-
-                //Is it a capture, if so use 'x'
-                if (BoardChecking.IsEnemyPieceOnSquare(board, moveToBoard))
-                {
-                    moveIsCapture = true;
-                    move += "x";
-
-                    capturedPiece = BoardChecking.GetPieceTypeOnSquare(board, moveToBoard); 
-                }
-
-                //Get string of position moved to
-                var moveTo = TranslationHelper.GetSquareNotation(moveToBoard);
-
-
-                // TODO: If another piece can move here, specify which it was
-
-                if (movedPiece == PieceType.Pawn && !moveIsCapture)
-                {
-                    //We need to trim the first letter since it is a pawn
-                    moveTo = moveTo.Substring(1);
-                }
-
-                move += moveTo;
-
-                //Is it a promotion, if so add "=Q"
-                if (movedPiece != pieceToMove)
-                    move += "=" + TranslationHelper.GetPieceLetter(pieceToMove, moveToBoard);
-
-                //Move piece to test for check  
-
-                var pieceMover = new PieceMover(board);
-                
-                //board.RemovePiece(moveFromBoard);
-                //board.PlacePiece(pieceToMove, movingColour, moveToBoard); 
-                pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, PossibleMoves.SpecialMoveType.Normal);
-                
-                if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
-                    move += "+";
-                
-                pieceMover.UnMakeLastMove();
-                
-                //board.PlacePiece(capturedPiece, colour, moveToBoard);
-                //board.PlacePiece(movedPiece, movingColour, moveFromBoard); 
-                
-                //If mate add score
-
-                Debug.Assert(!string.IsNullOrEmpty(move));
-
+                BoardChecking.GetPieceTypeOnSquare(board, moveToBoard);
             }
+
+            //Get string of position moved to
+            var moveTo = TranslationHelper.GetSquareNotation(moveToBoard);
+
+
+            // TODO: If another piece can move here, specify which it was
+
+            if (movedPiece == PieceType.Pawn && !moveIsCapture)
+            {
+                //We need to trim the first letter since it is a pawn
+                moveTo = moveTo.Substring(1);
+            }
+
+            move += moveTo;
+
+            //Is it a promotion
+            if (specialMoveType is SpecialMoveType.BishopPromotion or SpecialMoveType.KnightPromotion 
+                                                                   or SpecialMoveType.RookPromotion 
+                                                                   or SpecialMoveType.QueenPromotion 
+                                                                   or SpecialMoveType.BishopPromotionCapture 
+                                                                   or SpecialMoveType.KnightPromotionCapture 
+                                                                   or SpecialMoveType.RookPromotionCapture 
+                                                                   or SpecialMoveType.QueenPromotionCapture)
+            {
+                move += "=";
+
+                var pieceLetter = specialMoveType switch
+                {
+                    SpecialMoveType.KnightPromotion or SpecialMoveType.KnightPromotionCapture => "N",
+                    SpecialMoveType.BishopPromotion or SpecialMoveType.BishopPromotionCapture => "B",
+                    SpecialMoveType.RookPromotion or SpecialMoveType.RookPromotionCapture => "R",
+                    SpecialMoveType.QueenPromotion or SpecialMoveType.QueenPromotionCapture => "Q"
+                };
+
+                move += pieceLetter;
+            }
+
+            //Move piece to test for check
+
+            var pieceMover = new PieceMover(board);
+
+            pieceMover.MakeMove(moveFromBoard, moveToBoard, pieceToMove, specialMoveType);
+
+            if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
+            {
+                if (MoveGeneration.CalculateAllMoves(board).Count > 0 || BoardChecking.CanKingMove(board, board.WhiteToMove))
+                {
+                    move += "+";
+                }
+                else
+                {
+                    move += "#";
+                }
+            }
+
+            pieceMover.UnMakeLastMove();
+
+            //If mate add score
+
+            Debug.Assert(!string.IsNullOrEmpty(move));
 
             return move;
         }
         
-        private static string CheckForCastling(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
+        private static string CheckForCastling(Board board, ulong moveToBoard, PieceType pieceToMove)
         {
             //Castling flag checks
             if (board.WhiteToMove)
@@ -140,11 +154,6 @@ namespace ChessEngine.NotationHelpers
             }
 
             return string.Empty;
-        }
-
-        private static void CheckForPawnPromotion(ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove)
-        {
-           //throw new NotImplementedException("Pawn promotion not impletemented");
         }
     }
 }

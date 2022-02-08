@@ -205,10 +205,6 @@ namespace ChessEngine.MoveSearching
 #if FullNodeCountDebug
                 LogTranspositionCounts();
 #endif
-
-#if Debug
-                //LogKillerMoves(m_KillerMoves);
-#endif
                 s_Log.Info($"Move info: {UciMoveTranslator.ToUciMove(moveValueInfo.Move)} - " +
                            $"score: {GetScoreString(moveValueInfo.Score, _boardPosition.WhiteToMove)} - " +
                            $"nodes: {moveValueInfo.NodesVisited} - " +
