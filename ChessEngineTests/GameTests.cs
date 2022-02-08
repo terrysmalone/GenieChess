@@ -3,7 +3,6 @@ using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
 using NUnit.Framework;
-using ResourceLoading;
 
 namespace ChessEngineTests
 {
@@ -11,12 +10,10 @@ namespace ChessEngineTests
     [TestFixture]
     public class GameTests
     {
-        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-        
         [Test]
         public void TestPlayingGame_VerySimpleCapture_White([Range(1,6)] int thinkingDepth)
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
             var game = new Game(scoreCalculator, new Board(), null);
 
             game.SetPosition("7k/8/8/3pK3/8/8/8/8 w - - 0 1");
@@ -36,7 +33,7 @@ namespace ChessEngineTests
         [Test]
         public void TestPlayingGame_VerySimpleCapture_Black([Range(1, 6)] int thinkingDepth)
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
             var game = new Game(scoreCalculator, new Board(), null);
 
             game.ClearBoard();

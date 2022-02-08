@@ -4,19 +4,16 @@ using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
 using NUnit.Framework;
-using ResourceLoading;
 
 namespace ChessEngineTests
 {
     [TestFixture]
     public class EngineSanityChecks
     {
-        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-
         [Test]
         public void MateInOne_White([Range(1, 6)] int depth)
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -31,7 +28,7 @@ namespace ChessEngineTests
         [Test]
         public void MateInOne_Black([Range(1, 6)] int depth)
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -50,7 +47,7 @@ namespace ChessEngineTests
         {
             // TODO: write tests
 
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -71,7 +68,7 @@ namespace ChessEngineTests
             // TODO: write tests
             throw new NotImplementedException();
 
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -98,7 +95,7 @@ namespace ChessEngineTests
         [ Test]
         public void TestKingCastlingWhileInCheckBug()
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -116,7 +113,7 @@ namespace ChessEngineTests
         [ Test]
         public void QuiescenceCausesWhiteToCapture()
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -134,7 +131,7 @@ namespace ChessEngineTests
         [ Test]
         public void QuiescenceStopsWhiteFromCapturing()
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -153,7 +150,7 @@ namespace ChessEngineTests
         [ Test]
         public void QuiescenceCausesBlackToCapture()
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();
@@ -171,7 +168,7 @@ namespace ChessEngineTests
         [ Test]
         public void QuiescenceStopsBlackFromCapturing()
         {
-            var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var game = new Game(scoreCalculator, new Board(), null);
             game.ClearBoard();

@@ -17,7 +17,7 @@ namespace EngineEvaluation
 {
     public sealed class TestPositionsEvaluator : IEvaluator
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private List<Tuple<string, List<TestPosition>>> _testPositionSuites;
 
@@ -35,7 +35,7 @@ namespace EngineEvaluation
         {
             if (testPositionSuites == null)
             {
-                Log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
+                _log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
                 throw new ArgumentNullException(nameof(testPositionSuites));
             }
 
@@ -43,7 +43,7 @@ namespace EngineEvaluation
 
             if (highlightsLogFile == null)
             {
-                Log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
+                _log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
                 throw new ArgumentNullException(nameof(highlightsLogFile));
             }
 
@@ -51,7 +51,7 @@ namespace EngineEvaluation
 
             if (fullLogFile == null)
             {
-                Log.Error("No fullLogFile was passed to TestPositionsEvaluator");
+                _log.Error("No fullLogFile was passed to TestPositionsEvaluator");
                 throw new ArgumentNullException(nameof(fullLogFile));
             }
 
@@ -59,7 +59,7 @@ namespace EngineEvaluation
 
             if (testExcelLogFile == null)
             {
-                Log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
+                _log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
                 throw new ArgumentNullException(nameof(testExcelLogFile));
             }
 
@@ -104,7 +104,7 @@ namespace EngineEvaluation
                 LogLine("--------------------------------------------------------------");
                 LogLine($"Test set: {testSuiteName}");
 
-                Log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
+                _log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
                 
                 var totalTestSuiteTime = TimeSpan.Zero;
                 float totalTestSuiteNodeCount = 0;
@@ -113,12 +113,12 @@ namespace EngineEvaluation
 
                 foreach (var position in testPositionSuite.Item2)
                 {
-                    Log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
+                    _log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
                     
                     var board = new Board();
                     board.SetPosition(position.FenPosition);
 
-                    var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+                    var scoreCalculator = ScoreCalculatorFactory.Create();
 
                     TranspositionTable.Restart();
 
@@ -140,7 +140,7 @@ namespace EngineEvaluation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    PieceMove currentMove = new PieceMove();
+                    var currentMove = new PieceMove();
 
                     if (maxThinkingSeconds > 0)
                     {
