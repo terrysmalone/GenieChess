@@ -2,10 +2,9 @@
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
 using ChessEngine.Exceptions;
-using ChessEngine.NotationHelpers;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.BoardSearching
 {
     [TestFixture]
     public class BoardCheckingTests

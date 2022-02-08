@@ -4,7 +4,7 @@ using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.PossibleMoves
 {
     [TestFixture]
     public class MoveGenerationTests
@@ -75,7 +75,7 @@ namespace ChessEngineTests
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
             
-            Assert.AreEqual(2, allMoves.Count);
+            Assert.That(allMoves.Count, Is.EqualTo(2));
 
             var move1 = allMoves[0];
             Assert.That(move1.Type, Is.EqualTo(PieceType.King));
@@ -97,7 +97,7 @@ namespace ChessEngineTests
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-            Assert.AreEqual(2, allMoves.Count);
+            Assert.That(allMoves.Count, Is.EqualTo(2));
 
             var move1 = allMoves[0];
             Assert.That(move1.Type, Is.EqualTo(PieceType.King));
@@ -119,7 +119,7 @@ namespace ChessEngineTests
 
             var allMoves = MoveGeneration.CalculateAllMoves(board);
 
-            Assert.AreEqual(4, allMoves.Count);
+            Assert.That(allMoves.Count, Is.EqualTo(4));
 
             foreach (var pieceMove in allMoves)
             {

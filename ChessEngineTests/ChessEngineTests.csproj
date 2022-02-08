@@ -235,30 +235,28 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="BitboardOperationsTests.cs" />
-    <Compile Include="BoardCheckingTests.cs" />
-    <Compile Include="BoardTests.cs">
+    <Compile Include="BoardRepresentation\BitboardOperationsTests.cs" />
+    <Compile Include="BoardRepresentation\BoardStateTests.cs" />
+    <Compile Include="BoardRepresentation\BoardTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BoardSearching\BoardCheckingTests.cs" />
+    <Compile Include="BoardSearching\LookupTablesTests.cs" />
     <Compile Include="EngineSanityChecks.cs" />
-    <Compile Include="LookupTablesTests.cs" />
-    <Compile Include="MoveGenerationTests.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearchTests.cs" />
     <Compile Include="MoveSearching\ZobristHashTests.cs" />
     <Compile Include="NotationHelpers\FENTranslatorTests.cs" />
     <Compile Include="NotationHelpers\PgnTranslatorTests.cs" />
+    <Compile Include="NotationHelpers\TranslationHelperTests.cs" />
     <Compile Include="NotationHelpers\UCIMoveTranslatorTests.cs" />
     <Compile Include="PerfT.cs" />
     <Compile Include="PerftVerificationTests.cs" />
     <Compile Include="PieceMoverTests.cs" />
-    <Compile Include="PieceValidMovesTests.cs" />
+    <Compile Include="PossibleMoves\MoveGenerationTests.cs" />
+    <Compile Include="PossibleMoves\PieceValidMovesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameTests.cs" />
-    <Compile Include="BoardStateTests.cs" />
-    <Compile Include="RandomExtensions.cs" />
     <Compile Include="ScoreCalculation\ScoreCalculatorTests.cs" />
-    <Compile Include="TranslationHelperTests.cs" />
-    <Compile Include="ZobristHashTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">

@@ -1,7 +1,7 @@
 ﻿using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.PossibleMoves
 {
     [TestFixture]
     public class PieceValidMovesTests
