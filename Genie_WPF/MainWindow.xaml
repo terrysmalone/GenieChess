@@ -14,6 +14,8 @@
         <Brush x:Key="WhiteBoardColour">Bisque</Brush>
         <Brush x:Key="BlackBoardColour">Tan</Brush>
 
+        <Brush x:Key="SelectedPieceColour">SandyBrown</Brush>
+
         <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
             <DrawingBrush.Drawing>
                 <DrawingGroup>
@@ -180,7 +182,6 @@
 
             <Border BorderThickness="2" BorderBrush="{StaticResource WhiteBoardColour}">
                 <Viewbox Stretch="Fill" Width="800" Height="800">
-
                     <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -195,11 +196,8 @@
                                     </Border>
                                 </Grid>
                                 <DataTemplate.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding Path=.IsSelected, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Value="True">
-                                        <Setter Property="Background" TargetName="PieceBorder" Value="Red"/>
-
+                                    <DataTrigger Binding="{Binding .IsSelected}" Value="True">
+                                        <Setter Property="Background" TargetName="PieceBorder" Value="{StaticResource SelectedPieceColour}"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
                             </DataTemplate>
@@ -249,5 +247,7 @@
         </StackPanel>
 
         <TextBox Name="PositionTextBox" Margin="10" Text="{Binding FenPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"></TextBox>
+        
+        <Button Width="100" Margin="10" HorizontalAlignment="Left" Command="{Binding MakeAiMoveCommand}">Make AI move</Button>
     </StackPanel>
  </Window>
