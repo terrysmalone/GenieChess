@@ -85,7 +85,7 @@ namespace ChessEngineTests
             Assert.That(perft.Perft(board, 4), Is.EqualTo(7658));
             Assert.That(perft.Perft(board, 5), Is.EqualTo(72120));
             Assert.That(perft.Perft(board, 6), Is.EqualTo(703851));
-            //Assert.AreEqual(6627106, perft.Perft(board, 7));
+            //Assert.That(perft.Perft(board, 7), Is.EqualTo(6627106));
         }
         
         // https://sites.google.com/site/numptychess/perft/position-5
@@ -101,10 +101,10 @@ namespace ChessEngineTests
             
             board.SetPosition("r3k2r/pb3pp1/5n1p/n2p4/1p1PPB2/6P1/P2N1PBP/R3K2R b KQkq -");
 
-            Assert.AreEqual(30, perft.Perft(board, 1));
-            Assert.AreEqual(986, perft.Perft(board, 2));
-            Assert.AreEqual(29777, perft.Perft(board, 3));
-            Assert.AreEqual(967198, perft.Perft(board, 4));
+            Assert.That(perft.Perft(board, 1), Is.EqualTo(30));
+            Assert.That(perft.Perft(board, 2), Is.EqualTo(986));
+            Assert.That(perft.Perft(board, 3), Is.EqualTo(29777));
+            Assert.That(perft.Perft(board, 4), Is.EqualTo(967198));
         }
 
         // "kiwipete"
@@ -186,7 +186,7 @@ namespace ChessEngineTests
             Assert.That(perft.Perft(board, 3), Is.EqualTo(2812)); 
             Assert.That(perft.Perft(board, 4), Is.EqualTo(43238)); 
             Assert.That(perft.Perft(board, 5), Is.EqualTo(674624)); 
-            //Assert.AreEqual(11030083, perft.Perft(board, 6));
+            //Assert.That(perft.Perft(board, 6), Is.EqualTo(11030083));
         }
         
         // A contrived position where the kings are in the middle of the board and can be checked lots next move
