@@ -1,8 +1,7 @@
-﻿using System;
-using ChessEngine.BoardSearching;
+﻿using ChessEngine.BoardSearching;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.BoardSearching
 {
     [TestFixture]
     public class LookupTablesTests

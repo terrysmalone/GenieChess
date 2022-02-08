@@ -2,7 +2,7 @@
 using ChessEngine.NotationHelpers;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.NotationHelpers
 {
     [TestFixture]
     public class TranslationHelperTests

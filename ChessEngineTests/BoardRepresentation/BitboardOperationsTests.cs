@@ -1,7 +1,7 @@
 ﻿using ChessEngine.BoardRepresentation;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests.BoardRepresentation
 {
     [TestFixture]
     public class BitboardOperationsTests
