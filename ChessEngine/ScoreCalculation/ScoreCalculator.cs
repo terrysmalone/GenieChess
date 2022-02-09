@@ -25,7 +25,6 @@ namespace ChessEngine.ScoreCalculation
         // Calculates the score with black advantage as negative and white as positive
         public int CalculateScore(Board currentBoard)
         {
-
             CountDebugger.Evaluations++;
 
             _currentBoard = currentBoard;
@@ -95,7 +94,8 @@ namespace ChessEngine.ScoreCalculation
             pieceScore += whiteQueenCount * _scoreValues.QueenPieceValue;
             pieceScore += whiteQueenCount * _scoreValues.SoloQueenScore;
 
-            pieceScore += BitboardOperations.GetPopCount(_currentBoard.WhiteKing) * kingScore;
+            var count = BitboardOperations.GetPopCount(_currentBoard.WhiteKing);
+            pieceScore += count * kingScore;
 
             //Calculate black piece values
             pieceScore -= BitboardOperations.GetPopCount(_currentBoard.BlackPawns) * _scoreValues.PawnPieceValue;
@@ -116,7 +116,9 @@ namespace ChessEngine.ScoreCalculation
             pieceScore -= blackQueenCount * _scoreValues.QueenPieceValue;
             pieceScore -= blackQueenCount * _scoreValues.SoloQueenScore;
 
-            pieceScore -= BitboardOperations.GetPopCount(_currentBoard.BlackKing) * kingScore;
+
+            var popCount = BitboardOperations.GetPopCount(_currentBoard.BlackKing);
+            pieceScore -= popCount * kingScore;
             
             return pieceScore;
         }
