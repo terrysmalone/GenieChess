@@ -52,7 +52,7 @@ namespace ChessEngine.ScoreCalculation
         public int  SoloQueenScore { get; set; }
 
         public int DoubledPawnPenalty { get; set; }
-        public int PawnChainScore { get; set; }
+        public int ProtectedPawnScore { get; set; }
 
         public int PassedPawnBonus { get; set; }
 

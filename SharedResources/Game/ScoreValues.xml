@@ -47,7 +47,7 @@
   <SoloQueenScore>15</SoloQueenScore> <!--Score for having a queen (If only one side has a queen this will give a bonus) -->
   
   <DoubledPawnPenalty>-15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns -->
-  <PawnChainScore>15</PawnChainScore> <!-- Bonus for every pawn protected by another pawn -->
+  <ProtectedPawnScore>15</ProtectedPawnScore> <!-- Bonus for every pawn protected by another pawn -->
   <PassedPawnBonus>20</PassedPawnBonus><!-- Bonus for every passed pawn -->
   <PassedPawnAdvancementBonus>5</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
 

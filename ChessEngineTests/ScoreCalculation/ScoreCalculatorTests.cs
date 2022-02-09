@@ -1,4 +1,5 @@
-﻿using ChessEngine;
+﻿using System;
+using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -343,6 +344,111 @@ namespace ChessEngineTests.ScoreCalculation
 
             board.SetPosition("k7/8/8/8/8/8/8/8 w - - 0 1"); // just a black King
             Assert.That(scoreCalculator.CalculateScore(board), Is.LessThan(0));
+        }
+
+        [Test]
+        public void DoubledPawnPenalty()
+        {
+            var scoreValues = new ScoreValues
+            {
+                DoubledPawnPenalty = -15
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/3p4/4p3/8/4P3/4P3/8/8 w - - 0 1"); // White has doubled pawns
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-15));
+
+            board.SetPosition("8/p7/p7/8/4PP2/8/8/8 w - - 0 1"); //  Black has doubled pawns
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(15));
+
+            board.SetPosition("8/p5p1/p5p1/8/4PP2/8/8/8 w - - 0 1"); //  Black has 2 sets of doubled pawns
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(30));
+        }
+
+        [Test]
+        public void ProtectedPawnScore()
+        {
+            var scoreValues = new ScoreValues
+            {
+                ProtectedPawnScore = 10
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/p4pp1/p7/2P5/3P4/4P3/8/8 w - - 0 1"); // White has a pawn chain of 3
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(20));
+
+            board.SetPosition("8/1p6/2p5/3p4/4p3/2PPP3/8/8 b - - 0 1"); // Black has a pawn chain of 4
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-30));
+        }
+
+        [Test]
+        public void ProtectedPawnScore_MultipleProtectsAreCountedOnce()
+        {
+            var scoreValues = new ScoreValues
+            {
+                ProtectedPawnScore = 10
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/1p1pp2p/8/8/3P4/2P1P3/8/Kk6 b - - 0 1"); // White has an "arrow" position
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void ProtectedPawnScore_ProtectingMultiplePiecesIsCountedTwice()
+        {
+            var scoreValues = new ScoreValues
+            {
+                ProtectedPawnScore = 10
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/3p2p1/2p1p3/8/3PP3/1P6/8/8 w - - 0 1"); // black has an inverse "arrow" position
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-20));
+        }
+
+        [Test]
+        public void ProtectedPawnScore_ProtectingAnEdge()
+        {
+            var scoreValues = new ScoreValues
+            {
+                ProtectedPawnScore = 10
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/6p1/2ppp3/8/P7/1P2P3/8/8 b - - 0 1"); // White has a protected pawn on a
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(10));
+        }
+
+        [Test]
+        public void ProtectedPawnScore_ProtectedByEdgeEdge()
+        {
+            var scoreValues = new ScoreValues
+            {
+                ProtectedPawnScore = 10
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/7p/2pp2p1/8/8/PP2P3/8/8 b - - 0 1"); // Black is protecting from h
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-10));
         }
 
         [Test]

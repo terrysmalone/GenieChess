@@ -129,24 +129,32 @@ namespace ChessEngine.ScoreCalculation
         {
             var positionScores = 0;
 
-            positionScores += CalculatePawnStructureScores();
-            positionScores += CalculateCentralPieceScores();
-                       
+            positionScores += CalculatePawnStructureScore();
+            positionScores += CalculateCentralPieceScore();
+
             return positionScores;
         }
 
-        // DoubledPawnPenalty
-        // PawnChainBonus
-        private int CalculatePawnStructureScores()
+        private int CalculatePawnStructureScore()
         {
             var pawnStructureScore = 0;
-            
-            //Doubled pawns
+
+            pawnStructureScore += CalculateDoubledPawnScore();
+            pawnStructureScore += CalculateProtectedPawnScore();
+            pawnStructureScore += CalculatePassedPawnScore();
+
+            return pawnStructureScore;
+        }
+
+        private int CalculateDoubledPawnScore()
+        {
+            var doubledPawnScore = 0;
+
             var whiteDoubleCount = 0;
             var blackDoubleCount = 0;
-            
+
             for (var i = 0; i < 8; i++)
-			{
+            {
                 var mask = LookupTables.ColumnMaskByColumn[i];
 
                 if (BitboardOperations.GetPopCount(mask & _currentBoard.WhitePawns) > 1)
@@ -160,34 +168,47 @@ namespace ChessEngine.ScoreCalculation
                 }
             }
 
-            pawnStructureScore += whiteDoubleCount * _scoreValues.DoubledPawnPenalty;
-            pawnStructureScore -= blackDoubleCount * _scoreValues.DoubledPawnPenalty;
-            
-            //Pawn chain 
+            doubledPawnScore += whiteDoubleCount * _scoreValues.DoubledPawnPenalty;
+            doubledPawnScore -= blackDoubleCount * _scoreValues.DoubledPawnPenalty;
+
+            return doubledPawnScore;
+        }
+
+        private int CalculateProtectedPawnScore()
+        {
+
+            var protectedPawnScore = 0;
+
+            //Pawn chain
             var notA = 18374403900871474942;
             ulong notH = 9187201950435737471;
 
-            //White pawns 
+            //White pawns
             var wPawnAttackSquares = ((_currentBoard.WhitePawns << 9) & notA) | (_currentBoard.WhitePawns << 7) & notH;
             var wProtectedPawns = wPawnAttackSquares & _currentBoard.WhitePawns;
 
-            pawnStructureScore += BitboardOperations.GetPopCount(wProtectedPawns) * _scoreValues.PawnChainScore;
+            protectedPawnScore += BitboardOperations.GetPopCount(wProtectedPawns) * _scoreValues.ProtectedPawnScore;
 
             //Black pawns
             var bPawnAttackSquares = ((_currentBoard.BlackPawns >> 9) & notH) | (_currentBoard.BlackPawns >> 7) & notA;
             var bProtectedPawns = bPawnAttackSquares & _currentBoard.BlackPawns;
 
-            pawnStructureScore -= BitboardOperations.GetPopCount(bProtectedPawns) * _scoreValues.PawnChainScore;
+            protectedPawnScore -= BitboardOperations.GetPopCount(bProtectedPawns) * _scoreValues.ProtectedPawnScore;
 
-            // Passed pawn bonus
+            return protectedPawnScore;
+        }
+
+        private int CalculatePassedPawnScore()
+        {
+            var passedPawnScore = 0;
 
             foreach (var whitePawnBoard in BitboardOperations.SplitBoardToArray(_currentBoard.WhitePawns))
             {
                 //Pawn is on 7th rank so it can promote
                 if ((whitePawnBoard & LookupTables.RowMask7) != 0)
                 {
-                    pawnStructureScore += _scoreValues.PassedPawnBonus;
-                    pawnStructureScore += _scoreValues.PassedPawnAdvancementBonus * 5;
+                    passedPawnScore += _scoreValues.PassedPawnBonus;
+                    passedPawnScore += _scoreValues.PassedPawnAdvancementBonus * 5;
 
                     continue;
                 }
@@ -198,8 +219,8 @@ namespace ChessEngine.ScoreCalculation
 
                 if ((pawnFrontSpan & _currentBoard.BlackPawns) == 0)
                 {
-                    pawnStructureScore += _scoreValues.PassedPawnBonus;
-                    pawnStructureScore += _scoreValues.PassedPawnAdvancementBonus * ((pawnIndex / 8) - 1);
+                    passedPawnScore += _scoreValues.PassedPawnBonus;
+                    passedPawnScore += _scoreValues.PassedPawnAdvancementBonus * ((pawnIndex / 8) - 1);
                 }
             }
 
@@ -208,8 +229,8 @@ namespace ChessEngine.ScoreCalculation
                 //Pawn is on 2nd rank so it can promote
                 if ((blackPawnBoard & LookupTables.RowMask2) != 0)
                 {
-                    pawnStructureScore -= _scoreValues.PassedPawnBonus;
-                    pawnStructureScore -= _scoreValues.PassedPawnAdvancementBonus * 5;
+                    passedPawnScore -= _scoreValues.PassedPawnBonus;
+                    passedPawnScore -= _scoreValues.PassedPawnAdvancementBonus * 5;
                     continue;
                 }
 
@@ -219,16 +240,16 @@ namespace ChessEngine.ScoreCalculation
 
                 if ((pawnFrontSpan & _currentBoard.WhitePawns) == 0)
                 {
-                    pawnStructureScore -= _scoreValues.PassedPawnBonus;
-                    pawnStructureScore -= _scoreValues.PassedPawnAdvancementBonus * (8 - (pawnIndex / 8) - 2);
+                    passedPawnScore -= _scoreValues.PassedPawnBonus;
+                    passedPawnScore -= _scoreValues.PassedPawnAdvancementBonus * (8 - (pawnIndex / 8) - 2);
                 }
             }
 
-            return pawnStructureScore;
+            return passedPawnScore;
         }
 
         // Points for placing pieces near to the centre
-        private int CalculateCentralPieceScores()
+        private int CalculateCentralPieceScore()
         {
             var innerCentralSquares = (ulong)103481868288;
             var outerCentralSquares = (ulong)66125924401152;
