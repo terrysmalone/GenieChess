@@ -238,7 +238,14 @@ namespace ChessEngine
             }
             else
             {
-                _gameTurns[_gameTurns.Count-1].BlackMove = moveString;
+                if (_gameTurns.Count == 0) // We don't always start a game from the beginning. It might start with a black move
+                {
+                    _gameTurns.Add(new GameTurn { BlackMove = moveString });
+                }
+                else
+                {
+                    _gameTurns[_gameTurns.Count-1].BlackMove = moveString;
+                }
             }
 
             _pieceMover.MakeMove(move);
