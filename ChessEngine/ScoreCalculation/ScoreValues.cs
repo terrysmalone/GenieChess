@@ -45,26 +45,26 @@ namespace ChessEngine.ScoreCalculation
 
         public int DevelopedPieceScore { get; set; }
 
-        public int EarlyQueenMovePenalty { get; set; }
+        public int EarlyQueenMoveScore { get; set; }
 
         public int DoubleBishopScore { get; set; }
 
         public int  SoloQueenScore { get; set; }
 
-        public int DoubledPawnPenalty { get; set; }
+        public int DoubledPawnScore { get; set; }
         public int ProtectedPawnScore { get; set; }
 
-        public int PassedPawnBonus { get; set; }
+        public int PassedPawnScore { get; set; }
 
-        public int PassedPawnAdvancementBonus { get; set; }
+        public int PassedPawnAdvancementScore { get; set; }
 
-        public int ConnectedRookBonus { get; set; }
+        public int ConnectedRookScore { get; set; }
 
-        public int BoardCoverageBonus { get; set; }
-        public int QueenCoverageBonus { get; set; }
-        public int RookCoverageBonus { get; set; }
-        public int BishopCoverageBonus { get; set; }
-        public int AttackBonus { get; set; }
-        public int MoreValuablePieceAttackBonus { get; set; }
+        public int BoardCoverageScore { get; set; }
+        public int QueenCoverageScore { get; set; }
+        public int RookCoverageScore { get; set; }
+        public int BishopCoverageScore { get; set; }
+        public int AttackScore { get; set; }
+        public int MoreValuablePieceAttackScore { get; set; }
     }
 }

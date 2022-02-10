@@ -41,24 +41,24 @@
   <KingEndGameSquareTable>-50 -40 -30 -30 -30 -30 -40 -50 -40 -20 0 0 0 0 -20 -40 -30 0 10 15 15 10 0 -30 -30 50 15 20 20 15 50 -30 -30 50 15 20 20 15 50 -30 -30 0 10 15 15 10 0 -30 -40 -20 0 0 0 0 -20 -40 -50 -40 -30 -30 -30 -30 -40 -50</KingEndGameSquareTable>
 
   <DevelopedPieceScore>30</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
-  <EarlyQueenMovePenalty>30</EarlyQueenMovePenalty> <!-- Penalty if the queen is moved before developing at least 3 other pieces (bishops/knights) -->
+  <EarlyQueenMoveScore>30</EarlyQueenMoveScore> <!-- Score if the queen is moved before developing at least 3 other pieces (bishops/knights) -->
   
   <DoubleBishopScore>10</DoubleBishopScore> <!-- Score for having two bishops on the board -->
-  <SoloQueenScore>15</SoloQueenScore> <!--Score for having a queen (If only one side has a queen this will give a bonus) -->
+  <SoloQueenScore>15</SoloQueenScore> <!--Score for having a queen (If only one side has a queen this will give a Score) -->
   
-  <DoubledPawnPenalty>-15</DoubledPawnPenalty> <!-- Penalty for having doubled pawns -->
-  <ProtectedPawnScore>15</ProtectedPawnScore> <!-- Bonus for every pawn protected by another pawn -->
-  <PassedPawnBonus>20</PassedPawnBonus><!-- Bonus for every passed pawn -->
-  <PassedPawnAdvancementBonus>5</PassedPawnAdvancementBonus><!-- Bonus for every square past it's home that a passed pawn has moved -->
+  <DoubledPawnScore>-15</DoubledPawnScore> <!-- Score for having doubled pawns -->
+  <ProtectedPawnScore>15</ProtectedPawnScore> <!-- Score for every pawn protected by another pawn -->
+  <PassedPawnScore>20</PassedPawnScore><!-- Score for every passed pawn -->
+  <PassedPawnAdvancementScore>5</PassedPawnAdvancementScore><!-- Score for every square past it's home that a passed pawn has moved -->
 
-  <ConnectedRookBonus>10</ConnectedRookBonus> <!-- bonus for having connected rooks -->
+  <ConnectedRookScore>10</ConnectedRookScore> <!-- Score for having connected rooks -->
 
-  <BoardCoverageBonus>5</BoardCoverageBonus> <!-- Bonus for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
+  <BoardCoverageScore>5</BoardCoverageScore> <!-- Score for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
   
-  <QueenCoverageBonus>5</QueenCoverageBonus> <!-- Bonus for every unoccupied square the queen can move to on next turn-->
-  <RookCoverageBonus>5</RookCoverageBonus> <!-- Bonus for every unoccupied square the rooks can move to on next turn-->
-  <BishopCoverageBonus>5</BishopCoverageBonus> <!-- Bonus for every unoccupied square the bishops can move to on next turn-->
+  <QueenCoverageScore>5</QueenCoverageScore> <!-- Score for every unoccupied square the queen can move to on next turn-->
+  <RookCoverageScore>5</RookCoverageScore> <!-- Score for every unoccupied square the rooks can move to on next turn-->
+  <BishopCoverageScore>5</BishopCoverageScore> <!-- Score for every unoccupied square the bishops can move to on next turn-->
 
-  <AttackBonus>10</AttackBonus> <!-- Bonus for every attack on an enemy piece-->
-  <MoreValuablePieceAttackBonus>20</MoreValuablePieceAttackBonus> <!-- Bonus for every attack on a more valuable piece--> 
+  <AttackScore>10</AttackScore> <!-- Score for every attack on an enemy piece-->
+  <MoreValuablePieceAttackScore>20</MoreValuablePieceAttackScore> <!-- Score for every attack on a more valuable piece--> 
 </ScoreSet>

@@ -1,5 +1,4 @@
-﻿using System;
-using ChessEngine;
+﻿using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -347,11 +346,11 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
-        public void DoubledPawnPenalty()
+        public void DoubledPawnScore()
         {
             var scoreValues = new ScoreValues
             {
-                DoubledPawnPenalty = -15
+                DoubledPawnScore = -15
             };
 
             var scoreCalculator = new ScoreCalculator(scoreValues);
@@ -456,7 +455,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var scoreValues = new ScoreValues
             {
-                PassedPawnBonus = 15
+                PassedPawnScore = 15
             };
 
             var scoreCalculator = new ScoreCalculator(scoreValues);
@@ -475,7 +474,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var scoreValues = new ScoreValues
             {
-                PassedPawnBonus = 15
+                PassedPawnScore = 15
             };
 
             var scoreCalculator = new ScoreCalculator(scoreValues);
@@ -493,7 +492,7 @@ namespace ChessEngineTests.ScoreCalculation
         {
             var scoreValues = new ScoreValues
             {
-                PassedPawnAdvancementBonus = 1
+                PassedPawnAdvancementScore = 1
             };
 
             var scoreCalculator = new ScoreCalculator(scoreValues);
