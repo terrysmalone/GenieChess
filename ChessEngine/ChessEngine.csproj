@@ -252,6 +252,7 @@
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="BoardSearching\LookupTables.cs" />
+    <Compile Include="GameTurn.cs" />
     <Compile Include="IChessGameFactory.cs" />
     <Compile Include="MoveSearching\AlphaBetaSearch.cs" />
     <Compile Include="MoveSearching\Hash.cs" />

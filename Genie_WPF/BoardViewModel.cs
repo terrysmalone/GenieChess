@@ -17,10 +17,14 @@ namespace Genie_WPF
         private ObservableCollection<ChessPiece> _chessPieces;
         private string _fenPosition;
 
+        public ObservableCollection<MoveItem> Moves { get; } = new();
+
         public RelayCommand SetFenButtonClickCommand { get; }
 
         public RelayCommand GetFenButtonClickCommand { get; }
-        
+
+        public RelayCommand NewGameCommand { get; }
+
         public RelayCommand MakeAiMoveCommand { get; }
         
 
@@ -52,8 +56,9 @@ namespace Genie_WPF
 
             SetFenButtonClickCommand = new RelayCommand(SetBoard);
             GetFenButtonClickCommand = new RelayCommand(GetFen);
-            MakeAiMoveCommand = new RelayCommand(MakeAiMove);
 
+            NewGameCommand = new RelayCommand(StartNewGame);
+            MakeAiMoveCommand = new RelayCommand(MakeAiMove);
 
             _game = game;
 
@@ -74,11 +79,35 @@ namespace Genie_WPF
                 //Maybe stick up a warning
             }
         }
-        
+
+        private void StartNewGame(object obj = null)
+        {
+            _game.Reset();
+            SetPieces();
+
+            UpdateMoves();
+        }
+
+        private void UpdateMoves()
+        {
+            Moves.Clear();
+
+            var gameMoves = _game.GetGameMoves();
+
+            for (var i = 0; i < gameMoves.Count; i++)
+            {
+                var move = gameMoves[i];
+
+                Moves.Add(new MoveItem(i+1, move.WhiteMove, move.BlackMove));
+            }
+        }
+
         private void MakeAiMove(object obj = null)
         {
             _game.FindAndMakeBestMove();
-            SetPieces();
+
+             SetPieces();
+             UpdateMoves();
         }
         
         public void BoardClicked(int column, int row)
@@ -116,6 +145,7 @@ namespace Genie_WPF
                 var move = validMoves.Single(v => ConvertToPoint(v.Moves) == new Point(column, row));
 
                 _game.ReceiveMove(move);
+                UpdateMoves();
 
                 _selectedPiece.Pos = new Point(column, row);
                 _selectedPiece.IsSelected = false;
@@ -223,4 +253,5 @@ namespace Genie_WPF
             FenPosition = FenTranslator.ToFenString(_game.GetCurrentBoardState());
         }
     }
+
 }

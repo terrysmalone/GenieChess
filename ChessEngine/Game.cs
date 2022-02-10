@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -33,6 +34,8 @@ namespace ChessEngine
         public bool UseIterativeDeepening { get; set; } = true;
         
         public int ThinkingDepth { get; set; }
+
+        private List<GameTurn> _gameTurns;
         
         public Game(IScoreCalculator scoreCalculator, Board board, IOpeningBook openingBook)
         {
@@ -57,7 +60,16 @@ namespace ChessEngine
 
             _pieceMover = new PieceMover(_currentBoard);
 
+            _gameTurns = new List<GameTurn>();
+
             Log.Info("Initialised Game to starting position");
+        }
+
+        public void Reset()
+        {
+            _currentBoard.InitaliseStartingPosition();
+            _gameTurns = new List<GameTurn>();
+            Log.Info("Reset game to starting position");
         }
 
         #region UCI commands
@@ -85,14 +97,15 @@ namespace ChessEngine
 
             var pieceMove = UciMoveTranslator.ToGameMove(move, _currentBoard);
 
-            _pieceMover.MakeMove(pieceMove);
+            MakeMove(pieceMove);
+
         }
 
         #endregion UCI commands
 
         public void ReceiveMove(PieceMove move)
         {
-            _pieceMover.MakeMove(move);
+            MakeMove(move);
         }
 
         public PieceMove FindAndMakeBestMove()
@@ -101,7 +114,7 @@ namespace ChessEngine
 
             if (currentMove.Type != PieceType.None)
             {
-                _pieceMover.MakeMove(currentMove);
+                MakeMove(currentMove);
             }
             else
             {
@@ -213,6 +226,27 @@ namespace ChessEngine
         internal void ResetFlags()
         {
             _currentBoard.ResetFlags();
+        }
+
+        private void MakeMove(PieceMove move)
+        {
+            var moveString = PgnTranslator.ToPgnMove(_currentBoard, move.Position, move.Moves, move.Type, move.SpecialMove);
+
+            if (_currentBoard.WhiteToMove)
+            {
+                _gameTurns.Add(new GameTurn { WhiteMove = moveString });
+            }
+            else
+            {
+                _gameTurns[_gameTurns.Count-1].BlackMove = moveString;
+            }
+
+            _pieceMover.MakeMove(move);
+        }
+
+        public List<GameTurn> GetGameMoves()
+        {
+            return _gameTurns.ToList();
         }
     }
 }
