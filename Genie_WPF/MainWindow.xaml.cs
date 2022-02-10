@@ -22,8 +22,7 @@ namespace Genie_WPF
 
             LookupTables.InitialiseAllTables();
 
-            var resourceLoader = new ResourceLoader();
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+            var scoreCalculator = ScoreCalculatorFactory.Create();
             var game = new Game(scoreCalculator, new Board(), null);
 
             //var boardState = FenTranslator.ToBoardState("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");

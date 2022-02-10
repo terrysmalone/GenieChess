@@ -10,12 +10,12 @@
 
             var engineEvaluation = 
                 performanceEvaluatorFactory.CreatePerformanceEvaluator(false,
-                                                                       true,
                                                                        false,
-                                                                       0);
+                                                                       true,
+                                                                       5);
             
             //engineEvaluation.RunFullPerformanceEvaluation(maxDepth: 6, maxThinkingSeconds: 10);
-            engineEvaluation.RunFullPerformanceEvaluation(4);
+            engineEvaluation.RunFullPerformanceEvaluation(5);
         }
     }
 }

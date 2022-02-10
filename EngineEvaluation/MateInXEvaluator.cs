@@ -27,8 +27,6 @@ namespace EngineEvaluation
 
         private readonly ExcelHandler _excelHandler;
 
-        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-
         public MateInXEvaluator(List<Tuple<string, List<MateInXTestPosition>>> testPositionSuites,
                                 string highlightsLogFile,
                                 string fullLogFile,
@@ -124,7 +122,7 @@ namespace EngineEvaluation
                     var board = new Board();
                     board.SetPosition(position.FenPosition);
 
-                    var scoreCalculator = new ScoreCalculator(_resourceLoader.GetGameResourcePath("ScoreValues.xml"));
+                    var scoreCalculator = ScoreCalculatorFactory.Create();
 
                     TranspositionTable.Restart();
 

@@ -90,10 +90,9 @@ namespace ChessEngine
         /// </summary>
         private void InputUCINewGame()
         {
-            var resourceLoader = new ResourceLoader(); 
+            var scoreCalculator = ScoreCalculatorFactory.Create();
 
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
-
+            var resourceLoader = new ResourceLoader();
             var openingBook = new OpeningBook(resourceLoader.GetGameResourcePath("book.txt"));
 
             game = new Game(scoreCalculator, new Board(), openingBook);

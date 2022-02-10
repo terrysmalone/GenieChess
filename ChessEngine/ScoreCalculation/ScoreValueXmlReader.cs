@@ -11,21 +11,21 @@ namespace ChessEngine.ScoreCalculation
     {
         private static readonly ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
             
-        public static void ReadScores(ScoreCalculator scoreCalc, string xmlFileName)
+        public static void ReadScores(ScoreValues scoreValues, string xmlFileName)
         {
            
             XDocument doc;
 
             try
             {
-                log.Info(string.Format("Loading score set {0}: ", xmlFileName));
+                log.Info($"Loading score set {xmlFileName}: ");
 
                 doc = XDocument.Load(xmlFileName);
 
-                var score       = doc.Elements("ScoreSet").ToList();
-                var scoreValues = score[0].Descendants().ToList();
+                var score = doc.Elements("ScoreSet").ToList();
+                var values = score[0].Descendants().ToList();
 
-                foreach (var scoreVal in scoreValues)
+                foreach (var scoreVal in values)
                 {
                     var name = string.Empty;
                     try
@@ -34,7 +34,7 @@ namespace ChessEngine.ScoreCalculation
 
                         if (name.EndsWith("SquareTable"))
                         {
-                            var squareTable = scoreCalc.GetType().GetProperty(name).GetValue(scoreCalc, null);
+                            var squareTable = scoreValues.GetType().GetProperty(name).GetValue(scoreValues, null);
 
                             if (squareTable is Array array)
                             {
@@ -44,14 +44,12 @@ namespace ChessEngine.ScoreCalculation
                             {
                                 log.Error($"Error writing square table: {name}");
                             }
-
-                            //scoreCalc.GetType().GetProperty(name).SetValue(scoreCalc, squareTable, null);
                         }
                         else
                         {
                             var val = Convert.ToInt32(scoreVal.Value);
 
-                            scoreCalc.GetType().GetProperty(name)?.SetValue(scoreCalc, val, null);
+                            scoreValues.GetType().GetProperty(name)?.SetValue(scoreValues, val, null);
                         }
                     }
                     catch (Exception exc)
@@ -85,8 +83,6 @@ namespace ChessEngine.ScoreCalculation
 
         private static int[] GetSquareTable(string valueString)
         {
-            //string match = scoreValues.FirstOrDefault(stringToCheck => stringToCheck.Contains(valueString));
-
             var values = new int[64];
                        
             var scoreParts = valueString.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);

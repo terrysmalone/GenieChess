@@ -8,18 +8,18 @@ namespace ChessEngine
 {
     public sealed class GameFactory : IChessGameFactory
     {
-        private readonly ILog m_Log;
+        private readonly ILog _log;
 
         public GameFactory(ILog log)
         {
-            m_Log = log;
+            _log = log;
         }
 
         public Game CreateChessGame(bool useOpeningBook)
         {
+            var scoreCalculator = ScoreCalculatorFactory.Create();
+
             var resourceLoader = new ResourceLoader();
-            
-            var scoreCalculator = new ScoreCalculator(resourceLoader.GetGameResourcePath("ScoreValues.xml"));
 
             IOpeningBook openingBook = null;
 
@@ -37,7 +37,7 @@ namespace ChessEngine
             {
                 var openingBook = new OpeningBook(resourceLoader.GetGameResourcePath(bookName));
 
-                m_Log.Info($"Opening book {openingBook.FilePath} loaded");
+                _log.Info($"Opening book {openingBook.FilePath} loaded");
 
 #if UCI
                 Console.WriteLine($"Opening book {openingBook.FilePath} loaded");
@@ -46,7 +46,7 @@ namespace ChessEngine
             }
             catch (Exception exc)
             {
-                m_Log.Error($"Error loading opening book {bookName}", exc);
+                _log.Error($"Error loading opening book {bookName}", exc);
 
 #if UCI
                 Console.WriteLine($"Error loading opening book {bookName}. Exception:{exc}");               
