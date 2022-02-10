@@ -204,7 +204,7 @@ namespace ChessEngine.ScoreCalculation
 
             foreach (var whitePawnBoard in BitboardOperations.SplitBoardToArray(_currentBoard.WhitePawns))
             {
-                //Pawn is on 7th rank so it can promote
+                // Pawn is on 7th rank so it can promote
                 if ((whitePawnBoard & LookupTables.RowMask7) != 0)
                 {
                     passedPawnScore += _scoreValues.PassedPawnBonus;
@@ -319,7 +319,6 @@ namespace ChessEngine.ScoreCalculation
             var inPosition = pieces & positions;
 
             return inPosition > 0 ? BitboardOperations.GetPopCount(inPosition) : 0;
-
         }
 
         private int CalculateKingSafetyScores()

@@ -452,6 +452,62 @@ namespace ChessEngineTests.ScoreCalculation
         }
 
         [Test]
+        public void PassedPawnScore_Single()
+        {
+            var scoreValues = new ScoreValues
+            {
+                PassedPawnBonus = 15
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/8/2pp4/8/8/PP2P3/8/8 w - - 0 1"); // White has 1 passed pawn
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(15));
+
+            board.SetPosition("8/6p1/1ppp4/8/8/PP2P3/8/8 w - - 0 1"); // Black has 1 passed pawn
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-15));
+        }
+
+        [Test]
+        public void PassedPawnScore_MultiWhite()
+        {
+            var scoreValues = new ScoreValues
+            {
+                PassedPawnBonus = 15
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/8/2pp2PP/8/8/PP2P3/8/8 w - - 0 1"); // White has 3 passed pawn
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(45));
+
+            board.SetPosition("8/7p/1ppp3P/8/5p2/PP6/8/8 w - - 0 1"); // Black has 2 passed pawn
+        }
+
+        [Test]
+        public void PassedPawnAdvancementScore()
+        {
+            var scoreValues = new ScoreValues
+            {
+                PassedPawnAdvancementBonus = 1
+            };
+
+            var scoreCalculator = new ScoreCalculator(scoreValues);
+
+            var board = new Board();
+
+            board.SetPosition("8/7p/1P5P/P7/5p2/5P2/8/8 b - - 0 1");
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(7));
+
+            board.SetPosition("8/1p5p/1P5P/P7/5p2/8/8/Kk6 b - - 0 1");
+            Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(-3));
+        }
+
+        [Test]
         public void InnerCentralSquare_Pawn()
         {
             var scoreValues = new ScoreValues
