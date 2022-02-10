@@ -55,9 +55,9 @@
 
   <BoardCoverageScore>5</BoardCoverageScore> <!-- Score for every unoccupied square on the board your side can move to next turn (not including pawns and king)-->
   
-  <QueenCoverageScore>5</QueenCoverageScore> <!-- Score for every unoccupied square the queen can move to on next turn-->
-  <RookCoverageScore>5</RookCoverageScore> <!-- Score for every unoccupied square the rooks can move to on next turn-->
-  <BishopCoverageScore>5</BishopCoverageScore> <!-- Score for every unoccupied square the bishops can move to on next turn-->
+  <QueenCoverageScore>5</QueenCoverageScore> <!-- Score for every square the queen can move to on next turn-->
+  <RookCoverageScore>5</RookCoverageScore> <!-- Score for every square the rooks can move to on next turn-->
+  <BishopCoverageScore>5</BishopCoverageScore> <!-- Score for every square the bishops can move to on next turn-->
 
   <AttackScore>10</AttackScore> <!-- Score for every attack on an enemy piece-->
   <MoreValuablePieceAttackScore>20</MoreValuablePieceAttackScore> <!-- Score for every attack on a more valuable piece--> 

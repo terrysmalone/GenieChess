@@ -695,5 +695,25 @@ namespace ChessEngineTests.ScoreCalculation
             board.SetPosition("8/8/8/2Qq4/2QQ4/8/8/8 w - - 0 1");
             Assert.That(scoreCalculator.CalculateScore(board), Is.EqualTo(1800));
         }
+
+        // TODO: Tests for Castling
+
+        // TODO: Tests for Can castle
+
+        // TODO: Tests for endgame castling
+
+        // TODO: Tests for piece development
+
+        // TODO: Tests for connected rooks
+
+        // TODO: Tests for early queen action
+
+        // TODO: Tests for square tables
+
+        // TODO: Tests for coverage
+
+        // TODO: Tests for Piece Attacks
+
+        // TODO: Tests for MoreValuablePieceAttacks
     }
 }
