@@ -83,7 +83,7 @@ Chess Engine
 
 WPF
 
-* BUG: Let the player deselect a piece
+* BUG: Deal with selecting promotion piece
 
 * Highlight available moves when a piece is selected
 
