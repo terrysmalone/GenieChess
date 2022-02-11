@@ -73,34 +73,6 @@ namespace ChessEngine
             _log.Info("Reset game to starting position");
         }
 
-        #region UCI commands
-
-        // Initialise the game board and make moves
-        public void ReceiveUciMoves(string moveString)
-        {
-            var moves = moveString.Split();
-
-            foreach (var move in moves)
-            {
-                ReceiveUciMove(move);
-            }
-        }
-
-        public void ReceiveUciMove(string move)
-        {
-            if (UseOpeningBook && _openingBook != null)
-            {
-                _openingBook.RegisterMadeMove(move);
-            }
-
-            var pieceMove = UciMoveTranslator.ToGameMove(move, _currentBoard);
-
-            MakeMove(pieceMove);
-
-        }
-
-        #endregion UCI commands
-
         public void ReceiveMove(PieceMove move)
         {
             MakeMove(move);
@@ -163,6 +135,12 @@ namespace ChessEngine
         public BoardState GetCurrentBoardState()
         {
             return _currentBoard.GetCurrentBoardState();
+        }
+
+        // TODO: This will be removed when we still board state away from board
+        public Board GetCurrentBoard()
+        {
+            return _currentBoard;
         }
 
         public void WriteBoardToConsole()
@@ -282,6 +260,12 @@ namespace ChessEngine
 
         private void MakeMove(PieceMove move)
         {
+            if (UseOpeningBook && _openingBook != null)
+            {
+                // TODO: Move the UCI translator into the opening book. Game should only deal with PieceMove
+                _openingBook.RegisterMadeMove(UciMoveTranslator.ToUciMove(move));
+            }
+
             var moveString = PgnTranslator.ToPgnMove(_currentBoard, move.Position, move.Moves, move.Type, move.SpecialMove);
 
             if (_currentBoard.WhiteToMove)

@@ -54,11 +54,7 @@ namespace ChessEngine.NotationHelpers
             }
         }
 
-        /// <summary>
-        /// Translates a UCI string move to a game PieceMove
-        /// </summary>
-        /// <param name="move"></param>
-        /// <returns></returns>
+        // Translates a UCI string move to a game PieceMove
         public static PieceMove ToGameMove(string move, Board board)
         {            
             var pieceMove = new PieceMove();

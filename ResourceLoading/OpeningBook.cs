@@ -6,22 +6,22 @@ namespace ResourceLoading
 {
     public class OpeningBook : IOpeningBook
     {
-        private List<Opening> m_Openings;
+        private List<Opening> _openings;
 
-        private int m_PlyCount;
+        private int _plyCount;
 
-        private readonly Random m_Rand = new Random();
+        private readonly Random _rand = new Random();
 
         public OpeningBook(string bookNameFilePath)
         {
-            m_Openings = LoadOpeningBook(bookNameFilePath);
+            _openings = LoadOpeningBook(bookNameFilePath);
 
             FilePath = bookNameFilePath;
         }
 
         private List<Opening> LoadOpeningBook(string bookNamePath)
         {
-            m_PlyCount = 0;
+            _plyCount = 0;
 
             var openings = new List<Opening>();
 
@@ -64,19 +64,19 @@ namespace ResourceLoading
         public string GetMove()
         {
             //Filter out openings that don't have this move
-            for (var i = m_Openings.Count - 1; i >= 0; i--)
+            for (var i = _openings.Count - 1; i >= 0; i--)
             {
-                var currentOpening = m_Openings[i];
+                var currentOpening = _openings[i];
 
-                if (m_PlyCount >= currentOpening.Moves.Length)
-                    m_Openings.RemoveAt(i);
+                if (_plyCount >= currentOpening.Moves.Length)
+                    _openings.RemoveAt(i);
             }
 
-            if (m_Openings.Count <= 0) return string.Empty;
+            if (_openings.Count <= 0) return string.Empty;
 
-            var pos = m_Rand.Next(m_Openings.Count);
+            var pos = _rand.Next(_openings.Count);
 
-            var move = m_Openings[pos].Moves[m_PlyCount];
+            var move = _openings[pos].Moves[_plyCount];
 
             return move;
         }
@@ -84,30 +84,30 @@ namespace ResourceLoading
         // Tell the opening book that this move was made
         public void RegisterMadeMove(string uciMove)
         {
-            for (var i = m_Openings.Count-1; i >= 0; i--)
+            for (var i = _openings.Count-1; i >= 0; i--)
             {
-                var currentOpening = m_Openings[i];
+                var currentOpening = _openings[i];
 
-                if (m_PlyCount >= currentOpening.Moves.Length)
+                if (_plyCount >= currentOpening.Moves.Length)
                 {
-                    m_Openings.RemoveAt(i);
+                    _openings.RemoveAt(i);
                 }
                 else
                 {
-                    if (currentOpening.Moves[m_PlyCount] != uciMove)
+                    if (currentOpening.Moves[_plyCount] != uciMove)
                     {
-                        m_Openings.RemoveAt(i);
+                        _openings.RemoveAt(i);
                     }
                 }
             }
 
-            m_PlyCount++;
+            _plyCount++;
         }
 
         public void ResetBook()
         {
-            m_PlyCount = 0;
-            m_Openings = LoadOpeningBook(FilePath);
+            _plyCount = 0;
+            _openings = LoadOpeningBook(FilePath);
         }
 
         public string FilePath { get; }

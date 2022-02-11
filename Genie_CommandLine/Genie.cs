@@ -8,7 +8,7 @@ namespace Genie_CommandLine
 {
     internal sealed class Genie
     {
-        private static readonly ILog Log =
+        private static readonly ILog _log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Game _game;
@@ -17,14 +17,14 @@ namespace Genie_CommandLine
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            Log.Info("==============================================================");
-            Log.Info("");
-            Log.Info("Running Genie - Command-line version");
-            Log.Info("");
+            _log.Info("==============================================================");
+            _log.Info("");
+            _log.Info("Running Genie - Command-line version");
+            _log.Info("");
 
             var chessGameFactory = new GameFactory(null); //TODO: pass in the logger
 
-            Log.Info($"useOpeningBook: {false}");
+            _log.Info($"useOpeningBook: {false}");
 
             _game = chessGameFactory.CreateChessGame(false);
 
@@ -51,11 +51,9 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {
-                        var bestMove = UciMoveTranslator.ToUciMove(_game.GetBestMove());
+                        Console.WriteLine($"Computer move: {UciMoveTranslator.ToUciMove(_game.GetBestMove())}");
 
-                        Console.WriteLine($"Computer move: {bestMove}");
-
-                        _game.ReceiveUciMove(bestMove);
+                        _game.ReceiveMove(_game.GetBestMove());
                     }
                     else if (moveText.StartsWith("set"))
                     {
@@ -82,7 +80,7 @@ namespace Genie_CommandLine
                     }
                     else
                     {
-                        _game.ReceiveUciMove(moveText);
+                        _game.ReceiveMove(UciMoveTranslator.ToGameMove(moveText, _game.GetCurrentBoard()));
 
                         Console.WriteLine("Made move");
                     }
