@@ -78,7 +78,7 @@ namespace ChessEngine
             MakeMove(move);
         }
 
-        public PieceMove FindAndMakeBestMove()
+        public void MakeBestMove()
         {
             var currentMove = GetBestMove();
 
@@ -90,8 +90,6 @@ namespace ChessEngine
             {
                 _gameIsActive = false;
             }
-
-            return currentMove;
         }
 
         public PieceMove GetBestMove()

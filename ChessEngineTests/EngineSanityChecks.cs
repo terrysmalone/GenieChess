@@ -20,7 +20,7 @@ namespace ChessEngineTests
             game.SetPosition("7k/2p2p1r/8/Q7/8/8/8/3K2R1 w - - 0 1");
 
             game.ThinkingDepth = depth;
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
 
             Assert.That(game.GetPosition(), Is.EqualTo("Q6k/2p2p1r/8/8/8/8/8/3K2R1 b - - 1 1"));
         }
@@ -35,7 +35,7 @@ namespace ChessEngineTests
             game.SetPosition("1k4q1/2r5/8/8/8/8/8/7K b - - 0 1");
 
             game.ThinkingDepth = depth;
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
 
             Assert.That(game.GetPosition(), Is.EqualTo("1k4q1/7r/8/8/8/8/8/7K w - - 1 2"));
         }
@@ -54,7 +54,7 @@ namespace ChessEngineTests
             game.SetPosition("5r1k/4Qpq1/4p3/1p1p2P1/2p2P2/1p2P3/3P4/BK6 b - -");
 
             game.ThinkingDepth = depth;
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
 
             Assert.That(game.GetPosition(), Is.EqualTo("5r1k/4Q1q1/4pp2/1p1p2P1/2p2P2/1p2P3/3P4/BK6 w - - 1 1"));
         }
@@ -75,7 +75,7 @@ namespace ChessEngineTests
             game.SetPosition("q2k2q1/2nqn2b/1n1P1n1b/2rnr2Q/1NQ1QN1Q/3Q3B/2RQR2B/Q2K2Q1 w - -");
 
             game.ThinkingDepth = 1;
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
         }
 
         /// <summary>
