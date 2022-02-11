@@ -69,6 +69,9 @@
             <SubType>Designer</SubType>
         </ApplicationDefinition>
         <Compile Include="BoardViewModel.cs" />
+        <Compile Include="ChessBoardControl.xaml.cs">
+          <DependentUpon>ChessBoardControl.xaml</DependentUpon>
+        </Compile>
         <Compile Include="ChessPiece.cs" />
         <Compile Include="DelegateCommand.cs" />
         <Compile Include="MoveItem.cs" />
@@ -77,6 +80,7 @@
         <Compile Include="Player.cs" />
         <Compile Include="RelayCommand.cs" />
         <Compile Include="ViewModelBase.cs" />
+        <Page Include="ChessBoardControl.xaml" />
         <Page Include="MainWindow.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>

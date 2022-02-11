@@ -1,0 +1,243 @@
+<UserControl x:Class="Genie_WPF.ChessBoardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Genie_WPF"
+             Width="844"
+             Height = "844"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="900"
+             d:DataContext="{d:DesignInstance local:BoardViewModel, IsDesignTimeCreatable=False}">
+
+             <UserControl.Resources>
+        <Brush x:Key="WhiteBoardColour">Bisque</Brush>
+        <Brush x:Key="BlackBoardColour">Tan</Brush>
+
+        <Brush x:Key="SelectedPieceColour">SandyBrown</Brush>
+
+        <DrawingBrush x:Key="Checkerboard" Stretch="None" TileMode="Tile" Viewport="0,0,2,2" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="{DynamicResource BlackBoardColour}">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,2,2" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{DynamicResource WhiteBoardColour}">
+                        <GeometryDrawing.Geometry>
+                            <GeometryGroup>
+                                <RectangleGeometry Rect="0,0,1,1" />
+                                <RectangleGeometry Rect="1,1,1,1" />
+                            </GeometryGroup>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+                 <Style x:Key="ChessPieceStyle" TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Pawn}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/pawn_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Rook}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/rook_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Knight}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/knight_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Bishop}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/bishop_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Queen}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/queen_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.King}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.White}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/king_white.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Pawn}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/pawn_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Rook}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/rook_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Knight}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/knight_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Bishop}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/bishop_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.Queen}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/queen_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding Type}" Value="{x:Static local:PieceType.King}"/>
+                        <Condition Binding="{Binding Player}" Value="{x:Static local:Player.Black}"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Image.Source" Value="Images/king_black.png" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="a"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="b"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="c"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="d"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="e"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="f"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="g"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="h"/>
+                <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock Width="20" Height="42" Background="{StaticResource BlackBoardColour}" />
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="8"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="7"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="6"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="5"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="4"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="3"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="2"/>
+                    <TextBlock Width="20" Height="62" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="1"/>
+                </StackPanel>
+
+                <Border BorderThickness="2" BorderBrush="{StaticResource WhiteBoardColour}">
+                    <Viewbox Stretch="Fill" Width="800" Height="800">
+                        <ItemsControl Name="ChessBoard" ItemsSource="{Binding ChessPieces, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Width="8" Height="8" Background="{StaticResource Checkerboard}" MouseLeftButtonDown="OnMouseLeftButtonDown" x:Name="BoardCanvas"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Width="1" Height="1">
+                                        <Border Name="PieceBorder">
+                                            <Image Width="0.8" Height="0.8" Style="{StaticResource ChessPieceStyle}" />
+                                        </Border>
+                                    </Grid>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding .IsSelected}" Value="True">
+                                            <Setter Property="Background" TargetName="PieceBorder" Value="{StaticResource SelectedPieceColour}"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemContainerStyle>
+                                <Style>
+                                    <Setter Property="Canvas.Left" Value="{Binding Pos.X}" />
+                                    <Setter Property="Canvas.Top" Value="{Binding Pos.Y}" />
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                        </ItemsControl>
+                    </Viewbox>
+                </Border>
+
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <TextBlock Width="20" Height="42" Background="{StaticResource BlackBoardColour}" />
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="8"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="7"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="6"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="5"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="4"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="3"/>
+                    <TextBlock Width="20" Height="100" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="2"/>
+                    <TextBlock Width="20" Height="62" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="1"/>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0, 10">
+
+                <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="a"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="b"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="c"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="d"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="e"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="f"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="g"/>
+                <TextBlock Width="100" Height="20" Background="{StaticResource BlackBoardColour}" TextAlignment="Center" Foreground="White" Text="h"/>
+                <TextBlock Width="22" Height="20" Background="{StaticResource BlackBoardColour}"/>
+
+            </StackPanel>
+    </StackPanel>
+</UserControl>

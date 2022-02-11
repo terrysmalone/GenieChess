@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
@@ -19,6 +20,7 @@ namespace Genie_WPF
         public MainWindow()
         {
             InitializeComponent();
+            ChessBoard.AddHandler(ChessBoardControl.GreetEvent, new RoutedEventHandler(myCustomGreeter));
 
             LookupTables.InitialiseAllTables();
 
@@ -28,15 +30,14 @@ namespace Genie_WPF
             _boardViewModel = new BoardViewModel(game);
             DataContext = _boardViewModel;
         }
-        private void Test(object sender, MouseButtonEventArgs e)
+
+        void myCustomGreeter(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
-        }
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var position = e.GetPosition((IInputElement)sender);
+            var position = ((MouseEventArgs)e).GetPosition((IInputElement)sender);
 
             _boardViewModel.BoardClicked((int)position.X, (int)position.Y);
+
+            e.Handled = true;
 
         }
     }
