@@ -91,15 +91,9 @@ WPF
 
 * Add options to change colours
 
-* Let the player get an AI move
-
 * Let a FULL GAME VS ai TO BE PLAYED
 
-* Put mouse clicks into the viewmodel
-
 * Make Chess board a separate control
-
-* show move history
 
 
 Large Tasks
