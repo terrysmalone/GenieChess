@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardRepresentation.Enums;
 using ChessEngine.BoardSearching;
@@ -15,17 +16,17 @@ namespace ChessEngine
 {
     public class Game
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private PieceMover _pieceMover;
+        private readonly Board _currentBoard;
+
+        private readonly PieceMover _pieceMover;
         
-        private readonly IOpeningBook openingBook;
+        private readonly IOpeningBook _openingBook;
 
         private bool _gameIsActive = true;
-        
-        private Board _currentBoard;
 
-        private readonly IScoreCalculator scoreCalculator;
+        private readonly IScoreCalculator _scoreCalculator;
         
         public bool UseOpeningBook { get; set; }
 
@@ -39,11 +40,11 @@ namespace ChessEngine
         
         public Game(IScoreCalculator scoreCalculator, Board board, IOpeningBook openingBook)
         {
-            this.scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
+            _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 
             _currentBoard = board ?? throw new ArgumentNullException(nameof(board));
 
-            this.openingBook = openingBook;
+            _openingBook = openingBook;
 
             if (openingBook != null)
             {
@@ -62,22 +63,19 @@ namespace ChessEngine
 
             _gameTurns = new List<GameTurn>();
 
-            Log.Info("Initialised Game to starting position");
+            _log.Info("Initialised Game to starting position");
         }
 
         public void Reset()
         {
             _currentBoard.InitaliseStartingPosition();
             _gameTurns = new List<GameTurn>();
-            Log.Info("Reset game to starting position");
+            _log.Info("Reset game to starting position");
         }
 
         #region UCI commands
 
-        /// <summary>
-        /// Initialise the game board and make moves
-        /// </summary>
-        /// <param name="moveString">The moves to make</param>
+        // Initialise the game board and make moves
         public void ReceiveUciMoves(string moveString)
         {
             var moves = moveString.Split();
@@ -90,9 +88,9 @@ namespace ChessEngine
 
         public void ReceiveUciMove(string move)
         {
-            if (UseOpeningBook && openingBook != null)
+            if (UseOpeningBook && _openingBook != null)
             {
-                openingBook.RegisterMadeMove(move);
+                _openingBook.RegisterMadeMove(move);
             }
 
             var pieceMove = UciMoveTranslator.ToGameMove(move, _currentBoard);
@@ -126,9 +124,9 @@ namespace ChessEngine
 
         public PieceMove GetBestMove()
         {
-            if(UseOpeningBook && openingBook != null)
+            if(UseOpeningBook && _openingBook != null)
             {
-                var openingMoveUci = openingBook.GetMove();
+                var openingMoveUci = _openingBook.GetMove();
 
                 if (!string.IsNullOrEmpty(openingMoveUci))
                 {                  
@@ -136,7 +134,7 @@ namespace ChessEngine
 
                     var uciMove = UciMoveTranslator.ToUciMove(openingMove);
 
-                    Log.Info($"Move {uciMove} retrieved from opening book");
+                    _log.Info($"Move {uciMove} retrieved from opening book");
 
                     Console.WriteLine($"info string {uciMove} retrieved from opening book");
 
@@ -149,17 +147,15 @@ namespace ChessEngine
 
                 Console.WriteLine("Opening book was unable to make a move. Reverting to search");
 
-                Log.Info("Opening book was unable to make a move. Reverting to search");
+                _log.Info("Opening book was unable to make a move. Reverting to search");
             }
 
-            Log.Info("===============================================================");
-            Log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
+            _log.Info("===============================================================");
+            _log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
-            var search = new AlphaBetaSearch(_currentBoard, scoreCalculator);
+            var search = new AlphaBetaSearch(_currentBoard, _scoreCalculator);
 
             var bestMove = search.CalculateBestMove(ThinkingDepth);
-
-            //TranspositionTable.ClearAll();
 
             return bestMove;
         }
@@ -169,11 +165,67 @@ namespace ChessEngine
             return _currentBoard.GetCurrentBoardState();
         }
 
-        // TODO: I will split this logic out so that the request doesn't have to be passed down
         public void WriteBoardToConsole()
         {
-            _currentBoard.WriteBoardToConsole();
+            const string piece = " ";
+
+            var squares = new char[64];
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhitePawns, 'p');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackPawns, 'P');
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhiteKnights, 'n');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackKnights, 'N');
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhiteBishops, 'b');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackBishops, 'B');
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhiteRooks, 'r');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackRooks, 'R');
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhiteQueen, 'q');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackQueen, 'Q');
+
+            AddPieceLetterToSquares(squares, _currentBoard.WhiteKing, 'k');
+            AddPieceLetterToSquares(squares, _currentBoard.BlackKing, 'K');
+
+            for (var rank = 7; rank >= 0; rank--)
+            {
+                Console.WriteLine("");
+                Console.WriteLine(@"-------------------------");
+                Console.Write(@"|");
+
+                for (var file = 0; file < 8; file++)
+                {
+                    var index = rank * 8 + file;
+
+                    if (char.IsLetter(squares[index]))
+                    {
+                        Console.Write(squares[index]);
+                    }
+                    else
+                    {
+                        Console.Write(@" ");
+                    }
+
+                    Console.Write(piece + @"|");
+                }
+            }
+
+            Console.WriteLine("");
+            Console.WriteLine(@"-------------------------");
         }
+
+        private static void AddPieceLetterToSquares(IList<char> squares, ulong piecePosition, char letterToAdd)
+        {
+            var pieceSquares = BitboardOperations.GetSquareIndexesFromBoardValue(piecePosition);
+
+            foreach (var pieceSquare in pieceSquares)
+            {
+                squares[pieceSquare] = letterToAdd;
+            }
+        }
+
         
         // Initialises the pieces to a games starting position
         // Note: bitboards go right and up from a1-h8. Bitboards run from right to left,
@@ -182,7 +234,7 @@ namespace ChessEngine
         {
             _currentBoard.InitaliseStartingPosition();
 
-            openingBook?.ResetBook();
+            _openingBook?.ResetBook();
         }
         
         public void ClearBoard()
