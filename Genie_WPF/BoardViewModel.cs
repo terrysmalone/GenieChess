@@ -5,6 +5,7 @@ using System.Windows;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 
 namespace Genie_WPF
 {
@@ -134,22 +135,36 @@ namespace Genie_WPF
                     return;
                 }
 
-                // Remove any existing piece
-                var pieceToRemove = _chessPieces.SingleOrDefault(p => p.Pos.X == column && p.Pos.Y == row);
+                var selectedMoves = validMoves.Where(v => ConvertToPoint(v.Moves) == new Point(column, row));
 
-                if (pieceToRemove is not null)
+                if (selectedMoves.Count() == 1)
                 {
-                    _chessPieces.Remove(pieceToRemove);
+                    _game.ReceiveMove(selectedMoves.Single());
+                }
+                else
+                {
+                    // There are multiple moves selected. This can only mean promotion
+                    if (validMoves.Any(m => m.SpecialMove == SpecialMoveType.KnightPromotion
+                                                 || m.SpecialMove == SpecialMoveType.BishopPromotion
+                                                 || m.SpecialMove == SpecialMoveType.RookPromotion
+                                                 || m.SpecialMove == SpecialMoveType.QueenPromotion
+                                                 || m.SpecialMove == SpecialMoveType.KnightPromotionCapture
+                                                 || m.SpecialMove == SpecialMoveType.BishopPromotionCapture
+                                                 || m.SpecialMove == SpecialMoveType.RookPromotionCapture
+                                                 || m.SpecialMove == SpecialMoveType.QueenPromotionCapture))
+                    {
+                        _game.ReceiveMove(selectedMoves.First());
+                    }
                 }
 
-                var move = validMoves.Single(v => ConvertToPoint(v.Moves) == new Point(column, row));
-
-                _game.ReceiveMove(move);
                 UpdateMoves();
 
                 _selectedPiece.Pos = new Point(column, row);
                 _selectedPiece.IsSelected = false;
                 _selectedPiece = null;
+
+                // Set all pieces based on this move because it may have involved other changes (i.e castling)
+                SetPieces();
             }
             else
             {
