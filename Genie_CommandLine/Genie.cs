@@ -8,31 +8,29 @@ namespace Genie_CommandLine
 {
     internal sealed class Genie
     {
-        private static readonly ILog Log =
+        private static readonly ILog _log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Game m_Game;
+        private readonly Game _game;
 
         public Genie()
         {
             log4net.Config.XmlConfigurator.Configure();
 
-            Log.Info("==============================================================");
-            Log.Info("");
-            Log.Info("Running Genie - Command-line version");
-            Log.Info("");
+            _log.Info("==============================================================");
+            _log.Info("");
+            _log.Info("Running Genie - Command-line version");
+            _log.Info("");
 
             var chessGameFactory = new GameFactory(null); //TODO: pass in the logger
 
-            var useOpeningBook = false;
+            _log.Info($"useOpeningBook: {false}");
 
-            Log.Info($"useOpeningBook: {useOpeningBook}");
+            _game = chessGameFactory.CreateChessGame(false);
 
-            m_Game = chessGameFactory.CreateChessGame(useOpeningBook);
+            _game.ThinkingDepth = 6;
 
-            m_Game.ThinkingDepth = 6;
-
-            m_Game.InitaliseStartingPosition();
+            _game.InitaliseStartingPosition();
 
             CountDebugger.ClearAll();
             
@@ -49,15 +47,13 @@ namespace Genie_CommandLine
                     }
                     else if (moveText == "print")
                     {
-                        m_Game.WriteBoardToConsole();
+                        _game.WriteBoardToConsole();
                     }
                     else if (moveText == "genie" || moveText == "g")
                     {
-                        var bestMove = UciMoveTranslator.ToUciMove(m_Game.GetBestMove());
+                        Console.WriteLine($"Computer move: {UciMoveTranslator.ToUciMove(_game.GetBestMove())}");
 
-                        Console.WriteLine($"Computer move: {bestMove}");
-
-                        m_Game.ReceiveUciMove(bestMove);
+                        _game.ReceiveMove(_game.GetBestMove());
                     }
                     else if (moveText.StartsWith("set"))
                     {
@@ -69,13 +65,13 @@ namespace Genie_CommandLine
 
                             var ply = Convert.ToInt32(plyToSet);
 
-                            m_Game.ThinkingDepth = ply;
+                            _game.ThinkingDepth = ply;
                         }
                         else if (toSet.StartsWith("position"))
                         {
                             var positionToSet = toSet.Substring(9, toSet.Length-9);
 
-                            m_Game.SetPosition(positionToSet);
+                            _game.SetPosition(positionToSet);
                         }
                     }
                     else if (moveText.StartsWith("info"))
@@ -84,7 +80,7 @@ namespace Genie_CommandLine
                     }
                     else
                     {
-                        m_Game.ReceiveUciMove(moveText);
+                        _game.ReceiveMove(UciMoveTranslator.ToGameMove(moveText, _game.GetCurrentBoard()));
 
                         Console.WriteLine("Made move");
                     }
@@ -107,8 +103,8 @@ namespace Genie_CommandLine
         private void DisplayGameInfo()
         {
             Console.WriteLine("------------");
-            Console.WriteLine($"Search ply:{m_Game.ThinkingDepth}");
-            Console.WriteLine($"Opening book file:{m_Game.OpeningBookFile}");
+            Console.WriteLine($"Search ply:{_game.ThinkingDepth}");
+            Console.WriteLine($"Opening book file:{_game.OpeningBookFile}");
             Console.WriteLine("------------");
         }
     }

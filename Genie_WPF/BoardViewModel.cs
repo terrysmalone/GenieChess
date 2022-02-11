@@ -104,7 +104,7 @@ namespace Genie_WPF
 
         private void MakeAiMove(object obj = null)
         {
-            _game.FindAndMakeBestMove();
+            _game.MakeBestMove();
 
              SetPieces();
              UpdateMoves();

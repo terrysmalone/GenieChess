@@ -22,7 +22,7 @@ namespace ChessEngineTests
 
             game.AllowAllCastling(false);
             
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
 
             var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
             var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
@@ -43,7 +43,7 @@ namespace ChessEngineTests
             game.ThinkingDepth = thinkingDepth;
             game.AllowAllCastling(false);
 
-            game.FindAndMakeBestMove();
+            game.MakeBestMove();
 
             var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
             var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
