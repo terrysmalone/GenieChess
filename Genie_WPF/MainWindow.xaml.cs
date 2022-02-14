@@ -3,9 +3,7 @@ using System.Windows.Input;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardSearching;
-using ChessEngine.NotationHelpers;
 using ChessEngine.ScoreCalculation;
-using ResourceLoading;
 
 namespace Genie_WPF
 {
@@ -19,6 +17,7 @@ namespace Genie_WPF
         public MainWindow()
         {
             InitializeComponent();
+            ChessBoard.AddHandler(ChessBoardControl.ChessBoardClickEvent, new RoutedEventHandler(ChessBoardClicked));
 
             LookupTables.InitialiseAllTables();
 
@@ -28,15 +27,19 @@ namespace Genie_WPF
             _boardViewModel = new BoardViewModel(game);
             DataContext = _boardViewModel;
         }
-        private void Test(object sender, MouseButtonEventArgs e)
-        {
-            throw new System.NotImplementedException();
-        }
-        private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var position = e.GetPosition((IInputElement)sender);
 
-            _boardViewModel.BoardClicked((int)position.X, (int)position.Y);
+        private void ChessBoardClicked(object sender, RoutedEventArgs e)
+        {
+            var position = ((MouseEventArgs)e.OriginalSource).GetPosition((IInputElement)sender);
+
+            // The number comes out different than when it's sender was the Canvas (now it's the ChessBoardControl).
+            // We have to offset it now. There must be a way to fix this
+            var x = (int)((position.X - 22) / 100);
+            var y = (int)((position.Y - 22) / 100);
+
+            _boardViewModel.BoardClicked(x, y);
+
+            e.Handled = true;
 
         }
     }
