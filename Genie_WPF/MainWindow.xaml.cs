@@ -33,7 +33,7 @@ namespace Genie_WPF
 
         void myCustomGreeter(object sender, RoutedEventArgs e)
         {
-            var position = ((MouseEventArgs)e).GetPosition((IInputElement)sender);
+            var position = ((MouseEventArgs)e.OriginalSource).GetPosition((IInputElement)sender);
 
             _boardViewModel.BoardClicked((int)position.X, (int)position.Y);
 
