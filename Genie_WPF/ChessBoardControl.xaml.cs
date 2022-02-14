@@ -1,5 +1,4 @@
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Genie_WPF
@@ -11,18 +10,18 @@ namespace Genie_WPF
             InitializeComponent();
         }
 
-        public static readonly RoutedEvent GreetEvent = EventManager.RegisterRoutedEvent("Greet", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ChessBoardControl));
+        public static readonly RoutedEvent ChessBoardClickEvent = EventManager.RegisterRoutedEvent("ChessBoardClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ChessBoardControl));
 
-        public event RoutedEventHandler Greet
+        public event RoutedEventHandler ChessBoardClick
         {
-            add { AddHandler(ChessBoardControl.GreetEvent, value); }
+            add { AddHandler(ChessBoardClickEvent, value); }
 
-            remove { RemoveHandler(ChessBoardControl.GreetEvent, value); }
+            remove { RemoveHandler(ChessBoardClickEvent, value); }
         }
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            RaiseEvent(new RoutedEventArgs(ChessBoardControl.GreetEvent, e));
+            RaiseEvent(new RoutedEventArgs(ChessBoardClickEvent, e));
         }
     }
 }
