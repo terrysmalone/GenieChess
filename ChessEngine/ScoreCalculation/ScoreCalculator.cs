@@ -15,7 +15,7 @@ namespace ChessEngine.ScoreCalculation
 
         private const byte _endGameCount = 3;
 
-        private bool _isEndGame = false;
+        private bool _isEndGame;
 
         public ScoreCalculator(ScoreValues scoreValues)
         {
@@ -37,8 +37,14 @@ namespace ChessEngine.ScoreCalculation
 
             score += CalculatePieceValues();
                        
-            score += CalculatePositionValues();
-            score += CalculateKingSafetyScores();
+            score +=  CalculatePawnStructureScore();
+            score += CalculateCentralPieceScore();
+
+            score += CalculateCastlingScores();
+            score += CalculateCanCastleScores();
+
+            //Add king pawn protection scores
+            //Add king position scores (stay away from the middle early/mid game)
 
             score += CalculateDevelopmentScore();
 
@@ -52,9 +58,8 @@ namespace ChessEngine.ScoreCalculation
         private void DetectEndGame()
         {
             
-            if(BitboardOperations.GetPopCount(_currentBoard.WhiteNonEndGamePieces) <= _endGameCount
-               &&
-               BitboardOperations.GetPopCount(_currentBoard.BlackNonEndGamePieces) <= _endGameCount)
+            if(   BitboardOperations.GetPopCount(_currentBoard.WhiteNonEndGamePieces) < _endGameCount
+               || BitboardOperations.GetPopCount(_currentBoard.BlackNonEndGamePieces) < _endGameCount)
             {
                 _isEndGame = true;
             }
@@ -121,18 +126,6 @@ namespace ChessEngine.ScoreCalculation
             pieceScore -= popCount * kingScore;
             
             return pieceScore;
-        }
-
-        // Points for having well positioned pieces
-        // Note: Counts only position. No other factor
-        private int CalculatePositionValues()
-        {
-            var positionScores = 0;
-
-            positionScores += CalculatePawnStructureScore();
-            positionScores += CalculateCentralPieceScore();
-
-            return positionScores;
         }
 
         private int CalculatePawnStructureScore()
@@ -321,20 +314,7 @@ namespace ChessEngine.ScoreCalculation
             return inPosition > 0 ? BitboardOperations.GetPopCount(inPosition) : 0;
         }
 
-        private int CalculateKingSafetyScores()
-        {
-            var kingSafetyScore = 0;
-
-            kingSafetyScore += CalculateKingCastlingScores();
-            kingSafetyScore += CalculateCanCastleScores();
-
-            //Add king pawn protection scores
-            //Add king position scores (stay away from the middle early/mid game)
-
-            return kingSafetyScore;
-        }
-
-        private int CalculateKingCastlingScores()
+        private int CalculateCastlingScores()
         {   
             if (_isEndGame)
             {
