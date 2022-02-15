@@ -103,7 +103,7 @@ Large Tasks
 
 * Include useful bitboards in BoardState
 
-* Implement Magic Bitboards
+* Implement Magic Bitboards (using https://github.com/Tearth/Fast-Magic-Bitboards)
 
 
 ## Working Notes ##
