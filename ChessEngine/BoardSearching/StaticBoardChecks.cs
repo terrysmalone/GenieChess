@@ -16,45 +16,45 @@ namespace ChessEngine.BoardSearching
 
         public static ulong BlackAttackBoard{ get; private set; } // All white pieces within range of black pieces
 
-        public static void Calculate(Board board)
+        public static void Calculate(UsefulBitboards usefulBitboards)
         {
-            CalculateRangedBoard(board);
-            CalculateAttackBoard(board);
+            CalculateRangedBoard(usefulBitboards);
+            CalculateAttackBoard(usefulBitboards);
         }
 
 
-        private static void CalculateRangedBoard(Board board)
+        private static void CalculateRangedBoard(UsefulBitboards usefulBitboards)
         {
-            CalculateWhiteRangedBoard(board);
-            CalculateBlackRangedBoard(board);
+            CalculateWhiteRangedBoard(usefulBitboards);
+            CalculateBlackRangedBoard(usefulBitboards);
         }
 
-        private static void CalculateWhiteRangedBoard(Board board)
+        private static void CalculateWhiteRangedBoard(UsefulBitboards usefulBitboards)
         {
             WhiteRangeBoard = 0;
 
-            WhiteRangeBoard |= board.AllWhiteOccupiedSquares;
+            WhiteRangeBoard |= usefulBitboards.AllWhiteOccupiedSquares;
 
             throw new NotImplementedException();
         }
 
-        private static void CalculateBlackRangedBoard(Board board)
+        private static void CalculateBlackRangedBoard(UsefulBitboards usefulBitboards)
         {
             throw new NotImplementedException();
         }
 
-        private static void CalculateAttackBoard(Board board)
+        private static void CalculateAttackBoard(UsefulBitboards usefulBitboards)
         {
-            CalculateWhiteAttackBoard(board);
-            CalculateBlackAttackBoard(board);
+            CalculateWhiteAttackBoard(usefulBitboards);
+            CalculateBlackAttackBoard(usefulBitboards);
         }
 
-        private static void CalculateWhiteAttackBoard(Board board)
+        private static void CalculateWhiteAttackBoard(UsefulBitboards usefulBitboards)
         {
             throw new NotImplementedException();
         }
 
-        private static void CalculateBlackAttackBoard(Board board)
+        private static void CalculateBlackAttackBoard(UsefulBitboards usefulBitboards)
         {
             throw new NotImplementedException();
         }

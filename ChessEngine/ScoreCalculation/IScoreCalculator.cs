@@ -4,6 +4,6 @@ namespace ChessEngine.ScoreCalculation
 {
     public interface IScoreCalculator
     {
-        int CalculateScore(Board currentBoard);
+        int CalculateScore(BoardState boardState, UsefulBitboards usefulBitboards);
     }
 }

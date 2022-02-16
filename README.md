@@ -93,8 +93,6 @@ WPF
 
 * Let a FULL GAME VS ai TO BE PLAYED
 
-* Make Chess board a separate control
-
 
 Large Tasks
 

@@ -11,7 +11,6 @@ namespace ChessEngine.ScoreCalculation
     public class ScoreCalculator : IScoreCalculator
     {
         private readonly ScoreValues _scoreValues;
-        private Board _currentBoard;
 
         private const byte _endGameCount = 3;
 
@@ -23,15 +22,13 @@ namespace ChessEngine.ScoreCalculation
         }
 
         // Calculates the score with black advantage as negative and white as positive
-        public int CalculateScore(Board currentBoard)
+        public int CalculateScore(BoardState boardState, UsefulBitboards usefulBitboards)
         {
             CountDebugger.Evaluations++;
 
-            _currentBoard = currentBoard;
-
             //StaticBoardChecks.Calculate(currentBoard);
 
-            DetectEndGame();
+            DetectEndGame(usefulBitboards);
 
             var score = 0;
 
@@ -55,11 +52,11 @@ namespace ChessEngine.ScoreCalculation
             return score;
         }
 
-        private void DetectEndGame()
+        private void DetectEndGame(UsefulBitboards usefulBitboards)
         {
             
-            if(   BitboardOperations.GetPopCount(_currentBoard.WhiteNonEndGamePieces) < _endGameCount
-               || BitboardOperations.GetPopCount(_currentBoard.BlackNonEndGamePieces) < _endGameCount)
+            if(   BitboardOperations.GetPopCount(usefulBitboards.WhiteNonEndGamePieces) < _endGameCount
+               || BitboardOperations.GetPopCount(usefulBitboards.BlackNonEndGamePieces) < _endGameCount)
             {
                 _isEndGame = true;
             }
@@ -560,7 +557,7 @@ namespace ChessEngine.ScoreCalculation
         // BishopCoverageScore
         //
         // AttackScore
-        private int CalculateCoverageAndAttackScores()
+        private int CalculateCoverageAndAttackScores(BoardState boardState, UsefulBitboards usefulBitboards)
         {
             var attackScore = 0;
 
@@ -570,11 +567,11 @@ namespace ChessEngine.ScoreCalculation
 
             // White
             // Score for bishop 
-            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(_currentBoard, _currentBoard.WhiteBishops, true);                                       ;
+            var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(usefulBitboards, boardState.WhiteBishops, true);                                       ;
             
             if (whiteBishopPossibleMoves > 0)
             {
-                var whiteBishopCoverageBoard = whiteBishopPossibleMoves & ~_currentBoard.AllBlackOccupiedSquares;
+                var whiteBishopCoverageBoard = whiteBishopPossibleMoves & ~usefulBitboards.AllBlackOccupiedSquares;
                 attackScore += BitboardOperations.GetPopCount(whiteBishopCoverageBoard) 
                                * _scoreValues.BishopCoverageScore; // Add points for white bishop coverage
                 
@@ -583,22 +580,22 @@ namespace ChessEngine.ScoreCalculation
                 // Add points for every attack on a more valuable piece
                 attackScore += BitboardOperations.GetPopCount(
                     whiteBishopPossibleMoves 
-                    & (_currentBoard.BlackQueen | _currentBoard.BlackRooks))
+                    & (boardState.BlackQueen | boardState.BlackRooks))
                     * _scoreValues.MoreValuablePieceAttackScore;
                 
-                whiteAttackBoard |= whiteBishopPossibleMoves & _currentBoard.AllBlackOccupiedSquares;
+                whiteAttackBoard |= whiteBishopPossibleMoves & usefulBitboards.AllBlackOccupiedSquares;
             }
 
             // Score for rook coverage
-            var whiteRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(_currentBoard,
-                                                                                 _currentBoard.WhiteRooks,
-                                                                                 true);
+            var whiteRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(usefulBitboards,
+                                                                                      boardState.WhiteRooks,
+                                                                                      true);
 
             if (whiteRookPossibleMoves > 0)
             {
                 var whiteRookCoverageBoard = 
                     whiteRookPossibleMoves 
-                    & ~_currentBoard.AllBlackOccupiedSquares;
+                    & ~usefulBitboards.AllBlackOccupiedSquares;
 
                 attackScore += BitboardOperations.GetPopCount(whiteRookCoverageBoard) * _scoreValues.RookCoverageScore;
 
@@ -606,52 +603,52 @@ namespace ChessEngine.ScoreCalculation
 
                 // Add points for every attack on a more valuable piece
                 attackScore += BitboardOperations.GetPopCount(
-                    whiteRookPossibleMoves & _currentBoard.BlackQueen) * _scoreValues.MoreValuablePieceAttackScore;
+                    whiteRookPossibleMoves & boardState.BlackQueen) * _scoreValues.MoreValuablePieceAttackScore;
 
-                whiteAttackBoard |= whiteRookPossibleMoves & _currentBoard.AllBlackOccupiedSquares;
+                whiteAttackBoard |= whiteRookPossibleMoves & usefulBitboards.AllBlackOccupiedSquares;
             }
 
             // Score for queen coverage
-            var whiteQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(_currentBoard,
-                                                                                   _currentBoard.WhiteQueen,
-                                                                                   true);
+            var whiteQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(usefulBitboards,
+                                                                                        boardState.WhiteQueen,
+                                                                                        true);
             if (whiteQueenPossibleMoves > 0)
             {
-                var whiteQueenCoverageBoard = whiteQueenPossibleMoves & ~_currentBoard.AllBlackOccupiedSquares;
+                var whiteQueenCoverageBoard = whiteQueenPossibleMoves & ~usefulBitboards.AllBlackOccupiedSquares;
                 attackScore += BitboardOperations.GetPopCount(whiteQueenCoverageBoard) * _scoreValues.QueenCoverageScore;
 
                 whiteCoverageBoard |= whiteQueenCoverageBoard;
 
-                whiteAttackBoard |= whiteQueenPossibleMoves & _currentBoard.AllBlackOccupiedSquares;
+                whiteAttackBoard |= whiteQueenPossibleMoves & usefulBitboards.AllBlackOccupiedSquares;
             }
 
             // Score for knight coverage
             ulong whiteKnightPossibleMoves = 0;
 
-            var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteKnights);
+            var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(boardState.WhiteKnights);
 
             foreach (var knightPos in whiteKnightPositions)
 	        {
                 var possibleMoves = ValidMoveArrays.KnightMoves[knightPos];
 
-                possibleMoves = possibleMoves & ~_currentBoard.AllWhiteOccupiedSquares;
+                possibleMoves = possibleMoves & ~usefulBitboards.AllWhiteOccupiedSquares;
                 whiteKnightPossibleMoves |= possibleMoves;
 	        }
 
-            whiteCoverageBoard |= whiteKnightPossibleMoves & ~_currentBoard.AllBlackOccupiedSquares;
+            whiteCoverageBoard |= whiteKnightPossibleMoves & ~usefulBitboards.AllBlackOccupiedSquares;
 
-            whiteAttackBoard |= whiteKnightPossibleMoves & _currentBoard.AllBlackOccupiedSquares;
+            whiteAttackBoard |= whiteKnightPossibleMoves & usefulBitboards.AllBlackOccupiedSquares;
 
             // Points for every attack on a more valuable piece
             attackScore += BitboardOperations.GetPopCount(
-                whiteKnightPossibleMoves & (_currentBoard.BlackQueen | _currentBoard.BlackRooks)) * _scoreValues.MoreValuablePieceAttackScore;
+                whiteKnightPossibleMoves & (boardState.BlackQueen | boardState.BlackRooks)) * _scoreValues.MoreValuablePieceAttackScore;
 
             //Pawns
             const ulong notA = 18374403900871474942;
             const ulong notH = 9187201950435737471;
 
-            var whitePawnPossibleAttackMoves = ((_currentBoard.WhitePawns << 9) & notA)
-                                               | ((_currentBoard.WhitePawns << 7) & notH);
+            var whitePawnPossibleAttackMoves = ((boardState.WhitePawns << 9) & notA)
+                                               | ((boardState.WhitePawns << 7) & notH);
 
             if (whitePawnPossibleAttackMoves > 0)
             {
@@ -660,19 +657,19 @@ namespace ChessEngine.ScoreCalculation
                 // Add points for every attack on a more valuable piece
                 attackScore += BitboardOperations.GetPopCount(
                     whitePawnPossibleAttackMoves 
-                        & (_currentBoard.BlackQueen
-                           | _currentBoard.BlackRooks
-                           | _currentBoard.BlackBishops
-                           | _currentBoard.BlackKnights))
+                        & (boardState.BlackQueen
+                           | boardState.BlackRooks
+                           | boardState.BlackBishops
+                           | boardState.BlackKnights))
                 * _scoreValues.MoreValuablePieceAttackScore;
 
-                whiteAttackBoard |= whitePawnPossibleAttackMoves & _currentBoard.AllBlackOccupiedSquares;
+                whiteAttackBoard |= whitePawnPossibleAttackMoves & usefulBitboards.AllBlackOccupiedSquares;
             }
 
             // Points for every attack on a more valuable piece
             attackScore += BitboardOperations.GetPopCount(
                 whiteKnightPossibleMoves 
-                & (_currentBoard.BlackQueen | _currentBoard.BlackRooks))
+                & (boardState.BlackQueen | boardState.BlackRooks))
                 * _scoreValues.MoreValuablePieceAttackScore;
 
             // Points for overall board coverage
@@ -687,12 +684,12 @@ namespace ChessEngine.ScoreCalculation
 
             // Score for bishop coverage
             var blackBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(_currentBoard,
-                                                                                     _currentBoard.BlackBishops,
+                                                                                     boardState.BlackBishops,
                                                                                      false);
 
             if (blackBishopPossibleMoves > 0)
             {
-                var blackBishopCoverageBoard = blackBishopPossibleMoves & ~_currentBoard.AllWhiteOccupiedSquares;
+                var blackBishopCoverageBoard = blackBishopPossibleMoves & ~usefulBitboards.AllWhiteOccupiedSquares;
 
                 // Add points for black bishop coverage
                 attackScore -= BitboardOperations.GetPopCount(blackBishopCoverageBoard) 
@@ -702,20 +699,20 @@ namespace ChessEngine.ScoreCalculation
 
                 // Points for every attack on a more valuable piece
                 attackScore -= BitboardOperations.GetPopCount(
-                    blackBishopPossibleMoves & (_currentBoard.WhiteQueen | _currentBoard.WhiteRooks))
+                    blackBishopPossibleMoves & (boardState.WhiteQueen | boardState.WhiteRooks))
                     * _scoreValues.MoreValuablePieceAttackScore;
 
-                blackAttackBoard |= blackBishopPossibleMoves & _currentBoard.AllWhiteOccupiedSquares;
+                blackAttackBoard |= blackBishopPossibleMoves & usefulBitboards.AllWhiteOccupiedSquares;
             }
 
             // Score for rook coverage
             var blackRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(_currentBoard,
-                                                                                 _currentBoard.BlackRooks,
+                                                                                 boardState.BlackRooks,
                                                                                  false);
 
             if (blackRookPossibleMoves > 0)
             { 
-                var blackRookCoverageBoard = blackRookPossibleMoves & ~_currentBoard.AllWhiteOccupiedSquares;
+                var blackRookCoverageBoard = blackRookPossibleMoves & ~usefulBitboards.AllWhiteOccupiedSquares;
 
                 // Add points for black rook coverage
                 attackScore -= BitboardOperations.GetPopCount(blackRookCoverageBoard) * _scoreValues.RookCoverageScore;
@@ -724,47 +721,47 @@ namespace ChessEngine.ScoreCalculation
 
                 // Points for every attack on a more valuable piece
                 attackScore -= BitboardOperations.GetPopCount(
-                    blackRookPossibleMoves & _currentBoard.WhiteQueen) * _scoreValues.MoreValuablePieceAttackScore;
+                    blackRookPossibleMoves & boardState.WhiteQueen) * _scoreValues.MoreValuablePieceAttackScore;
 
-                blackAttackBoard |= blackRookPossibleMoves & _currentBoard.AllWhiteOccupiedSquares;
+                blackAttackBoard |= blackRookPossibleMoves & usefulBitboards.AllWhiteOccupiedSquares;
             }
 
             // Score for queen coverage
             var blackQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(_currentBoard,
-                                                                                   _currentBoard.BlackQueen,
+                                                                                   boardState.BlackQueen,
                                                                                    false);
 
             if (blackQueenPossibleMoves > 0)
             { 
-                var blackQueenCoverageBoard = blackQueenPossibleMoves & ~_currentBoard.AllWhiteOccupiedSquares;
+                var blackQueenCoverageBoard = blackQueenPossibleMoves & ~usefulBitboards.AllWhiteOccupiedSquares;
                 attackScore -= BitboardOperations.GetPopCount(blackQueenCoverageBoard) * _scoreValues.QueenCoverageScore;
 
                 blackCoverageBoard |= blackQueenCoverageBoard;
 
-                blackAttackBoard |= blackQueenPossibleMoves & _currentBoard.AllWhiteOccupiedSquares;
+                blackAttackBoard |= blackQueenPossibleMoves & usefulBitboards.AllWhiteOccupiedSquares;
             }
 
             //// Score for knight coverage
             ulong blackKnightPossibleMoves = 0;
 
             var blackKnightPositions = 
-                BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackKnights);
+                BitboardOperations.GetSquareIndexesFromBoardValue(boardState.BlackKnights);
 
             foreach (var knightPos in blackKnightPositions)
             {
                 var possibleMoves = ValidMoveArrays.KnightMoves[knightPos];
 
-                possibleMoves = possibleMoves & ~_currentBoard.AllBlackOccupiedSquares;
+                possibleMoves = possibleMoves & ~usefulBitboards.AllBlackOccupiedSquares;
                 blackKnightPossibleMoves |= possibleMoves;
             }
 
-            blackCoverageBoard |= blackKnightPossibleMoves & ~_currentBoard.AllWhiteOccupiedSquares;
+            blackCoverageBoard |= blackKnightPossibleMoves & ~usefulBitboards.AllWhiteOccupiedSquares;
 
-            blackAttackBoard |= blackKnightPossibleMoves & _currentBoard.AllWhiteOccupiedSquares;
+            blackAttackBoard |= blackKnightPossibleMoves & usefulBitboards.AllWhiteOccupiedSquares;
 
             // Points for every attack on a more valuable piece
             attackScore -= BitboardOperations.GetPopCount(
-                blackKnightPossibleMoves & (_currentBoard.WhiteQueen | _currentBoard.WhiteRooks))
+                blackKnightPossibleMoves & (boardState.WhiteQueen | boardState.WhiteRooks))
                 * _scoreValues.MoreValuablePieceAttackScore;
 
             //Pawns
@@ -782,7 +779,7 @@ namespace ChessEngine.ScoreCalculation
                                                     | _currentBoard.WhiteKnights))
                     * _scoreValues.MoreValuablePieceAttackScore;
 
-                blackAttackBoard |= blackPawnPossibleAttackMoves & _currentBoard.AllWhiteOccupiedSquares;
+                blackAttackBoard |= blackPawnPossibleAttackMoves & usefulBitboards.AllWhiteOccupiedSquares;
             }
 
             // Points for overall board coverage

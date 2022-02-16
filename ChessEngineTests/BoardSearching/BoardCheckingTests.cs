@@ -12,7 +12,7 @@ namespace ChessEngineTests.BoardSearching
         [Test]
         public void IsPieceOnSquare_exceptionIsThrown()
         {
-            Assert.Throws<BitboardException>(() => BoardChecking.IsPieceOnSquare(new Board(), 2216808153096));
+            Assert.Throws<BitboardException>(() => BoardChecking.IsPieceOnSquare(new Board().GetUsefulBitBoards(), 2216808153096));
         }
         
         [Test]
@@ -43,7 +43,7 @@ namespace ChessEngineTests.BoardSearching
 
             foreach (var square in squares)
             {
-                Assert.That(BoardChecking.IsPieceOnSquare(board, square), Is.False, $"Failed at square {square}");
+                Assert.That(BoardChecking.IsPieceOnSquare(board.GetUsefulBitBoards(), square), Is.False, $"Failed at square {square}");
             }
         }
         
@@ -56,7 +56,7 @@ namespace ChessEngineTests.BoardSearching
             var board = new Board();
             board.SetPosition(fenString);
 
-            Assert.That(BoardChecking.IsPieceOnSquare(board, squareToCheck), Is.True);
+            Assert.That(BoardChecking.IsPieceOnSquare(board.GetUsefulBitBoards(), squareToCheck), Is.True);
         }
         
         [Test]
