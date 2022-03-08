@@ -5,24 +5,19 @@ using ChessEngine.BoardSearching;
 
 namespace ChessEngine.PossibleMoves
 {
-    /// <summary>
-    /// Calculates all possible moves from a given position
-    /// </summary>
+    // Calculates all possible moves from a given position
     public static class MoveGeneration
     {
-        private static Board m_CurrentBoard;
+        private static Board _currentBoard;
 
-        private static List<PieceMove> m_AllMoves;
+        private static List<PieceMove> _allMoves;
 
         private static int _checkCount; //Used to find if king is in double check
 
-        /// <summary>
-        /// Returns all truly legal moves
-        /// </summary>
-        /// <returns></returns>
+        // Returns all truly legal moves
         public static List<PieceMove> CalculateAllMoves(Board board)
         {
-            m_AllMoves = new List<PieceMove>();
+            _allMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
@@ -32,35 +27,29 @@ namespace ChessEngine.PossibleMoves
 
             RemoveSelfCheckingCastlingMoves();
 
-            return m_AllMoves;
+            return _allMoves;
         }
 
-        /// <summary>
-        /// Returns all pseudo legal moves (i.e. all possible moves including 
-        /// those that put the king in check)
-        /// </summary>
-        /// <param name="board"></param>
+        // Returns all pseudo legal moves (i.e. all possible moves including
+        // those that put the king in check)
         public static List<PieceMove> CalculateAllPseudoLegalMoves(Board board)
         {
-            m_AllMoves = new List<PieceMove>();
+            _allMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
-            m_CurrentBoard = board;
-            m_CurrentBoard.CalculateUsefulBitboards();
+            _currentBoard = board;
+            _currentBoard.CalculateUsefulBitboards();
 
-            if (m_CurrentBoard.WhiteToMove)
+            if (_currentBoard.WhiteToMove)
             {
                 CalculateWhiteKnightMoves(false);
 
-                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteBishops),
-                                     false);
+                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteBishops), false);
 
-                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteRooks),
-                                   false);
+                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteRooks), false);
 
-                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteQueen),
-                                    false);
+                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteQueen), false);
 
                 CalculateWhitePawnMoves(false);
 
@@ -72,14 +61,11 @@ namespace ChessEngine.PossibleMoves
             {
                 CalculateBlackKnightMoves(false);
 
-                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackBishops),
-                                     false);
+                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackBishops), false);
 
-                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackRooks),
-                                   false);
+                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackRooks), false);
 
-                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackQueen),
-                                    false);
+                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackQueen), false);
 
                 CalculateBlackPawnMoves(false);
 
@@ -88,31 +74,28 @@ namespace ChessEngine.PossibleMoves
                 CheckForBlackCastlingMoves();
             }
 
-            return m_AllMoves;
+            return _allMoves;
         }
 
         // Calculates all capturing moves
         public static List<PieceMove> CalculateAllCapturingMoves(Board board)
         {
-            m_AllMoves = new List<PieceMove>();
+            _allMoves = new List<PieceMove>();
 
             _checkCount = 0;
 
-            m_CurrentBoard = board;
-            m_CurrentBoard.CalculateUsefulBitboards();
+            _currentBoard = board;
+            _currentBoard.CalculateUsefulBitboards();
 
-            if (m_CurrentBoard.WhiteToMove)
+            if (_currentBoard.WhiteToMove)
             {
                 CalculateWhiteKnightMoves(true);
 
-                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteBishops),
-                                     true);
+                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteBishops), true);
 
-                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteRooks),
-                                   true);
+                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteRooks), true);
 
-                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteQueen),
-                                    true);
+                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteQueen), true);
 
                 CalculateWhitePawnMoves(true);
 
@@ -122,14 +105,11 @@ namespace ChessEngine.PossibleMoves
             {
                 CalculateBlackKnightMoves(true);
 
-                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackBishops),
-                                     true);
+                CalculateBishopMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackBishops), true);
 
-                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackRooks),
-                                   true);
+                CalculateRookMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackRooks), true);
 
-                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackQueen),
-                                    true);
+                CalculateQueenMoves(BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackQueen), true);
 
                 CalculateBlackPawnMoves(true);
 
@@ -138,31 +118,29 @@ namespace ChessEngine.PossibleMoves
 
             RemoveSelfCheckingMoves();
 
-            return m_AllMoves;
+            return _allMoves;
         }
 
-        /// <summary>
-        /// Checks all moves list and removes any that would put king in check
-        /// </summary>
+        // Checks all moves list and removes any that would put king in check
         private static void RemoveSelfCheckingMoves()
         {
-            var pieceMover = new PieceMover(m_CurrentBoard);
+            var pieceMover = new PieceMover(_currentBoard);
             
-            var whiteToCheck = m_CurrentBoard.WhiteToMove;
+            var whiteToCheck = _currentBoard.WhiteToMove;
 
             //Search backwards so we can remove moves and carry on
-            for (var i = m_AllMoves.Count - 1; i >= 0; i--)
+            for (var i = _allMoves.Count - 1; i >= 0; i--)
             {
-                var currentMove = m_AllMoves[i];
+                var currentMove = _allMoves[i];
 
                 pieceMover.MakeMove(currentMove.Position, 
                                     currentMove.Moves,
                                     currentMove.Type,
                                     currentMove.SpecialMove);
 
-                if (BoardChecking.IsKingInCheck(m_CurrentBoard, whiteToCheck))
+                if (BoardChecking.IsKingInCheck(_currentBoard, whiteToCheck))
                 {
-                    m_AllMoves.RemoveAt(i);
+                    _allMoves.RemoveAt(i);
                 }
 
                 pieceMover.UnMakeLastMove();
@@ -172,30 +150,30 @@ namespace ChessEngine.PossibleMoves
         private static void RemoveSelfCheckingCastlingMoves()
         {
             //Search backwards so we can remove moves and carry on
-            for (var i = m_AllMoves.Count - 1; i >= 0; i--)
+            for (var i = _allMoves.Count - 1; i >= 0; i--)
             {
-                var currentMove = m_AllMoves[i];
+                var currentMove = _allMoves[i];
 
                 if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
                 {
-                    if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
+                    if (BoardChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
                     {
-                        m_AllMoves.RemoveAt(i);
+                        _allMoves.RemoveAt(i);
                     }
-                    else if (!ValidateKingsideCastlingMove(m_CurrentBoard, currentMove))
+                    else if (!ValidateKingsideCastlingMove(_currentBoard))
                     {
-                        m_AllMoves.RemoveAt(i);
+                        _allMoves.RemoveAt(i);
                     }
                 }
                 else if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
                 {
-                    if (BoardChecking.IsKingInCheck(m_CurrentBoard, m_CurrentBoard.WhiteToMove))
+                    if (BoardChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
                     {
-                        m_AllMoves.RemoveAt(i);
+                        _allMoves.RemoveAt(i);
                     }
-                    else if (!ValidateQueensideCastlingMove(m_CurrentBoard, currentMove))
+                    else if (!ValidateQueensideCastlingMove(_currentBoard))
                     {
-                        m_AllMoves.RemoveAt(i);
+                        _allMoves.RemoveAt(i);
                     }
                 }
             }
@@ -204,17 +182,10 @@ namespace ChessEngine.PossibleMoves
         // Checks that the last move was legal by ensuring that the player who has just moved is not in check
         public static bool ValidateMove(Board board)
         {
-            bool valid;
-            
-            if (BoardChecking.IsKingInCheck(board, !board.WhiteToMove))
-                valid = false;
-            else
-                valid = true;
-
-            return valid;
+            return !BoardChecking.IsKingInCheck(board, !board.WhiteToMove);
         }
         
-        internal static bool ValidateKingsideCastlingMove(Board boardPosition, PieceMove currentMove)
+        internal static bool ValidateKingsideCastlingMove(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -225,7 +196,6 @@ namespace ChessEngine.PossibleMoves
             }
             else
             {
-
                 if (IsCastlingPathAttacked(LookupTables.BlackCastlingKingsideAttackPath, false))
                 {
                     return false;
@@ -235,7 +205,7 @@ namespace ChessEngine.PossibleMoves
             return true;
         }
         
-        internal static bool ValidateQueensideCastlingMove(Board boardPosition, PieceMove currentMove)
+        internal static bool ValidateQueensideCastlingMove(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -247,7 +217,9 @@ namespace ChessEngine.PossibleMoves
             else
             {
                 if (IsCastlingPathAttacked(LookupTables.BlackCastlingQueensideAttackPath, false))
+                {
                     return false;
+                }
             }
 
             return true;
@@ -255,81 +227,50 @@ namespace ChessEngine.PossibleMoves
 
         private static void CalculateWhitePawnMoves(bool capturesOnly)
         {
-            var whitePawnPositions = BitboardOperations.SplitBoardToArray(m_CurrentBoard.WhitePawns);
+            var whitePawnPositions = BitboardOperations.SplitBoardToArray(_currentBoard.WhitePawns);
 
-            for (var i = 0; i < whitePawnPositions.Length; i++)
+            foreach (var currentPosition in whitePawnPositions)
             {
-                var currentPosition = whitePawnPositions[i];
-
                 var pawnSingleMove = currentPosition << 8;
 
                 if (!capturesOnly)
                 {
                     //Check for promotions
                     var promotionsBoard =
-                        (pawnSingleMove & LookupTables.RowMask8) & ~m_CurrentBoard.AllOccupiedSquares;
+                        (pawnSingleMove & LookupTables.RowMask8) & ~_currentBoard.AllOccupiedSquares;
 
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
-                        //Add promotions to a new move
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.KnightPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.BishopPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.RookPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.QueenPromotion
-                                          });
+                        _allMoves.AddRange(GetPromotionMoves(currentPosition, promotionsBoard, false));
                     }
                     else
                     {
-                        pawnSingleMove &= m_CurrentBoard.EmptySquares;
+                        pawnSingleMove &= _currentBoard.EmptySquares;
 
                         if (pawnSingleMove > 0)
                         {
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = pawnSingleMove,
-                                                  SpecialMove = SpecialMoveType.Normal
-                                              });
+                            _allMoves.Add(new PieceMove
+                            {
+                                Type        = PieceType.Pawn,
+                                Position    = currentPosition,
+                                Moves       = pawnSingleMove,
+                                SpecialMove = SpecialMoveType.Normal
+                            });
 
                             //A pawn that can be promoted can't double move so we're safe to check here
                             //Check for double moves
 
-                            var pawnDoubleMove = (currentPosition << 16) & m_CurrentBoard.EmptySquares;
+                            var pawnDoubleMove = (currentPosition << 16) & _currentBoard.EmptySquares;
 
-                            if ((currentPosition & LookupTables.RowMask2) != 0 && pawnDoubleMove > 0
-                            ) //If on start rank and first rank is not blocked
+                            if ((currentPosition & LookupTables.RowMask2) != 0 && pawnDoubleMove > 0) //If on start rank and first rank is not blocked
                             {
-                                m_AllMoves.Add(new PieceMove
-                                                  {
-                                                      Type        = PieceType.Pawn,
-                                                      Position    = currentPosition,
-                                                      Moves       = pawnDoubleMove,
-                                                      SpecialMove = SpecialMoveType.DoublePawnPush
-                                                  });
+                                _allMoves.Add(new PieceMove
+                                {
+                                    Type        = PieceType.Pawn,
+                                    Position    = currentPosition,
+                                    Moves       = pawnDoubleMove,
+                                    SpecialMove = SpecialMoveType.DoublePawnPush
+                                });
                             }
                         }
                     }
@@ -338,20 +279,20 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.WhitePawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RowMask6);
+                var pawnEnPassantCaptures = possiblePawnCaptures & (_currentBoard.EnPassantPosition & LookupTables.RowMask6);
 
                 if (pawnEnPassantCaptures > 0)
                 {
-                    m_AllMoves.Add(new PieceMove
-                                      {
-                                          Type        = PieceType.Pawn,
-                                          Position    = currentPosition,
-                                          Moves       = pawnEnPassantCaptures,
-                                          SpecialMove = SpecialMoveType.ENPassantCapture
-                                      });
+                    _allMoves.Add(new PieceMove
+                    {
+                        Type        = PieceType.Pawn,
+                        Position    = currentPosition,
+                        Moves       = pawnEnPassantCaptures,
+                        SpecialMove = SpecialMoveType.ENPassantCapture
+                    });
                 }
 
-                var pawnCaptures = possiblePawnCaptures & m_CurrentBoard.AllBlackOccupiedSquares;
+                var pawnCaptures = possiblePawnCaptures & _currentBoard.AllBlackOccupiedSquares;
 
                 if (pawnCaptures > 0)
                 {
@@ -364,35 +305,7 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnPromotionCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.KnightPromotionCapture
-                                              });
-
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.BishopPromotionCapture
-                                              });
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.RookPromotionCapture
-                                              });
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.QueenPromotionCapture
-                                              });
+                            _allMoves.AddRange(GetPromotionMoves(currentPosition, move, true));
                         }
                     }
                     else
@@ -401,21 +314,58 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn, Position = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.Capture
-                                              });
+                            _allMoves.Add(new PieceMove
+                            {
+                                Type        = PieceType.Pawn, Position = currentPosition,
+                                Moves       = move,
+                                SpecialMove = SpecialMoveType.Capture
+                            });
                         }
                     }
                 }
             }
         }
 
+        private static IEnumerable<PieceMove> GetPromotionMoves(ulong currentPosition, ulong promotionsBoard, bool areCaptures)
+        {
+            var moves = new List<PieceMove>
+            {
+                new()
+                {
+                    Type = PieceType.Pawn,
+                    Position = currentPosition,
+                    Moves = promotionsBoard,
+                    SpecialMove = areCaptures ? SpecialMoveType.KnightPromotionCapture : SpecialMoveType.KnightPromotion
+                },
+                new()
+                {
+                    Type = PieceType.Pawn,
+                    Position = currentPosition,
+                    Moves = promotionsBoard,
+                    SpecialMove = areCaptures ? SpecialMoveType.BishopPromotionCapture : SpecialMoveType.BishopPromotion
+                },
+                new()
+                {
+                    Type = PieceType.Pawn,
+                    Position = currentPosition,
+                    Moves = promotionsBoard,
+                    SpecialMove = areCaptures ? SpecialMoveType.RookPromotionCapture : SpecialMoveType.RookPromotion
+                },
+                new()
+                {
+                    Type = PieceType.Pawn,
+                    Position = currentPosition,
+                    Moves = promotionsBoard,
+                    SpecialMove = areCaptures ? SpecialMoveType.QueenPromotionCapture : SpecialMoveType.QueenPromotion
+                }
+            };
+
+            return moves;
+        }
+
         private static void CalculateBlackPawnMoves(bool capturesOnly)
         {
-            var blackPawnPositions = BitboardOperations.SplitBoardToArray(m_CurrentBoard.BlackPawns);
+            var blackPawnPositions = BitboardOperations.SplitBoardToArray(_currentBoard.BlackPawns);
 
             foreach (var currentPosition in blackPawnPositions)
             {
@@ -425,47 +375,19 @@ namespace ChessEngine.PossibleMoves
                 {
                     // Check for promotions
                     var promotionsBoard =
-                        (pawnSingleMove & LookupTables.RowMask1) & ~m_CurrentBoard.AllOccupiedSquares;
+                        (pawnSingleMove & LookupTables.RowMask1) & ~_currentBoard.AllOccupiedSquares;
 
                     if (promotionsBoard > 0) //There are promotions. Split moves
                     {
-                        // Add promotions to a new move
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.KnightPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.BishopPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.RookPromotion
-                                          });
-                        m_AllMoves.Add(new PieceMove
-                                          {
-                                              Type        = PieceType.Pawn,
-                                              Position    = currentPosition,
-                                              Moves       = promotionsBoard,
-                                              SpecialMove = SpecialMoveType.QueenPromotion
-                                          });
+                        _allMoves.AddRange(GetPromotionMoves(currentPosition, promotionsBoard, false));
                     }
                     else
                     {
-                        pawnSingleMove = pawnSingleMove & m_CurrentBoard.EmptySquares;
+                        pawnSingleMove = pawnSingleMove & _currentBoard.EmptySquares;
 
                         if (pawnSingleMove > 0)
                         {
-                            m_AllMoves.Add(new PieceMove
+                            _allMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -475,12 +397,12 @@ namespace ChessEngine.PossibleMoves
 
                             // A pawn that can be promoted can't double move so we're safe to check here
                             // Check for double moves
-                            var pawnDoubleMove = (currentPosition >> 16) & m_CurrentBoard.EmptySquares;
+                            var pawnDoubleMove = (currentPosition >> 16) & _currentBoard.EmptySquares;
 
                             // If on start rank and first rank is not blocked
                             if ((currentPosition & LookupTables.RowMask7) != 0 && pawnDoubleMove != 0) 
                             {
-                                m_AllMoves.Add(new PieceMove
+                                _allMoves.Add(new PieceMove
                                                   {
                                                       Type        = PieceType.Pawn,
                                                       Position    = currentPosition,
@@ -495,10 +417,10 @@ namespace ChessEngine.PossibleMoves
                 var possiblePawnCaptures =
                     ValidMoveArrays.BlackPawnCaptures[BitboardOperations.GetSquareIndexFromBoardValue(currentPosition)];
 
-                var pawnEnPassantCaptures = possiblePawnCaptures & (m_CurrentBoard.EnPassantPosition & LookupTables.RowMask3);
+                var pawnEnPassantCaptures = possiblePawnCaptures & (_currentBoard.EnPassantPosition & LookupTables.RowMask3);
 
                 if (pawnEnPassantCaptures > 0)
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.Pawn,
                                           Position    = currentPosition,
@@ -506,7 +428,7 @@ namespace ChessEngine.PossibleMoves
                                           SpecialMove = SpecialMoveType.ENPassantCapture
                                       });
 
-                var pawnCaptures = possiblePawnCaptures & m_CurrentBoard.AllWhiteOccupiedSquares;
+                var pawnCaptures = possiblePawnCaptures & _currentBoard.AllWhiteOccupiedSquares;
 
                 if (pawnCaptures > 0)
                 {
@@ -514,41 +436,11 @@ namespace ChessEngine.PossibleMoves
 
                     if (capturePromotionsBoard > 0)
                     {
-                        //pawnCaptures = pawnCaptures & ~capturePromotionsBoard;
-
-                        var pawnPromotionCapturesSingleBoard =
-                            BitboardOperations.SplitBoardToArray(capturePromotionsBoard);
+                        var pawnPromotionCapturesSingleBoard = BitboardOperations.SplitBoardToArray(capturePromotionsBoard);
 
                         foreach (var move in pawnPromotionCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.KnightPromotionCapture
-                                              });
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.BishopPromotionCapture
-                                              });
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.RookPromotionCapture
-                                              });
-                            m_AllMoves.Add(new PieceMove
-                                              {
-                                                  Type        = PieceType.Pawn,
-                                                  Position    = currentPosition,
-                                                  Moves       = move,
-                                                  SpecialMove = SpecialMoveType.QueenPromotionCapture
-                                              });
+                            _allMoves.AddRange(GetPromotionMoves(currentPosition, move, true));
                         }
                     }
                     else
@@ -557,7 +449,7 @@ namespace ChessEngine.PossibleMoves
 
                         foreach (var move in pawnCapturesSingleBoard)
                         {
-                            m_AllMoves.Add(new PieceMove
+                            _allMoves.Add(new PieceMove
                                               {
                                                   Type        = PieceType.Pawn,
                                                   Position    = currentPosition,
@@ -572,7 +464,7 @@ namespace ChessEngine.PossibleMoves
 
         private static void CalculateWhiteKnightMoves(bool capturesOnly)
         {
-            var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.WhiteKnights);
+            var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteKnights);
 
             var index = whiteKnightPositions.Count - 1;
 
@@ -589,9 +481,9 @@ namespace ChessEngine.PossibleMoves
 
                 foreach (var move in splitMoves)
                 {
-                    if ((move & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
+                    if ((move & _currentBoard.AllBlackOccupiedSquares) > 0)
                     {
-                        m_AllMoves.Add(new PieceMove
+                        _allMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -600,9 +492,9 @@ namespace ChessEngine.PossibleMoves
                                           });
                     }
 
-                    if ((move & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
+                    if ((move & _currentBoard.EmptySquares) > 0 && !capturesOnly)
                     {
-                        m_AllMoves.Add(new PieceMove
+                        _allMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -618,7 +510,7 @@ namespace ChessEngine.PossibleMoves
 
         private static void CalculateBlackKnightMoves(bool capturesOnly)
         {
-            var blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(m_CurrentBoard.BlackKnights);
+            var blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackKnights);
 
             var index = blackKnightPositions.Count - 1;
 
@@ -635,9 +527,9 @@ namespace ChessEngine.PossibleMoves
 
                 foreach (var move in splitMoves)
                 {
-                    if ((move & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
+                    if ((move & _currentBoard.AllWhiteOccupiedSquares) > 0)
                     {
-                        m_AllMoves.Add(new PieceMove
+                        _allMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -646,9 +538,9 @@ namespace ChessEngine.PossibleMoves
                                           });
                     }
 
-                    if ((move & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
+                    if ((move & _currentBoard.EmptySquares) > 0 && !capturesOnly)
                     {
-                        m_AllMoves.Add(new PieceMove
+                        _allMoves.Add(new PieceMove
                                           {
                                               Type        = pieceType,
                                               Position    = piecePosition,
@@ -672,14 +564,14 @@ namespace ChessEngine.PossibleMoves
                 var bishopPosition = LookupTables.SquareValuesFromIndex[bishopIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedBishopMoves(m_CurrentBoard, bishopIndex, m_CurrentBoard.WhiteToMove);
+                    BoardChecking.CalculateAllowedBishopMoves(_currentBoard, bishopIndex, _currentBoard.WhiteToMove);
 
-                var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
+                var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, bishopPosition, PieceType.Bishop, SpecialMoveType.Capture);
 
                 if (!capturesOnly)
                 {
-                    var normalMoves = allAllowedMoves & m_CurrentBoard.EmptySquares;
+                    var normalMoves = allAllowedMoves & _currentBoard.EmptySquares;
                     SplitAndAddMoves(normalMoves, bishopPosition, PieceType.Bishop, SpecialMoveType.Normal);
                 }
 
@@ -695,7 +587,7 @@ namespace ChessEngine.PossibleMoves
             foreach (var move in splitMoves)
             {
                 if (move > 0)
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {Type = type, Position = position, Moves = move, SpecialMove = specialMoveType});
             }
         }
@@ -710,14 +602,14 @@ namespace ChessEngine.PossibleMoves
                 var rookPosition = LookupTables.SquareValuesFromIndex[rookIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedRookMoves(m_CurrentBoard, rookIndex, m_CurrentBoard.WhiteToMove);
+                    BoardChecking.CalculateAllowedRookMoves(_currentBoard, rookIndex, _currentBoard.WhiteToMove);
 
-                var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
+                var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, rookPosition, PieceType.Rook, SpecialMoveType.Capture);
 
                 if (!capturesOnly)
                 {
-                    var normalMoves = allAllowedMoves & m_CurrentBoard.EmptySquares;
+                    var normalMoves = allAllowedMoves & _currentBoard.EmptySquares;
                     SplitAndAddMoves(normalMoves, rookPosition, PieceType.Rook, SpecialMoveType.Normal);
                 }
 
@@ -737,14 +629,14 @@ namespace ChessEngine.PossibleMoves
                 var piecePosition = LookupTables.SquareValuesFromIndex[pieceIndex];
 
                 var allAllowedMoves =
-                    BoardChecking.CalculateAllowedQueenMoves(m_CurrentBoard, pieceIndex, m_CurrentBoard.WhiteToMove);
+                    BoardChecking.CalculateAllowedQueenMoves(_currentBoard, pieceIndex, _currentBoard.WhiteToMove);
 
-                var captureMoves = allAllowedMoves & ~m_CurrentBoard.EmptySquares;
+                var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
                 SplitAndAddMoves(captureMoves, piecePosition, pieceType, SpecialMoveType.Capture);
 
                 if (!capturesOnly)
                 {
-                    var normalMoves = allAllowedMoves & m_CurrentBoard.EmptySquares;
+                    var normalMoves = allAllowedMoves & _currentBoard.EmptySquares;
                     SplitAndAddMoves(normalMoves, piecePosition, pieceType, SpecialMoveType.Normal);
                 }
 
@@ -754,7 +646,7 @@ namespace ChessEngine.PossibleMoves
 
         private static void CalculateWhiteKingMoves(bool capturesOnly)
         {
-            var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(m_CurrentBoard.WhiteKing);
+            var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(_currentBoard.WhiteKing);
 
             var whiteKingMoves = ValidMoveArrays.KingMoves[whiteKingPosition];
 
@@ -762,23 +654,23 @@ namespace ChessEngine.PossibleMoves
 
             foreach (var moveBoard in splitMoves)
             {
-                if ((moveBoard & m_CurrentBoard.AllBlackOccupiedSquares) > 0)
+                if ((moveBoard & _currentBoard.AllBlackOccupiedSquares) > 0)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Position    = _currentBoard.WhiteKing,
                                           Moves       = moveBoard,
                                           SpecialMove = SpecialMoveType.Capture
                                       });
                 }
 
-                if ((moveBoard & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
+                if ((moveBoard & _currentBoard.EmptySquares) > 0 && !capturesOnly)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Position    = _currentBoard.WhiteKing,
                                           Moves       = moveBoard,
                                           SpecialMove = SpecialMoveType.Normal
                                       });
@@ -788,7 +680,7 @@ namespace ChessEngine.PossibleMoves
 
         private static void CalculateBlackKingMoves(bool capturesOnly)
         {
-            var blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(m_CurrentBoard.BlackKing);
+            var blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(_currentBoard.BlackKing);
 
             var blackKingMoves = ValidMoveArrays.KingMoves[blackKingPosition];
 
@@ -796,21 +688,21 @@ namespace ChessEngine.PossibleMoves
 
             foreach (var moveBoard in splitMoves)
             {
-                if ((moveBoard & m_CurrentBoard.AllWhiteOccupiedSquares) > 0)
+                if ((moveBoard & _currentBoard.AllWhiteOccupiedSquares) > 0)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
-                                          Type  = PieceType.King, Position = m_CurrentBoard.BlackKing,
+                                          Type  = PieceType.King, Position = _currentBoard.BlackKing,
                                           Moves = moveBoard, SpecialMove   = SpecialMoveType.Capture
                                       });
                 }
 
-                if ((moveBoard & m_CurrentBoard.EmptySquares) > 0 && !capturesOnly)
+                if ((moveBoard & _currentBoard.EmptySquares) > 0 && !capturesOnly)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.BlackKing,
+                                          Position    = _currentBoard.BlackKing,
                                           Moves       = moveBoard,
                                           SpecialMove = SpecialMoveType.Normal
                                       });
@@ -818,11 +710,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        /// <summary>
-        /// Adds an en passant capture to the valid movelist
-        /// </summary>
-        /// <param name="attackingPiece"></param>
-        /// <param name="capturePosition"></param>
+        // Adds an en passant capture to the valid movelist
         private static void AddEnPassantCapture(ulong attackingPiece, ulong capturePosition)
         {
             var enPassantCapture = new PieceMove();
@@ -830,39 +718,39 @@ namespace ChessEngine.PossibleMoves
             enPassantCapture.Position = attackingPiece;
             enPassantCapture.Moves    = capturePosition;
 
-            m_AllMoves.Add(enPassantCapture);
+            _allMoves.Add(enPassantCapture);
         }
 
         private static void CheckForWhiteCastlingMoves()
         {
-            if (m_CurrentBoard.WhiteCanCastleQueenside)
+            if (_currentBoard.WhiteCanCastleQueenside)
             {
                 // Check the path is clear
                 var castlingPath = LookupTables.WhiteCastlingQueensideObstructionPath;
 
-                if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
+                if ((castlingPath & _currentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Position    = _currentBoard.WhiteKing,
                                           Moves       = LookupTables.C1,
                                           SpecialMove = SpecialMoveType.QueenCastle
                                       });
                 }
             }
 
-            if (m_CurrentBoard.WhiteCanCastleKingside)
+            if (_currentBoard.WhiteCanCastleKingside)
             {
                 // Check the path is clear
                 var castlingPath = LookupTables.WhiteCastlingKingsideObstructionPath;
 
-                if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
+                if ((castlingPath & _currentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.WhiteKing,
+                                          Position    = _currentBoard.WhiteKing,
                                           Moves       = LookupTables.G1,
                                           SpecialMove = SpecialMoveType.KingCastle
                                       });
@@ -872,34 +760,34 @@ namespace ChessEngine.PossibleMoves
 
         private static void CheckForBlackCastlingMoves()
         {
-            if (m_CurrentBoard.BlackCanCastleQueenside)
+            if (_currentBoard.BlackCanCastleQueenside)
             {
                 // Check the path is clear
                 var castlingPath = LookupTables.BlackCastlingQueensideObstructionPath;
 
-                if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
+                if ((castlingPath & _currentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.BlackKing,
+                                          Position    = _currentBoard.BlackKing,
                                           Moves       = LookupTables.C8,
                                           SpecialMove = SpecialMoveType.QueenCastle
                                       });
                 }
             }
 
-            if (m_CurrentBoard.BlackCanCastleKingside)
+            if (_currentBoard.BlackCanCastleKingside)
             {
                 // Check the path is clear
                 var castlingPath = LookupTables.BlackCastlingKingsideObstructionPath;
 
-                if ((castlingPath & m_CurrentBoard.EmptySquares) == castlingPath)
+                if ((castlingPath & _currentBoard.EmptySquares) == castlingPath)
                 {
-                    m_AllMoves.Add(new PieceMove
+                    _allMoves.Add(new PieceMove
                                       {
                                           Type        = PieceType.King,
-                                          Position    = m_CurrentBoard.BlackKing,
+                                          Position    = _currentBoard.BlackKing,
                                           Moves       = LookupTables.G8,
                                           SpecialMove = SpecialMoveType.KingCastle
                                       });
@@ -907,33 +795,34 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        /// <summary>
-        /// This method is used to check if a square is under attack or to check if the king is under attack.
-        /// With the latter checkCount is used in order to check for double check.
-        /// </summary>
-        /// <param name="squarePositionBoard"></param>
-        /// <param name="friendlyColour"></param>
-        /// <returns></returns>
+
+        // This method is used to check if a square is under attack or to check if the king is under attack.
+        // With the latter checkCount is used in order to check for double check.
         private static bool IsSquareAttacked(ulong squarePositionBoard, bool whiteToMove)
         {
-            bool squareAttacked = IsPawnAttackingSquare(squarePositionBoard, whiteToMove);
+            var squareAttacked = IsPawnAttackingSquare(squarePositionBoard, whiteToMove);
 
             if (IsKnightAttackingSquare(squarePositionBoard, whiteToMove))
             {
                 squareAttacked = true;
-                //knightCheck = true;
             }
 
             if (IsSquareUnderRayAttack(squarePositionBoard, whiteToMove))
+            {
                 squareAttacked = true;
+            }
 
-            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePositionBoard, m_CurrentBoard.WhiteToMove))
+            if (BoardChecking.IsSquareAttackedByKing(_currentBoard, squarePositionBoard, _currentBoard.WhiteToMove))
+            {
                 squareAttacked = true;
+            }
 
             if (squareAttacked)
+            {
                 return true;
-            else
-                return false;
+            }
+
+            return false;
         }
         
         // Checks if the square is under ray attack. Must check every square for double-checks
@@ -947,19 +836,19 @@ namespace ChessEngine.PossibleMoves
 
             if (whiteToMove)
             {
-                enemyQueenSquares  = m_CurrentBoard.BlackQueen;
-                enemyBishopSquares = m_CurrentBoard.BlackBishops;
-                enemyRookSquares   = m_CurrentBoard.BlackRooks;
+                enemyQueenSquares  = _currentBoard.BlackQueen;
+                enemyBishopSquares = _currentBoard.BlackBishops;
+                enemyRookSquares   = _currentBoard.BlackRooks;
             }
             else
             {
-                enemyQueenSquares  = m_CurrentBoard.WhiteQueen;
-                enemyBishopSquares = m_CurrentBoard.WhiteBishops;
-                enemyRookSquares   = m_CurrentBoard.WhiteRooks;
+                enemyQueenSquares  = _currentBoard.WhiteQueen;
+                enemyBishopSquares = _currentBoard.WhiteBishops;
+                enemyRookSquares   = _currentBoard.WhiteRooks;
             }
 
             //Up
-            var nearestUpPiece = BoardChecking.FindUpBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestUpPiece = BoardChecking.FindUpBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestUpPiece & enemyRookSquares) > 0 || (nearestUpPiece & enemyQueenSquares) > 0)
             {
@@ -968,7 +857,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Left 
-            var nearestLeftPiece = BoardChecking.FindLeftBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestLeftPiece = BoardChecking.FindLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestLeftPiece & enemyRookSquares) > 0 || (nearestLeftPiece & enemyQueenSquares) > 0)
             {
@@ -977,7 +866,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Right
-            var nearestRightPiece = BoardChecking.FindRightBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestRightPiece = BoardChecking.FindRightBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestRightPiece & enemyRookSquares) > 0 || (nearestRightPiece & enemyQueenSquares) > 0)
             {
@@ -987,7 +876,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Down
-            var nearestDownPiece = BoardChecking.FindDownBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestDownPiece = BoardChecking.FindDownBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestDownPiece & enemyRookSquares) > 0 || (nearestDownPiece & enemyQueenSquares) > 0)
             {
@@ -996,7 +885,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Up-right
-            var nearestUpRightPiece = BoardChecking.FindUpRightBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestUpRightPiece = BoardChecking.FindUpRightBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestUpRightPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
             {
@@ -1005,7 +894,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Up Left
-            var nearestUpLeftPiece = BoardChecking.FindUpLeftBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestUpLeftPiece = BoardChecking.FindUpLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestUpLeftPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
             {
@@ -1015,7 +904,7 @@ namespace ChessEngine.PossibleMoves
 
             //Down-right
             var nearestDownRightPiece =
-                BoardChecking.FindDownRightBlockingPosition(m_CurrentBoard, squarePositionBoard);
+                BoardChecking.FindDownRightBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestDownRightPiece & enemyBishopSquares) > 0 || (nearestDownRightPiece & enemyQueenSquares) > 0)
             {
@@ -1024,7 +913,7 @@ namespace ChessEngine.PossibleMoves
             }
 
             //Up Left
-            var nearestDownLeftPiece = BoardChecking.FindDownLeftBlockingPosition(m_CurrentBoard, squarePositionBoard);
+            var nearestDownLeftPiece = BoardChecking.FindDownLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
             if ((nearestDownLeftPiece & enemyBishopSquares) > 0 || (nearestDownLeftPiece & enemyQueenSquares) > 0)
             {
@@ -1035,10 +924,8 @@ namespace ChessEngine.PossibleMoves
             return underRayAttack;
         }
 
-        /// <summary>
-        /// Checks if pawn is attacking square. There is no need to check all pawns for double-check 
-        /// since only one pawn can be attacking the king at once
-        /// </summary>
+        // Checks if pawn is attacking square. There is no need to check all pawns for double-check
+        // since only one pawn can be attacking the king at once
         private static bool IsPawnAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             var squareIndex    = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
@@ -1049,7 +936,7 @@ namespace ChessEngine.PossibleMoves
                 //Check up-right
                 var upRight = squarePosition << 9;
 
-                if ((upRight & m_CurrentBoard.BlackPawns & proximityBoard) != 0)
+                if ((upRight & _currentBoard.BlackPawns & proximityBoard) != 0)
                 {
                     _checkCount++;
                     return true;
@@ -1058,7 +945,7 @@ namespace ChessEngine.PossibleMoves
                 //Check up-left
                 var upLeft = squarePosition << 7;
 
-                if ((upLeft & m_CurrentBoard.BlackPawns & proximityBoard) != 0)
+                if ((upLeft & _currentBoard.BlackPawns & proximityBoard) != 0)
                 {
                     _checkCount++;
                     return true;
@@ -1069,7 +956,7 @@ namespace ChessEngine.PossibleMoves
                 //Check down-right
                 var downRight = squarePosition >> 7;
 
-                if ((downRight & m_CurrentBoard.WhitePawns & proximityBoard) != 0)
+                if ((downRight & _currentBoard.WhitePawns & proximityBoard) != 0)
                 {
                     _checkCount++;
                     return true;
@@ -1078,7 +965,7 @@ namespace ChessEngine.PossibleMoves
                 //Check down-left
                 var upLeft = squarePosition >> 9;
 
-                if ((upLeft & m_CurrentBoard.WhitePawns & proximityBoard) != 0)
+                if ((upLeft & _currentBoard.WhitePawns & proximityBoard) != 0)
                 {
                     _checkCount++;
                     return true;
@@ -1088,18 +975,16 @@ namespace ChessEngine.PossibleMoves
             return false;
         }
 
-        /// <summary>
-        /// Checks if a knight is attacking square. There is no need to check all knights for double-check 
-        /// since only one knight can be attacking the king at once
-        /// </summary>
+        // Checks if a knight is attacking square. There is no need to check all knights for double-check
+        // since only one knight can be attacking the king at once
         private static bool IsKnightAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             ulong knights;
 
             if (whiteToMove)
-                knights = m_CurrentBoard.BlackKnights;
+                knights = _currentBoard.BlackKnights;
             else
-                knights = m_CurrentBoard.WhiteKnights;
+                knights = _currentBoard.WhiteKnights;
 
             var currentPosition = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
 
@@ -1111,8 +996,8 @@ namespace ChessEngine.PossibleMoves
                 _checkCount++;
                 return true;
             }
-            else
-                return false;
+
+            return false;
         }
 
         private static bool IsCastlingPathAttacked(ulong path, bool whiteToMove)
@@ -1123,40 +1008,47 @@ namespace ChessEngine.PossibleMoves
             foreach (var position in pathPositions)
             {
                 if (IsCastlingSquareAttacked(position, whiteToMove))
+                {
                     return true;
+                }
             }
 
             return false;
         }
 
-        /// <summary>
-        /// Checks if the given square is under attack on the current bitboard
-        /// </summary>
-        /// <param name="positionBitboard"></param>
+        // Checks if the given square is under attack on the current bitboard
         private static bool IsCastlingSquareAttacked(ulong squarePosition, bool whiteToMove)
         {
             if (IsKnightAttackingSquare(squarePosition, whiteToMove))
+            {
                 return true;
+            }
 
             if (IsPawnAttackingSquare(squarePosition, whiteToMove))
+            {
                 return true;
+            }
 
-            if (BoardChecking.IsSquareAttackedByKing(m_CurrentBoard, squarePosition, whiteToMove))
+            if (BoardChecking.IsSquareAttackedByKing(_currentBoard, squarePosition, whiteToMove))
+            {
                 return true;
+            }
 
             if (whiteToMove)
             {
-                if (BoardChecking.IsSquareRayAttackedFromAbove(m_CurrentBoard, squarePosition) ||
-                    BoardChecking.IsSquareRayAttackedFromTheSide(m_CurrentBoard, squarePosition)
-                ) //White castling king willnot be attacked from below so no need to check all squares
+                if (BoardChecking.IsSquareRayAttackedFromAbove(_currentBoard, squarePosition) ||
+                    BoardChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //White castling king willnot be attacked from below so no need to check all squares
+                {
                     return true;
+                }
             }
             else
             {
-                if (BoardChecking.IsSquareRayAttackedFromBelow(m_CurrentBoard, squarePosition) ||
-                    BoardChecking.IsSquareRayAttackedFromTheSide(m_CurrentBoard, squarePosition)
-                ) //Black castling king will not be attacked from above so no need to check all squares
+                if (BoardChecking.IsSquareRayAttackedFromBelow(_currentBoard, squarePosition) ||
+                    BoardChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //Black castling king will not be attacked from above so no need to check all squares
+                {
                     return true;
+                }
             }
 
             return false;

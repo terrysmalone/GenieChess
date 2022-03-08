@@ -52,7 +52,7 @@ namespace ChessEngineTests
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle)
                 {
                     if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateKingsideCastlingMove(boardPosition, moveList[i]))
+                        || !MoveGeneration.ValidateKingsideCastlingMove(boardPosition))
                     {
                         skipMove = true;
                     }
@@ -60,7 +60,7 @@ namespace ChessEngineTests
                 else if (moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
                     if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateQueensideCastlingMove(boardPosition, moveList[i]))
+                        || !MoveGeneration.ValidateQueensideCastlingMove(boardPosition))
                     {
                         skipMove = true;
                     }

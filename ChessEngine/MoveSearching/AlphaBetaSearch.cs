@@ -458,7 +458,7 @@ namespace ChessEngine.MoveSearching
                         continue;
                     }
                     
-                    if (!MoveGeneration.ValidateKingsideCastlingMove(_boardPosition, move))
+                    if (!MoveGeneration.ValidateKingsideCastlingMove(_boardPosition))
                     {
                         continue;
                     }
@@ -470,7 +470,7 @@ namespace ChessEngine.MoveSearching
                         continue;
                     }
                     
-                    if (!MoveGeneration.ValidateQueensideCastlingMove(_boardPosition, move))
+                    if (!MoveGeneration.ValidateQueensideCastlingMove(_boardPosition))
                     {
                         continue;
                     }
