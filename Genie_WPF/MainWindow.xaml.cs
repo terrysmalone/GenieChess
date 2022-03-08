@@ -3,6 +3,7 @@ using System.Windows.Input;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardSearching;
+using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 
 namespace Genie_WPF
@@ -21,8 +22,9 @@ namespace Genie_WPF
 
             LookupTables.InitialiseAllTables();
 
+            var moveGeneration = new MoveGeneration();
             var scoreCalculator = ScoreCalculatorFactory.Create();
-            var game = new Game(scoreCalculator, new Board(), null);
+            var game = new Game(moveGeneration, scoreCalculator, new Board(), null);
 
             _boardViewModel = new BoardViewModel(game);
             DataContext = _boardViewModel;

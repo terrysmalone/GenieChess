@@ -1,6 +1,7 @@
 ﻿using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using NUnit.Framework;
 
@@ -14,7 +15,8 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_White([Range(1,6)] int thinkingDepth)
         {
             var scoreCalculator = ScoreCalculatorFactory.Create();
-            var game = new Game(scoreCalculator, new Board(), null);
+            
+            var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
 
             game.SetPosition("7k/8/8/3pK3/8/8/8/8 w - - 0 1");
 
@@ -34,7 +36,7 @@ namespace ChessEngineTests
         public void TestPlayingGame_VerySimpleCapture_Black([Range(1, 6)] int thinkingDepth)
         {
             var scoreCalculator = ScoreCalculatorFactory.Create();
-            var game = new Game(scoreCalculator, new Board(), null);
+            var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
 
             game.ClearBoard();
 

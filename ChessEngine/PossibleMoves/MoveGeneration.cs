@@ -6,16 +6,16 @@ using ChessEngine.BoardSearching;
 namespace ChessEngine.PossibleMoves
 {
     // Calculates all possible moves from a given position
-    public static class MoveGeneration
+    public class MoveGeneration
     {
-        private static Board _currentBoard;
+        private Board _currentBoard;
 
-        private static List<PieceMove> _allMoves;
+        private List<PieceMove> _allMoves;
 
-        private static int _checkCount; //Used to find if king is in double check
+        private int _checkCount; //Used to find if king is in double check
 
         // Returns all truly legal moves
-        public static List<PieceMove> CalculateAllMoves(Board board)
+        public List<PieceMove> CalculateAllMoves(Board board)
         {
             _allMoves = new List<PieceMove>();
 
@@ -32,7 +32,7 @@ namespace ChessEngine.PossibleMoves
 
         // Returns all pseudo legal moves (i.e. all possible moves including
         // those that put the king in check)
-        public static List<PieceMove> CalculateAllPseudoLegalMoves(Board board)
+        public List<PieceMove> CalculateAllPseudoLegalMoves(Board board)
         {
             _allMoves = new List<PieceMove>();
 
@@ -78,7 +78,7 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Calculates all capturing moves
-        public static List<PieceMove> CalculateAllCapturingMoves(Board board)
+        public List<PieceMove> CalculateAllCapturingMoves(Board board)
         {
             _allMoves = new List<PieceMove>();
 
@@ -122,7 +122,7 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Checks all moves list and removes any that would put king in check
-        private static void RemoveSelfCheckingMoves()
+        private void RemoveSelfCheckingMoves()
         {
             var pieceMover = new PieceMover(_currentBoard);
             
@@ -147,7 +147,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void RemoveSelfCheckingCastlingMoves()
+        private void RemoveSelfCheckingCastlingMoves()
         {
             //Search backwards so we can remove moves and carry on
             for (var i = _allMoves.Count - 1; i >= 0; i--)
@@ -180,12 +180,12 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Checks that the last move was legal by ensuring that the player who has just moved is not in check
-        public static bool ValidateMove(Board board)
+        public bool ValidateMove(Board board)
         {
             return !BoardChecking.IsKingInCheck(board, !board.WhiteToMove);
         }
         
-        internal static bool ValidateKingsideCastlingMove(Board boardPosition)
+        internal bool ValidateKingsideCastlingMove(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -205,7 +205,7 @@ namespace ChessEngine.PossibleMoves
             return true;
         }
         
-        internal static bool ValidateQueensideCastlingMove(Board boardPosition)
+        internal bool ValidateQueensideCastlingMove(Board boardPosition)
         {
             if (boardPosition.WhiteToMove)
             {
@@ -225,7 +225,7 @@ namespace ChessEngine.PossibleMoves
             return true;
         }
 
-        private static void CalculateWhitePawnMoves(bool capturesOnly)
+        private void CalculateWhitePawnMoves(bool capturesOnly)
         {
             var whitePawnPositions = BitboardOperations.SplitBoardToArray(_currentBoard.WhitePawns);
 
@@ -326,7 +326,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static IEnumerable<PieceMove> GetPromotionMoves(ulong currentPosition, ulong promotionsBoard, bool areCaptures)
+        private IEnumerable<PieceMove> GetPromotionMoves(ulong currentPosition, ulong promotionsBoard, bool areCaptures)
         {
             var moves = new List<PieceMove>
             {
@@ -363,7 +363,7 @@ namespace ChessEngine.PossibleMoves
             return moves;
         }
 
-        private static void CalculateBlackPawnMoves(bool capturesOnly)
+        private void CalculateBlackPawnMoves(bool capturesOnly)
         {
             var blackPawnPositions = BitboardOperations.SplitBoardToArray(_currentBoard.BlackPawns);
 
@@ -462,7 +462,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateWhiteKnightMoves(bool capturesOnly)
+        private void CalculateWhiteKnightMoves(bool capturesOnly)
         {
             var whiteKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.WhiteKnights);
 
@@ -508,7 +508,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateBlackKnightMoves(bool capturesOnly)
+        private void CalculateBlackKnightMoves(bool capturesOnly)
         {
             var blackKnightPositions = BitboardOperations.GetSquareIndexesFromBoardValue(_currentBoard.BlackKnights);
 
@@ -554,7 +554,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateBishopMoves(IReadOnlyList<byte> bishopPositions, bool capturesOnly)
+        private void CalculateBishopMoves(IReadOnlyList<byte> bishopPositions, bool capturesOnly)
         {
             var index = bishopPositions.Count - 1;
 
@@ -579,7 +579,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void SplitAndAddMoves(ulong           moves, ulong position, PieceType type,
+        private void SplitAndAddMoves(ulong           moves, ulong position, PieceType type,
                                              SpecialMoveType specialMoveType)
         {
             var splitMoves = BitboardOperations.SplitBoardToArray(moves);
@@ -592,7 +592,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateRookMoves(IReadOnlyList<byte> rookPositions, bool capturesOnly)
+        private void CalculateRookMoves(IReadOnlyList<byte> rookPositions, bool capturesOnly)
         {
             var index = rookPositions.Count - 1;
 
@@ -617,7 +617,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateQueenMoves(IReadOnlyList<byte> queenPositions, bool capturesOnly)
+        private void CalculateQueenMoves(IReadOnlyList<byte> queenPositions, bool capturesOnly)
         {
             var index = queenPositions.Count - 1;
 
@@ -644,7 +644,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateWhiteKingMoves(bool capturesOnly)
+        private void CalculateWhiteKingMoves(bool capturesOnly)
         {
             var whiteKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(_currentBoard.WhiteKing);
 
@@ -678,7 +678,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CalculateBlackKingMoves(bool capturesOnly)
+        private void CalculateBlackKingMoves(bool capturesOnly)
         {
             var blackKingPosition = BitboardOperations.GetSquareIndexFromBoardValue(_currentBoard.BlackKing);
 
@@ -711,17 +711,19 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Adds an en passant capture to the valid movelist
-        private static void AddEnPassantCapture(ulong attackingPiece, ulong capturePosition)
+        private void AddEnPassantCapture(ulong attackingPiece, ulong capturePosition)
         {
-            var enPassantCapture = new PieceMove();
-            enPassantCapture.Type     = PieceType.Pawn;
-            enPassantCapture.Position = attackingPiece;
-            enPassantCapture.Moves    = capturePosition;
+            var enPassantCapture = new PieceMove
+            {
+                Type = PieceType.Pawn,
+                Position = attackingPiece,
+                Moves = capturePosition
+            };
 
             _allMoves.Add(enPassantCapture);
         }
 
-        private static void CheckForWhiteCastlingMoves()
+        private void CheckForWhiteCastlingMoves()
         {
             if (_currentBoard.WhiteCanCastleQueenside)
             {
@@ -758,7 +760,7 @@ namespace ChessEngine.PossibleMoves
             }
         }
 
-        private static void CheckForBlackCastlingMoves()
+        private void CheckForBlackCastlingMoves()
         {
             if (_currentBoard.BlackCanCastleQueenside)
             {
@@ -798,7 +800,7 @@ namespace ChessEngine.PossibleMoves
 
         // This method is used to check if a square is under attack or to check if the king is under attack.
         // With the latter checkCount is used in order to check for double check.
-        private static bool IsSquareAttacked(ulong squarePositionBoard, bool whiteToMove)
+        private bool IsSquareAttacked(ulong squarePositionBoard, bool whiteToMove)
         {
             var squareAttacked = IsPawnAttackingSquare(squarePositionBoard, whiteToMove);
 
@@ -826,7 +828,7 @@ namespace ChessEngine.PossibleMoves
         }
         
         // Checks if the square is under ray attack. Must check every square for double-checks
-        private static bool IsSquareUnderRayAttack(ulong squarePositionBoard, bool whiteToMove)
+        private bool IsSquareUnderRayAttack(ulong squarePositionBoard, bool whiteToMove)
         {
             var underRayAttack = false;
 
@@ -926,7 +928,7 @@ namespace ChessEngine.PossibleMoves
 
         // Checks if pawn is attacking square. There is no need to check all pawns for double-check
         // since only one pawn can be attacking the king at once
-        private static bool IsPawnAttackingSquare(ulong squarePosition, bool whiteToMove)
+        private bool IsPawnAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             var squareIndex    = BitboardOperations.GetSquareIndexFromBoardValue(squarePosition);
             var proximityBoard = ValidMoveArrays.KingMoves[squareIndex]; //Allows the quick masking of wrapping checks
@@ -977,7 +979,7 @@ namespace ChessEngine.PossibleMoves
 
         // Checks if a knight is attacking square. There is no need to check all knights for double-check
         // since only one knight can be attacking the king at once
-        private static bool IsKnightAttackingSquare(ulong squarePosition, bool whiteToMove)
+        private bool IsKnightAttackingSquare(ulong squarePosition, bool whiteToMove)
         {
             ulong knights;
 
@@ -1000,7 +1002,7 @@ namespace ChessEngine.PossibleMoves
             return false;
         }
 
-        private static bool IsCastlingPathAttacked(ulong path, bool whiteToMove)
+        private bool IsCastlingPathAttacked(ulong path, bool whiteToMove)
         {
             //Calculate path positions
             var pathPositions = BitboardOperations.SplitBoardToArray(path);
@@ -1017,7 +1019,7 @@ namespace ChessEngine.PossibleMoves
         }
 
         // Checks if the given square is under attack on the current bitboard
-        private static bool IsCastlingSquareAttacked(ulong squarePosition, bool whiteToMove)
+        private bool IsCastlingSquareAttacked(ulong squarePosition, bool whiteToMove)
         {
             if (IsKnightAttackingSquare(squarePosition, whiteToMove))
             {

@@ -23,6 +23,8 @@ namespace ChessEngine.MoveSearching
         private static readonly ILog s_Log =
             LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        private MoveGeneration _moveGeneration;
+
         private readonly Board _boardPosition;
         private readonly IScoreCalculator _scoreCalculator;
 
@@ -42,10 +44,10 @@ namespace ChessEngine.MoveSearching
 
         private int _maxCheckExtension = 10;
 
-        public AlphaBetaSearch(Board boardPosition, IScoreCalculator scoreCalculator)
+        public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator)
         {
+            _moveGeneration = moveGeneration ?? throw new ArgumentNullException(nameof(moveGeneration));
             _boardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
-
             _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 
             _pieceMover = new PieceMover(_boardPosition);
@@ -258,7 +260,7 @@ namespace ChessEngine.MoveSearching
             }
             else
             {
-                moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(_boardPosition));
+                moveList = new List<PieceMove>(_moveGeneration.CalculateAllMoves(_boardPosition));
                 
                 //OrderMovesInPlaceByEvaluation(moveList);
                 OrderMovesInPlace(moveList, depth);
@@ -394,7 +396,7 @@ namespace ChessEngine.MoveSearching
                 }
             }
 
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllPseudoLegalMoves(_boardPosition));
             
             // There are no possible moves. It's either check mate or stale mate
             if (moveList.Count == 0)
@@ -458,7 +460,7 @@ namespace ChessEngine.MoveSearching
                         continue;
                     }
                     
-                    if (!MoveGeneration.ValidateKingsideCastlingMove(_boardPosition))
+                    if (!_moveGeneration.ValidateKingsideCastlingMove(_boardPosition))
                     {
                         continue;
                     }
@@ -470,7 +472,7 @@ namespace ChessEngine.MoveSearching
                         continue;
                     }
                     
-                    if (!MoveGeneration.ValidateQueensideCastlingMove(_boardPosition))
+                    if (!_moveGeneration.ValidateQueensideCastlingMove(_boardPosition))
                     {
                         continue;
                     }
@@ -696,7 +698,7 @@ namespace ChessEngine.MoveSearching
                 alpha = evaluationScore;
             }
 
-            var moves = MoveGeneration.CalculateAllCapturingMoves(_boardPosition);
+            var moves = _moveGeneration.CalculateAllCapturingMoves(_boardPosition);
 
             if (moves.Count == 0)
             {

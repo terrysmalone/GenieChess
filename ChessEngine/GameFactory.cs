@@ -1,5 +1,6 @@
 ﻿using System;
 using ChessEngine.BoardRepresentation;
+using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using log4net;
 using ResourceLoading;
@@ -17,8 +18,8 @@ namespace ChessEngine
 
         public Game CreateChessGame(bool useOpeningBook)
         {
+            var moveGeneration = new MoveGeneration();
             var scoreCalculator = ScoreCalculatorFactory.Create();
-
             var resourceLoader = new ResourceLoader();
 
             IOpeningBook openingBook = null;
@@ -28,7 +29,7 @@ namespace ChessEngine
                 openingBook = GetOpeningBook(resourceLoader, "book.txt");
             }
 
-            return new Game(scoreCalculator, new Board(), openingBook);
+            return new Game(moveGeneration, scoreCalculator, new Board(), openingBook);
         }
 
         private IOpeningBook GetOpeningBook(IResourceLoader resourceLoader, string bookName)

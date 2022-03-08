@@ -122,6 +122,7 @@ namespace EngineEvaluation
                     var board = new Board();
                     board.SetPosition(position.FenPosition);
 
+                    var moveGeneration = new MoveGeneration();
                     var scoreCalculator = ScoreCalculatorFactory.Create();
 
                     TranspositionTable.Restart();
@@ -139,7 +140,7 @@ namespace EngineEvaluation
                         boardCopy = (Board)formatter.Deserialize(memStream);
                     }
 
-                    var alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
+                    var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator);
 
                     var positionTimer = new Stopwatch();
                     positionTimer.Start();
@@ -174,7 +175,7 @@ namespace EngineEvaluation
 
                             var pieceMover = new PieceMover(boardCopy);
                             pieceMover.MakeMove(currentMove);
-                            alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
+                            alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator);
                         }
                         else
                         {

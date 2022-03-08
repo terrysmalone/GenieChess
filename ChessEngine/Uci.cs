@@ -1,6 +1,7 @@
 ﻿using System;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using ResourceLoading;
 
@@ -79,12 +80,14 @@ namespace ChessEngine
         // May want to clear/reset things here
         private void InputUciNewGame()
         {
+            // TODO: Use game factory
+            var moveGeneration = new MoveGeneration();
             var scoreCalculator = ScoreCalculatorFactory.Create();
 
             var resourceLoader = new ResourceLoader();
             var openingBook = new OpeningBook(resourceLoader.GetGameResourcePath("book.txt"));
 
-            _game = new Game(scoreCalculator, new Board(), openingBook);
+            _game = new Game(moveGeneration, scoreCalculator, new Board(), openingBook);
         }
 
         /// UCI command starts with "position"

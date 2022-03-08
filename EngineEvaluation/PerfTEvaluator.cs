@@ -4,6 +4,7 @@ using System.IO;
 using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.NotationHelpers;
+using ChessEngine.PossibleMoves;
 using ChessEngineTests;
 using log4net;
 using ResourceLoading;
@@ -79,7 +80,7 @@ namespace EngineEvaluation
                     var board = new Board();
                     board.SetPosition(perfTPos.FenPosition);
 
-                    var perft = new PerfT { UseHashing = true };
+                    var perft = new PerfT(new MoveGeneration()) { UseHashing = true };
 
                     var timer = new Stopwatch();
                     timer.Start();

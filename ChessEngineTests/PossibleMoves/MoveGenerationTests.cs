@@ -16,7 +16,8 @@ namespace ChessEngineTests.PossibleMoves
             
              board.SetPosition("8/1K3k2/8/8/8/1p6/1P6/8 w - - 0 1");
 
-             var moveList = MoveGeneration.CalculateAllMoves(board);
+             var moveGeneration = new MoveGeneration();
+             var moveList = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(moveList.Count, Is.EqualTo(8));
         }
@@ -29,7 +30,8 @@ namespace ChessEngineTests.PossibleMoves
             board.SetPosition("8/1K3k2/8/8/8/1p6/1P6/8 b - - 0 1");
             board.SwitchSides();
 
-            var moveList = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var moveList = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(moveList.Count, Is.EqualTo(8));
         }
@@ -45,7 +47,8 @@ namespace ChessEngineTests.PossibleMoves
             //Move black f-pawn 2 spaces
             pieceMover.MakeMove(9007199254740992, 137438953472, PieceType.Pawn, SpecialMoveType.DoublePawnPush);
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(allMoves.Count, Is.EqualTo(9));
         }
@@ -61,7 +64,8 @@ namespace ChessEngineTests.PossibleMoves
             // Move h pawn 2 spaces
             pieceMover.MakeMove(32768, 2147483648, PieceType.Pawn, SpecialMoveType.DoublePawnPush); 
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(allMoves.Count, Is.EqualTo(5));
         }
@@ -73,7 +77,8 @@ namespace ChessEngineTests.PossibleMoves
 
             board.SetPosition("8/8/4r2q/8/2B4R/2N1KP2/r7/8 w - - 0 1");
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
             
             Assert.That(allMoves.Count, Is.EqualTo(2));
 
@@ -95,7 +100,8 @@ namespace ChessEngineTests.PossibleMoves
 
             board.SetPosition("b4k2/8/8/8/8/8/6P1/7K w - - 0 1");
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(allMoves.Count, Is.EqualTo(2));
 
@@ -117,7 +123,8 @@ namespace ChessEngineTests.PossibleMoves
 
             board.SetPosition("5k2/8/4q3/8/8/8/4N3/4K3 w - - 0 1");
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(allMoves.Count, Is.EqualTo(4));
 
@@ -135,7 +142,8 @@ namespace ChessEngineTests.PossibleMoves
 
             board.SetPosition("5b2/8/8/8/1P5b/KP5r/1P5q/8 w - - 0 1");
 
-            var allMoves = MoveGeneration.CalculateAllMoves(board);
+            var moveGeneration = new MoveGeneration();
+            var allMoves = moveGeneration.CalculateAllMoves(board);
 
             Assert.That(allMoves.Count, Is.EqualTo(2));
         }
