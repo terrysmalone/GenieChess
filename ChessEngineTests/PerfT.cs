@@ -76,7 +76,7 @@ namespace ChessEngineTests
                 {
                     _pieceMover.MakeMove(moveList[i]);
 
-                    if (_moveGeneration.ValidateMove(boardPosition))
+                    if (MoveGeneration.ValidateMove(boardPosition))
                         nodes += Perft(boardPosition, depth - 1);
 
                     _pieceMover.UnMakeLastMove(false);
