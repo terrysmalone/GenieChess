@@ -77,6 +77,18 @@ and the max thinking depth (maxDepth)
 
 ## TODO ## 
 
+Migration
+
+* Remove reference to System.Windows.Interactivity
+* Migrate all Projects to PackageReference
+* Remove log4Net
+
+
+
+* Make it all .net 6
+
+
+
 Chess Engine
 
 * Change all instances of == null and != null to is null and is not null
