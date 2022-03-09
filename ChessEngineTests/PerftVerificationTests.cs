@@ -1,4 +1,5 @@
 ﻿using ChessEngine.BoardRepresentation;
+using ChessEngine.PossibleMoves;
 using NUnit.Framework;
 
 namespace ChessEngineTests
@@ -13,7 +14,7 @@ namespace ChessEngineTests
             var board = new Board();
             board.SetPosition("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -31,7 +32,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -54,7 +55,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -72,7 +73,7 @@ namespace ChessEngineTests
         public void TestPerft4([Values] bool useHashing)
         {
             var board = new Board();
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -94,7 +95,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -114,7 +115,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -135,7 +136,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -155,7 +156,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -174,7 +175,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -195,7 +196,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -214,7 +215,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
 
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -236,7 +237,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -258,7 +259,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -280,7 +281,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
 
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -302,7 +303,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
 
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -324,7 +325,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -344,7 +345,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
 
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -364,7 +365,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
 
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -386,7 +387,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -407,7 +408,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -429,7 +430,7 @@ namespace ChessEngineTests
          {
              var board = new Board();
              
-             var perft = new PerfT
+             var perft = new PerfT(new MoveGeneration())
              {
                  UseHashing = useHashing
              };
@@ -450,7 +451,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -466,7 +467,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -482,7 +483,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -502,7 +503,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -521,7 +522,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -541,7 +542,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -561,7 +562,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -580,7 +581,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -600,7 +601,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };
@@ -618,7 +619,7 @@ namespace ChessEngineTests
         {
             var board = new Board();
             
-            var perft = new PerfT
+            var perft = new PerfT(new MoveGeneration())
             {
                 UseHashing = useHashing
             };

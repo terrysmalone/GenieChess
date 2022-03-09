@@ -118,6 +118,7 @@ namespace EngineEvaluation
                     var board = new Board();
                     board.SetPosition(position.FenPosition);
 
+                    var moveGeneration = new MoveGeneration();
                     var scoreCalculator = ScoreCalculatorFactory.Create();
 
                     TranspositionTable.Restart();
@@ -135,7 +136,7 @@ namespace EngineEvaluation
                         boardCopy = (Board)formatter.Deserialize(memStream);
                     }
 
-                    var alphaBeta = new AlphaBetaSearch(boardCopy, scoreCalculator);
+                    var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator);
 
                     var timer = new Stopwatch();
                     timer.Start();

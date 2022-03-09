@@ -16,6 +16,8 @@ namespace ChessEngine
 {
     public class Game
     {
+        private MoveGeneration _moveGeneration;
+
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Board _currentBoard;
@@ -38,8 +40,10 @@ namespace ChessEngine
 
         private List<GameTurn> _gameTurns;
         
-        public Game(IScoreCalculator scoreCalculator, Board board, IOpeningBook openingBook)
+        public Game(MoveGeneration moveGeneration, IScoreCalculator scoreCalculator, Board board, IOpeningBook openingBook)
         {
+            _moveGeneration = moveGeneration ?? throw new ArgumentNullException(nameof(moveGeneration));
+
             _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
 
             _currentBoard = board ?? throw new ArgumentNullException(nameof(board));
@@ -123,7 +127,7 @@ namespace ChessEngine
             _log.Info("===============================================================");
             _log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
-            var search = new AlphaBetaSearch(_currentBoard, _scoreCalculator);
+            var search = new AlphaBetaSearch(_moveGeneration, _currentBoard, _scoreCalculator);
 
             var bestMove = search.CalculateBestMove(ThinkingDepth);
 
@@ -240,9 +244,9 @@ namespace ChessEngine
             return _currentBoard.GetPosition();
         }
 
-        public List<PieceMove> GetValidMoves()
+        public IEnumerable<PieceMove> GetValidMoves()
         {
-            return MoveGeneration.CalculateAllMoves(_currentBoard);
+            return _moveGeneration.CalculateAllMoves(_currentBoard);
         }
         
         /// <summary>

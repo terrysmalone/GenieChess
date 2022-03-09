@@ -81,7 +81,7 @@ namespace ChessEngine.NotationHelpers
 
             if (BoardChecking.IsKingInCheck(board, board.WhiteToMove))
             {
-                if (MoveGeneration.CalculateAllMoves(board).Count > 0 || BoardChecking.CanKingMove(board, board.WhiteToMove))
+                if (new MoveGeneration().CalculateAllMoves(board).Count > 0 || BoardChecking.CanKingMove(board, board.WhiteToMove))
                 {
                     move += "+";
                 }

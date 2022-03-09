@@ -11,8 +11,14 @@ namespace ChessEngineTests
 {
     public class PerfT
     {
+        private MoveGeneration _moveGeneration;
         private PieceMover _pieceMover;
         public bool UseHashing { get; set; } = true;
+
+        public PerfT(MoveGeneration moveGeneration)
+        {
+            _moveGeneration = moveGeneration;
+        }
 
         public int Perft(Board boardPosition, int depth)
         {
@@ -41,7 +47,7 @@ namespace ChessEngineTests
                 return 1;
             }
 
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllPseudoLegalMoves(boardPosition));
 
             _pieceMover = new PieceMover(boardPosition);
 
@@ -52,7 +58,7 @@ namespace ChessEngineTests
                 if (moveList[i].SpecialMove == SpecialMoveType.KingCastle)
                 {
                     if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateKingsideCastlingMove(boardPosition, moveList[i]))
+                        || !_moveGeneration.ValidateKingsideCastlingMove(boardPosition))
                     {
                         skipMove = true;
                     }
@@ -60,7 +66,7 @@ namespace ChessEngineTests
                 else if (moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
                 {
                     if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove) 
-                        || !MoveGeneration.ValidateQueensideCastlingMove(boardPosition, moveList[i]))
+                        || !_moveGeneration.ValidateQueensideCastlingMove(boardPosition))
                     {
                         skipMove = true;
                     }
@@ -97,7 +103,7 @@ namespace ChessEngineTests
         {
             var divides = new List<Tuple<string, int>>();
             
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(boardPosition));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllMoves(boardPosition));
 
             int totalNodes = 0;
             
@@ -130,7 +136,7 @@ namespace ChessEngineTests
         {
             var divides = new List<Tuple<string, int>>();
 
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(boardPosition));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllMoves(boardPosition));
             
             _pieceMover = new PieceMover(boardPosition);
 
@@ -138,7 +144,7 @@ namespace ChessEngineTests
             {
                 _pieceMover.MakeMove(move);
 
-                var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
+                var branchMoves = _moveGeneration.CalculateAllMoves(boardPosition);
                 
                 divides.Add(new Tuple<string, int>(GetPieceMoveAsString(move), branchMoves.Count));
 
@@ -152,7 +158,7 @@ namespace ChessEngineTests
         {
             var divides = new List<Tuple<string, ulong>>();
 
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(boardPosition));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllMoves(boardPosition));
 
             _pieceMover = new PieceMover(boardPosition);
             
@@ -160,7 +166,7 @@ namespace ChessEngineTests
             {
                 _pieceMover.MakeMove(move);
 
-                var branchMoves = MoveGeneration.CalculateAllMoves(boardPosition);
+                var branchMoves = _moveGeneration.CalculateAllMoves(boardPosition);
 
                 divides.Add(new Tuple<string, ulong>(GetPieceMoveAsString(move), (ulong)branchMoves.Count));
 
@@ -174,7 +180,7 @@ namespace ChessEngineTests
         {
             var movesList = new List<string>();
 
-            var moveList = new List<PieceMove>(MoveGeneration.CalculateAllMoves(position));
+            var moveList = new List<PieceMove>(_moveGeneration.CalculateAllMoves(position));
             
             foreach (var move in moveList)
             {

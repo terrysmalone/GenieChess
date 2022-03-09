@@ -9,7 +9,7 @@
             var performanceEvaluatorFactory = new PerformanceEvaluatorFactory();
 
             var engineEvaluation = 
-                performanceEvaluatorFactory.CreatePerformanceEvaluator(false,
+                performanceEvaluatorFactory.CreatePerformanceEvaluator(true,
                                                                        false,
                                                                        true,
                                                                        5);
