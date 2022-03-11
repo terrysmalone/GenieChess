@@ -1,10 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using ChessEngine;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardSearching;
 using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
+using Logging;
 
 namespace Genie_WPF
 {
@@ -24,7 +27,10 @@ namespace Genie_WPF
 
             var moveGeneration = new MoveGeneration();
             var scoreCalculator = ScoreCalculatorFactory.Create();
-            var game = new Game(moveGeneration, scoreCalculator, new Board(), null);
+
+            var logger = new SerilogLog(Path.Combine(Environment.CurrentDirectory, "Debug.log"));
+
+            var game = new Game(moveGeneration, scoreCalculator, new Board(), null, logger);
 
             _boardViewModel = new BoardViewModel(game);
             DataContext = _boardViewModel;
