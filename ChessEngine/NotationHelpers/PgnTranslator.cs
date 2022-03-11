@@ -51,28 +51,28 @@ public static class PgnTranslator
         move += moveTo;
 
         //Is it a promotion
-        if (specialMoveType is SpecialMoveType.BishopPromotion or SpecialMoveType.KnightPromotion
-                                                               or SpecialMoveType.RookPromotion
-                                                               or SpecialMoveType.QueenPromotion
-                                                               or SpecialMoveType.BishopPromotionCapture
-                                                               or SpecialMoveType.KnightPromotionCapture
-                                                               or SpecialMoveType.RookPromotionCapture
-                                                               or SpecialMoveType.QueenPromotionCapture)
+        if (specialMoveType is SpecialMoveType.BishopPromotion
+                            or SpecialMoveType.KnightPromotion
+                            or SpecialMoveType.RookPromotion
+                            or SpecialMoveType.QueenPromotion
+                            or SpecialMoveType.BishopPromotionCapture
+                            or SpecialMoveType.KnightPromotionCapture
+                            or SpecialMoveType.RookPromotionCapture
+                            or SpecialMoveType.QueenPromotionCapture)
         {
             move += "=";
-
+            
             var pieceLetter = specialMoveType switch
             {
                 SpecialMoveType.KnightPromotion or SpecialMoveType.KnightPromotionCapture => "N",
                 SpecialMoveType.BishopPromotion or SpecialMoveType.BishopPromotionCapture => "B",
                 SpecialMoveType.RookPromotion or SpecialMoveType.RookPromotionCapture => "R",
-                SpecialMoveType.QueenPromotion or SpecialMoveType.QueenPromotionCapture => "Q"
+                SpecialMoveType.QueenPromotion or SpecialMoveType.QueenPromotionCapture => "Q",
+                _ => throw new ArgumentOutOfRangeException($"Invalid move type {specialMoveType}")
             };
 
             move += pieceLetter;
         }
-
-        //Move piece to test for check
 
         var pieceMover = new PieceMover(board);
 
