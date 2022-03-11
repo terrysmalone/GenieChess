@@ -1,22 +1,13 @@
-﻿using ChessEngine;using log4net;
+﻿// See https://aka.ms/new-console-template for more information
+using Genie_UCI;
+using Logging;
 
-namespace Genie_UCI
-{
-    internal class Program
-    {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+var logger = new SerilogLog(Path.Combine(Environment.CurrentDirectory, "Debug.log"));
 
-        private static void Main(string[] args)
-        {
-            log4net.Config.XmlConfigurator.Configure();
+logger.Info("==============================================================");
+logger.Info("");
+logger.Info("Running Genie - UCI version");
+logger.Info("");
 
-            Log.Info("==============================================================");
-            Log.Info("");
-            Log.Info("Running Genie - UCI version");
-            Log.Info("");
-            
-            var uci = new Uci();
-            uci.UciCommunication();
-        }
-    }
-}
+var uci = new Uci(logger);
+uci.UciCommunication();

@@ -1,8 +1,7 @@
-namespace Genie_WPF
+namespace Genie_WPF;
+
+public enum Player
 {
-    public enum Player
-    {
-        White,
-        Black
-    }
+    White,
+    Black
 }

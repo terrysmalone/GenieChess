@@ -1,11 +1,13 @@
-namespace Genie_WPF;
+﻿namespace ChessEngine.BoardRepresentation;
 
 public enum PieceType
 {
+    None = 0,
     Pawn,
-    Rook,
     Knight,
     Bishop,
+    Rook,
     Queen,
     King
 }
+

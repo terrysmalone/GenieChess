@@ -1,34 +1,30 @@
-﻿
-using System;
-using System.Collections.Generic;
-using log4net;
+﻿using Logging;
 
-namespace EngineEvaluation
+namespace EngineEvaluation;
+
+// Runs and logs a full performance evaluation
+public class EnginePerformanceEvaluator
 {
-    // Runs and logs a full performance evaluation 
-    public class EnginePerformanceEvaluator
+    private readonly List<IEvaluator> _evaluators;
+
+    public EnginePerformanceEvaluator(List<IEvaluator> evaluators, ILog log)
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly List<IEvaluator> _evaluators;
-
-        public EnginePerformanceEvaluator(List<IEvaluator> evaluators)
+        if (evaluators == null)
         {
-            if (evaluators == null)
-            {
-                Log.Error("Evaluators list passed into EnginePerformanceEvaluator was null");
-                throw new ArgumentNullException(nameof(evaluators));
-            }
-
-            _evaluators = evaluators;
+            log.Error("Evaluators list passed into EnginePerformanceEvaluator was null");
+            throw new ArgumentNullException(nameof(evaluators));
         }
 
-        public void RunFullPerformanceEvaluation(int maxDepth)
+        _evaluators = evaluators;
+    }
+
+    public void RunFullPerformanceEvaluation(int maxDepth)
+    {
+        foreach (var evaluator in _evaluators)
         {
-            foreach (var evaluator in _evaluators)
-            {
-                evaluator.Evaluate(maxDepth);
-            }
+            evaluator.Evaluate(maxDepth);
         }
     }
 }
+

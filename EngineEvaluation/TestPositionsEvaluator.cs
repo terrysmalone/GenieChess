@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using ChessEngine.BoardRepresentation;
@@ -10,267 +7,269 @@ using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
-using log4net;
+using Logging;
 using ResourceLoading;
 
-namespace EngineEvaluation
+namespace EngineEvaluation;
+
+public sealed class TestPositionsEvaluator : IEvaluator
 {
-    public sealed class TestPositionsEvaluator : IEvaluator
+    private ILog _log;
+
+    private List<Tuple<string, List<TestPosition>>> _testPositionSuites;
+
+    private readonly string _fullLogFile;
+    private readonly string _highlightsLogFile;
+
+    private readonly ExcelHandler _excelHandler;
+
+    private readonly IResourceLoader _resourceLoader = new ResourceLoader();
+
+    public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites,
+                                  string highlightsLogFile,
+                                  string fullLogFile,
+                                  string testExcelLogFile,
+                                  ILog log)
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        _log = log;
 
-        private List<Tuple<string, List<TestPosition>>> _testPositionSuites;
-
-        private readonly string _fullLogFile;
-        private readonly string _highlightsLogFile;
-
-        private readonly ExcelHandler _excelHandler;
-
-        private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-        
-        public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites, 
-                                      string highlightsLogFile, 
-                                      string fullLogFile,
-                                      string testExcelLogFile)
+        if (testPositionSuites == null)
         {
-            if (testPositionSuites == null)
-            {
-                _log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(testPositionSuites));
-            }
-
-            _testPositionSuites = testPositionSuites;
-
-            if (highlightsLogFile == null)
-            {
-                _log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(highlightsLogFile));
-            }
-
-            _highlightsLogFile = highlightsLogFile;
-
-            if (fullLogFile == null)
-            {
-                _log.Error("No fullLogFile was passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(fullLogFile));
-            }
-
-            this._fullLogFile = fullLogFile;
-
-            if (testExcelLogFile == null)
-            {
-                _log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
-                throw new ArgumentNullException(nameof(testExcelLogFile));
-            }
-
-            _excelHandler = new ExcelHandler(testExcelLogFile);
-
-            _excelHandler.CreateHeaders("Test suites", new [] { "Test suite", "Result", "Test passed", "Number of tests", "Nodes visited", "Total time (hh:mm:ss.ms)"});
-            _excelHandler.CreateHeaders("Tests", new[] { "Test suite", "Test name", "Passed", "Nodes visited", "Total time (hh:mm:ss.ms)" });
+            _log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
+            throw new ArgumentNullException(nameof(testPositionSuites));
         }
 
-        public void Evaluate(int evaluationDepth)
+        _testPositionSuites = testPositionSuites;
+
+        if (highlightsLogFile == null)
         {
-            Evaluate(evaluationDepth, 0);
+            _log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
+            throw new ArgumentNullException(nameof(highlightsLogFile));
         }
 
-        public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
+        _highlightsLogFile = highlightsLogFile;
+
+        if (fullLogFile == null)
         {
-            LogLine("====================================================================");
-            LogLine("Test positions evaluator");
+            _log.Error("No fullLogFile was passed to TestPositionsEvaluator");
+            throw new ArgumentNullException(nameof(fullLogFile));
+        }
 
-            LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
+        this._fullLogFile = fullLogFile;
 
-            if (maxThinkingSeconds > 0)
+        if (testExcelLogFile == null)
+        {
+            _log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
+            throw new ArgumentNullException(nameof(testExcelLogFile));
+        }
+
+        _excelHandler = new ExcelHandler(testExcelLogFile, _log);
+
+        _excelHandler.CreateHeaders("Test suites", new [] { "Test suite", "Result", "Test passed", "Number of tests", "Nodes visited", "Total time (hh:mm:ss.ms)"});
+        _excelHandler.CreateHeaders("Tests", new[] { "Test suite", "Test name", "Passed", "Nodes visited", "Total time (hh:mm:ss.ms)" });
+    }
+
+    public void Evaluate(int evaluationDepth)
+    {
+        Evaluate(evaluationDepth, 0);
+    }
+
+    public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
+    {
+        LogLine("====================================================================");
+        LogLine("Test positions evaluator");
+
+        LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
+
+        if (maxThinkingSeconds > 0)
+        {
+            LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
+                              $"and a max thinking time of {maxThinkingSeconds} seconds");
+        }
+        else
+        {
+            LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth}");
+        }
+
+        var overallTestPositions = 0;
+        var overallPassedTestPositions = 0;
+
+        var overallTestSuiteTime = TimeSpan.Zero;
+        float overallTestSuiteNodes = 0;
+
+        foreach (var testPositionSuite in _testPositionSuites)
+        {
+            var testSuiteName = testPositionSuite.Item1;
+
+            LogLine("--------------------------------------------------------------");
+            LogLine($"Test set: {testSuiteName}");
+
+            _log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
+
+            var totalTestSuiteTime = TimeSpan.Zero;
+            float totalTestSuiteNodeCount = 0;
+
+            var passedTestSuitePositions = 0;
+
+            foreach (var position in testPositionSuite.Item2)
             {
-                LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth} " +
-                                  $"and a max thinking time of {maxThinkingSeconds} seconds");
-            }
-            else
-            {
-                LogLineAsDetailed($"Logging Test positions with a max search depth of {evaluationDepth}");
-            }
+                _log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
 
-            var overallTestPositions = 0;
-            var overallPassedTestPositions = 0;
+                var board = new Board();
+                board.SetPosition(position.FenPosition);
 
-            var overallTestSuiteTime = TimeSpan.Zero;
-            float overallTestSuiteNodes = 0;
+                var moveGeneration = new MoveGeneration();
+                var scoreCalculator = ScoreCalculatorFactory.Create();
 
-            foreach (var testPositionSuite in _testPositionSuites)
-            {
-                var testSuiteName = testPositionSuite.Item1;
+                TranspositionTable.Restart();
 
-                LogLine("--------------------------------------------------------------");
-                LogLine($"Test set: {testSuiteName}");
+                // Serialise the board since the search might leave it in a bad state
+                IFormatter formatter = new BinaryFormatter();
+                Board boardCopy;
 
-                _log.Info($"Beginning test evaluation of Test suite: {testSuiteName}");
-                
-                var totalTestSuiteTime = TimeSpan.Zero;
-                float totalTestSuiteNodeCount = 0;
-
-                var passedTestSuitePositions = 0;
-
-                foreach (var position in testPositionSuite.Item2)
+                // Make a copy of the board since the search might mess up it's state
+                using (MemoryStream memStream = new MemoryStream())
                 {
-                    _log.Info($"Beginning test evaluation of test: {position.Name} - FEN: {position.FenPosition}");
-                    
-                    var board = new Board();
-                    board.SetPosition(position.FenPosition);
+                    formatter.Serialize(memStream, board);
 
-                    var moveGeneration = new MoveGeneration();
-                    var scoreCalculator = ScoreCalculatorFactory.Create();
-
-                    TranspositionTable.Restart();
-
-                    // Serialise the board since the search might leave it in a bad state
-                    IFormatter formatter = new BinaryFormatter();
-                    Board boardCopy;
-                    
-                    // Make a copy of the board since the search might mess up it's state
-                    using (MemoryStream memStream = new MemoryStream())
-                    {
-                        formatter.Serialize(memStream, board);
-
-                        memStream.Position = 0;
-                        boardCopy = (Board)formatter.Deserialize(memStream);
-                    }
-
-                    var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator);
-
-                    var timer = new Stopwatch();
-                    timer.Start();
-
-                    var currentMove = new PieceMove();
-
-                    if (maxThinkingSeconds > 0)
-                    {
-                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
-                    }
-                    else
-                    {
-                        currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
-                    }
-
-                    timer.Stop();
-
-                    totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
-
-                    var totalNodes = alphaBeta.TotalSearchNodes;
-                    totalTestSuiteNodeCount += totalNodes;
-
-                    var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
-
-                    var passed = false;
-                    
-                    if (position.BestMovePgn == chosenMove)
-                    {
-                        passedTestSuitePositions++;
-                        passed = true;
-                    }
-                    
-                    LogTestPositionResults(
-                        position.Name,
-                        chosenMove, 
-                        position.BestMovePgn,
-                        passed,
-                        timer.Elapsed,
-                        totalNodes);
-
-                    _excelHandler.AddDataToSheet("Tests", new[]
-                                                           {
-                                                               testSuiteName,
-                                                               position.Name,
-                                                               passed.ToString(),
-                                                               $"{totalNodes:n0}",
-                                                               $"'{timer.Elapsed.ToString()}"
-                                                           });
+                    memStream.Position = 0;
+                    boardCopy = (Board)formatter.Deserialize(memStream);
                 }
 
-                var totalSuiteTestPositions = testPositionSuite.Item2.Count;
+                var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, _log);
 
-                var passedSuite = passedTestSuitePositions == totalSuiteTestPositions ? "Passed" : "FAILED";
-                
-                LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - " +
-                        $"Total time: {totalTestSuiteTime} - " +
-                        $"Total node visited: {totalTestSuiteNodeCount:n0}");
+                var timer = new Stopwatch();
+                timer.Start();
 
-                _excelHandler.AddDataToSheet("Test suites", new[]
-                                                             {
-                                                                 testSuiteName,
-                                                                 passedSuite,
-                                                                 passedTestSuitePositions.ToString(CultureInfo.InvariantCulture),
-                                                                 totalSuiteTestPositions.ToString(CultureInfo.InvariantCulture),
-                                                                 $"{totalTestSuiteNodeCount:n0}",
-                                                                 $"'{totalTestSuiteTime.ToString()}"
-                                                             });
+                var currentMove = new PieceMove();
 
-                overallPassedTestPositions += passedTestSuitePositions;
-                overallTestPositions += totalSuiteTestPositions;
+                if (maxThinkingSeconds > 0)
+                {
+                    currentMove = alphaBeta.CalculateBestMove(evaluationDepth, maxThinkingSeconds);
+                }
+                else
+                {
+                    currentMove = alphaBeta.CalculateBestMove(evaluationDepth);
+                }
 
-                overallTestSuiteTime = overallTestSuiteTime.Add(totalTestSuiteTime);
+                timer.Stop();
 
-                overallTestSuiteNodes += totalTestSuiteNodeCount;
+                totalTestSuiteTime = totalTestSuiteTime.Add(timer.Elapsed);
+
+                var totalNodes = alphaBeta.TotalSearchNodes;
+                totalTestSuiteNodeCount += totalNodes;
+
+                var chosenMove = PgnTranslator.ToPgnMove(board, currentMove.Position, currentMove.Moves, currentMove.Type);
+
+                var passed = false;
+
+                if (position.BestMovePgn == chosenMove)
+                {
+                    passedTestSuitePositions++;
+                    passed = true;
+                }
+
+                LogTestPositionResults(
+                    position.Name,
+                    chosenMove,
+                    position.BestMovePgn,
+                    passed,
+                    timer.Elapsed,
+                    totalNodes);
+
+                _excelHandler.AddDataToSheet("Tests", new[]
+                                                       {
+                                                           testSuiteName,
+                                                           position.Name,
+                                                           passed.ToString(),
+                                                           $"{totalNodes:n0}",
+                                                           $"'{timer.Elapsed.ToString()}"
+                                                       });
             }
 
-            LogLine($"Overall passed: {overallPassedTestPositions}/{ overallTestPositions}");
-            LogLine($"Overall time: {overallTestSuiteTime}");
-            LogLine($"Overall node count: {overallTestSuiteNodes:n0}");
+            var totalSuiteTestPositions = testPositionSuite.Item2.Count;
+
+            var passedSuite = passedTestSuitePositions == totalSuiteTestPositions ? "Passed" : "FAILED";
+
+            LogLine($"{passedSuite} - {passedTestSuitePositions}/{totalSuiteTestPositions} - " +
+                    $"Total time: {totalTestSuiteTime} - " +
+                    $"Total node visited: {totalTestSuiteNodeCount:n0}");
 
             _excelHandler.AddDataToSheet("Test suites", new[]
                                                          {
-                                                             string.Empty,
-                                                             string.Empty,
-                                                             overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
-                                                             overallTestPositions.ToString(CultureInfo.InvariantCulture),
-                                                             $"{overallTestSuiteNodes:n0}",
-                                                             $"'{overallTestSuiteTime.ToString()}"
+                                                             testSuiteName,
+                                                             passedSuite,
+                                                             passedTestSuitePositions.ToString(CultureInfo.InvariantCulture),
+                                                             totalSuiteTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                             $"{totalTestSuiteNodeCount:n0}",
+                                                             $"'{totalTestSuiteTime.ToString()}"
                                                          });
 
-            _excelHandler.AddDataToSheet("Tests", new[]
-                                                   {
-                                                       string.Empty,
-                                                       string.Empty,
-                                                       overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
-                                                       overallTestPositions.ToString(CultureInfo.InvariantCulture),
-                                                       $"{overallTestSuiteNodes:n0}",
-                                                       $"'{overallTestSuiteTime.ToString()}"
-                                                   });
+            overallPassedTestPositions += passedTestSuitePositions;
+            overallTestPositions += totalSuiteTestPositions;
+
+            overallTestSuiteTime = overallTestSuiteTime.Add(totalTestSuiteTime);
+
+            overallTestSuiteNodes += totalTestSuiteNodeCount;
         }
 
-        private void LogTestPositionResults(
-            string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, float totalNodes)
-        {
-            var result = passed ? "Passed" : "FAILED";
+        LogLine($"Overall passed: {overallPassedTestPositions}/{ overallTestPositions}");
+        LogLine($"Overall time: {overallTestSuiteTime}");
+        LogLine($"Overall node count: {overallTestSuiteNodes:n0}");
 
-            LogLineAsDetailed($"Name:{ positionName } - " + 
-                              $"Best move:{ bestMove } - " +
-                              $"Selected move {chosenMove} - " +
-                              $"Total time: {elapsedTime} - " +
-                              $"Total nodes visited {totalNodes:n0} - " +
-                              $"{result}");
-        }
+        _excelHandler.AddDataToSheet("Test suites", new[]
+                                                     {
+                                                         string.Empty,
+                                                         string.Empty,
+                                                         overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                         overallTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                         $"{overallTestSuiteNodes:n0}",
+                                                         $"'{overallTestSuiteTime.ToString()}"
+                                                     });
 
-        private void LogLine(string text)
-        {
-            LogLineAsDetailed(text);
-            LogLineAsHighlight(text);
-        }
-        
-        private void LogLineAsHighlight(string text)
-        {
-            using (var stream = File.AppendText(_highlightsLogFile))
-            {
-                stream.WriteLine(text);
-            }
-        }
+        _excelHandler.AddDataToSheet("Tests", new[]
+                                               {
+                                                   string.Empty,
+                                                   string.Empty,
+                                                   overallPassedTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                   overallTestPositions.ToString(CultureInfo.InvariantCulture),
+                                                   $"{overallTestSuiteNodes:n0}",
+                                                   $"'{overallTestSuiteTime.ToString()}"
+                                               });
+    }
 
-        private void LogLineAsDetailed(string text)
+    private void LogTestPositionResults(
+        string positionName, string chosenMove, string bestMove, bool passed, TimeSpan elapsedTime, float totalNodes)
+    {
+        var result = passed ? "Passed" : "FAILED";
+
+        LogLineAsDetailed($"Name:{ positionName } - " +
+                          $"Best move:{ bestMove } - " +
+                          $"Selected move {chosenMove} - " +
+                          $"Total time: {elapsedTime} - " +
+                          $"Total nodes visited {totalNodes:n0} - " +
+                          $"{result}");
+    }
+
+    private void LogLine(string text)
+    {
+        LogLineAsDetailed(text);
+        LogLineAsHighlight(text);
+    }
+
+    private void LogLineAsHighlight(string text)
+    {
+        using (var stream = File.AppendText(_highlightsLogFile))
         {
-            using (var stream = File.AppendText(_fullLogFile))
-            {
-                stream.WriteLine(text);
-            }
+            stream.WriteLine(text);
+        }
+    }
+
+    private void LogLineAsDetailed(string text)
+    {
+        using (var stream = File.AppendText(_fullLogFile))
+        {
+            stream.WriteLine(text);
         }
     }
 }

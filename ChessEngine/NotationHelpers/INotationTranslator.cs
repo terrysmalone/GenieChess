@@ -1,16 +1,15 @@
 ﻿using ChessEngine.BoardRepresentation;
-using ChessEngine.BoardRepresentation.Enums;
 
-namespace ChessEngine.NotationHelpers
+namespace ChessEngine.NotationHelpers;
+
+public interface INotationTranslator
 {
-    public interface INotationTranslator
-    {
-        BoardState ToBoardState(string notation);
+    BoardState ToBoardState(string notation);
 
-        string FromBoardState(BoardState boardState);
+    string FromBoardState(BoardState boardState);
 
-        string ToBoardMove(string notation);
+    string ToBoardMove(string notation);
 
-        string FromBoardMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove);
-    }
+    string FromBoardMove(Board board, ulong moveFromBoard, ulong moveToBoard, PieceType pieceToMove);
 }
+

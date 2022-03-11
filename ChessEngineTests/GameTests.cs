@@ -5,52 +5,51 @@ using ChessEngine.PossibleMoves;
 using ChessEngine.ScoreCalculation;
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests;
+
+// Tests to make sure the whole engine behaves as expected
+[TestFixture]
+public class GameTests
 {
-    // Tests to make sure the whole engine behaves as expected
-    [TestFixture]
-    public class GameTests
+    [Test]
+    public void TestPlayingGame_VerySimpleCapture_White([Range(1,6)] int thinkingDepth)
     {
-        [Test]
-        public void TestPlayingGame_VerySimpleCapture_White([Range(1,6)] int thinkingDepth)
-        {
-            var scoreCalculator = ScoreCalculatorFactory.Create();
-            
-            var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
+        var scoreCalculator = ScoreCalculatorFactory.Create();
 
-            game.SetPosition("7k/8/8/3pK3/8/8/8/8 w - - 0 1");
+        var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
 
-            game.ThinkingDepth = thinkingDepth;
+        game.SetPosition("7k/8/8/3pK3/8/8/8/8 w - - 0 1");
 
-            game.AllowAllCastling(false);
-            
-            game.MakeBestMove();
+        game.ThinkingDepth = thinkingDepth;
 
-            var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
-            var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
+        game.AllowAllCastling(false);
 
-            Assert.That(fenNotation, Is.EqualTo(expectedFen));
-        }
-        
-        [Test]
-        public void TestPlayingGame_VerySimpleCapture_Black([Range(1, 6)] int thinkingDepth)
-        {
-            var scoreCalculator = ScoreCalculatorFactory.Create();
-            var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
+        game.MakeBestMove();
 
-            game.ClearBoard();
+        var expectedFen = "7k/8/8/3K4/8/8/8/8 b - - 1 1";
+        var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
 
-            game.SetPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
+        Assert.That(fenNotation, Is.EqualTo(expectedFen));
+    }
 
-            game.ThinkingDepth = thinkingDepth;
-            game.AllowAllCastling(false);
+    [Test]
+    public void TestPlayingGame_VerySimpleCapture_Black([Range(1, 6)] int thinkingDepth)
+    {
+        var scoreCalculator = ScoreCalculatorFactory.Create();
+        var game = new Game(new MoveGeneration(), scoreCalculator, new Board(), null);
 
-            game.MakeBestMove();
+        game.ClearBoard();
 
-            var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
-            var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
+        game.SetPosition("8/8/4Pk2/8/8/8/1K6/8 b - - 0 1");
 
-            Assert.That(fenNotation, Is.EqualTo(expectedFen));
-        }
+        game.ThinkingDepth = thinkingDepth;
+        game.AllowAllCastling(false);
+
+        game.MakeBestMove();
+
+        var expectedFen = "8/8/4k3/8/8/8/1K6/8 w - - 1 2";
+        var fenNotation = FenTranslator.ToFenString(game.GetCurrentBoardState());
+
+        Assert.That(fenNotation, Is.EqualTo(expectedFen));
     }
 }

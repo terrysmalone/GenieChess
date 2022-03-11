@@ -1,16 +1,15 @@
-﻿using System;
-using ChessEngine.PossibleMoves;
+﻿using ChessEngine.PossibleMoves;
 
-namespace ChessEngine.MoveSearching
+namespace ChessEngine.MoveSearching;
+
+// Stores info relating to a move. Used for storing iterative deepening lines
+public struct MoveValueInfo
 {
-    // Stores info relating to a move. Used for storing iterative deepening lines
-    public struct MoveValueInfo
-    {
-        public PieceMove Move;
-        public int Score;
-        public TimeSpan DepthTime;
-        public TimeSpan AccumulatedTime;
+    public PieceMove Move;
+    public int Score;
+    public TimeSpan DepthTime;
+    public TimeSpan AccumulatedTime;
 
-        public ulong NodesVisited;        
-    }
+    public ulong NodesVisited;
 }
+

@@ -1,32 +1,32 @@
 using NUnit.Framework;
 
-namespace ChessEngineTests
+namespace ChessEngineTests;
+
+[TestFixture]
+public class PieceMoverTests
 {
-    [TestFixture]
-    public class PieceMoverTests
+    [Test]
+    public void MakeMove_ChangesBoardState()
     {
-        [Test]
-        public void MakeMove_ChangesBoardState()
-        {
-            // TODO: Write tests
-        }
+        // TODO: Write tests
+    }
 
-        [Test]
-        public void MakeMove_ChangesUsefulBitboards()
-        {
-            // TODO: Write tests
-        }
+    [Test]
+    public void MakeMove_ChangesUsefulBitboards()
+    {
+        // TODO: Write tests
+    }
 
-        [Test]
-        public void UnMakeLastMove_RestoresBoardState()
-        {
-            // TODO: Write tests
-        }
+    [Test]
+    public void UnMakeLastMove_RestoresBoardState()
+    {
+        // TODO: Write tests
+    }
 
-        [Test]
-        public void MakeMove_RestoresUsefulBitboards()
-        {
-            // TODO: Write tests
-        }
+    [Test]
+    public void MakeMove_RestoresUsefulBitboards()
+    {
+        // TODO: Write tests
     }
 }
+

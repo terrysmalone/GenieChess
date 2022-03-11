@@ -1,7 +1,6 @@
-﻿namespace ChessEngine
+﻿namespace ChessEngine;
+
+public interface IChessGameFactory
 {
-    public interface IChessGameFactory
-    {
-        Game CreateChessGame(bool useOpeningBook);
-    }
+    Game CreateChessGame(bool useOpeningBook);
 }

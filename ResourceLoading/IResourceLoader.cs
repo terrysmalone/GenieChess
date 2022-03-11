@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace ResourceLoading
+namespace ResourceLoading;
+
+public interface IResourceLoader
 {
-    public interface IResourceLoader
-    {
-        string GetGameResourcePath(string fileName);
+    string GetGameResourcePath(string fileName);
 
-        string[] GetAllPerformanceEvaluationFilePaths(string directory);
+    string[] GetAllPerformanceEvaluationFilePaths(string directory);
 
-        List<PerfTPosition> LoadPerfTPositions();
+    List<PerfTPosition> LoadPerfTPositions();
 
-        List<TestPosition> LoadTestPositions(string fileName, int maxToLoad);
+    List<TestPosition> LoadTestPositions(string fileName, int maxToLoad);
 
-        List<MateInXTestPosition> LoadMateInXPositions(string fileName, int maxToLoad);
-    }
+    List<MateInXTestPosition> LoadMateInXPositions(string fileName, int maxToLoad);
 }
+

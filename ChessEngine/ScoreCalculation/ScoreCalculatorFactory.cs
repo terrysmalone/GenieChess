@@ -1,16 +1,18 @@
+using Logging;
 using ResourceLoading;
 
-namespace ChessEngine.ScoreCalculation
+namespace ChessEngine.ScoreCalculation;
+
+public static class ScoreCalculatorFactory
 {
-    public static class ScoreCalculatorFactory
+    public static ScoreCalculator Create(ILog log = null)
     {
-        public static ScoreCalculator Create()
-        {
-            var scoreValues = new ScoreValues();
+        var scoreValues = new ScoreValues();
 
-            ScoreValueXmlReader.ReadScores(scoreValues, new ResourceLoader().GetGameResourcePath("ScoreValues.xml"));
+        var scoreValueXmlReader = new ScoreValueXmlReader();
+        scoreValueXmlReader.ReadScores(scoreValues, new ResourceLoader().GetGameResourcePath("ScoreValues.xml"), log ?? new NullLogger());
 
-            return new ScoreCalculator(scoreValues);
-        }
+        return new ScoreCalculator(scoreValues);
     }
 }
+

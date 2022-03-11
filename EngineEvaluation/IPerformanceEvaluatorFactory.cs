@@ -1,10 +1,12 @@
-﻿namespace EngineEvaluation
+﻿using Logging;
+
+namespace EngineEvaluation;
+
+internal interface IPerformanceEvaluatorFactory
 {
-    internal interface IPerformanceEvaluatorFactory
-    {
-        EnginePerformanceEvaluator CreatePerformanceEvaluator(bool evaluatePerfTPositions,
-                                                              bool evaluateMateInXPositions,
-                                                              bool evaluateTestPositions,
-                                                              int problemsPerSuiteLimit);
-    }
+    EnginePerformanceEvaluator CreatePerformanceEvaluator(bool evaluatePerfTPositions,
+                                                          bool evaluateMateInXPositions,
+                                                          bool evaluateTestPositions,
+                                                          int problemsPerSuiteLimit);
 }
+
