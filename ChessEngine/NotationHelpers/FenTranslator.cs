@@ -38,8 +38,8 @@ public static class FenTranslator
                 state.WhiteToMove = false;
             else
             {
-                log.Error(string.Format("Player colour in FEN string not recognised: {0}", colour));
-                throw new ArgumentException(string.Format("Player colour string not recognised: {0}", colour));
+                log.Error($"Player colour in FEN string not recognised: {colour}");
+                throw new ArgumentException($"Player colour string not recognised: {colour}");
             }
 
             if (parts.Length > 2)
@@ -109,8 +109,8 @@ public static class FenTranslator
                             state.BlackKing |= LookupTables.SquareValuesFromPosition[currentFile, currentRank];
                             break;
                         default:
-                            log.Error(string.Format("Unrecognised black piece letter: {0}", letter));
-                            throw new Exception(string.Format("Unrecognised black piece letter: {0}", letter));
+                            log.Error($"Unrecognised black piece letter: {letter}");
+                            throw new Exception($"Unrecognised black piece letter: {letter}");
                     }
                 }
                 else
@@ -136,8 +136,8 @@ public static class FenTranslator
                             state.WhiteKing |= LookupTables.SquareValuesFromPosition[currentFile, currentRank];
                             break;
                         default:
-                            log.Error(string.Format("Unrecognised white piece letter: {0}", letter));
-                            throw new Exception(string.Format("Unrecognised white piece letter: {0}", letter));
+                            log.Error($"Unrecognised white piece letter: {letter}");
+                            throw new Exception($"Unrecognised white piece letter: {letter}");
                     }
                 }
 
@@ -151,8 +151,8 @@ public static class FenTranslator
             }
             else
             {
-                log.Error(string.Format("Unrecognised board character: {0}", letter));
-                throw new Exception(string.Format("Unrecognised board character: {0}", letter));
+                log.Error($"Unrecognised board character: {letter}");
+                throw new Exception($"Unrecognised board character: {letter}");
             }
         }
     }
@@ -182,8 +182,8 @@ public static class FenTranslator
                     state.BlackCanCastleQueenside = true;
                 else
                 {
-                    log.Error(string.Format("Unrecognised castling character: {0}", letter));
-                    throw new Exception(string.Format("Unrecognised castling character: {0}", letter));
+                    log.Error($"Unrecognised castling character: {letter}");
+                    throw new Exception($"Unrecognised castling character: {letter}");
                 }
             }
         }
@@ -230,8 +230,8 @@ public static class FenTranslator
                         enPassantFilePos = 7;
                         break;
                     default:
-                        log.Error(string.Format("En passant letter not recognised: {0}", letter));
-                        throw new Exception(string.Format("En passant letter not recognised: {0}", letter));
+                        log.Error($"En passant letter not recognised: {letter}");
+                        throw new Exception($"En passant letter not recognised: {letter}");
                 }
             }
             else if (char.IsNumber(letter))
@@ -240,8 +240,8 @@ public static class FenTranslator
             }
             else
             {
-                log.Error(string.Format("Unrecognised en Passant character: {0}", letter));
-                throw new Exception(string.Format("Unrecognised en Passant character: {0}", letter));
+                log.Error($"Unrecognised en Passant character: {letter}");
+                throw new Exception($"Unrecognised en Passant character: {letter}");
             }
         }
     }
@@ -456,8 +456,8 @@ public static class FenTranslator
                 columnString = "h";
                 break;
             default:
-                log.Error(string.Format("En passant letter not recognised: {0}", columnString));
-                throw new Exception(string.Format("En passant letter not recognised: {0}", columnString));
+                log.Error($"En passant letter not recognised: {columnString}");
+                throw new Exception($"En passant letter not recognised: {columnString}");
         }
 
         square += columnString + (row+1);

@@ -301,29 +301,16 @@ internal static class ZobristHash
 
     internal static int GetPieceValue(PieceType pieceType, bool whitePiece)
     {
-        var val = 0;
-
-        switch (pieceType)
+        var val = pieceType switch
         {
-            case PieceType.Pawn:
-                val = 0;
-                break;
-            case PieceType.Knight:
-                val = 1;
-                break;
-            case PieceType.Bishop:
-                val = 2;
-                break;
-            case PieceType.Rook:
-                val = 3;
-                break;
-            case PieceType.Queen:
-                val = 4;
-                break;
-            case PieceType.King:
-                val = 5;
-                break;
-        }
+            PieceType.None or PieceType.Pawn => 0,
+            PieceType.Knight => 1,
+            PieceType.Bishop => 2,
+            PieceType.Rook => 3,
+            PieceType.Queen => 4,
+            PieceType.King => 5,
+            _ => throw new ArgumentOutOfRangeException($"Unrecognised piece type {pieceType}")
+        };
 
         if (!whitePiece)
         {

@@ -82,7 +82,7 @@ public static class TranslationHelper
         }
         catch(Exception exc)
         {
-            Log.Error(string.Format("Error converting string {0} to bitboard.", position), exc);
+            Log.Error($"Error converting string {position} to bitboard.", exc);
         }
 
         return bitboard;

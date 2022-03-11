@@ -892,15 +892,15 @@ public sealed class AlphaBetaSearch
     {
         return pieceType switch
         {
-            PieceType.Pawn => 1,
+            PieceType.None or PieceType.Pawn => 1,
             PieceType.Knight => 2,
             PieceType.Bishop => 3,
             PieceType.Rook => 4,
             PieceType.Queen => 5,
             PieceType.King => 6,
-            PieceType.None or _ => throw new ArgumentOutOfRangeException(nameof(pieceType),
-                                                                         pieceType,
-                                                                         "No piece type given")
+            _ => throw new ArgumentOutOfRangeException(nameof(pieceType),
+                                                       pieceType,
+                                                       $"Invalid piece type {pieceType} given")
         };
     }
 
