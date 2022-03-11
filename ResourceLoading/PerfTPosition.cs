@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
+﻿namespace ResourceLoading;
 
-namespace ResourceLoading
+/// <summary>
+/// Stores Perft positions and their expected results
+/// </summary>
+public struct PerfTPosition
 {
-    /// <summary>
-    /// Stores Perft positions and their expected results
-    /// </summary>
-    public struct PerfTPosition
-    {
-        public string Name;
-        public string FenPosition;
+    public string Name;
+    public string FenPosition;
 
-        public List<long> Results;
-    }
+    public List<long> Results;
 }
+

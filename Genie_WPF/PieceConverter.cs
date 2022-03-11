@@ -6,32 +6,32 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xaml;
 
-namespace Genie_WPF
+namespace Genie_WPF;
+
+internal class PieceConverter : MarkupExtension, IValueConverter
 {
-    internal class PieceConverter : MarkupExtension, IValueConverter
+    private Control _target;
+
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        private Control _target;
+        var resourceKey = (string)value;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            var resourceKey = (string)value;
+        return _target?.FindResource(resourceKey) ?? Application.Current.FindResource(resourceKey);
+    }
 
-            return _target?.FindResource(resourceKey) ?? Application.Current.FindResource(resourceKey);
-        }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
+    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
-
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            var rootObjectProvider = serviceProvider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
-            if (rootObjectProvider == null)
-                return this;
-
-            _target = rootObjectProvider.RootObject as Control;
+    public override object ProvideValue(IServiceProvider serviceProvider)
+    {
+        var rootObjectProvider = serviceProvider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
+        if (rootObjectProvider == null)
             return this;
-        }
+
+        _target = rootObjectProvider.RootObject as Control;
+        return this;
     }
 }
+

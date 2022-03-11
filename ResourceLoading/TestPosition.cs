@@ -1,11 +1,9 @@
-﻿namespace ResourceLoading
+﻿namespace ResourceLoading;
+
+public struct TestPosition
 {
-    public struct TestPosition
-    {
-        public string Name;
-        public string FenPosition;
+    public string Name;
+    public string FenPosition;
 
-        public string BestMovePgn;
-    }
-
+    public string BestMovePgn;
 }

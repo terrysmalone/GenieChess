@@ -1,52 +1,51 @@
 using System.Windows;
 
-namespace Genie_WPF
+namespace Genie_WPF;
+
+public sealed class ChessPiece : ViewModelBase
 {
-    public sealed class ChessPiece : ViewModelBase
+    private Point _pos;
+    private PieceType _type;
+    private Player _player;
+    private bool _isSelected;
+
+    public Point Pos
     {
-        private Point _pos;
-        private PieceType _type;
-        private Player _player;
-        private bool _isSelected;
-
-        public Point Pos
+        get => _pos;
+        set
         {
-            get => _pos;
-            set
-            {
-                _pos = value;
-                OnPropertyChanged();
-            }
+            _pos = value;
+            OnPropertyChanged();
         }
+    }
 
-        public PieceType Type
+    public PieceType Type
+    {
+        get => _type;
+        set
         {
-            get => _type;
-            set
-            {
-                _type = value;
-                OnPropertyChanged();
-            }
+            _type = value;
+            OnPropertyChanged();
         }
+    }
 
-        public Player Player
+    public Player Player
+    {
+        get => _player;
+        set
         {
-            get => _player;
-            set
-            {
-                _player = value;
-                OnPropertyChanged();
-            }
+            _player = value;
+            OnPropertyChanged();
         }
-        public bool IsSelected
-        {
-            get => _isSelected;
+    }
+    public bool IsSelected
+    {
+        get => _isSelected;
 
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-            }
+        set
+        {
+            _isSelected = value;
+            OnPropertyChanged();
         }
     }
 }

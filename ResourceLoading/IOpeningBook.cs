@@ -1,11 +1,10 @@
-﻿namespace ResourceLoading
+﻿namespace ResourceLoading;
+
+public interface IOpeningBook
 {
-    public interface IOpeningBook
-    {
-        string GetMove();
+    string GetMove();
 
-        void RegisterMadeMove(string uciMove);
+    void RegisterMadeMove(string uciMove);
 
-        void ResetBook();
-    }
+    void ResetBook();
 }

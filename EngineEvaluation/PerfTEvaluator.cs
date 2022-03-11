@@ -1,140 +1,137 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using ChessEngine.BoardRepresentation;
-using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
 using ChessEngineTests;
-using log4net;
+using Logging;
 using ResourceLoading;
 
-namespace EngineEvaluation
+namespace EngineEvaluation;
+
+// Benchmarks the time it takes to carry out PerfT evaluations
+public sealed class PerfTEvaluator : IEvaluator
 {
-    // Benchmarks the time it takes to carry out PerfT evaluations
-    public sealed class PerfTEvaluator : IEvaluator
+    private ILog _log;
+
+    private List<PerfTPosition> m_PerfTPositions;
+
+    private readonly string m_FullLogFile;
+    private readonly string m_HighlightsLogFile;
+
+    public PerfTEvaluator(List<PerfTPosition> perfTPositions, string highlightsLogFile, string fullLogFile, ILog log)
     {
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        _log = log;
 
-        private List<PerfTPosition> m_PerfTPositions;
-
-        private readonly string m_FullLogFile;
-        private readonly string m_HighlightsLogFile;
-
-        public PerfTEvaluator(List<PerfTPosition> perfTPositions, string highlightsLogFile, string fullLogFile)
+        if (perfTPositions == null)
         {
-            if (perfTPositions == null)
-            {
-                Log.Error("No perfTPositions were passed to PerfTEvaluator");
-                throw new ArgumentNullException(nameof(perfTPositions));
-            }
-
-            m_PerfTPositions = perfTPositions;
-
-            if (highlightsLogFile == null)
-            {
-                Log.Error("No highlightsLogFile was passed to PerfTEvaluator");
-                throw new ArgumentNullException(nameof(highlightsLogFile));
-            }
-
-            m_HighlightsLogFile = highlightsLogFile;
-
-            if (fullLogFile == null)
-            {
-                Log.Error("No fullLogFile was passed to PerfTEvaluator");
-                throw new ArgumentNullException(nameof(highlightsLogFile));
-            }
-
-            m_FullLogFile = fullLogFile;
+            _log.Error("No perfTPositions were passed to PerfTEvaluator");
+            throw new ArgumentNullException(nameof(perfTPositions));
         }
 
-        public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
+        m_PerfTPositions = perfTPositions;
+
+        if (highlightsLogFile == null)
         {
-            Evaluate(evaluationDepth);
+            _log.Error("No highlightsLogFile was passed to PerfTEvaluator");
+            throw new ArgumentNullException(nameof(highlightsLogFile));
         }
 
-        public void Evaluate(int evaluationDepth)
+        m_HighlightsLogFile = highlightsLogFile;
+
+        if (fullLogFile == null)
         {
+            _log.Error("No fullLogFile was passed to PerfTEvaluator");
+            throw new ArgumentNullException(nameof(highlightsLogFile));
+        }
 
-            LogLine("====================================================================");
-            LogLine("PerfTEvaluator");
+        m_FullLogFile = fullLogFile;
+    }
 
-            LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
-            LogLineAsDetailed($"Logging PerfT scores with a max search of  {evaluationDepth}");
-            
-            foreach (var perfTPos in m_PerfTPositions)
+    public void Evaluate(int evaluationDepth, int maxThinkingSeconds)
+    {
+        Evaluate(evaluationDepth);
+    }
+
+    public void Evaluate(int evaluationDepth)
+    {
+        LogLine("====================================================================");
+        LogLine("PerfTEvaluator");
+
+        LogLineAsDetailed($"Evaluation started at {DateTime.Now:yyyy-MM-dd_HH:mm:ss}");
+        LogLineAsDetailed($"Logging PerfT scores with a max search of  {evaluationDepth}");
+
+        foreach (var perfTPos in m_PerfTPositions)
+        {
+            var maxDepth = Math.Min(evaluationDepth, perfTPos.Results.Count);
+
+            LogLine("--------------------------------------------------------------");
+            LogLine($"{perfTPos.Name} - {perfTPos.FenPosition} - Depth {maxDepth}");
+
+            var totalTime = TimeSpan.Zero;
+
+            var passedOverall = "PASSED";
+
+            for (var i = 0; i < maxDepth; i++)
             {
-                var maxDepth = Math.Min(evaluationDepth, perfTPos.Results.Count);
+                var depth = i + 1;
 
-                LogLine("--------------------------------------------------------------");
-                LogLine($"{perfTPos.Name} - {perfTPos.FenPosition} - Depth {maxDepth}");
+                var board = new Board();
+                board.SetPosition(perfTPos.FenPosition);
 
-                var totalTime = TimeSpan.Zero;
+                var perft = new PerfT(new MoveGeneration()) { UseHashing = true };
 
-                var passedOverall = "PASSED";
+                var timer = new Stopwatch();
+                timer.Start();
 
-                for (var i = 0; i < maxDepth; i++)
+                var result = perft.Perft(board, depth);
+
+                timer.Stop();
+
+                totalTime = totalTime.Add(timer.Elapsed);
+
+                LogPerfTResults(depth, result, perfTPos.Results[i], timer.Elapsed);
+
+                if (result != perfTPos.Results[i])
                 {
-                    var depth = i + 1;
-
-                    var board = new Board();
-                    board.SetPosition(perfTPos.FenPosition);
-
-                    var perft = new PerfT(new MoveGeneration()) { UseHashing = true };
-
-                    var timer = new Stopwatch();
-                    timer.Start();
-
-                    var result = perft.Perft(board, depth);
-
-                    timer.Stop();
-
-                    totalTime = totalTime.Add(timer.Elapsed);
-
-                    LogPerfTResults(depth, result, perfTPos.Results[i], timer.Elapsed);
-
-                    if (result != perfTPos.Results[i])
-                    {
-                        passedOverall = "FAILED";
-                    }
+                    passedOverall = "FAILED";
                 }
-
-                LogLine($"{passedOverall} - Total time: {totalTime}");
-            }
-        }
-
-        private void LogPerfTResults(int depth, long result, long expectedResult, TimeSpan elapsedTime)
-        {
-            var passed = "FAILED";
-
-            if (result == expectedResult)
-            {
-                passed = "Passed";
             }
 
-            LogLineAsDetailed($"Depth: {depth} - Expected count: {expectedResult} - Actual count {result} - Time {elapsedTime} - {passed}");
+            LogLine($"{passedOverall} - Total time: {totalTime}");
+        }
+    }
+
+    private void LogPerfTResults(int depth, long result, long expectedResult, TimeSpan elapsedTime)
+    {
+        var passed = "FAILED";
+
+        if (result == expectedResult)
+        {
+            passed = "Passed";
         }
 
-        private void LogLine(string text)
-        {
-            LogLineAsDetailed(text);
-            LogLineAsHighlight(text);
-        }
+        LogLineAsDetailed($"Depth: {depth} - Expected count: {expectedResult} - Actual count {result} - Time {elapsedTime} - {passed}");
+    }
 
-        private void LogLineAsHighlight(string text)
+    private void LogLine(string text)
+    {
+        LogLineAsDetailed(text);
+        LogLineAsHighlight(text);
+    }
+
+    private void LogLineAsHighlight(string text)
+    {
+        using (var stream = File.AppendText(m_HighlightsLogFile))
         {
-            using (var stream = File.AppendText(m_HighlightsLogFile))
-            {
-                stream.WriteLine(text);
-            }
+            stream.WriteLine(text);
         }
-        
-        private void LogLineAsDetailed(string text)
+    }
+
+    private void LogLineAsDetailed(string text)
+    {
+        using (var stream = File.AppendText(m_FullLogFile))
         {
-            using (var stream = File.AppendText(m_FullLogFile))
-            {
-                stream.WriteLine(text);
-            }
+            stream.WriteLine(text);
         }
     }
 }
+

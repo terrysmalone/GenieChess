@@ -1,7 +1,7 @@
-﻿namespace ResourceLoading
+﻿namespace ResourceLoading;
+
+public class Opening
 {
-    public class Opening
-    {
-        public string[] Moves;
-    }
+    public string[] Moves;
 }
+

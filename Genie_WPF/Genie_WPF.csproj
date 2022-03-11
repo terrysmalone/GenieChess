@@ -1,141 +1,46 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{50F0B236-EB80-443D-924F-67C65F6F9336}</ProjectGuid>
         <OutputType>WinExe</OutputType>
-        <RootNamespace>Genie_WPF</RootNamespace>
-        <AssemblyName>Genie_WPF</AssemblyName>
-        <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <WarningLevel>4</WarningLevel>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <LangVersion>default</LangVersion>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>disable</Nullable>
+        <UseWPF>true</UseWPF>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == '|AnyCPU' ">
-      <OutputPath>bin\\</OutputPath>
-    </PropertyGroup>
+
     <ItemGroup>
-        <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a">
-          <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-          <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Configuration" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Web" />
-        <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-          <HintPath>..\packages\System.Windows.Interactivity.WPF.2.0.20525\lib\net40\System.Windows.Interactivity.dll</HintPath>
-          <Private>True</Private>
-        </Reference>
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Xaml">
-            <RequiredTargetFramework>4.0</RequiredTargetFramework>
-        </Reference>
-        <Reference Include="WindowsBase" />
-        <Reference Include="PresentationCore" />
-        <Reference Include="PresentationFramework" />
+      <PackageReference Include="JetBrains.Annotations" Version="2022.1.0-eap3" />
+      <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
     </ItemGroup>
+
     <ItemGroup>
-        <ApplicationDefinition Include="App.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </ApplicationDefinition>
-        <Compile Include="BoardViewModel.cs" />
-        <Compile Include="ChessBoardControl.xaml.cs">
-          <DependentUpon>ChessBoardControl.xaml</DependentUpon>
-        </Compile>
-        <Compile Include="ChessPiece.cs" />
-        <Compile Include="DelegateCommand.cs" />
-        <Compile Include="MoveItem.cs" />
-        <Compile Include="PieceConverter.cs" />
-        <Compile Include="PieceType.cs" />
-        <Compile Include="Player.cs" />
-        <Compile Include="RelayCommand.cs" />
-        <Compile Include="ViewModelBase.cs" />
-        <Page Include="ChessBoardControl.xaml" />
-        <Page Include="MainWindow.xaml">
-            <Generator>MSBuild:Compile</Generator>
-            <SubType>Designer</SubType>
-        </Page>
-        <Compile Include="App.xaml.cs">
-            <DependentUpon>App.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="MainWindow.xaml.cs">
-            <DependentUpon>MainWindow.xaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
+      <ProjectReference Include="..\ChessEngine\ChessEngine.csproj" />
     </ItemGroup>
+
     <ItemGroup>
-        <Compile Include="Properties\Annotations.cs" />
-        <Compile Include="Properties\AssemblyInfo.cs">
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Include="Properties\Resources.Designer.cs">
-            <AutoGen>True</AutoGen>
-            <DesignTime>True</DesignTime>
-            <DependentUpon>Resources.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Include="Properties\Resources.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="App.config" />
-        <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
+      <None Remove="Images\bishop_black.png" />
       <Resource Include="Images\bishop_black.png" />
+      <None Remove="Images\bishop_white.png" />
       <Resource Include="Images\bishop_white.png" />
+      <None Remove="Images\king_black.png" />
       <Resource Include="Images\king_black.png" />
+      <None Remove="Images\king_white.png" />
       <Resource Include="Images\king_white.png" />
+      <None Remove="Images\knight_black.png" />
       <Resource Include="Images\knight_black.png" />
+      <None Remove="Images\knight_white.png" />
       <Resource Include="Images\knight_white.png" />
+      <None Remove="Images\pawn_black.png" />
       <Resource Include="Images\pawn_black.png" />
+      <None Remove="Images\pawn_white.png" />
       <Resource Include="Images\pawn_white.png" />
+      <None Remove="Images\queen_black.png" />
       <Resource Include="Images\queen_black.png" />
+      <None Remove="Images\queen_white.png" />
       <Resource Include="Images\queen_white.png" />
+      <None Remove="Images\rook_black.png" />
       <Resource Include="Images\rook_black.png" />
+      <None Remove="Images\rook_white.png" />
       <Resource Include="Images\rook_white.png" />
     </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\ChessEngine\ChessEngine.csproj">
-        <Project>{e4391067-8a7c-4fa1-b08d-ba250738b937}</Project>
-        <Name>ChessEngine</Name>
-      </ProjectReference>
-      <ProjectReference Include="..\ResourceLoading\ResourceLoading.csproj">
-        <Project>{7d4f16b0-adfa-45ff-b0c0-1844b9ec3c35}</Project>
-        <Name>ResourceLoading</Name>
-      </ProjectReference>
-    </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

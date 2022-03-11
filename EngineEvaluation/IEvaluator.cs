@@ -1,10 +1,10 @@
-﻿namespace EngineEvaluation
+﻿namespace EngineEvaluation;
+
+public interface IEvaluator
 {
-    public interface IEvaluator
-    {
-        void Evaluate(int maxDepth, int maxThinkingSeconds);
+    void Evaluate(int maxDepth, int maxThinkingSeconds);
 
-        void Evaluate(int maxDepth);
-    }
-
+    void Evaluate(int maxDepth);
 }
+
+
