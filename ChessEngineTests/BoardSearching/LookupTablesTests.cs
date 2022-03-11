@@ -6,18 +6,6 @@ namespace ChessEngineTests.BoardSearching;
 [TestFixture]
 public class LookupTablesTests
 {
-    //[Test]
-    //public void TestSquareValueFromIndexTable()
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    //[Test]
-    //public void TestSquareValueFromPositionTable()
-    //{
-    //    throw new NotImplementedException();
-    //}
-
     [TestCase(0, 72340172838076672u)]    // a1
     [TestCase(7, 9259542123273814016u)]  // h1
     [TestCase(56, 0u)]                   // a8

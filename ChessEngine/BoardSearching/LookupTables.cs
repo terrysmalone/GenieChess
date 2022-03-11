@@ -532,36 +532,18 @@ public static class LookupTables
         {
             var column = index % 8;
 
-            switch (column)
+            ColumnMaskByIndex[index] = column switch
             {
-                case 0:
-                    ColumnMaskByIndex[index] = ColumnMaskA;
-                    break;
-                case 1:
-                    ColumnMaskByIndex[index] = ColumnMaskB;
-                    break;
-                case 2:
-                    ColumnMaskByIndex[index] = ColumnMaskC;
-                    break;
-                case 3:
-                    ColumnMaskByIndex[index] = ColumnMaskD;
-                    break;
-                case 4:
-                    ColumnMaskByIndex[index] = ColumnMaskE;
-                    break;
-                case 5:
-                    ColumnMaskByIndex[index] = ColumnMaskF;
-                    break;
-                case 6:
-                    ColumnMaskByIndex[index] = ColumnMaskG;
-                    break;
-                case 7:
-                    ColumnMaskByIndex[index] = ColumnMaskH;
-                    break;
-                default:
-                    throw new Exception("Bad column given: " + column);
-            }
-
+                0 => ColumnMaskA,
+                1 => ColumnMaskB,
+                2 => ColumnMaskC,
+                3 => ColumnMaskD,
+                4 => ColumnMaskE,
+                5 => ColumnMaskF,
+                6 => ColumnMaskG,
+                7 => ColumnMaskH,
+                _ => throw new ArgumentException("Bad column given: " + column)
+            };
         }
     }
 
