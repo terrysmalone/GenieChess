@@ -168,46 +168,26 @@ internal static class BoardChecking
 
     private static SpecialMoveType GetPromotionCaptureForType(char pieceType)
     {
-        switch (pieceType)
+        return pieceType switch
         {
-            case 'r':
-            case 'R':
-                return SpecialMoveType.RookPromotionCapture;
-            case 'n':
-            case 'N':
-                return SpecialMoveType.KnightPromotionCapture;
-            case 'b':
-            case 'B':
-                return SpecialMoveType.BishopPromotionCapture;
-            case 'q':
-            case 'Q':
-                return SpecialMoveType.QueenPromotionCapture;
-            default:
-                return SpecialMoveType.Normal;
-
-        }
+            'q' or 'Q' => SpecialMoveType.QueenPromotionCapture,
+            'r' or 'R' => SpecialMoveType.RookPromotionCapture,
+            'n' or 'N' => SpecialMoveType.KnightPromotionCapture,
+            'b' or 'B' => SpecialMoveType.BishopPromotionCapture,
+            _ => SpecialMoveType.Normal
+        };
     }
 
     private static SpecialMoveType GetPromotionForType(char pieceType)
     {
-        switch (pieceType)
+        return pieceType switch
         {
-            case 'r':
-            case 'R':
-                return SpecialMoveType.RookPromotion;
-            case 'n':
-            case 'N':
-                return SpecialMoveType.KnightPromotion;
-            case 'b':
-            case 'B':
-                return SpecialMoveType.BishopPromotion;
-            case 'q':
-            case 'Q':
-                return SpecialMoveType.QueenPromotion;
-            default:
-                return SpecialMoveType.Normal;
-
-        }
+            'q' or 'Q' => SpecialMoveType.QueenPromotion,
+            'r' or 'R' => SpecialMoveType.RookPromotion,
+            'n' or 'N' => SpecialMoveType.KnightPromotion,
+            'b' or 'B' => SpecialMoveType.BishopPromotion,
+            _ => SpecialMoveType.Normal
+        };
     }
 
     // Checks if the square is attacked from a ray attack above.
