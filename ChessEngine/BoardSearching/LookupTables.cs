@@ -542,7 +542,7 @@ public static class LookupTables
                 5 => ColumnMaskF,
                 6 => ColumnMaskG,
                 7 => ColumnMaskH,
-                _ => throw new ArgumentException("Bad column given: " + column)
+                _ => throw new ArgumentException($"Bad index {index} giving bad column {column}")
             };
         }
     }

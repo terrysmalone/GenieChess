@@ -888,29 +888,20 @@ public sealed class AlphaBetaSearch
                || specialMoveType == SpecialMoveType.QueenPromotionCapture;
     }
 
-    private int GetPieceScore(PieceType pieceType)
+    private static int GetPieceScore(PieceType pieceType)
     {
-        switch (pieceType)
+        return pieceType switch
         {
-            case PieceType.Pawn:
-                return 1;
-            case PieceType.Knight:
-                return 2;
-            case PieceType.Bishop:
-                return 3;
-            case PieceType.Rook:
-                return 4;
-            case PieceType.Queen:
-                return 5;
-            case PieceType.King:
-                return 6;
-            case PieceType.None:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(pieceType), pieceType, null);
-        }
-
-        return 0;
+            PieceType.Pawn => 1,
+            PieceType.Knight => 2,
+            PieceType.Bishop => 3,
+            PieceType.Rook => 4,
+            PieceType.Queen => 5,
+            PieceType.King => 6,
+            PieceType.None or _ => throw new ArgumentOutOfRangeException(nameof(pieceType),
+                                                                         pieceType,
+                                                                         "No piece type given")
+        };
     }
 
     // Evaluates the end game relative to the current player
