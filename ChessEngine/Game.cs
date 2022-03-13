@@ -127,7 +127,8 @@ public class Game
         _log.Info("===============================================================");
         _log.Info($"Starting move - Thinking depth: {ThinkingDepth}");
 
-        var search = new AlphaBetaSearch(_moveGeneration, _currentBoard, _scoreCalculator, _log);
+        var moveOrdering = new MoveOrdering();
+        var search = new AlphaBetaSearch(_moveGeneration, _currentBoard, _scoreCalculator, moveOrdering, _log);
 
         var bestMove = search.CalculateBestMove(ThinkingDepth);
 

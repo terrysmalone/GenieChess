@@ -17,12 +17,14 @@ public sealed class AlphaBetaSearch
 {
     private readonly ILog _log;
 
-    private MoveGeneration _moveGeneration;
+    private readonly MoveGeneration _moveGeneration;
 
     private readonly Board _boardPosition;
     private readonly IScoreCalculator _scoreCalculator;
 
-    private PieceMover _pieceMover;
+    private readonly PieceMover _pieceMover;
+
+    private MoveOrdering _moveOrdering;
 
     private List<MoveValueInfo> _initialMoves;
     private List<Tuple<int, PieceMove>> _initialMovesIterativeDeepeningShuffleOrder;
@@ -38,19 +40,20 @@ public sealed class AlphaBetaSearch
 
     private int _maxCheckExtension = 10;
 
-    public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator, ILog log)
+    public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator, MoveOrdering moveOrdering, ILog log)
     {
         _moveGeneration = moveGeneration ?? throw new ArgumentNullException(nameof(moveGeneration));
         _boardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
         _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
+        _moveOrdering = moveOrdering;
         _log = log;
 
         _pieceMover = new PieceMover(_boardPosition);
     }
 
-    private static PieceMove _completedSearchBestMove;
-    private static PieceMove _latestDepthBestMove;
-    private static PieceMove _inDepthBestMove;
+    private PieceMove _completedSearchBestMove;
+    private PieceMove _latestDepthBestMove;
+    private PieceMove _inDepthBestMove;
     public ulong TotalSearchNodes;
 
     // See: https://stackoverflow.com/questions/2265412/set-timeout-to-an-operation
@@ -136,6 +139,7 @@ public sealed class AlphaBetaSearch
     public PieceMove CalculateBestMove(int maxDepth, Stopwatch moveTimer = null)
     {
         var toMove = _boardPosition.WhiteToMove ? "white" : "black";
+
         _log.Info($"Calculating move for {toMove}");
         _log.Info(FenTranslator.ToFenString(_boardPosition.GetCurrentBoardState()));
 
@@ -701,7 +705,7 @@ public sealed class AlphaBetaSearch
             return alpha;
         }
 
-        OrderMovesByMvvVla(moves);
+        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moves);
 
         if (bestHashMove != null)
         {
@@ -784,63 +788,20 @@ public sealed class AlphaBetaSearch
     // Order all moves by MVV/LVA
     private void OrderMovesInPlace(IList<PieceMove> moveList, int depth)
     {
-        OrderMovesByMvvVla(moveList);
+        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moveList);
 
         BringKillerMovesToTheFront(moveList, depth);
     }
 
     private void OrderMovesInPlace(IList<PieceMove> moveList, int depth, PieceMove? bestHashMove)
     {
-        OrderMovesByMvvVla(moveList);
+        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moveList);
 
         BringKillerMovesToTheFront(moveList, depth);
 
         if (bestHashMove != null)
         {
             BringBestHashMoveToTheFront(moveList, (PieceMove)bestHashMove);
-        }
-    }
-
-    private void OrderMovesByMvvVla(IList<PieceMove> moveList)
-    {
-        // move list position, victim score, attacker score
-        var ordering = new List<Tuple<PieceMove, int, int>>();
-
-        var toRemove = new List<int>();
-
-        //Move capture
-        for (var moveNum = 0; moveNum < moveList.Count; moveNum++)
-        {
-            if (moveList[moveNum].SpecialMove == SpecialMoveType.Capture
-                || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
-                || IsPromotionCapture(moveList[moveNum].SpecialMove))
-            {
-                var victimType = BoardChecking.GetPieceTypeOnSquare(_boardPosition, moveList[moveNum].Moves);
-
-                ordering.Add(new Tuple<PieceMove, int, int>(
-                    moveList[moveNum],
-                    GetPieceScore(victimType),
-                    GetPieceScore(moveList[moveNum].Type)));
-
-                toRemove.Add(moveNum);
-            }
-        }
-
-        //We need to remove them in reverse so we don't change the numbers
-        // of the others to remove
-        toRemove = toRemove.OrderByDescending(t => t).ToList();
-
-        foreach (var remove in toRemove)
-        {
-            moveList.RemoveAt(remove);
-        }
-
-        //Order by victim and then attacker. We do it in reverse
-        ordering = ordering.OrderByDescending(o => o.Item2).ThenBy(o => o.Item3).ToList();
-
-        for (var orderPosition = 0; orderPosition < ordering.Count; orderPosition++)
-        {
-            moveList.Insert(orderPosition, ordering[orderPosition].Item1);
         }
     }
 
@@ -878,30 +839,6 @@ public sealed class AlphaBetaSearch
         {
             moveList.Insert(0, bestHashMove);
         }
-    }
-
-    private static bool IsPromotionCapture(SpecialMoveType specialMoveType)
-    {
-        return    specialMoveType == SpecialMoveType.BishopPromotionCapture
-               || specialMoveType == SpecialMoveType.KnightPromotionCapture
-               || specialMoveType == SpecialMoveType.RookPromotionCapture
-               || specialMoveType == SpecialMoveType.QueenPromotionCapture;
-    }
-
-    private static int GetPieceScore(PieceType pieceType)
-    {
-        return pieceType switch
-        {
-            PieceType.None or PieceType.Pawn => 1,
-            PieceType.Knight => 2,
-            PieceType.Bishop => 3,
-            PieceType.Rook => 4,
-            PieceType.Queen => 5,
-            PieceType.King => 6,
-            _ => throw new ArgumentOutOfRangeException(nameof(pieceType),
-                                                       pieceType,
-                                                       $"Invalid piece type {pieceType} given")
-        };
     }
 
     // Evaluates the end game relative to the current player

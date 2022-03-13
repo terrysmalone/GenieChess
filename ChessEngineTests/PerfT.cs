@@ -84,8 +84,7 @@ public class PerfT
 
         if (UseHashing)
         {
-            var hashNodeType = HashNodeType.Exact;
-            RecordHash(boardPosition, depth, nodes, hashNodeType);
+            RecordHash(boardPosition, depth, nodes, HashNodeType.Exact);
         }
 
         return nodes;
@@ -93,7 +92,7 @@ public class PerfT
 
     private static void RecordHash(Board boardPosition, int depth, int score, HashNodeType hashNodeType)
     {
-        var hash = new Hash {Key = boardPosition.Zobrist, Depth = depth, NodeType = hashNodeType, Score = score};
+        var hash = new Hash { Key = boardPosition.Zobrist, Depth = depth, NodeType = hashNodeType, Score = score };
 
         TranspositionTable.Add(hash);
     }
@@ -224,7 +223,7 @@ public class PerfT
         return ($"{pieceLetter}{moveFrom}-{moveTo}");
     }
 
-    private string GetPostion(ulong position)
+    private static string GetPostion(ulong position)
     {
         var pos = BitboardOperations.GetSquareIndexFromBoardValue(position);
 

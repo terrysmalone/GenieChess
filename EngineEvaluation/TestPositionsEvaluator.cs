@@ -136,7 +136,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
                     boardCopy = (Board)formatter.Deserialize(memStream);
                 }
 
-                var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, _log);
+                var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, new MoveOrdering(), _log);
 
                 var timer = new Stopwatch();
                 timer.Start();
