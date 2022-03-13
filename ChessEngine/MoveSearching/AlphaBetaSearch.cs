@@ -24,8 +24,6 @@ public sealed class AlphaBetaSearch
 
     private readonly PieceMover _pieceMover;
 
-    private MoveOrdering _moveOrdering;
-
     private List<MoveValueInfo> _initialMoves;
     private List<Tuple<int, PieceMove>> _initialMovesIterativeDeepeningShuffleOrder;
 
@@ -40,12 +38,11 @@ public sealed class AlphaBetaSearch
 
     private int _maxCheckExtension = 10;
 
-    public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator, MoveOrdering moveOrdering, ILog log)
+    public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator, ILog log)
     {
         _moveGeneration = moveGeneration ?? throw new ArgumentNullException(nameof(moveGeneration));
         _boardPosition = boardPosition ?? throw new ArgumentNullException(nameof(boardPosition));
         _scoreCalculator = scoreCalculator ?? throw new ArgumentNullException(nameof(scoreCalculator));
-        _moveOrdering = moveOrdering;
         _log = log;
 
         _pieceMover = new PieceMover(_boardPosition);
@@ -705,7 +702,7 @@ public sealed class AlphaBetaSearch
             return alpha;
         }
 
-        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moves);
+        MoveOrdering.OrderMovesByMvvLva(_boardPosition, moves);
 
         if (bestHashMove != null)
         {
@@ -788,14 +785,14 @@ public sealed class AlphaBetaSearch
     // Order all moves by MVV/LVA
     private void OrderMovesInPlace(IList<PieceMove> moveList, int depth)
     {
-        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moveList);
+        MoveOrdering.OrderMovesByMvvLva(_boardPosition, moveList);
 
         BringKillerMovesToTheFront(moveList, depth);
     }
 
     private void OrderMovesInPlace(IList<PieceMove> moveList, int depth, PieceMove? bestHashMove)
     {
-        _moveOrdering.OrderMovesByMvvVla(_boardPosition, moveList);
+        MoveOrdering.OrderMovesByMvvLva(_boardPosition, moveList);
 
         BringKillerMovesToTheFront(moveList, depth);
 

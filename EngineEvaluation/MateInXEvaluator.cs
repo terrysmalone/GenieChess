@@ -141,7 +141,7 @@ internal sealed class MateInXEvaluator : IEvaluator
                     boardCopy = (Board)formatter.Deserialize(memStream);
                 }
 
-                var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, new MoveOrdering(), _log);
+                var alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, _log);
 
                 var positionTimer = new Stopwatch();
                 positionTimer.Start();
@@ -176,7 +176,7 @@ internal sealed class MateInXEvaluator : IEvaluator
 
                         var pieceMover = new PieceMover(boardCopy);
                         pieceMover.MakeMove(currentMove);
-                        alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, new MoveOrdering(), _log);
+                        alphaBeta = new AlphaBetaSearch(moveGeneration, boardCopy, scoreCalculator, _log);
                     }
                     else
                     {

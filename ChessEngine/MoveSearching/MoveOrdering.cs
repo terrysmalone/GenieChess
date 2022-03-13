@@ -4,9 +4,9 @@ using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.MoveSearching;
 
-public sealed class MoveOrdering
+internal static class MoveOrdering
 {
-    public void OrderMovesByMvvVla(Board boardPosition, IList<PieceMove> moveList)
+    internal static void OrderMovesByMvvLva(Board boardPosition, IList<PieceMove> moveList)
     {
         // move list position, victim score, attacker score
         var ordering = new List<Tuple<PieceMove, int, int>>();
