@@ -8,7 +8,7 @@ namespace ChessEngineTests;
 
 public class PerfT
 {
-    private MoveGeneration _moveGeneration;
+    private readonly MoveGeneration _moveGeneration;
     private PieceMover _pieceMover;
     public bool UseHashing { get; set; } = true;
 
@@ -73,8 +73,10 @@ public class PerfT
             {
                 _pieceMover.MakeMove(moveList[i]);
 
-                if (MoveGeneration.ValidateMove(boardPosition))
+                if (MoveGeneration.WasLastMoveAllowed(boardPosition))
+                {
                     nodes += Perft(boardPosition, depth - 1);
+                }
 
                 _pieceMover.UnMakeLastMove(false);
             }

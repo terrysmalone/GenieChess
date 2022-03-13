@@ -1,5 +1,4 @@
-﻿using System;
-namespace ChessEngine.BoardSearching;
+﻿namespace ChessEngine.BoardSearching;
 
 // Initialises and generates lookup tables for speeding up bitboard translations
 
