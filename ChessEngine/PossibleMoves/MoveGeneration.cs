@@ -178,7 +178,7 @@ public class MoveGeneration
     }
 
     // Checks that the last move was legal by ensuring that the player who has just moved is not in check
-    public static bool ValidateMove(Board board)
+    public static bool WasLastMoveAllowed(Board board)
     {
         return !BoardChecking.IsKingInCheck(board, !board.WhiteToMove);
     }

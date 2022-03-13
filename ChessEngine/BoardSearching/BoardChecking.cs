@@ -7,40 +7,6 @@ namespace ChessEngine.BoardSearching;
 // Checks carried out on the chess board regarding various moves and attacks
 internal static class BoardChecking
 {
-    internal static bool IsPieceOnSquare(Board board, ulong square)
-    {
-        if (BitboardOperations.GetPopCount(square) == 1)
-        {
-            if ((board.AllOccupiedSquares & square) != 0) return true;
-        }
-        else
-        {
-            throw new BitboardException("Bitboard is not equal to one square");
-        }
-
-        return false;
-    }
-
-    internal static bool IsFriendlyPieceOnSquare(Board board, ulong square)
-    {
-        if (BitboardOperations.GetPopCount(square) == 1)
-        {
-            var friendlySquares =
-                board.WhiteToMove ? board.AllWhiteOccupiedSquares : board.AllBlackOccupiedSquares;
-
-            if ((friendlySquares & square) != 0)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            throw new BitboardException("Bitboard is not equal to one square");
-        }
-
-        return false;
-    }
-
     internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
     {
         if (BitboardOperations.GetPopCount(square) == 1)
@@ -83,10 +49,7 @@ internal static class BoardChecking
         return PieceType.None;
     }
 
-    internal static SpecialMoveType GetSpecialMoveType(Board board,
-                                                       ulong moveFrom,
-                                                       ulong moveTo,
-                                                       string uciMove)
+    internal static SpecialMoveType GetSpecialMoveType(Board board, ulong moveFrom, ulong moveTo, string uciMove)
     {
         var captureFlag = false;
         var promotionFlag = false;
@@ -289,16 +252,8 @@ internal static class BoardChecking
     //
     internal static bool IsKingInCheck(Board board, bool whitePieces)
     {
-        ulong friendlyKing;
 
-        if (whitePieces)
-        {
-            friendlyKing = board.WhiteKing;
-        }
-        else
-        {
-            friendlyKing = board.BlackKing;
-        }
+        var friendlyKing = whitePieces ? board.WhiteKing : board.BlackKing;
 
         return IsSquareAttacked(board, friendlyKing, whitePieces);
     }
@@ -1339,7 +1294,7 @@ internal static class BoardChecking
                 | (square >> 56);
     }
 
-     private static ulong GetDownLeftBoard(ulong square)
+    private static ulong GetDownLeftBoard(ulong square)
     {
         const ulong notH = 9187201950435737471;
 

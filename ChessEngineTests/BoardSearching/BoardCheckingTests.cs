@@ -9,18 +9,6 @@ namespace ChessEngineTests.BoardSearching;
 public class BoardCheckingTests
 {
     [Test]
-    public void IsPieceOnSquare_exceptionIsThrown()
-    {
-        Assert.Throws<BitboardException>(() => BoardChecking.IsPieceOnSquare(new Board(), 2216808153096));
-    }
-
-    [Test]
-    public void IsFriendlyPieceOnSquare_exceptionIsThrown()
-    {
-        Assert.Throws<BitboardException>(() => BoardChecking.IsFriendlyPieceOnSquare(new Board(), 4398314946560));
-    }
-
-    [Test]
     public void IsEnemyPieceOnSquare_exceptionIsThrown()
     {
         Assert.Throws<BitboardException>(() => BoardChecking.IsEnemyPieceOnSquare(new Board(), 4432407298056));
@@ -30,32 +18,6 @@ public class BoardCheckingTests
     public void GetPieceTypeOnSquare_exceptionIsThrown()
     {
         Assert.Throws<BitboardException>(() => BoardChecking.GetPieceTypeOnSquare(new Board(), 0));
-    }
-
-    [Test]
-    public void IsPieceOnSquare_WithEmptyBoard()
-    {
-        var board = new Board();
-        board.ClearBoard();
-
-        var squares = LookupTables.SquareValuesFromIndex;
-
-        foreach (var square in squares)
-        {
-            Assert.That(BoardChecking.IsPieceOnSquare(board, square), Is.False, $"Failed at square {square}");
-        }
-    }
-
-    [TestCase("8/1p6/8/8/8/8/8/8 w - - 0 1", 562949953421312u)]
-    [TestCase("8/8/8/5N2/8/8/8/8 w - - 0 1", 137438953472u)]
-    [TestCase("7k/8/8/8/8/8/8/8 w - - 0 1", 9223372036854775808u)]
-    [TestCase("8/8/8/8/8/8/8/7K w - - 0 1", 128u)]
-    public void IsPieceOnSquare(string fenString, ulong squareToCheck)
-    {
-        var board = new Board();
-        board.SetPosition(fenString);
-
-        Assert.That(BoardChecking.IsPieceOnSquare(board, squareToCheck), Is.True);
     }
 
     [Test]
@@ -72,26 +34,16 @@ public class BoardCheckingTests
         }
     }
 
-    [TestCase("8/1P6/8/8/8/8/8/8 w - - 0 1", 562949953421312u)]
-    [TestCase("8/8/8/8/4r3/8/8/8 b - - 0 1", 268435456u)]
-    public void IsFriendlyPieceOnSquare_True(string fenString, ulong squareToCheck)
+    [TestCase("8/1P6/8/8/8/8/8/8 w - - 0 1", 562949953421312u, false)]
+    [TestCase("8/8/8/8/4r3/8/8/8 b - - 0 1", 268435456u, false)]
+    [TestCase("8/1P6/8/8/8/8/8/8 b - - 0 1", 562949953421312u, true)]
+    [TestCase("8/8/8/8/4r3/8/8/8 w - - 0 1", 268435456u, true)]
+    public void IsEnemyPieceOnSquare_False(string fenString, ulong squareToCheck, bool isEnemyPieceOnSquare)
     {
         var board = new Board();
         board.SetPosition(fenString);
 
-        Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, squareToCheck), Is.True);
-        Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), Is.False);
-    }
-
-    [TestCase("8/1P6/8/8/8/8/8/8 b - - 0 1", 562949953421312u)]
-    [TestCase("8/8/8/8/4r3/8/8/8 w - - 0 1", 268435456u)]
-    public void IsFriendlyPieceOnSquare_False(string fenString, ulong squareToCheck)
-    {
-        var board = new Board();
-        board.SetPosition(fenString);
-
-        Assert.That(BoardChecking.IsFriendlyPieceOnSquare(board, squareToCheck), Is.False);
-        Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), Is.True);
+        Assert.AreEqual(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), isEnemyPieceOnSquare);
     }
 
     [Test]
