@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ChessEngine.BoardRepresentation;
 using ChessEngine.MoveSearching;
 using ChessEngine.PossibleMoves;
@@ -35,6 +36,36 @@ public class MoveOrderingTests
         Assert.That(pieceMoves[5].Position, Is.EqualTo(8u));  // King with no capture
         Assert.That(pieceMoves[6].Position, Is.EqualTo(131072u));  // Rook with no capture
 
+    }
+
+    [Test]
+    public void DifferentPiecesCapturingSamePiece()
+    {
+        var board = new Board();
+        board.SetPosition("8/8/1b6/3n4/4kp2/r3B2q/8/4K3 b - - 0 1");
+
+        var pieceMoves = new List<PieceMove>
+        {
+            new() { Position = 268435456u, Moves = 1048576u, Type = PieceType.King, SpecialMove = SpecialMoveType.Capture }, // King capture
+            new() { Position = 268435456u, Moves = 68719476736u, Type = PieceType.King, SpecialMove = SpecialMoveType.Normal }, // King move
+            new() { Position = 65536u, Moves = 1048576u, Type = PieceType.Rook, SpecialMove = SpecialMoveType.Capture }, // Rook capture
+            new() { Position = 34359738368u, Moves = 1048576u, Type = PieceType.Knight, SpecialMove = SpecialMoveType.Capture }, // Knight capture
+            new() { Position = 536870912u, Moves = 1048576u, Type = PieceType.Pawn, SpecialMove = SpecialMoveType.Capture }, // pawn capture
+            new() { Position = 8388608u, Moves = 1048576u, Type = PieceType.Queen, SpecialMove = SpecialMoveType.Capture }, // Queen capture
+            new() { Position = 2199023255552u, Moves = 1048576u, Type = PieceType.Bishop, SpecialMove = SpecialMoveType.Capture } // Bishop capture
+        };
+
+        MoveOrdering.OrderMovesByMvvLva(board, pieceMoves);
+
+        Assert.That(pieceMoves[0].Position, Is.EqualTo(536870912u));  // Pawn capture
+        Assert.That(pieceMoves[1].Position, Is.EqualTo(34359738368u));  // Knight capture
+        Assert.That(pieceMoves[2].Position, Is.EqualTo(2199023255552u));  // Bishop capture
+        Assert.That(pieceMoves[3].Position, Is.EqualTo(65536u));  // Rook capture
+        Assert.That(pieceMoves[4].Position, Is.EqualTo(8388608u));  // Queen capture
+        Assert.That(pieceMoves[5].Position, Is.EqualTo(268435456u));  // King capture
+        Assert.That(pieceMoves[5].Moves, Is.EqualTo(1048576u));
+        Assert.That(pieceMoves[6].Position, Is.EqualTo(268435456u));  // King move
+        Assert.That(pieceMoves[6].Moves, Is.EqualTo(68719476736u));
     }
 
     [Test]
