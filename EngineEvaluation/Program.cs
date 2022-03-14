@@ -15,7 +15,7 @@ internal static class Program
         var performanceEvaluatorFactory = new PerformanceEvaluatorFactory(logger, logFolder);
 
         var engineEvaluation =
-            performanceEvaluatorFactory.CreatePerformanceEvaluator(true,
+            performanceEvaluatorFactory.CreatePerformanceEvaluator(false,
                                                                    false,
                                                                    true,
                                                                    5);
