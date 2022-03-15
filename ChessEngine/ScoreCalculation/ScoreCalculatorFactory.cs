@@ -12,7 +12,12 @@ public static class ScoreCalculatorFactory
         var scoreValueXmlReader = new ScoreValueXmlReader();
         scoreValueXmlReader.ReadScores(scoreValues, new ResourceLoader().GetGameResourcePath("ScoreValues.xml"), log ?? new NullLogger());
 
-        return new ScoreCalculator(scoreValues);
+        var scoreCalculations = new List<IScoreCalculation>
+        {
+            new PieceValuesScoreCalculation(scoreValues)
+        };
+
+        return new ScoreCalculator(scoreCalculations, scoreValues);
     }
 }
 

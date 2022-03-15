@@ -8,6 +8,7 @@ namespace ChessEngine.ScoreCalculation;
     // Calculates the score of a particular board position
 public class ScoreCalculator : IScoreCalculator
 {
+    private readonly List<IScoreCalculation> _scoreCalculations;
     private readonly ScoreValues _scoreValues;
     private Board _currentBoard;
 
@@ -15,8 +16,9 @@ public class ScoreCalculator : IScoreCalculator
 
     private bool _isEndGame;
 
-    public ScoreCalculator(ScoreValues scoreValues)
+    public ScoreCalculator(List<IScoreCalculation> scoreCalculations, ScoreValues scoreValues)
     {
+        _scoreCalculations = scoreCalculations;
         _scoreValues = scoreValues;
     }
 
@@ -33,7 +35,10 @@ public class ScoreCalculator : IScoreCalculator
 
         var score = 0;
 
-        score += CalculatePieceValues();
+        foreach (var scoreCalculation in _scoreCalculations)
+        {
+            score += scoreCalculation.Calculate(currentBoard);
+        }
 
         score +=  CalculatePawnStructureScore();
         score += CalculateCentralPieceScore();
@@ -66,64 +71,6 @@ public class ScoreCalculator : IScoreCalculator
             _isEndGame = false;
         }
 
-    }
-
-    /// <summary>
-    /// Calculates points for the pieces each player has on the board
-    /// </summary>
-    /// <returns></returns>
-    private int CalculatePieceValues()
-    {
-        var kingScore = 357913941;  // int.MaxValue / 6
-
-        var pieceScore = 0;
-
-        //Calculate white piece values
-        pieceScore += BitboardOperations.GetPopCount(_currentBoard.WhitePawns) * _scoreValues.PawnPieceValue;
-        pieceScore += BitboardOperations.GetPopCount(_currentBoard.WhiteKnights) * _scoreValues.KnightPieceValue;
-
-        var whiteBishopCount = BitboardOperations.GetPopCount(_currentBoard.WhiteBishops);
-        pieceScore += whiteBishopCount * _scoreValues.BishopPieceValue;
-
-        if (whiteBishopCount == 2)
-        {
-            pieceScore += _scoreValues.DoubleBishopScore;
-        }
-
-        pieceScore += BitboardOperations.GetPopCount(_currentBoard.WhiteRooks) * _scoreValues.RookPieceValue;
-
-        var whiteQueenCount = BitboardOperations.GetPopCount(_currentBoard.WhiteQueen);
-
-        pieceScore += whiteQueenCount * _scoreValues.QueenPieceValue;
-        pieceScore += whiteQueenCount * _scoreValues.SoloQueenScore;
-
-        var count = BitboardOperations.GetPopCount(_currentBoard.WhiteKing);
-        pieceScore += count * kingScore;
-
-        //Calculate black piece values
-        pieceScore -= BitboardOperations.GetPopCount(_currentBoard.BlackPawns) * _scoreValues.PawnPieceValue;
-        pieceScore -= BitboardOperations.GetPopCount(_currentBoard.BlackKnights) * _scoreValues.KnightPieceValue;
-
-        var blackBishopCount = BitboardOperations.GetPopCount(_currentBoard.BlackBishops);
-        pieceScore -= blackBishopCount * _scoreValues.BishopPieceValue;
-
-        if (blackBishopCount == 2)
-        {
-            pieceScore -= _scoreValues.DoubleBishopScore;
-        }
-
-        pieceScore -= BitboardOperations.GetPopCount(_currentBoard.BlackRooks) * _scoreValues.RookPieceValue;
-
-        var blackQueenCount = BitboardOperations.GetPopCount(_currentBoard.BlackQueen);
-
-        pieceScore -= blackQueenCount * _scoreValues.QueenPieceValue;
-        pieceScore -= blackQueenCount * _scoreValues.SoloQueenScore;
-
-
-        var popCount = BitboardOperations.GetPopCount(_currentBoard.BlackKing);
-        pieceScore -= popCount * kingScore;
-
-        return pieceScore;
     }
 
     private int CalculatePawnStructureScore()
