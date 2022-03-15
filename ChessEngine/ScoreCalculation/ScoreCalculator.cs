@@ -40,7 +40,6 @@ public class ScoreCalculator : IScoreCalculator
             score += scoreCalculation.Calculate(currentBoard);
         }
 
-        score +=  CalculatePawnStructureScore();
         score += CalculateCentralPieceScore();
 
         score += CalculateCastlingScores();
@@ -71,119 +70,6 @@ public class ScoreCalculator : IScoreCalculator
             _isEndGame = false;
         }
 
-    }
-
-    private int CalculatePawnStructureScore()
-    {
-        var pawnStructureScore = 0;
-
-        pawnStructureScore += CalculateDoubledPawnScore();
-        pawnStructureScore += CalculateProtectedPawnScore();
-        pawnStructureScore += CalculatePassedPawnScore();
-
-        return pawnStructureScore;
-    }
-
-    private int CalculateDoubledPawnScore()
-    {
-        var doubledPawnScore = 0;
-
-        var whiteDoubleCount = 0;
-        var blackDoubleCount = 0;
-
-        for (var i = 0; i < 8; i++)
-        {
-            var mask = LookupTables.ColumnMaskByColumn[i];
-
-            if (BitboardOperations.GetPopCount(mask & _currentBoard.WhitePawns) > 1)
-            {
-                whiteDoubleCount++;
-            }
-
-            if (BitboardOperations.GetPopCount(mask & _currentBoard.BlackPawns) > 1)
-            {
-                blackDoubleCount++;
-            }
-        }
-
-        doubledPawnScore += whiteDoubleCount * _scoreValues.DoubledPawnScore;
-        doubledPawnScore -= blackDoubleCount * _scoreValues.DoubledPawnScore;
-
-        return doubledPawnScore;
-    }
-
-    private int CalculateProtectedPawnScore()
-    {
-
-        var protectedPawnScore = 0;
-
-        //Pawn chain
-        var notA = 18374403900871474942;
-        ulong notH = 9187201950435737471;
-
-        //White pawns
-        var wPawnAttackSquares = ((_currentBoard.WhitePawns << 9) & notA) | (_currentBoard.WhitePawns << 7) & notH;
-        var wProtectedPawns = wPawnAttackSquares & _currentBoard.WhitePawns;
-
-        protectedPawnScore += BitboardOperations.GetPopCount(wProtectedPawns) * _scoreValues.ProtectedPawnScore;
-
-        //Black pawns
-        var bPawnAttackSquares = ((_currentBoard.BlackPawns >> 9) & notH) | (_currentBoard.BlackPawns >> 7) & notA;
-        var bProtectedPawns = bPawnAttackSquares & _currentBoard.BlackPawns;
-
-        protectedPawnScore -= BitboardOperations.GetPopCount(bProtectedPawns) * _scoreValues.ProtectedPawnScore;
-
-        return protectedPawnScore;
-    }
-
-    private int CalculatePassedPawnScore()
-    {
-        var passedPawnScore = 0;
-
-        foreach (var whitePawnBoard in BitboardOperations.SplitBoardToArray(_currentBoard.WhitePawns))
-        {
-            // Pawn is on 7th rank so it can promote
-            if ((whitePawnBoard & LookupTables.RowMask7) != 0)
-            {
-                passedPawnScore += _scoreValues.PassedPawnScore;
-                passedPawnScore += _scoreValues.PassedPawnAdvancementScore * 5;
-
-                continue;
-            }
-
-            var pawnIndex = BitboardOperations.GetSquareIndexFromBoardValue(whitePawnBoard);
-
-            var pawnFrontSpan = LookupTables.WhitePawnFrontSpan[pawnIndex];
-
-            if ((pawnFrontSpan & _currentBoard.BlackPawns) == 0)
-            {
-                passedPawnScore += _scoreValues.PassedPawnScore;
-                passedPawnScore += _scoreValues.PassedPawnAdvancementScore * ((pawnIndex / 8) - 1);
-            }
-        }
-
-        foreach (var blackPawnBoard in BitboardOperations.SplitBoardToArray(_currentBoard.BlackPawns))
-        {
-            //Pawn is on 2nd rank so it can promote
-            if ((blackPawnBoard & LookupTables.RowMask2) != 0)
-            {
-                passedPawnScore -= _scoreValues.PassedPawnScore;
-                passedPawnScore -= _scoreValues.PassedPawnAdvancementScore * 5;
-                continue;
-            }
-
-            var pawnIndex = BitboardOperations.GetSquareIndexFromBoardValue(blackPawnBoard);
-
-            var pawnFrontSpan = LookupTables.BlackPawnFrontSpan[pawnIndex];
-
-            if ((pawnFrontSpan & _currentBoard.WhitePawns) == 0)
-            {
-                passedPawnScore -= _scoreValues.PassedPawnScore;
-                passedPawnScore -= _scoreValues.PassedPawnAdvancementScore * (8 - (pawnIndex / 8) - 2);
-            }
-        }
-
-        return passedPawnScore;
     }
 
     // Points for placing pieces near to the centre

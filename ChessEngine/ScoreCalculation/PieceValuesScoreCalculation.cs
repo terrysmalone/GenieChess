@@ -9,7 +9,6 @@ internal sealed class PieceValuesScoreCalculation : IScoreCalculation
     public PieceValuesScoreCalculation(ScoreValues scoreValues)
     {
         _scoreValues = scoreValues;
-
     }
     
     // Calculate points for the pieces each player has on the board
