@@ -40,8 +40,6 @@ public class ScoreCalculator : IScoreCalculator
             score += scoreCalculation.Calculate(currentBoard);
         }
 
-        score += CalculateCentralPieceScore();
-
         score += CalculateCastlingScores();
         score += CalculateCanCastleScores();
 
@@ -70,79 +68,6 @@ public class ScoreCalculator : IScoreCalculator
             _isEndGame = false;
         }
 
-    }
-
-    // Points for placing pieces near to the centre
-    private int CalculateCentralPieceScore()
-    {
-        var innerCentralSquares = (ulong)103481868288;
-        var outerCentralSquares = (ulong)66125924401152;
-
-        var piecePositionScore = 0;
-
-        //Pawns
-        var whitePawnBoard = _currentBoard.WhitePawns;
-
-        piecePositionScore += CalculatePositionScores(whitePawnBoard, innerCentralSquares) * _scoreValues.InnerCentralPawnScore;
-        piecePositionScore += CalculatePositionScores(whitePawnBoard, outerCentralSquares) * _scoreValues.OuterCentralPawnScore;
-
-        var blackPawnBoard = _currentBoard.BlackPawns;
-
-        piecePositionScore -= CalculatePositionScores(blackPawnBoard, innerCentralSquares) * _scoreValues.InnerCentralPawnScore;
-        piecePositionScore -= CalculatePositionScores(blackPawnBoard, outerCentralSquares) * _scoreValues.OuterCentralPawnScore;
-
-        //Knights
-        var whiteKnightBoard = _currentBoard.WhiteKnights;
-
-        piecePositionScore += CalculatePositionScores(whiteKnightBoard, innerCentralSquares) * _scoreValues.InnerCentralKnightScore;
-        piecePositionScore += CalculatePositionScores(whiteKnightBoard, outerCentralSquares) * _scoreValues.OuterCentralKnightScore;
-
-        var blackKnightBoard = _currentBoard.BlackKnights;
-
-        piecePositionScore -= CalculatePositionScores(blackKnightBoard, innerCentralSquares) * _scoreValues.InnerCentralKnightScore;
-        piecePositionScore -= CalculatePositionScores(blackKnightBoard, outerCentralSquares) * _scoreValues.OuterCentralKnightScore;
-
-        //Bishops
-        var whiteBishopBoard = _currentBoard.WhiteBishops;
-
-        piecePositionScore += CalculatePositionScores(whiteBishopBoard, innerCentralSquares) * _scoreValues.InnerCentralBishopScore;
-        piecePositionScore += CalculatePositionScores(whiteBishopBoard, outerCentralSquares) * _scoreValues.OuterCentralBishopScore;
-
-        var blackBishopBoard = _currentBoard.BlackBishops;
-
-        piecePositionScore -= CalculatePositionScores(blackBishopBoard, innerCentralSquares) * _scoreValues.InnerCentralBishopScore;
-        piecePositionScore -= CalculatePositionScores(blackBishopBoard, outerCentralSquares) * _scoreValues.OuterCentralBishopScore;
-
-        //Rooks
-        var whiteRookBoard = _currentBoard.WhiteRooks;
-
-        piecePositionScore += CalculatePositionScores(whiteRookBoard, innerCentralSquares) * _scoreValues.InnerCentralRookScore;
-        piecePositionScore += CalculatePositionScores(whiteRookBoard, outerCentralSquares) * _scoreValues.OuterCentralRookScore;
-
-        var blackRookBoard = _currentBoard.BlackRooks;
-
-        piecePositionScore -= CalculatePositionScores(blackRookBoard, innerCentralSquares) * _scoreValues.InnerCentralRookScore;
-        piecePositionScore -= CalculatePositionScores(blackRookBoard, outerCentralSquares) * _scoreValues.OuterCentralRookScore;
-
-        //Queens
-        var whiteQueenBoard = _currentBoard.WhiteQueen;
-
-        piecePositionScore += CalculatePositionScores(whiteQueenBoard, innerCentralSquares) * _scoreValues.InnerCentralQueenScore;
-        piecePositionScore += CalculatePositionScores(whiteQueenBoard, outerCentralSquares) * _scoreValues.OuterCentralQueenScore;
-
-        var blackQueenBoard = _currentBoard.BlackQueen;
-
-        piecePositionScore -= CalculatePositionScores(blackQueenBoard, innerCentralSquares) * _scoreValues.InnerCentralQueenScore;
-        piecePositionScore -= CalculatePositionScores(blackQueenBoard, outerCentralSquares) * _scoreValues.OuterCentralQueenScore;
-
-        return piecePositionScore;
-    }
-
-    private static int CalculatePositionScores(ulong pieces, ulong positions)
-    {
-        var inPosition = pieces & positions;
-
-        return inPosition > 0 ? BitboardOperations.GetPopCount(inPosition) : 0;
     }
 
     private int CalculateCastlingScores()

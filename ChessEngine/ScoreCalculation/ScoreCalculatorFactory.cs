@@ -15,7 +15,8 @@ public static class ScoreCalculatorFactory
         var scoreCalculations = new List<IScoreCalculation>
         {
             new PieceValuesScoreCalculation(scoreValues),
-            new PawnStructureScoreCalculation(scoreValues)
+            new PawnStructureScoreCalculation(scoreValues),
+            new CentralPieceScoreCalculation(scoreValues)
         };
 
         return new ScoreCalculator(scoreCalculations, scoreValues);
