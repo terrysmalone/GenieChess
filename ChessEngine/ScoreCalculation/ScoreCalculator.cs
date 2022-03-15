@@ -40,15 +40,10 @@ public class ScoreCalculator : IScoreCalculator
             score += scoreCalculation.Calculate(currentBoard);
         }
 
-        score += CalculateCastlingScores();
-        score += CalculateCanCastleScores();
-
         //Add king pawn protection scores
         //Add king position scores (stay away from the middle early/mid game)
 
         score += CalculateDevelopmentScore();
-
-        score += CalculateSquareTableScores();
 
         score += CalculateCoverageAndAttackScores();
 
@@ -57,8 +52,7 @@ public class ScoreCalculator : IScoreCalculator
 
     private void DetectEndGame()
     {
-
-        if(   BitboardOperations.GetPopCount(_currentBoard.WhiteNonEndGamePieces) < _endGameCount
+        if(BitboardOperations.GetPopCount(_currentBoard.WhiteNonEndGamePieces) < _endGameCount
            || BitboardOperations.GetPopCount(_currentBoard.BlackNonEndGamePieces) < _endGameCount)
         {
             _isEndGame = true;
@@ -67,131 +61,6 @@ public class ScoreCalculator : IScoreCalculator
         {
             _isEndGame = false;
         }
-
-    }
-
-    private int CalculateCastlingScores()
-    {
-        if (_isEndGame)
-        {
-            return 0;
-        }
-
-        var castlingScore = 0;
-
-        if (_currentBoard.WhiteKing == LookupTables.G1 && (_currentBoard.WhiteRooks & LookupTables.F1) != 0)
-        {
-            castlingScore += _scoreValues.CastlingKingSideScore;
-        }
-        else if (_currentBoard.WhiteKing == LookupTables.C1 && (_currentBoard.WhiteRooks & LookupTables.D1) != 0)
-        {
-            castlingScore += _scoreValues.CastlingQueenSideScore;
-        }
-
-        if (_currentBoard.BlackKing == LookupTables.G8 && (_currentBoard.BlackRooks & LookupTables.F8) != 0)
-        {
-            castlingScore -= _scoreValues.CastlingKingSideScore;
-        }
-        else if (_currentBoard.BlackKing == LookupTables.C8 && (_currentBoard.BlackRooks & LookupTables.D8) != 0)
-        {
-            castlingScore -= _scoreValues.CastlingQueenSideScore;
-        }
-
-        return castlingScore;
-    }
-
-    private int CalculateCanCastleScores()
-    {
-        var canCastleScore = 0;
-
-        var state = _currentBoard.GetCurrentBoardState();
-
-        canCastleScore += Convert.ToInt32(state.WhiteCanCastleKingside) * _scoreValues.CanCastleKingsideScore;
-        canCastleScore += Convert.ToInt32(state.WhiteCanCastleQueenside) * _scoreValues.CanCastleQueensideScore;
-
-        canCastleScore -= Convert.ToInt32(state.BlackCanCastleKingside) * _scoreValues.CanCastleKingsideScore;
-        canCastleScore -= Convert.ToInt32(state.BlackCanCastleQueenside) * _scoreValues.CanCastleQueensideScore;
-
-        return canCastleScore;
-    }
-
-    private int CalculateSquareTableScores()
-    {
-        var squareTableScores = 0;
-
-        squareTableScores += CalculatePawnSquareTableScores();
-        squareTableScores += CalculateKnightSquareTableScores();
-        squareTableScores += CalculateBishopSquareTableScores();
-
-        if(!_isEndGame)
-            squareTableScores += CalculateKingSquareTableScores();
-        else
-            squareTableScores += CalculateKingEndGameSquareTableScores();
-
-        return squareTableScores;
-    }
-
-    private int CalculatePawnSquareTableScores()
-    {
-        var pawnSquareTableScore = 0;
-
-        pawnSquareTableScore += CalculateTableScores(_currentBoard.WhitePawns, _scoreValues.PawnSquareTable, true);
-
-        pawnSquareTableScore -= CalculateTableScores(_currentBoard.BlackPawns, _scoreValues.PawnSquareTable, false);
-
-        return pawnSquareTableScore;
-    }
-
-    private int CalculateKnightSquareTableScores()
-    {
-        var knightSquareTableScore = 0;
-
-        knightSquareTableScore += CalculateTableScores(_currentBoard.WhiteKnights, _scoreValues.KnightSquareTable, true);
-
-        knightSquareTableScore -= CalculateTableScores(_currentBoard.BlackKnights, _scoreValues.KnightSquareTable, false);
-
-        return knightSquareTableScore;
-    }
-
-    private int CalculateBishopSquareTableScores()
-    {
-        var bishopSquareTableScore = 0;
-
-        bishopSquareTableScore += CalculateTableScores(_currentBoard.WhiteBishops, _scoreValues.BishopSquareTable, true);
-
-        bishopSquareTableScore -= CalculateTableScores(_currentBoard.BlackBishops, _scoreValues.BishopSquareTable, false);
-
-        return bishopSquareTableScore;
-    }
-
-    private int CalculateKingSquareTableScores()
-    {
-        var kingSquareTableScore = 0;
-
-        kingSquareTableScore += CalculateTableScores(_currentBoard.WhiteKing, _scoreValues.KingSquareTable, true);
-
-        kingSquareTableScore -= CalculateTableScores(_currentBoard.BlackKing, _scoreValues.KingSquareTable, false);
-
-        return kingSquareTableScore;
-    }
-
-    private int CalculateKingEndGameSquareTableScores()
-    {
-        var kingEndGameSquareTableScore = 0;
-
-        kingEndGameSquareTableScore += CalculateTableScores(_currentBoard.WhiteKing, _scoreValues.KingEndGameSquareTable, true);
-
-        kingEndGameSquareTableScore -= CalculateTableScores(_currentBoard.BlackKing, _scoreValues.KingEndGameSquareTable, false);
-
-        return kingEndGameSquareTableScore;
-    }
-
-    private static int CalculateTableScores(ulong board, int[] squareTableValues, bool isWhite)
-    {
-        var positions =
-            BitboardOperations.GetSquareIndexesFromBoardValue(isWhite ? board : BitboardOperations.FlipVertical(board));
-
-        return positions.Sum(squareIndex => squareTableValues[squareIndex]);
     }
 
     private int CalculateDevelopmentScore()

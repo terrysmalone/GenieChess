@@ -16,7 +16,9 @@ public static class ScoreCalculatorFactory
         {
             new PieceValuesScoreCalculation(scoreValues),
             new PawnStructureScoreCalculation(scoreValues),
-            new CentralPieceScoreCalculation(scoreValues)
+            new CentralPieceScoreCalculation(scoreValues),
+            new CastlingScoreCalculation(scoreValues),
+            new SquareTableScoreCalculation(scoreValues)
         };
 
         return new ScoreCalculator(scoreCalculations, scoreValues);
