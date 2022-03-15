@@ -27,16 +27,16 @@ public sealed class AlphaBetaSearch
     private List<MoveValueInfo> _initialMoves;
     private List<Tuple<int, PieceMove>> _initialMovesIterativeDeepeningShuffleOrder;
 
-    private int m_KillerMovesToStore = 2;
+    private int _killerMovesToStore = 2;
     private PieceMove[,] _killerMoves;
 
     private int _evaluationDepth;
 
     private PieceMove? _bestMoveSoFar;
 
-    private int _nullMoveR = 1;
+    private const int _nullMoveR = 1;
 
-    private int _maxCheckExtension = 10;
+    private const int _maxCheckExtension = 10;
 
     public AlphaBetaSearch(MoveGeneration moveGeneration, Board boardPosition, IScoreCalculator scoreCalculator, ILog log)
     {
@@ -140,7 +140,7 @@ public sealed class AlphaBetaSearch
         _log.Info($"Calculating move for {toMove}");
         _log.Info(FenTranslator.ToFenString(_boardPosition.GetCurrentBoardState()));
 
-        _killerMoves = new PieceMove[maxDepth, m_KillerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
+        _killerMoves = new PieceMove[maxDepth, _killerMovesToStore]; // Try to a depth of maxDepth with 5 saved each round
 
         _initialMoves = new List<MoveValueInfo>();
         _initialMovesIterativeDeepeningShuffleOrder = new List<Tuple<int, PieceMove>>();
@@ -331,7 +331,6 @@ public sealed class AlphaBetaSearch
             }
 
             // We use the best move even if the depth is shallower.
-            // We only want the
             if (hash.Depth >= depthLeft)
             {
                 switch (hash.NodeType)
@@ -373,8 +372,8 @@ public sealed class AlphaBetaSearch
         if (allowNull && depthLeft > _nullMoveR && !BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
         {
             _boardPosition.SwitchSides();
-            //We don't care about the PV path. Maybe we should implement this differently
-            // Set extensionDepth to m_MaxCheckExtension because we don't want it to get
+            // We don't care about the PV path. Maybe we should implement this differently
+            // Set extensionDepth to _maxCheckExtension because we don't want it to get
             // extended after the null move check
             var eval = -AlphaBeta(-beta,
                                   -beta + 1,
@@ -443,50 +442,28 @@ public sealed class AlphaBetaSearch
 
         var noMovesAnalysed = true;
 
-        var pvMove = true;
+        var isInitialMove = true;
 
         foreach (var move in moveList)
         {
-            // Since we do pseudo legal move generation we need to validate
-            // any castling moves, otherwise skip to the next iteration of the loop
-            if (move.SpecialMove == SpecialMoveType.KingCastle)
+            if (!IsMoveValid(move, colourToMove))
             {
-                if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
-                {
-                    continue;
-                }
-
-                if (!_moveGeneration.ValidateKingsideCastlingMove(_boardPosition))
-                {
-                    continue;
-                }
-            }
-            else if (move.SpecialMove == SpecialMoveType.QueenCastle)
-            {
-                if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
-                {
-                    continue;
-                }
-
-                if (!_moveGeneration.ValidateQueensideCastlingMove(_boardPosition))
-                {
-                    continue;
-                }
+                continue;
             }
 
             _pieceMover.MakeMove(move);
 
             // Futility pruning
-            //if (depthLeft == 1 &&
-            //    move.SpecialMove != SpecialMoveType.Capture &&
-            //    move.SpecialMove != SpecialMoveType.ENPassantCapture &&
-            //    !IsPromotionCapture(move.SpecialMove))
-            //{
-            //    if (Evaluate(m_BoardPosition) + 1.25m < alpha)
-            //    {
-            //        continue;
-            //    }
-            //}
+            // if (depthLeft == 1 &&
+            //     move.SpecialMove != SpecialMoveType.Capture &&
+            //     move.SpecialMove != SpecialMoveType.ENPassantCapture)
+            // {
+            //     if (Evaluate(_boardPosition) + 1.25m < alpha)
+            //     {
+            //         _pieceMover.UnMakeLastMove();
+            //         continue;
+            //     }
+            // }
 
             // Since we do pseudo legal move generation we need to check if this move is legal
             // otherwise skip to the next iteration of the loop
@@ -501,16 +478,10 @@ public sealed class AlphaBetaSearch
             int score;
 
             // if this is the first (pv move) then do a full search
-            if (pvMove)
+            if (isInitialMove)
             {
-                score = -AlphaBeta(-beta,
-                                   -alpha,
-                                   depthLeft - 1,
-                                   true,
-                                   false,
-                                   bestPath,
-                                   extensionDepth);
-                pvMove = false;
+                score = -AlphaBeta(-beta, -alpha, depthLeft - 1, true, false, bestPath, extensionDepth);
+                isInitialMove = false;
             }
             else
             {
@@ -551,7 +522,6 @@ public sealed class AlphaBetaSearch
                 pvPath.RemoveRange(pvPosition, pvPath.Count - pvPosition);
                 pvPath.Add(move);
                 pvPath.AddRange(bestPath);
-
             }
 
             positionValue = Math.Max(alpha, score);
@@ -565,7 +535,7 @@ public sealed class AlphaBetaSearch
                 // Check if the current move is already in the killer move list
                 var duplicate = false;
 
-                for (var i = 0; i < m_KillerMovesToStore; i++)
+                for (var i = 0; i < _killerMovesToStore; i++)
                 {
                     if (move == _killerMoves[depthLeft-1,i])
                     {
@@ -577,7 +547,7 @@ public sealed class AlphaBetaSearch
                 if (duplicate == false)
                 {
                     //Shift killer moves to the right
-                    for (var i = m_KillerMovesToStore - 2; i >= 0; i--)
+                    for (var i = _killerMovesToStore - 2; i >= 0; i--)
                     {
                         _killerMoves[depthLeft - 1, i + 1] = _killerMoves[depthLeft - 1, i];
                     }
@@ -604,6 +574,38 @@ public sealed class AlphaBetaSearch
         return positionValue;
     }
 
+    private bool IsMoveValid(PieceMove move, bool colourToMove)
+    {
+        // Since we do pseudo legal move generation we need to validate
+        // any castling moves, otherwise skip to the next iteration of the loop
+        if (move.SpecialMove == SpecialMoveType.KingCastle)
+        {
+            if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
+            {
+                return false;
+            }
+
+            if (!_moveGeneration.ValidateKingsideCastlingMove(_boardPosition))
+            {
+                return false;
+            }
+        }
+        else if (move.SpecialMove == SpecialMoveType.QueenCastle)
+        {
+            if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
+            {
+                return false;
+            }
+
+            if (!_moveGeneration.ValidateQueensideCastlingMove(_boardPosition))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private void RecordHash(int depth, int score, HashNodeType hashNodeType, PieceMove? bestMove = null)
     {
         var hash = new Hash
@@ -622,8 +624,8 @@ public sealed class AlphaBetaSearch
         TranspositionTable.Add(hash);
     }
 
-    /// Evaluates the score relative to the current player
-    /// i.e. A high score means the position is better for the current player
+    // Evaluates the score relative to the current player
+    // i.e. A high score means the position is better for the current player
     private int Evaluate(Board boardPosition)
     {
         int score;
@@ -804,7 +806,7 @@ public sealed class AlphaBetaSearch
 
     private void BringKillerMovesToTheFront(IList<PieceMove> moveList, int depth)
     {
-        for (var slot = 0; slot < m_KillerMovesToStore; slot++)
+        for (var slot = 0; slot < _killerMovesToStore; slot++)
         {
             var killerMove = _killerMoves[depth-1, slot];
 
