@@ -132,7 +132,7 @@ public class Board
         SetPosition(FenTranslator.ToBoardState(fenPosition));
     }
 
-    private void SetPosition(BoardState state)
+    private void SetPosition(in BoardState state)
     {
         WhiteToMove = state.WhiteToMove;
 
@@ -259,7 +259,7 @@ public class Board
         EnPassantPosition = 0;
     }
 
-    public void AddToHistory(BoardState state)
+    public void AddToHistory(in BoardState state)
     {
         m_History.Push(state);
     }

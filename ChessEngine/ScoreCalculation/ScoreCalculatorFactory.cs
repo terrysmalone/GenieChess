@@ -18,10 +18,12 @@ public static class ScoreCalculatorFactory
             new PawnStructureScoreCalculation(scoreValues),
             new CentralPieceScoreCalculation(scoreValues),
             new CastlingScoreCalculation(scoreValues),
-            new SquareTableScoreCalculation(scoreValues)
+            new SquareTableScoreCalculation(scoreValues),
+            new CoverageAndAttackScoreCalculation(scoreValues),
+            new PieceDevelopmentScoreCalculation(scoreValues)
         };
 
-        return new ScoreCalculator(scoreCalculations, scoreValues);
+        return new ScoreCalculator(scoreCalculations);
     }
 }
 

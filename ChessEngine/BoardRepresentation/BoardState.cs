@@ -104,5 +104,15 @@ public struct BoardState
 
         return true;
     }
+
+    public static bool operator ==(BoardState left, BoardState right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(BoardState left, BoardState right)
+    {
+        return !(left == right);
+    }
 }
 
