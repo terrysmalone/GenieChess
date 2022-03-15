@@ -8,8 +8,6 @@ namespace ChessEngine.MoveSearching;
 /// </summary>
 internal static class ZobristHash
 {
-    #region constants
-
     internal const int WHITE_PAWN = 0;
     internal const int WHITE_KNIGHT = 1;
     internal const int WHITE_BISHOP = 2;
@@ -23,16 +21,14 @@ internal static class ZobristHash
     internal const int BLACK_QUEEN = 10;
     internal const int BLACK_KING = 11;
 
-    #endregion constants
-
-    static bool initialised;
+    static bool _initialised;
 
     /// <summary>
     /// Clears and reinitialises the zobrist hashing
     /// </summary>
     internal static void Restart()
     {
-        initialised = false;
+        _initialised = false;
         Initialise();
     }
 
@@ -40,7 +36,7 @@ internal static class ZobristHash
     {
         var rand = new Random(1);
 
-        if (initialised == false)
+        if (_initialised == false)
         {
             ZobristKey.PiecePositions = new ulong[12,64];
 
@@ -68,13 +64,11 @@ internal static class ZobristHash
             ZobristKey.EnPassantG = rand.NextUlong();
             ZobristKey.EnPassantH = rand.NextUlong();
 
-            initialised = true;
+            _initialised = true;
         }
     }
 
-    #region hash whole board methods
-
-    internal static ulong HashBoard(BoardState boardState)
+    internal static ulong HashBoard(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -102,9 +96,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    #region Hash piece positions
-
-    private static ulong HashWhitePawns(BoardState boardState)
+    private static ulong HashWhitePawns(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -115,7 +107,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashWhiteKnights(BoardState boardState)
+    private static ulong HashWhiteKnights(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -126,7 +118,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashWhiteBishops(BoardState boardState)
+    private static ulong HashWhiteBishops(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -137,7 +129,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashWhiteRooks(BoardState boardState)
+    private static ulong HashWhiteRooks(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -148,7 +140,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashWhiteQueens(BoardState boardState)
+    private static ulong HashWhiteQueens(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -159,7 +151,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashWhiteKing(BoardState boardState)
+    private static ulong HashWhiteKing(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -170,7 +162,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackPawns(BoardState boardState)
+    private static ulong HashBlackPawns(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -181,7 +173,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackKnights(BoardState boardState)
+    private static ulong HashBlackKnights(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -192,7 +184,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackBishops(BoardState boardState)
+    private static ulong HashBlackBishops(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -203,7 +195,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackRooks(BoardState boardState)
+    private static ulong HashBlackRooks(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -214,7 +206,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackQueens(BoardState boardState)
+    private static ulong HashBlackQueens(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -225,7 +217,7 @@ internal static class ZobristHash
         return hash;
     }
 
-    private static ulong HashBlackKing(BoardState boardState)
+    private static ulong HashBlackKing(in BoardState boardState)
     {
         ulong hash = 0;
 
@@ -249,8 +241,6 @@ internal static class ZobristHash
 
         return hash;
     }
-
-    #endregion Hash piece positions
 
     internal static ulong HashEnPassantColumn(ulong enPassantPosition)
     {
@@ -278,7 +268,7 @@ internal static class ZobristHash
         return 0;
     }
 
-    private static ulong HashCastlingRights(BoardState boardState)
+    private static ulong HashCastlingRights(in BoardState boardState)
     {
          ulong hash = 0;
 
@@ -296,8 +286,6 @@ internal static class ZobristHash
 
          return hash;
      }
-
-    #endregion hash whole board methods
 
     internal static int GetPieceValue(PieceType pieceType, bool whitePiece)
     {
@@ -322,7 +310,7 @@ internal static class ZobristHash
 
     internal static void Reset()
     {
-        initialised = false;
+        _initialised = false;
 
         ZobristKey.PiecePositions = new ulong[12, 64];
 

@@ -12,7 +12,18 @@ public static class ScoreCalculatorFactory
         var scoreValueXmlReader = new ScoreValueXmlReader();
         scoreValueXmlReader.ReadScores(scoreValues, new ResourceLoader().GetGameResourcePath("ScoreValues.xml"), log ?? new NullLogger());
 
-        return new ScoreCalculator(scoreValues);
+        var scoreCalculations = new List<IScoreCalculation>
+        {
+            new PieceValuesScoreCalculation(scoreValues),
+            new PawnStructureScoreCalculation(scoreValues),
+            new CentralPieceScoreCalculation(scoreValues),
+            new CastlingScoreCalculation(scoreValues),
+            new SquareTableScoreCalculation(scoreValues),
+            new CoverageAndAttackScoreCalculation(scoreValues),
+            new PieceDevelopmentScoreCalculation(scoreValues)
+        };
+
+        return new ScoreCalculator(scoreCalculations);
     }
 }
 
