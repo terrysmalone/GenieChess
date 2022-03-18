@@ -181,7 +181,6 @@ public sealed class BoardViewModel : ViewModelBase
         var (column, row) = TranslationHelper.GetPosition(bitPosition);
 
         //Normalise the positions
-        column -= 1;
         row = 8 - row - 1;
 
         return new Point(column, row);

@@ -20,7 +20,7 @@ internal static class MoveOrdering
                 || moveList[moveNum].SpecialMove == SpecialMoveType.ENPassantCapture
                 || IsPromotionCapture(moveList[moveNum].SpecialMove))
             {
-                var victimType = BoardChecking.GetPieceTypeOnSquare(boardPosition, moveList[moveNum].Moves);
+                var victimType = PieceChecking.GetPieceTypeOnSquare(boardPosition, moveList[moveNum].Moves);
 
                 ordering.Add(new Tuple<PieceMove, int, int>(
                                                             moveList[moveNum],

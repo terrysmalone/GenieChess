@@ -54,19 +54,19 @@ internal sealed class PieceDevelopmentScoreCalculation : IScoreCalculation
             var firstRook = rooks[0];
             var secondRook = rooks[1];
 
-            if ((BoardChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            if ((PieceChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
             {
                 connectedRookScore += _scoreValues.ConnectedRookScore;
             }
-            else if ((BoardChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
             {
                 connectedRookScore += _scoreValues.ConnectedRookScore;
             }
-            else if ((BoardChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
             {
                 connectedRookScore += _scoreValues.ConnectedRookScore;
             }
-            else if ((BoardChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
             {
                 connectedRookScore += _scoreValues.ConnectedRookScore;
             }
@@ -79,13 +79,13 @@ internal sealed class PieceDevelopmentScoreCalculation : IScoreCalculation
             var firstRook = rooks[0];
             var secondRook = rooks[1];
 
-            if ((BoardChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            if ((PieceChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
-            else if ((BoardChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
-            else if ((BoardChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
-            else if ((BoardChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            else if ((PieceChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
         }
 

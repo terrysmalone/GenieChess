@@ -54,7 +54,7 @@ public class PerfT
 
             if (moveList[i].SpecialMove == SpecialMoveType.KingCastle)
             {
-                if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove)
+                if (PieceChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove)
                     || !_moveGeneration.ValidateKingsideCastlingMove(boardPosition))
                 {
                     skipMove = true;
@@ -62,7 +62,7 @@ public class PerfT
             }
             else if (moveList[i].SpecialMove == SpecialMoveType.QueenCastle)
             {
-                if (BoardChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove)
+                if (PieceChecking.IsKingInCheck(boardPosition, boardPosition.WhiteToMove)
                     || !_moveGeneration.ValidateQueensideCastlingMove(boardPosition))
                 {
                     skipMove = true;

@@ -277,7 +277,6 @@ public class PgnTranslatorTests
         var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
 
         Assert.That(move, Is.EqualTo("dxe7+"));
-
     }
 
     [Test]
@@ -323,55 +322,37 @@ public class PgnTranslatorTests
     [Test]
     public void AmbiguousMove_White()
     {
-        // TODO: Write tests
+        var board = new Board();
+        board.ClearBoard();
+        board.SetPosition("7k/1R6/8/8/1K2R3/8/8/8 w - - 0 1");
 
-        // var board = new Board();
-        // board.ClearBoard();
-        // board.SetPosition("7k/1R6/8/8/1K2R3/8/8/8 w - - 0 1");
-        //
-        // var moveFrom = LookupTables.E4;
-        // var moveTo = LookupTables.E7;
-        // var pieceToMove = PieceType.Rook;
-        //
-        // var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
-        //
-        // Assert.That(move, Is.EqualTo("Ree7"));
+        var move = PgnTranslator.ToPgnMove(board, LookupTables.E4, LookupTables.E7, PieceType.Rook);
+
+        Assert.That(move, Is.EqualTo("Ree7"));
     }
 
     [Test]
-    public void AmbiguousMove_White2()
+    public void AmbiguousMove_White_SameColumn()
     {
-        // TODO: Write tests
+        var board = new Board();
+        board.ClearBoard();
+        board.SetPosition("4R3/7k/8/8/1K2R3/8/8/8 w - - 0 1");
 
-        // var board = new Board();
-        // board.ClearBoard();
-        // board.SetPosition("4k3/8/1R6/8/8/8/1R6/2K5 w - - 0 1");
-        //
-        // var moveFrom = LookupTables.B4;
-        // var moveTo = LookupTables.B4;
-        // var pieceToMove = PieceType.Rook;
-        //
-        // var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
-        //
-        // Assert.That(move, Is.EqualTo("R2b4"));
+        var move = PgnTranslator.ToPgnMove(board, LookupTables.E4, LookupTables.E7, PieceType.Rook);
+
+        Assert.That(move, Is.EqualTo("R4e7+"));
     }
 
     [Test]
-    public void AmbiguousMove_Black()
+    public void AmbiguousMove_Black_SameRow()
     {
-        // TODO: Write tests
+        var board = new Board();
+        board.ClearBoard();
+        board.SetPosition("8/r2r3k/8/8/1K6/8/8/8 b - - 0 1");
 
-        // var board = new Board();
-        // board.ClearBoard();
-        // board.SetPosition("8/8/2n5/5k2/8/5n2/K7/8 b - - 0 1");
-        //
-        // var moveFrom = LookupTables.C6;
-        // var moveTo = LookupTables.D4;
-        // var pieceToMove = PieceType.Knight;
-        //
-        // var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
-        //
-        // Assert.That(move, Is.EqualTo("Ncd4"));
+        var move = PgnTranslator.ToPgnMove(board, LookupTables.A7, LookupTables.B7, PieceType.Rook);
+
+        Assert.That(move, Is.EqualTo("Rab7+"));
     }
 
 
@@ -405,12 +386,6 @@ public class PgnTranslatorTests
         var move = PgnTranslator.ToPgnMove(board, moveFrom, moveTo, pieceToMove);
 
         Assert.That(move, Is.EqualTo("Rf1#"));
-    }
-
-    [Test]
-    public void PromotionCheck_White()
-    {
-
     }
 
     [Test]

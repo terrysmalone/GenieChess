@@ -294,7 +294,7 @@ public sealed class PieceMover
         if (IsMovePromotionCapture(specialMove))
         {
             //remove captured piece
-            var capturedPiece = BoardChecking.GetPieceTypeOnSquare(_board, moveToBoard);
+            var capturedPiece = PieceChecking.GetPieceTypeOnSquare(_board, moveToBoard);
             _board.Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, !_board.WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];
 
             //Add promoted piece
@@ -310,7 +310,7 @@ public sealed class PieceMover
         else if (specialMove == SpecialMoveType.Capture)
         {
             //remove captured piece
-            var capturedPiece = BoardChecking.GetPieceTypeOnSquare(_board, moveToBoard);
+            var capturedPiece = PieceChecking.GetPieceTypeOnSquare(_board, moveToBoard);
             _board.Zobrist ^= ZobristKey.PiecePositions[ZobristHash.GetPieceValue(capturedPiece, !_board.WhiteToMove), BitboardOperations.GetSquareIndexFromBoardValue(moveToBoard)];
 
             //Add moved piece

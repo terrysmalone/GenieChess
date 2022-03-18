@@ -5,7 +5,7 @@ using ChessEngine.PossibleMoves;
 namespace ChessEngine.BoardSearching;
 
 // Checks carried out on the chess board regarding various moves and attacks
-internal static class BoardChecking
+internal static class PieceChecking
 {
     internal static bool IsEnemyPieceOnSquare(Board board, ulong square)
     {
@@ -252,7 +252,6 @@ internal static class BoardChecking
     //
     internal static bool IsKingInCheck(Board board, bool whitePieces)
     {
-
         var friendlyKing = whitePieces ? board.WhiteKing : board.BlackKing;
 
         return IsSquareAttacked(board, friendlyKing, whitePieces);

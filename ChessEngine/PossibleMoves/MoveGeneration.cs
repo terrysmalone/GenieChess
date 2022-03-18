@@ -136,7 +136,7 @@ public class MoveGeneration
                                 currentMove.Type,
                                 currentMove.SpecialMove);
 
-            if (BoardChecking.IsKingInCheck(_currentBoard, whiteToCheck))
+            if (PieceChecking.IsKingInCheck(_currentBoard, whiteToCheck))
             {
                 _allMoves.RemoveAt(i);
             }
@@ -154,7 +154,7 @@ public class MoveGeneration
 
             if (currentMove.SpecialMove == SpecialMoveType.KingCastle)
             {
-                if (BoardChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
+                if (PieceChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
                 {
                     _allMoves.RemoveAt(i);
                 }
@@ -165,7 +165,7 @@ public class MoveGeneration
             }
             else if (currentMove.SpecialMove == SpecialMoveType.QueenCastle)
             {
-                if (BoardChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
+                if (PieceChecking.IsKingInCheck(_currentBoard, _currentBoard.WhiteToMove))
                 {
                     _allMoves.RemoveAt(i);
                 }
@@ -180,7 +180,7 @@ public class MoveGeneration
     // Checks that the last move was legal by ensuring that the player who has just moved is not in check
     public static bool WasLastMoveAllowed(Board board)
     {
-        return !BoardChecking.IsKingInCheck(board, !board.WhiteToMove);
+        return !PieceChecking.IsKingInCheck(board, !board.WhiteToMove);
     }
 
     internal bool ValidateKingsideCastlingMove(Board boardPosition)
@@ -562,7 +562,7 @@ public class MoveGeneration
             var bishopPosition = LookupTables.SquareValuesFromIndex[bishopIndex];
 
             var allAllowedMoves =
-                BoardChecking.CalculateAllowedBishopMoves(_currentBoard, bishopIndex, _currentBoard.WhiteToMove);
+                PieceChecking.CalculateAllowedBishopMoves(_currentBoard, bishopIndex, _currentBoard.WhiteToMove);
 
             var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
             SplitAndAddMoves(captureMoves, bishopPosition, PieceType.Bishop, SpecialMoveType.Capture);
@@ -600,7 +600,7 @@ public class MoveGeneration
             var rookPosition = LookupTables.SquareValuesFromIndex[rookIndex];
 
             var allAllowedMoves =
-                BoardChecking.CalculateAllowedRookMoves(_currentBoard, rookIndex, _currentBoard.WhiteToMove);
+                PieceChecking.CalculateAllowedRookMoves(_currentBoard, rookIndex, _currentBoard.WhiteToMove);
 
             var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
             SplitAndAddMoves(captureMoves, rookPosition, PieceType.Rook, SpecialMoveType.Capture);
@@ -627,7 +627,7 @@ public class MoveGeneration
             var piecePosition = LookupTables.SquareValuesFromIndex[pieceIndex];
 
             var allAllowedMoves =
-                BoardChecking.CalculateAllowedQueenMoves(_currentBoard, pieceIndex, _currentBoard.WhiteToMove);
+                PieceChecking.CalculateAllowedQueenMoves(_currentBoard, pieceIndex, _currentBoard.WhiteToMove);
 
             var captureMoves = allAllowedMoves & ~_currentBoard.EmptySquares;
             SplitAndAddMoves(captureMoves, piecePosition, pieceType, SpecialMoveType.Capture);
@@ -812,7 +812,7 @@ public class MoveGeneration
             squareAttacked = true;
         }
 
-        if (BoardChecking.IsSquareAttackedByKing(_currentBoard, squarePositionBoard, _currentBoard.WhiteToMove))
+        if (PieceChecking.IsSquareAttackedByKing(_currentBoard, squarePositionBoard, _currentBoard.WhiteToMove))
         {
             squareAttacked = true;
         }
@@ -848,7 +848,7 @@ public class MoveGeneration
         }
 
         //Up
-        var nearestUpPiece = BoardChecking.FindUpBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestUpPiece = PieceChecking.FindUpBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestUpPiece & enemyRookSquares) > 0 || (nearestUpPiece & enemyQueenSquares) > 0)
         {
@@ -857,7 +857,7 @@ public class MoveGeneration
         }
 
         //Left
-        var nearestLeftPiece = BoardChecking.FindLeftBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestLeftPiece = PieceChecking.FindLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestLeftPiece & enemyRookSquares) > 0 || (nearestLeftPiece & enemyQueenSquares) > 0)
         {
@@ -866,7 +866,7 @@ public class MoveGeneration
         }
 
         //Right
-        var nearestRightPiece = BoardChecking.FindRightBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestRightPiece = PieceChecking.FindRightBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestRightPiece & enemyRookSquares) > 0 || (nearestRightPiece & enemyQueenSquares) > 0)
         {
@@ -876,7 +876,7 @@ public class MoveGeneration
         }
 
         //Down
-        var nearestDownPiece = BoardChecking.FindDownBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestDownPiece = PieceChecking.FindDownBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestDownPiece & enemyRookSquares) > 0 || (nearestDownPiece & enemyQueenSquares) > 0)
         {
@@ -885,7 +885,7 @@ public class MoveGeneration
         }
 
         //Up-right
-        var nearestUpRightPiece = BoardChecking.FindUpRightBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestUpRightPiece = PieceChecking.FindUpRightBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestUpRightPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
         {
@@ -894,7 +894,7 @@ public class MoveGeneration
         }
 
         //Up Left
-        var nearestUpLeftPiece = BoardChecking.FindUpLeftBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestUpLeftPiece = PieceChecking.FindUpLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestUpLeftPiece & enemyBishopSquares) > 0 || (nearestUpRightPiece & enemyQueenSquares) > 0)
         {
@@ -904,7 +904,7 @@ public class MoveGeneration
 
         //Down-right
         var nearestDownRightPiece =
-            BoardChecking.FindDownRightBlockingPosition(_currentBoard, squarePositionBoard);
+            PieceChecking.FindDownRightBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestDownRightPiece & enemyBishopSquares) > 0 || (nearestDownRightPiece & enemyQueenSquares) > 0)
         {
@@ -913,7 +913,7 @@ public class MoveGeneration
         }
 
         //Up Left
-        var nearestDownLeftPiece = BoardChecking.FindDownLeftBlockingPosition(_currentBoard, squarePositionBoard);
+        var nearestDownLeftPiece = PieceChecking.FindDownLeftBlockingPosition(_currentBoard, squarePositionBoard);
 
         if ((nearestDownLeftPiece & enemyBishopSquares) > 0 || (nearestDownLeftPiece & enemyQueenSquares) > 0)
         {
@@ -1029,23 +1029,23 @@ public class MoveGeneration
             return true;
         }
 
-        if (BoardChecking.IsSquareAttackedByKing(_currentBoard, squarePosition, whiteToMove))
+        if (PieceChecking.IsSquareAttackedByKing(_currentBoard, squarePosition, whiteToMove))
         {
             return true;
         }
 
         if (whiteToMove)
         {
-            if (BoardChecking.IsSquareRayAttackedFromAbove(_currentBoard, squarePosition) ||
-                BoardChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //White castling king willnot be attacked from below so no need to check all squares
+            if (PieceChecking.IsSquareRayAttackedFromAbove(_currentBoard, squarePosition) ||
+                PieceChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //White castling king willnot be attacked from below so no need to check all squares
             {
                 return true;
             }
         }
         else
         {
-            if (BoardChecking.IsSquareRayAttackedFromBelow(_currentBoard, squarePosition) ||
-                BoardChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //Black castling king will not be attacked from above so no need to check all squares
+            if (PieceChecking.IsSquareRayAttackedFromBelow(_currentBoard, squarePosition) ||
+                PieceChecking.IsSquareRayAttackedFromTheSide(_currentBoard, squarePosition)) //Black castling king will not be attacked from above so no need to check all squares
             {
                 return true;
             }

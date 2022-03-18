@@ -52,9 +52,32 @@ public static class TranslationHelper
         var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
 
         var row = index / 8;
-        var col = (index % 8)+1;
+        var col = (index % 8);
 
         return (col, row);
+    }
+
+    public static (string, int) GetColumnAndRow(ulong bitBoard)
+    {
+        var index = BitboardOperations.GetSquareIndexFromBoardValue(bitBoard);
+
+        var row = index / 8 + 1;
+        var col = (index % 8);
+
+        var column = col switch
+        {
+            0 => "a",
+            1 => "b",
+            2 => "c",
+            3 => "d",
+            4 => "e",
+            5 => "f",
+            6 => "g",
+            7 => "h",
+            _ => string.Empty
+        };
+
+        return (column, row);
     }
 
     // Returns the column 0-7 as a letter a-h
@@ -74,7 +97,7 @@ public static class TranslationHelper
         ulong bitboard = 0;
         try
         {
-            var file = TextToNumber(position.Substring(0, 1).ToUpperInvariant()) - 1;
+            var file = TextToNumber(position[..1].ToUpperInvariant()) - 1;
             var rank = Convert.ToInt32(position.Substring(1, 1)) - 1;
 
 

@@ -6,18 +6,18 @@ using NUnit.Framework;
 namespace ChessEngineTests.BoardSearching;
 
 [TestFixture]
-public class BoardCheckingTests
+public class PieceCheckingTests
 {
     [Test]
     public void IsEnemyPieceOnSquare_exceptionIsThrown()
     {
-        Assert.Throws<BitboardException>(() => BoardChecking.IsEnemyPieceOnSquare(new Board(), 4432407298056));
+        Assert.Throws<BitboardException>(() => PieceChecking.IsEnemyPieceOnSquare(new Board(), 4432407298056));
     }
 
     [Test]
     public void GetPieceTypeOnSquare_exceptionIsThrown()
     {
-        Assert.Throws<BitboardException>(() => BoardChecking.GetPieceTypeOnSquare(new Board(), 0));
+        Assert.Throws<BitboardException>(() => PieceChecking.GetPieceTypeOnSquare(new Board(), 0));
     }
 
     [Test]
@@ -30,7 +30,7 @@ public class BoardCheckingTests
 
         foreach (var square in squares)
         {
-            Assert.That(BoardChecking.IsEnemyPieceOnSquare(board, square), Is.False, $"Failed at square {square} ");
+            Assert.That(PieceChecking.IsEnemyPieceOnSquare(board, square), Is.False, $"Failed at square {square} ");
         }
     }
 
@@ -43,7 +43,7 @@ public class BoardCheckingTests
         var board = new Board();
         board.SetPosition(fenString);
 
-        Assert.AreEqual(BoardChecking.IsEnemyPieceOnSquare(board, squareToCheck), isEnemyPieceOnSquare);
+        Assert.AreEqual(PieceChecking.IsEnemyPieceOnSquare(board, squareToCheck), isEnemyPieceOnSquare);
     }
 
     [Test]
@@ -52,10 +52,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A2);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A2);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Pawn));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A5);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A5);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Pawn));
     }
 
@@ -65,10 +65,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Pawn));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A5);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A5);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Pawn));
     }
 
@@ -78,10 +78,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Knight));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B2);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B2);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Knight));
     }
 
@@ -91,10 +91,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.G8);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.G8);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Knight));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D5);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.D5);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Knight));
     }
 
@@ -104,10 +104,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C1);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.C1);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Bishop));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Bishop));
     }
 
@@ -117,10 +117,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C8);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.C8);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Bishop));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Bishop));
     }
 
@@ -130,10 +130,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.H1);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.H1);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Rook));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Rook));
     }
 
@@ -143,10 +143,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.H8);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.H8);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Rook));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.B1);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Rook));
     }
 
@@ -156,10 +156,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D1);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.D1);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Queen));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Queen));
     }
 
@@ -169,10 +169,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.D8);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.D8);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.Queen));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.Queen));
     }
 
@@ -182,10 +182,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.E1);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.E1);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.King));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.King));
     }
 
@@ -195,10 +195,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.E8);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.E8);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.King));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A7);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.King));
     }
 
@@ -208,10 +208,10 @@ public class BoardCheckingTests
         var board = new Board();
         board.InitaliseStartingPosition();
 
-        var pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.C5);
+        var pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.C5);
         Assert.That(pieceOnSquare, Is.EqualTo(PieceType.None));
 
-        pieceOnSquare = BoardChecking.GetPieceTypeOnSquare(board, LookupTables.A1);
+        pieceOnSquare = PieceChecking.GetPieceTypeOnSquare(board, LookupTables.A1);
         Assert.That(pieceOnSquare, Is.Not.EqualTo(PieceType.None));
     }
 
@@ -224,7 +224,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
 
         var expected = (ulong)3034571949281478664;
 
@@ -240,7 +240,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
 
         var expected = (ulong)3034571949281478664;
 
@@ -256,7 +256,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
 
         var expected = (ulong)3034571949281478664;
 
@@ -272,7 +272,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
 
         var expected = (ulong)3034571949281478664;
 
@@ -288,7 +288,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
 
         var expected = (ulong)163334998696951808;
 
@@ -304,7 +304,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.SplitBoardToArray(board.WhiteQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], true);
 
         var expected = (ulong)163334998696951808;
 
@@ -320,7 +320,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.BlackQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
 
         var expected = (ulong)1188500000215553;
 
@@ -336,7 +336,7 @@ public class BoardCheckingTests
 
         var queenPositions = BitboardOperations.SplitBoardToArray(board.BlackQueen);
 
-        var allowedMoves = BoardChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedQueenMoves(board, queenPositions[0], false);
 
         var expected = (ulong)1188500000215553;
 
@@ -354,7 +354,7 @@ public class BoardCheckingTests
 
         Assert.That(rookPositions.Count, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
 
         var expected = (ulong)35325504126976;
 
@@ -372,7 +372,7 @@ public class BoardCheckingTests
 
         Assert.That(rookPositions.Length, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedRookMoves(board, rookPositions[0], true);
 
         var expected = (ulong)35325504126976;
 
@@ -390,7 +390,7 @@ public class BoardCheckingTests
 
         Assert.That(rookPositions.Count, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
 
         var expected = (ulong)139018117120;
 
@@ -408,7 +408,7 @@ public class BoardCheckingTests
 
         Assert.That(rookPositions.Length, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedRookMoves(board, rookPositions[0], false);
 
         var expected = (ulong)139018117120;
 
@@ -427,7 +427,7 @@ public class BoardCheckingTests
 
         Assert.That(bishopPositions.Count, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
 
         var expected = (ulong)585457745920;
 
@@ -445,7 +445,7 @@ public class BoardCheckingTests
 
         Assert.That(bishopPositions.Length, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
+        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
 
         var expected = (ulong)585457745920;
 
@@ -463,7 +463,7 @@ public class BoardCheckingTests
 
         Assert.That(bishopPositions.Count, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
 
         var expected = (ulong)5664958784208896;
 
@@ -481,7 +481,7 @@ public class BoardCheckingTests
 
         Assert.That(bishopPositions.Length, Is.EqualTo(1));
 
-        var allowedMoves = BoardChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
+        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
 
         var expected = (ulong)5664958784208896;
 
@@ -491,7 +491,7 @@ public class BoardCheckingTests
     [Test]
     public void GetSpecialMoveType()
     {
-// TODO: write s
+        // TODO: write tests
         //throw new NotImplementedException();
     }
 
@@ -508,7 +508,7 @@ public class BoardCheckingTests
         var board = new Board();
         board.SetPosition(fenString);
 
-        Assert.That(BoardChecking.IsKingInCheck(board, whiteKing), Is.EqualTo(expectedIsInCheck));
+        Assert.That(PieceChecking.IsKingInCheck(board, whiteKing), Is.EqualTo(expectedIsInCheck));
     }
 }
 

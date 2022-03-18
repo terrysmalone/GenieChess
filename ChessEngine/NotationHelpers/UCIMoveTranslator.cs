@@ -69,9 +69,9 @@ public static class UciMoveTranslator
         pieceMove.Position = MoveFromPosition;
         pieceMove.Moves = MoveToPosition;
 
-        pieceMove.Type = BoardChecking.GetPieceTypeOnSquare(board, MoveFromPosition);
+        pieceMove.Type = PieceChecking.GetPieceTypeOnSquare(board, MoveFromPosition);
 
-        pieceMove.SpecialMove = BoardChecking.GetSpecialMoveType(board, MoveFromPosition, MoveToPosition, move);
+        pieceMove.SpecialMove = PieceChecking.GetSpecialMoveType(board, MoveFromPosition, MoveToPosition, move);
 
         return pieceMove;
     }

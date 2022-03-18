@@ -357,7 +357,7 @@ public sealed class AlphaBetaSearch
         // If in check do a check extension otherwise perform quiescence search
         if (depthLeft == 0)
         {
-            if (extensionDepth < _maxCheckExtension && BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
+            if (extensionDepth < _maxCheckExtension && PieceChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
             {
                 depthLeft++;
                 extensionDepth++;
@@ -369,7 +369,7 @@ public sealed class AlphaBetaSearch
         }
 
         // Null move check
-        if (allowNull && depthLeft > _nullMoveR && !BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
+        if (allowNull && depthLeft > _nullMoveR && !PieceChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove))
         {
             _boardPosition.SwitchSides();
             // We don't care about the PV path. Maybe we should implement this differently
@@ -467,7 +467,7 @@ public sealed class AlphaBetaSearch
 
             // Since we do pseudo legal move generation we need to check if this move is legal
             // otherwise skip to the next iteration of the loop
-            if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
+            if (PieceChecking.IsKingInCheck(_boardPosition, colourToMove))
             {
                 _pieceMover.UnMakeLastMove();
                 continue;
@@ -580,7 +580,7 @@ public sealed class AlphaBetaSearch
         // any castling moves, otherwise skip to the next iteration of the loop
         if (move.SpecialMove == SpecialMoveType.KingCastle)
         {
-            if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
+            if (PieceChecking.IsKingInCheck(_boardPosition, colourToMove))
             {
                 return false;
             }
@@ -592,7 +592,7 @@ public sealed class AlphaBetaSearch
         }
         else if (move.SpecialMove == SpecialMoveType.QueenCastle)
         {
-            if (BoardChecking.IsKingInCheck(_boardPosition, colourToMove))
+            if (PieceChecking.IsKingInCheck(_boardPosition, colourToMove))
             {
                 return false;
             }
@@ -846,7 +846,7 @@ public sealed class AlphaBetaSearch
     {
         var movesToEnd = (_evaluationDepth - depth) + 1;  //Since we want lower depth mates to score lower
 
-        var isInCheck = BoardChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove);
+        var isInCheck = PieceChecking.IsKingInCheck(_boardPosition, _boardPosition.WhiteToMove);
 
         if (isInCheck)
         {

@@ -30,7 +30,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
 
         // White
         // Score for bishop
-        var whiteBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(currentBoard, currentBoard.WhiteBishops, true);
+        var whiteBishopPossibleMoves = PieceChecking.CalculateAllowedBishopMoves(currentBoard, currentBoard.WhiteBishops, true);
 
         if (whiteBishopPossibleMoves > 0)
         {
@@ -49,7 +49,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         }
 
         // Score for rook coverage
-        var whiteRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(currentBoard, currentBoard.WhiteRooks, true);
+        var whiteRookPossibleMoves = PieceChecking.CalculateAllowedRookMoves(currentBoard, currentBoard.WhiteRooks, true);
 
         if (whiteRookPossibleMoves > 0)
         {
@@ -67,7 +67,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         }
 
         // Score for queen coverage
-        var whiteQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(currentBoard,
+        var whiteQueenPossibleMoves = PieceChecking.CalculateAllowedQueenMoves(currentBoard,
                                                                                     currentBoard.WhiteQueen,
                                                                                     true);
         if (whiteQueenPossibleMoves > 0)
@@ -139,7 +139,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         ulong blackAttackBoard = 0; // All white squares black can move to next turn
 
         // Score for bishop coverage
-        var blackBishopPossibleMoves = BoardChecking.CalculateAllowedBishopMoves(currentBoard,
+        var blackBishopPossibleMoves = PieceChecking.CalculateAllowedBishopMoves(currentBoard,
                                                                                       currentBoard.BlackBishops,
                                                                                       false);
 
@@ -161,7 +161,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         }
 
         // Score for rook coverage
-        var blackRookPossibleMoves = BoardChecking.CalculateAllowedRookMoves(currentBoard,
+        var blackRookPossibleMoves = PieceChecking.CalculateAllowedRookMoves(currentBoard,
                                                                                   currentBoard.BlackRooks,
                                                                                   false);
 
@@ -182,7 +182,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         }
 
         // Score for queen coverage
-        var blackQueenPossibleMoves = BoardChecking.CalculateAllowedQueenMoves(currentBoard,
+        var blackQueenPossibleMoves = PieceChecking.CalculateAllowedQueenMoves(currentBoard,
                                                                                     currentBoard.BlackQueen,
                                                                                     false);
 
