@@ -63,10 +63,18 @@ public class LookupTablesTests
         Assert.That(LookupTables.LeftBoard[boardPosition], Is.EqualTo(expectedLeftBoard));
     }
 
-    [Test]
-    public void UpRightDirectionBoards()
+    [TestCase(0, 9241421688590303744u)]  // a1
+    [TestCase(7, 0u)]                    // h1
+    [TestCase(56, 0u)]                   // a8
+    [TestCase(63, 0u)]                   // h8
+    [TestCase(18, 9241421688590041088u)] // c3
+    [TestCase(39, 0u)]                   // h5
+    [TestCase(20, 141012903133184u)]     // e3
+    public void UpRightDirectionBoards(int boardPosition, ulong expectedLeftBoard)
     {
-        // TODO: Write tests
+        LookupTables.InitialiseAllTables();
+
+        Assert.That(LookupTables.UpRightBoard[boardPosition], Is.EqualTo(expectedLeftBoard));
     }
 
     [Test]

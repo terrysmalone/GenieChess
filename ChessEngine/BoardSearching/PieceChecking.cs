@@ -887,8 +887,8 @@ internal static class PieceChecking
         var upRightBoard = LookupTables.UpRightBoard[pieceIndex];
 
         return CalculateAllowedUpRightMovesFromBoard(board,
-                                                      upRightBoard,
-                                                      whiteToMove);
+                                                     upRightBoard,
+                                                     whiteToMove);
     }
 
     private static ulong CalculateAllowedUpRightMoves(Board board, ulong piecePosition, bool whiteToMove)
