@@ -50,14 +50,8 @@ public static class PgnTranslator
             var otherPiece = matchingMoves.Single(m => m.Position != moveFromBoard);
             var otherPiecePosition = TranslationHelper.GetColumnAndRow(otherPiece.Position);
 
-            if (moveFromPosition.Item1 != otherPiecePosition.Item1) // Columns don't match
-            {
-                positionLetter = moveFromPosition.Item1;
-            }
-            else
-            {
-                positionLetter = moveFromPosition.Item2.ToString();
-            }
+            positionLetter = moveFromPosition.Item1 == otherPiecePosition.Item1 ? moveFromPosition.Item2.ToString()
+                                                                                : moveFromPosition.Item1;
         }
 
         stringBuilder.Append(positionLetter);
