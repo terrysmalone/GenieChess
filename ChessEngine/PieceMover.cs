@@ -9,7 +9,7 @@ public sealed class PieceMover
 {
     private readonly Board _board;
 
-    private const ulong FullBoard = ulong.MaxValue;
+    private const ulong _fullBoard = ulong.MaxValue;
 
     public PieceMover(Board board)
     {
@@ -40,34 +40,16 @@ public sealed class PieceMover
 
         if (IsMovePromotion(specialMove))
         {
-            // ReSharper disable once SwitchStatementMissingSomeCases
-            switch (specialMove)
+            var pieceToPlace = specialMove switch
             {
-                case SpecialMoveType.KnightPromotion:
-                    PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.KnightPromotionCapture:
-                    PlacePiece(PieceType.Knight, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.BishopPromotion:
-                    PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.BishopPromotionCapture:
-                    PlacePiece(PieceType.Bishop, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.RookPromotion:
-                    PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.RookPromotionCapture:
-                    PlacePiece(PieceType.Rook, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.QueenPromotion:
-                    PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
-                    break;
-                case SpecialMoveType.QueenPromotionCapture:
-                    PlacePiece(PieceType.Queen, whiteToMove, moveToBoard);
-                    break;
-            }
+                SpecialMoveType.KnightPromotion or SpecialMoveType.KnightPromotionCapture => PieceType.Knight,
+                SpecialMoveType.BishopPromotion or SpecialMoveType.BishopPromotionCapture => PieceType.Bishop,
+                SpecialMoveType.RookPromotion   or SpecialMoveType.RookPromotionCapture   => PieceType.Rook,
+                SpecialMoveType.QueenPromotion  or SpecialMoveType.QueenPromotionCapture  => PieceType.Queen,
+                _ => throw new ArgumentOutOfRangeException(nameof(specialMove))
+            };
+
+            PlacePiece(pieceToPlace, whiteToMove, moveToBoard);
         }
         else
         {
@@ -646,7 +628,7 @@ public sealed class PieceMover
         _board.AllWhiteOccupiedSquares = _board.WhitePawns | _board.WhiteNonEndGamePieces | _board.WhiteKing;
         _board.AllBlackOccupiedSquares = _board.BlackPawns | _board.BlackNonEndGamePieces | _board.BlackKing;
         _board.AllOccupiedSquares      = _board.AllWhiteOccupiedSquares | _board.AllBlackOccupiedSquares;
-        _board.EmptySquares            = _board.AllOccupiedSquares ^ FullBoard;
+        _board.EmptySquares            = _board.AllOccupiedSquares ^ _fullBoard;
         _board.WhiteOrEmpty            = _board.AllWhiteOccupiedSquares | _board.EmptySquares;
         _board.BlackOrEmpty            = _board.AllBlackOccupiedSquares | _board.EmptySquares;
     }
