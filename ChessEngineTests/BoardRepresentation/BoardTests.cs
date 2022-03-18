@@ -175,15 +175,6 @@ public class BoardTests
 
         board.SwitchSides();
         Assert.That(board.WhiteToMove, Is.False);
-
-
-    }
-
-    [Test]
-    public void KingInCheckFlags()
-    {
-        // TODO: write tests
-        //throw new NotImplementedException();
     }
 }
 

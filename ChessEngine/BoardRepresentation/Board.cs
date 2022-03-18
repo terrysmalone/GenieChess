@@ -2,7 +2,6 @@
 using ChessEngine.MoveSearching;
 using ChessEngine.NotationHelpers;
 using ChessEngine.PossibleMoves;
-using Logging;
 
 namespace ChessEngine.BoardRepresentation;
 
@@ -11,9 +10,7 @@ namespace ChessEngine.BoardRepresentation;
 [Serializable]
 public class Board
 {
-    private static readonly ILog _log;
-
-    private const ulong FullBoard = ulong.MaxValue;
+    private const ulong _fullBoard = ulong.MaxValue;
 
     public ulong WhitePawns;
     public ulong WhiteKnights;
@@ -56,7 +53,7 @@ public class Board
 
     public int FullMoveClock = 1;
 
-    private Stack<BoardState> m_History;
+    private Stack<BoardState> _history;
 
     public ulong Zobrist;
 
@@ -67,7 +64,7 @@ public class Board
         TranspositionTable.InitialiseTable();
         ZobristHash.Initialise();
 
-        m_History = new Stack<BoardState>();
+        _history = new Stack<BoardState>();
     }
 
     // Initialises the pieces to a games starting position
@@ -94,7 +91,7 @@ public class Board
         HalfMoveClock = 0;
         FullMoveClock = 1;
 
-        m_History.Clear();
+        _history.Clear();
 
         CalculateUsefulBitboards();
 
@@ -120,7 +117,7 @@ public class Board
         HalfMoveClock = 0;
         FullMoveClock = 1;
 
-        m_History.Clear();
+        _history.Clear();
 
         CalculateUsefulBitboards();
 
@@ -174,14 +171,7 @@ public class Board
     {
         Zobrist ^= ZobristKey.BlackToMove;
 
-        if (WhiteToMove)
-        {
-            WhiteToMove = false;
-        }
-        else
-        {
-            WhiteToMove = true;
-        }
+        WhiteToMove = !WhiteToMove;
     }
 
     public void AllowAllCastling(bool value)
@@ -201,7 +191,7 @@ public class Board
         AllWhiteOccupiedSquares = WhitePawns | WhiteNonEndGamePieces | WhiteKing;
         AllBlackOccupiedSquares = BlackPawns | BlackNonEndGamePieces | BlackKing;
         AllOccupiedSquares      = AllWhiteOccupiedSquares | AllBlackOccupiedSquares;
-        EmptySquares            = AllOccupiedSquares ^ FullBoard;
+        EmptySquares            = AllOccupiedSquares ^ _fullBoard;
         WhiteOrEmpty            = AllWhiteOccupiedSquares | EmptySquares;
         BlackOrEmpty            = AllBlackOccupiedSquares | EmptySquares;
     }
@@ -247,7 +237,7 @@ public class Board
 
     public void ResetFlags()
     {
-        m_History = new Stack<BoardState>();
+        _history = new Stack<BoardState>();
 
         AllowAllCastling(true);
         //m_PgnMove = string.Empty;
@@ -261,17 +251,17 @@ public class Board
 
     public void AddToHistory(in BoardState state)
     {
-        m_History.Push(state);
+        _history.Push(state);
     }
 
     public ulong PeekHistory()
     {
-        return m_History.Peek().EnPassantPosition;
+        return _history.Peek().EnPassantPosition;
     }
 
     public BoardState PopHistory()
     {
-        return m_History.Pop();
+        return _history.Pop();
     }
 }
 
