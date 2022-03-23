@@ -20,10 +20,10 @@ public static class ScoreCalculatorFactory
             new CastlingScoreCalculation(scoreValues),
             new SquareTableScoreCalculation(scoreValues),
             new CoverageAndAttackScoreCalculation(scoreValues),
-            new PieceDevelopmentScoreCalculation(scoreValues)
+            new PieceDevelopmentScoreCalculation(scoreValues),
+            new KingPositionScoreCalculator(scoreValues)
         };
 
         return new ScoreCalculator(scoreCalculations);
     }
 }
-
