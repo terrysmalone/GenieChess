@@ -1,4 +1,6 @@
 using ChessEngine.BoardRepresentation;
+using ChessEngine.BoardSearching;
+using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.ScoreCalculation;
 
@@ -13,13 +15,13 @@ public class KingPositionScoreCalculator : IScoreCalculation
     public KingPositionScoreCalculator(ScoreValues scoreValues)
     {
         _scoreValues = scoreValues;
-        //scoreValues.KingProtectionScore;
         //scoreValues.EarlyMoveKingScore;
 
     }
     public int Calculate(Board currentBoard)
     {
         var score = CalculateEarlyMoveKingScore(currentBoard);
+        score += CalculateKingProtectionScore(currentBoard);
 
         return score;
     }
@@ -33,14 +35,12 @@ public class KingPositionScoreCalculator : IScoreCalculation
 
         var emptySpaceCount = 4;
 
-
         var whitePieces = currentBoard.AllWhiteOccupiedSquares;
 
         if (BitboardOperations.GetPopCount(~whitePieces & row1) < emptySpaceCount)
         {
             // if king has moved add score
             // We might want to consider a more intelligent check  here (i.e. It's valid for the king to have moved to castle)
-
             if ((currentBoard.WhiteKing & 16u) == 0)
             {
                 score += _scoreValues.EarlyMoveKingScore;
@@ -60,4 +60,21 @@ public class KingPositionScoreCalculator : IScoreCalculation
 
         return score;
     }
+
+    private int CalculateKingProtectionScore(Board currentBoard)
+    {
+        var score = 0;
+
+        var surroundingWhiteKingSpace = PieceChecking.GetSurroundingSpace(currentBoard.WhiteKing);
+        var surroundingWhitePieces = surroundingWhiteKingSpace & currentBoard.AllWhiteOccupiedSquares;
+
+        score += BitboardOperations.GetPopCount(surroundingWhitePieces) * _scoreValues.KingProtectionScore;
+
+        var surroundingBlackKingSpace = PieceChecking.GetSurroundingSpace(currentBoard.BlackKing);
+        var surroundingBlackPieces = surroundingBlackKingSpace & currentBoard.AllBlackOccupiedSquares;
+
+        score -= BitboardOperations.GetPopCount(surroundingBlackPieces) * _scoreValues.KingProtectionScore;
+
+        return score;
+   }
 }

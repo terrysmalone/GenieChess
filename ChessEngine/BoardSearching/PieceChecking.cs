@@ -1216,7 +1216,7 @@ internal static class PieceChecking
         return notAboveLeft & board.AllOccupiedSquares;
     }
 
-    private static ulong GetSurroundingSpace(ulong pieceBoard)
+    public static ulong GetSurroundingSpace(ulong pieceBoard)
     {
         const ulong notA = 18374403900871474942; //All squares except A column
         const ulong notH = 9187201950435737471; //All squares except H column
