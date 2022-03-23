@@ -23,8 +23,6 @@ public sealed class TestPositionsEvaluator : IEvaluator
 
     private readonly ExcelHandler _excelHandler;
 
-    private readonly IResourceLoader _resourceLoader = new ResourceLoader();
-
     public TestPositionsEvaluator(List<Tuple<string, List<TestPosition>>> testPositionSuites,
                                   string highlightsLogFile,
                                   string fullLogFile,
@@ -141,7 +139,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
                 var timer = new Stopwatch();
                 timer.Start();
 
-                var currentMove = new PieceMove();
+                PieceMove currentMove;
 
                 if (maxThinkingSeconds > 0)
                 {

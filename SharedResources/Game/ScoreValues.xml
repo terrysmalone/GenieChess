@@ -60,5 +60,9 @@
   <DevelopedPieceScore>30</DevelopedPieceScore> <!-- Score for every piece (not pawn, rook, or king) that is not on the back rank -->
   <ConnectedRookScore>10</ConnectedRookScore> <!-- Score for having connected rooks -->
   <EarlyQueenMoveScore>30</EarlyQueenMoveScore> <!-- Score if the queen is moved before developing at least 3 other pieces (bishops/knights) -->
+
+  <!-- KingPositionScoreCalculator -->
+  <KingProtectionScore>8</KingProtectionScore>  <!-- Score for every piece protecting the king -->
+  <EarlyMoveKingScore>-50</EarlyMoveKingScore>  <!-- Score for if the king moves early game -->
   
 </ScoreSet>

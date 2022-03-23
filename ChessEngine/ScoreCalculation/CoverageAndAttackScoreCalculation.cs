@@ -90,7 +90,7 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         {
             var possibleMoves = ValidMoveArrays.KnightMoves[knightPos];
 
-            possibleMoves = possibleMoves & ~currentBoard.AllWhiteOccupiedSquares;
+            possibleMoves &= ~currentBoard.AllWhiteOccupiedSquares;
             whiteKnightPossibleMoves |= possibleMoves;
         }
 
