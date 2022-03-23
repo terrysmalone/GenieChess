@@ -14,9 +14,7 @@ internal sealed class PawnStructureScoreCalculation : IScoreCalculation
 
     public int Calculate(Board currentBoard)
     {
-        var pawnStructureScore = 0;
-
-        pawnStructureScore += CalculateDoubledPawnScore(currentBoard);
+        var pawnStructureScore = CalculateDoubledPawnScore(currentBoard);
         pawnStructureScore += CalculateProtectedPawnScore(currentBoard);
         pawnStructureScore += CalculatePassedPawnScore(currentBoard);
 

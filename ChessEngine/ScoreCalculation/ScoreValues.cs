@@ -1,3 +1,4 @@
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace ChessEngine.ScoreCalculation;
 
 public class ScoreValues
@@ -66,5 +67,8 @@ public class ScoreValues
     public int BishopCoverageScore { get; set; }
     public int AttackScore { get; set; }
     public int MoreValuablePieceAttackScore { get; set; }
+
+    public int KingProtectionScore { get; set; }
+    public int EarlyMoveKingScore { get; set; }
 }
 
