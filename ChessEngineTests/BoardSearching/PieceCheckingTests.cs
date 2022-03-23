@@ -509,5 +509,13 @@ public class PieceCheckingTests
 
         Assert.That(PieceChecking.IsKingInCheck(board, whiteKing), Is.EqualTo(expectedIsInCheck));
     }
+
+    [TestCase(134217728u, 120596463616u)]
+    [TestCase(1u, 770u)]
+    [TestCase(9223372036854775808u, 4665729213955833856u)]
+    public void GetSurroundingSpace(ulong initialSquare, ulong expectedSurroundingSpace)
+    {
+        Assert.That(PieceChecking.GetSurroundingSpace(initialSquare), Is.EqualTo(expectedSurroundingSpace));
+    }
 }
 
