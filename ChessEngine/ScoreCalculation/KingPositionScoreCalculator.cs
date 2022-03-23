@@ -1,6 +1,5 @@
 using ChessEngine.BoardRepresentation;
 using ChessEngine.BoardSearching;
-using ChessEngine.PossibleMoves;
 
 namespace ChessEngine.ScoreCalculation;
 
@@ -8,15 +7,11 @@ public class KingPositionScoreCalculator : IScoreCalculation
 {
     private readonly ScoreValues _scoreValues;
 
-    // TODO: Bonus if king is protected by pieces (esp pawns) maybe fianchetto'd bishop
-    // TODO: Penalty if king moves early game and prevents himself from castling
     // TODO: Deducts points (not in end game) if the king is under attack
     
     public KingPositionScoreCalculator(ScoreValues scoreValues)
     {
         _scoreValues = scoreValues;
-        //scoreValues.EarlyMoveKingScore;
-
     }
     public int Calculate(Board currentBoard)
     {
