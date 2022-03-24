@@ -80,13 +80,21 @@ internal sealed class PieceDevelopmentScoreCalculation : IScoreCalculation
             var secondRook = rooks[1];
 
             if ((PieceChecking.FindRightBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            {
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
+            }
             else if ((PieceChecking.FindLeftBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            {
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
+            }
             else if ((PieceChecking.FindUpBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            {
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
+            }
             else if ((PieceChecking.FindDownBlockingPosition(currentBoard, firstRook) & secondRook) > 0)
+            {
                 connectedRookScore -= _scoreValues.ConnectedRookScore;
+            }
         }
 
         return connectedRookScore;

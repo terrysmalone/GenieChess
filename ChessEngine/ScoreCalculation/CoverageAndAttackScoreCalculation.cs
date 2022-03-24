@@ -13,13 +13,6 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
         _scoreValues = scoreValues;
     }
 
-    // BoardCoverageScore
-    //
-    // QueenCoverageScore
-    // RookCoverageScore
-    // BishopCoverageScore
-    //
-    // AttackScore
     public int Calculate(Board currentBoard)
     {
         var attackScore = 0;

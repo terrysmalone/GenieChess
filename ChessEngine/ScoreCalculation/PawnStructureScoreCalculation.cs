@@ -101,6 +101,7 @@ internal sealed class PawnStructureScoreCalculation : IScoreCalculation
 
         foreach (var blackPawnBoard in BitboardOperations.SplitBoardToArray(currentBoard.BlackPawns))
         {
+            // TODO: Try doing this for all rows. It might be quicker
             //Pawn is on 2nd rank so it can promote
             if ((blackPawnBoard & LookupTables.RowMask2) != 0)
             {
