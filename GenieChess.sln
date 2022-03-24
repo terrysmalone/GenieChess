@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genie_UCI", "Genie_UCI\Geni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Genie_WPF", "Genie_WPF\Genie_WPF.csproj", "{868E2EC9-18DC-4C82-9084-85923C4F0AC5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BitboardVisualiser", "BitboardVisualiser\BitboardVisualiser.csproj", "{B0D9721D-B79B-4CDC-9D6C-AE41F229A235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,5 +56,9 @@ Global
 		{868E2EC9-18DC-4C82-9084-85923C4F0AC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{868E2EC9-18DC-4C82-9084-85923C4F0AC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{868E2EC9-18DC-4C82-9084-85923C4F0AC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D9721D-B79B-4CDC-9D6C-AE41F229A235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D9721D-B79B-4CDC-9D6C-AE41F229A235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D9721D-B79B-4CDC-9D6C-AE41F229A235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D9721D-B79B-4CDC-9D6C-AE41F229A235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
