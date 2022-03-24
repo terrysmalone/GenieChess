@@ -22,8 +22,22 @@ public sealed class BitboardVisualiserViewModel  : ViewModelBase
     {
         _cellCollection = new ObservableCollection<Cell>();
 
-        _cellCollection.Add(new Cell(72057594037927936u));
-        _cellCollection.Add(new Cell(144115188075855872u));
-        _cellCollection.Add(new Cell(288230376151711744));
+        var cellValues = new ulong[64];
+
+        var start = 1u;
+
+        for (var i = 0; i < 64; i++)
+        {
+            cellValues[i] = start;
+            start *=2;
+        }
+
+        for (var row = 7; row >=0; row--)
+        {
+            for (var column = 0; column <= 7; column++)
+            {
+                _cellCollection.Add(new Cell(cellValues[row*8 + column]));
+            }
+        }
     }
 }
