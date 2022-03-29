@@ -6,6 +6,7 @@ namespace BitboardVisualiser;
 public sealed class BitboardVisualiserViewModel  : ViewModelBase
 {
     private ObservableCollection<Cell> _cellCollection;
+    private ulong _bitValue;
 
     public ObservableCollection<Cell> CellCollection
     {
@@ -18,9 +19,24 @@ public sealed class BitboardVisualiserViewModel  : ViewModelBase
         }
     }
 
+    public ulong BitValue
+    {
+        get { return _bitValue; }
+
+        set
+        {
+            _bitValue = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public RelayCommand CellClickedCommand { get; }
+
     public BitboardVisualiserViewModel()
     {
         _cellCollection = new ObservableCollection<Cell>();
+
+        CellClickedCommand = new RelayCommand(CalculateBitboardValue);
 
         var cellValues = new ulong[64];
 
@@ -39,5 +55,9 @@ public sealed class BitboardVisualiserViewModel  : ViewModelBase
                 _cellCollection.Add(new Cell(cellValues[row*8 + column]));
             }
         }
+    }
+    private void CalculateBitboardValue(object obj)
+    {
+        BitValue++;
     }
 }

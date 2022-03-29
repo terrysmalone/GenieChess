@@ -27,64 +27,71 @@
 
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-            <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+    <StackPanel>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-            <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
-        </Grid.RowDefinitions>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+                <ColumnDefinition Style="{StaticResource GridColumn}"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
 
-        <Button Grid.Column="1" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonA">A</Button>
-        <Button Grid.Column="2" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonB">B</Button>
-        <Button Grid.Column="3" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonC">C</Button>
-        <Button Grid.Column="4" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonD">D</Button>
-        <Button Grid.Column="5" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonE">E</Button>
-        <Button Grid.Column="6" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonF">F</Button>
-        <Button Grid.Column="7" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonG">G</Button>
-        <Button Grid.Column="8" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonH">H</Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+                <RowDefinition Style="{StaticResource GridRow}"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource GridButton}" Name="Button1">1</Button>
-        <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource GridButton}" Name="Button2">2</Button>
-        <Button Grid.Column="0" Grid.Row="3" Style="{StaticResource GridButton}" Name="Button3">3</Button>
-        <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource GridButton}" Name="Button4">4</Button>
-        <Button Grid.Column="0" Grid.Row="5" Style="{StaticResource GridButton}" Name="Button5">5</Button>
-        <Button Grid.Column="0" Grid.Row="6" Style="{StaticResource GridButton}" Name="Button6">6</Button>
-        <Button Grid.Column="0" Grid.Row="7" Style="{StaticResource GridButton}" Name="Button7">7</Button>
-        <Button Grid.Column="0" Grid.Row="8" Style="{StaticResource GridButton}" Name="Button8">8</Button>
+            <Button Grid.Column="1" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonA">A</Button>
+            <Button Grid.Column="2" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonB">B</Button>
+            <Button Grid.Column="3" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonC">C</Button>
+            <Button Grid.Column="4" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonD">D</Button>
+            <Button Grid.Column="5" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonE">E</Button>
+            <Button Grid.Column="6" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonF">F</Button>
+            <Button Grid.Column="7" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonG">G</Button>
+            <Button Grid.Column="8" Grid.Row="0" Style="{StaticResource GridButton}" Name="ButtonH">H</Button>
 
-        <ItemsControl Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="8" Grid.RowSpan="8" ItemsSource="{Binding CellCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <Button Grid.Column="0" Grid.Row="1" Style="{StaticResource GridButton}" Name="Button1">1</Button>
+            <Button Grid.Column="0" Grid.Row="2" Style="{StaticResource GridButton}" Name="Button2">2</Button>
+            <Button Grid.Column="0" Grid.Row="3" Style="{StaticResource GridButton}" Name="Button3">3</Button>
+            <Button Grid.Column="0" Grid.Row="4" Style="{StaticResource GridButton}" Name="Button4">4</Button>
+            <Button Grid.Column="0" Grid.Row="5" Style="{StaticResource GridButton}" Name="Button5">5</Button>
+            <Button Grid.Column="0" Grid.Row="6" Style="{StaticResource GridButton}" Name="Button6">6</Button>
+            <Button Grid.Column="0" Grid.Row="7" Style="{StaticResource GridButton}" Name="Button7">7</Button>
+            <Button Grid.Column="0" Grid.Row="8" Style="{StaticResource GridButton}" Name="Button8">8</Button>
 
-            <!-- This panel will be used to hold the items -->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Rows="8" Columns="8" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+            <ItemsControl Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="8" Grid.RowSpan="8" ItemsSource="{Binding CellCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
-            <!-- Each item will be drawn using this template -->
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <ToggleButton Style="{StaticResource CellButton}" />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Grid>
+                <!-- This panel will be used to hold the items -->
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="8" Columns="8" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!-- Each item will be drawn using this template -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ToggleButton Command="{Binding CellClickedCommand}" Style="{StaticResource CellButton}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
+        <TextBox Name="ValueTextBox" Margin="10" Width="180" HorizontalAlignment="Left" Text="{Binding BitValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged }"></TextBox>
+
+    </StackPanel>
 </Window>
