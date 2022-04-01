@@ -21,7 +21,7 @@ public sealed class PerfTEvaluator : IEvaluator
     {
         _log = log;
 
-        if (perfTPositions == null)
+        if (perfTPositions is null)
         {
             _log.Error("No perfTPositions were passed to PerfTEvaluator");
             throw new ArgumentNullException(nameof(perfTPositions));
@@ -29,7 +29,7 @@ public sealed class PerfTEvaluator : IEvaluator
 
         m_PerfTPositions = perfTPositions;
 
-        if (highlightsLogFile == null)
+        if (highlightsLogFile is null)
         {
             _log.Error("No highlightsLogFile was passed to PerfTEvaluator");
             throw new ArgumentNullException(nameof(highlightsLogFile));
@@ -37,7 +37,7 @@ public sealed class PerfTEvaluator : IEvaluator
 
         m_HighlightsLogFile = highlightsLogFile;
 
-        if (fullLogFile == null)
+        if (fullLogFile is null)
         {
             _log.Error("No fullLogFile was passed to PerfTEvaluator");
             throw new ArgumentNullException(nameof(highlightsLogFile));

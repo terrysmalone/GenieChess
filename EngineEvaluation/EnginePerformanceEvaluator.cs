@@ -10,7 +10,7 @@ public class EnginePerformanceEvaluator
     public EnginePerformanceEvaluator(List<IEvaluator> evaluators, ILog log)
     {
 
-        if (evaluators == null)
+        if (evaluators is null)
         {
             log.Error("Evaluators list passed into EnginePerformanceEvaluator was null");
             throw new ArgumentNullException(nameof(evaluators));

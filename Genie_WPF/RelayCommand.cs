@@ -13,15 +13,18 @@ public class RelayCommand : ICommand
 
     public RelayCommand(Action<object> execute, Predicate<object> canExecute)
     {
-        if (execute == null)
+        if (execute is null)
+        {
             throw new ArgumentNullException("execute");
+        }
+
         _execute = execute; _canExecute = canExecute;
     }
 
     [DebuggerStepThrough]
     public bool CanExecute(object parameter)
     {
-        return _canExecute == null ? true : _canExecute(parameter);
+        return _canExecute?.Invoke(parameter) ?? true;
     }
 
     public event EventHandler CanExecuteChanged

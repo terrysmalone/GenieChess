@@ -48,7 +48,7 @@ public class Game
 
         _openingBook = openingBook;
 
-        if (openingBook != null)
+        if (openingBook is not null)
         {
             UseOpeningBook = true;
         }
@@ -98,7 +98,7 @@ public class Game
 
     public PieceMove GetBestMove()
     {
-        if(UseOpeningBook && _openingBook != null)
+        if(UseOpeningBook && _openingBook is not null)
         {
             var openingMoveUci = _openingBook.GetMove();
 
@@ -262,7 +262,7 @@ public class Game
 
     private void MakeMove(PieceMove move)
     {
-        if (UseOpeningBook && _openingBook != null)
+        if (UseOpeningBook && _openingBook is not null)
         {
             // TODO: Move the UCI translator into the opening book. Game should only deal with PieceMove
             _openingBook.RegisterMadeMove(UciMoveTranslator.ToUciMove(move));
