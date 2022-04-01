@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace BitboardVisualiser;
 
-public sealed class BitboardVisualiserViewModel  : ViewModelBase
+public sealed class BitboardVisualiserViewModel : ViewModelBase
 {
     private ObservableCollection<Cell> _cellCollection;
     private ulong _bitValue;
@@ -31,6 +31,7 @@ public sealed class BitboardVisualiserViewModel  : ViewModelBase
     }
 
     public RelayCommand CellClickedCommand { get; }
+
 
     public BitboardVisualiserViewModel()
     {

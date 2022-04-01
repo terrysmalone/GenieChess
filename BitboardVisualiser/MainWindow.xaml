@@ -85,7 +85,7 @@
                 <!-- Each item will be drawn using this template -->
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <ToggleButton Command="{Binding CellClickedCommand}" Style="{StaticResource CellButton}" />
+                        <ToggleButton Command="{Binding CellClickedCommand, RelativeSource={RelativeSource AncestorType={x:Type local:BitboardVisualiserViewModel}}}" IsChecked="{Binding IsSelected}" Style="{StaticResource CellButton}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
