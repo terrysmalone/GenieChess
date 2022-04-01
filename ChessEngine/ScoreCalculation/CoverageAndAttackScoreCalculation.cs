@@ -74,6 +74,8 @@ internal sealed class CoverageAndAttackScoreCalculation : IScoreCalculation
             whiteAttackBoard |= whiteQueenPossibleMoves & currentBoard.AllBlackOccupiedSquares;
         }
 
+        // TODO: Add Knight coverage score
+
         // Score for knight coverage
         ulong whiteKnightPossibleMoves = 0;
 
