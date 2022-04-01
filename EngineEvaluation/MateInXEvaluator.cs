@@ -33,7 +33,7 @@ internal sealed class MateInXEvaluator : IEvaluator
     {
         _log = log;
 
-        if (testPositionSuites == null)
+        if (testPositionSuites is null)
         {
             _log.Error("No Mate in X positions were passed to MateInXEvaluator");
             throw new ArgumentNullException(nameof(testPositionSuites));
@@ -41,7 +41,7 @@ internal sealed class MateInXEvaluator : IEvaluator
 
         _testPositionSuites = testPositionSuites;
 
-        if (highlightsLogFile == null)
+        if (highlightsLogFile is null)
         {
             _log.Error("No highlightsLogFile was passed to MateInXEvaluator");
             throw new ArgumentNullException(nameof(highlightsLogFile));
@@ -49,7 +49,7 @@ internal sealed class MateInXEvaluator : IEvaluator
 
         _highlightsLogFile = highlightsLogFile;
 
-        if (fullLogFile == null)
+        if (fullLogFile is null)
         {
             _log.Error("No fullLogFile was passed to MateInXEvaluator");
             throw new ArgumentNullException(nameof(fullLogFile));
@@ -57,7 +57,7 @@ internal sealed class MateInXEvaluator : IEvaluator
 
         _fullLogFile = fullLogFile;
 
-        if (testExcelLogFile == null)
+        if (testExcelLogFile is null)
         {
             _log.Error("No testExcelLogFile was passed to MateInXEvaluator");
             throw new ArgumentNullException(nameof(testExcelLogFile));

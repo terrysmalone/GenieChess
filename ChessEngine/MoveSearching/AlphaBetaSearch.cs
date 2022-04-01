@@ -192,7 +192,7 @@ public sealed class AlphaBetaSearch
                 NodesVisited = CountDebugger.Evaluations
             };
 
-            if (moveTimer != null)
+            if (moveTimer is not null)
             {
                 _log.Info($"Depth {depth} found: {moveTimer.Elapsed:mm\':\'ss\':\'ffff}");
             }
@@ -402,7 +402,7 @@ public sealed class AlphaBetaSearch
         // Internal iterative deepening
         // If we're near the last node of this search and we have no best move from
         // the transposition table perform a limited iterative deepening search
-        if (!isNullSearch && bestHashMove == null && depthLeft > 3)
+        if (!isNullSearch && bestHashMove is null && depthLeft > 3)
         {
             _bestMoveSoFar = null;
 
@@ -417,7 +417,7 @@ public sealed class AlphaBetaSearch
                       new List<PieceMove>(),
                       _maxCheckExtension);
 
-            if (_bestMoveSoFar != null)
+            if (_bestMoveSoFar is not null)
             {
                 OrderMovesInPlace(moveList, depthLeft, _bestMoveSoFar);
             }
@@ -616,7 +616,7 @@ public sealed class AlphaBetaSearch
                        Score    = score
                    };
 
-        if (bestMove != null)
+        if (bestMove is not null)
         {
             hash.BestMove = (PieceMove)bestMove;
         }
@@ -706,7 +706,7 @@ public sealed class AlphaBetaSearch
 
         MoveOrdering.OrderMovesByMvvLva(_boardPosition, moves);
 
-        if (bestHashMove != null)
+        if (bestHashMove is not null)
         {
             BringBestHashMoveToTheFront(moves, (PieceMove)bestHashMove);
         }
@@ -759,7 +759,7 @@ public sealed class AlphaBetaSearch
             Score    = evaluationScore
         };
 
-        if (bestMove != null)
+        if (bestMove is not null)
         {
             hash.BestMove = (PieceMove)bestMove;
         }
@@ -798,7 +798,7 @@ public sealed class AlphaBetaSearch
 
         BringKillerMovesToTheFront(moveList, depth);
 
-        if (bestHashMove != null)
+        if (bestHashMove is not null)
         {
             BringBestHashMoveToTheFront(moveList, (PieceMove)bestHashMove);
         }

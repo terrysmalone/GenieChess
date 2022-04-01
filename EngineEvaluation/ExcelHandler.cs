@@ -16,7 +16,7 @@ internal sealed class ExcelHandler
     {
         _log = log;
 
-        if (fileName == null)
+        if (fileName is null)
         {
             _log.Error("No fileName was passed to ExcelHandler");
             throw new ArgumentNullException(nameof(fileName));
@@ -71,11 +71,11 @@ internal sealed class ExcelHandler
         }
         finally
         {
-            if(excelWorksheet != null) { Marshal.ReleaseComObject(excelWorksheet); }
+            if(excelWorksheet is not null) { Marshal.ReleaseComObject(excelWorksheet); }
 
-            if(excelWorkbook != null) { Marshal.ReleaseComObject(excelWorkbook); }
+            if(excelWorkbook is not null) { Marshal.ReleaseComObject(excelWorkbook); }
 
-            if(excelApp != null) { Marshal.ReleaseComObject(excelApp); }
+            if(excelApp is not null) { Marshal.ReleaseComObject(excelApp); }
         }
     }
 
@@ -129,11 +129,11 @@ internal sealed class ExcelHandler
         }
         finally
         {
-            if (excelWorksheet != null) { Marshal.ReleaseComObject(excelWorksheet); }
+            if (excelWorksheet is not null) { Marshal.ReleaseComObject(excelWorksheet); }
 
-            if (excelWorkbook != null) { Marshal.ReleaseComObject(excelWorkbook); }
+            if (excelWorkbook is not null) { Marshal.ReleaseComObject(excelWorkbook); }
 
-            if (excelApp != null) { Marshal.ReleaseComObject(excelApp); }
+            if (excelApp is not null) { Marshal.ReleaseComObject(excelApp); }
         }
     }
 
@@ -152,7 +152,7 @@ internal sealed class ExcelHandler
             }
         }
 
-        if (worksheet == null)
+        if (worksheet is null)
         {
             _log.Error($"Couldn't find sheet {sheet}");
             throw new ArgumentException($"Couldn't find sheet {sheet}");

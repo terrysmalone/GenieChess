@@ -31,7 +31,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
     {
         _log = log;
 
-        if (testPositionSuites == null)
+        if (testPositionSuites is null)
         {
             _log.Error("No testPositionSuites were passed to TestPositionsEvaluator");
             throw new ArgumentNullException(nameof(testPositionSuites));
@@ -39,7 +39,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
 
         _testPositionSuites = testPositionSuites;
 
-        if (highlightsLogFile == null)
+        if (highlightsLogFile is null)
         {
             _log.Error("No highlightsLogFile was passed to TestPositionsEvaluator");
             throw new ArgumentNullException(nameof(highlightsLogFile));
@@ -47,7 +47,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
 
         _highlightsLogFile = highlightsLogFile;
 
-        if (fullLogFile == null)
+        if (fullLogFile is null)
         {
             _log.Error("No fullLogFile was passed to TestPositionsEvaluator");
             throw new ArgumentNullException(nameof(fullLogFile));
@@ -55,7 +55,7 @@ public sealed class TestPositionsEvaluator : IEvaluator
 
         this._fullLogFile = fullLogFile;
 
-        if (testExcelLogFile == null)
+        if (testExcelLogFile is null)
         {
             _log.Error("No testExcelLogFile was passed to TestPositionsEvaluator");
             throw new ArgumentNullException(nameof(testExcelLogFile));

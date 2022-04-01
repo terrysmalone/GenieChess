@@ -166,13 +166,13 @@ internal sealed class PerformanceEvaluatorFactory : IPerformanceEvaluatorFactory
         }
         finally
         {
-            if (testSheet != null) { Marshal.ReleaseComObject(testSheet); }
+            if (testSheet is not null) { Marshal.ReleaseComObject(testSheet); }
 
-            if (testSuiteSheet != null) { Marshal.ReleaseComObject(testSuiteSheet); }
+            if (testSuiteSheet is not null) { Marshal.ReleaseComObject(testSuiteSheet); }
 
-            if (excelWorkbook != null) { Marshal.ReleaseComObject(excelWorkbook); }
+            if (excelWorkbook is not null) { Marshal.ReleaseComObject(excelWorkbook); }
 
-            if (excelApp != null) { Marshal.ReleaseComObject(excelApp); }
+            if (excelApp is not null) { Marshal.ReleaseComObject(excelApp); }
         }
 
         return logFile;

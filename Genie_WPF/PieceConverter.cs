@@ -27,7 +27,7 @@ internal class PieceConverter : MarkupExtension, IValueConverter
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         var rootObjectProvider = serviceProvider.GetService(typeof(IRootObjectProvider)) as IRootObjectProvider;
-        if (rootObjectProvider == null)
+        if (rootObjectProvider is null)
             return this;
 
         _target = rootObjectProvider.RootObject as Control;
