@@ -380,7 +380,7 @@ public class PieceCheckingTests
     }
 
     [Test]
-    public void CalculateAllowedRookMoves_Black()
+    public void CalculateAllowedRookMoves_Black_byte()
     {
         var board = new Board();
         board.SetPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
@@ -398,7 +398,7 @@ public class PieceCheckingTests
     }
 
     [Test]
-    public void CalculateAllowedRookMoves_Black_Ray()
+    public void CalculateAllowedRookMoves_Black_Ulong()
     {
         var board = new Board();
         board.SetPosition("5k2/4p3/5p2/8/1N3r1q/8/5PP1/4K3 w - - 0 1");
@@ -416,12 +416,10 @@ public class PieceCheckingTests
     }
 
     [Test]
-    public void CalculateAllowedBishopMoves_White()
+    public void CalculateAllowedBishopMoves_White_Byte()
     {
         var board = new Board();
         board.SetPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
-
-
 
         var bishopPositions = BitboardOperations.GetSquareIndexesFromBoardValue(board.WhiteBishops);
 
@@ -435,25 +433,7 @@ public class PieceCheckingTests
     }
 
     [Test]
-    public void CalculateAllowedBishopMoves_White_Ray()
-    {
-        var board = new Board();
-        board.SetPosition("3b2k1/5pp1/8/3r4/8/5B2/4P3/7K w - - 0 1");
-
-
-        var bishopPositions = BitboardOperations.SplitBoardToArray(board.WhiteBishops);
-
-        Assert.That(bishopPositions.Length, Is.EqualTo(1));
-
-        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], true);
-
-        var expected = (ulong)585457745920;
-
-        Assert.That(expected, Is.EqualTo(allowedMoves));
-    }
-
-    [Test]
-    public void CalculateAllowedBishopMoves_Black()
+    public void CalculateAllowedBishopMoves_Black_Byte()
     {
         var board = new Board();
         board.SetPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
@@ -467,25 +447,7 @@ public class PieceCheckingTests
 
         var expected = (ulong)5664958784208896;
 
-        Assert.That(expected, Is.EqualTo(allowedMoves));
-    }
-
-    [Test]
-    public void CalculateAllowedBishopMoves_Black_Ray()
-    {
-        var board = new Board();
-        board.SetPosition("3b2k1/5pp1/1q6/3r2N1/8/5B2/4P3/7K b - - 0 1");
-
-
-        var bishopPositions = BitboardOperations.SplitBoardToArray(board.BlackBishops);
-
-        Assert.That(bishopPositions.Length, Is.EqualTo(1));
-
-        var allowedMoves = PieceChecking.CalculateAllowedBishopMoves(board, bishopPositions[0], false);
-
-        var expected = (ulong)5664958784208896;
-
-        Assert.That(expected, Is.EqualTo(allowedMoves));
+        Assert.That(allowedMoves, Is.EqualTo(expected));
     }
 
     [Test]

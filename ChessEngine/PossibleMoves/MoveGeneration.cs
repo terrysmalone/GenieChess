@@ -558,7 +558,7 @@ public class MoveGeneration
 
         while (index >= 0)
         {
-            var bishopIndex    = bishopPositions[index];
+            var bishopIndex = bishopPositions[index];
             var bishopPosition = LookupTables.SquareValuesFromIndex[bishopIndex];
 
             var allAllowedMoves =

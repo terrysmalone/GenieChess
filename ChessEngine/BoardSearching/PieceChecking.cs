@@ -650,14 +650,6 @@ internal static class PieceChecking
                 CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
     }
 
-    internal static ulong CalculateAllowedBishopMoves(Board board, ulong square, bool whiteToMove)
-    {
-        return (CalculateAllowedUpRightMoves(board, square, whiteToMove) |
-                CalculateAllowedDownRightMoves(board, square, whiteToMove) |
-                CalculateAllowedDownLeftMoves(board, square, whiteToMove) |
-                CalculateAllowedUpLeftMoves(board, square, whiteToMove));
-    }
-
     internal static ulong CalculateAllowedRookMoves(Board board, byte pieceIndex, bool whiteToMove)
     {
         return (CalculateAllowedUpMoves(board, pieceIndex, whiteToMove) |
@@ -666,12 +658,13 @@ internal static class PieceChecking
                 CalculateAllowedLeftMoves(board, pieceIndex, whiteToMove));
     }
 
-    internal static ulong CalculateAllowedRookMoves(Board board, ulong pieceIndex, bool whiteToMove)
+    // square must be only one piece
+    internal static ulong CalculateAllowedRookMoves(Board board, ulong square, bool whiteToMove)
     {
-        return (CalculateAllowedUpMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedRightMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedDownMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedLeftMoves(board, pieceIndex, whiteToMove));
+        return (CalculateAllowedUpMoves(board, square, whiteToMove) |
+                CalculateAllowedRightMoves(board, square, whiteToMove) |
+                CalculateAllowedDownMoves(board, square, whiteToMove) |
+                CalculateAllowedLeftMoves(board, square, whiteToMove));
     }
 
     internal static ulong CalculateAllowedQueenMoves(Board board, byte pieceIndex, bool whiteToMove)
@@ -686,16 +679,17 @@ internal static class PieceChecking
                 CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
     }
 
-    internal static ulong CalculateAllowedQueenMoves(Board board, ulong pieceIndex, bool whiteToMove)
+    // square must be only one piece
+    internal static ulong CalculateAllowedQueenMoves(Board board, ulong square, bool whiteToMove)
     {
-        return (CalculateAllowedUpMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedRightMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedDownMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedLeftMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedUpRightMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedDownRightMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedDownLeftMoves(board, pieceIndex, whiteToMove) |
-                CalculateAllowedUpLeftMoves(board, pieceIndex, whiteToMove));
+        return (CalculateAllowedUpMoves(board, square, whiteToMove) |
+                CalculateAllowedRightMoves(board, square, whiteToMove) |
+                CalculateAllowedDownMoves(board, square, whiteToMove) |
+                CalculateAllowedLeftMoves(board, square, whiteToMove) |
+                CalculateAllowedUpRightMoves(board, square, whiteToMove) |
+                CalculateAllowedDownRightMoves(board, square, whiteToMove) |
+                CalculateAllowedDownLeftMoves(board, square, whiteToMove) |
+                CalculateAllowedUpLeftMoves(board, square, whiteToMove));
     }
 
     private static ulong CalculateAllowedUpMoves(Board board, byte pieceIndex, bool whiteToMove)
@@ -707,9 +701,9 @@ internal static class PieceChecking
                                                 whiteToMove);
     }
 
-    private static ulong CalculateAllowedUpMoves(Board board, ulong pieceIndex, bool whiteToMove)
+    private static ulong CalculateAllowedUpMoves(Board board, ulong square, bool whiteToMove)
     {
-        var upBoard = GetUpBoard(pieceIndex);
+        var upBoard = GetUpBoard(square);
 
         return CalculateAllowedUpMovesFromBoard(board,
                                                 upBoard,
