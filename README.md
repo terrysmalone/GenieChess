@@ -172,10 +172,3 @@ Large Tasks
 * Include useful bitboards in BoardState
 
 * Implement Magic Bitboards (using https://github.com/Tearth/Fast-Magic-Bitboards)
-
-
-# Working Notes #
-
-2021/12/17
-
-Making everything static speeds things up nut it makes testing difficult. I'm going to try to make some things static. I'll do a before benchmark to make sure things don't get too bad.
